@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Quotation Generator</title>
+    <title>Enterprise Quotation Generator Pro</title>
     <style>
         * {
             margin: 0;
@@ -16,66 +16,105 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #2c3e50;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
             overflow: hidden;
         }
 
         .header {
             background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 30px;
+            padding: 40px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0;
-            min-height: 600px;
+            min-height: 800px;
         }
 
         .form-section {
             padding: 40px;
             background: #f8f9fa;
             border-right: 1px solid #e9ecef;
+            overflow-y: auto;
+            max-height: 800px;
         }
 
         .preview-section {
             padding: 40px;
             background: white;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+            padding: 15px 20px;
+            margin: -20px -20px 25px -20px;
+            border-radius: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
             transition: all 0.3s ease;
             background: white;
         }
@@ -84,6 +123,7 @@
             outline: none;
             border-color: #3498db;
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
         }
 
         .form-row {
@@ -92,88 +132,156 @@
             gap: 15px;
         }
 
-        .line-items {
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .section-card {
             background: white;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 15px;
+            padding: 25px;
             margin-bottom: 25px;
             border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 15px 15px 0 0;
+        }
+
+        .logo-upload {
+            text-align: center;
+            padding: 20px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .logo-upload:hover {
+            border-color: #3498db;
+            background: #ebf3fd;
+        }
+
+        .logo-preview {
+            max-width: 150px;
+            max-height: 80px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .line-items {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
 
         .line-items h3 {
             color: #2c3e50;
             margin-bottom: 20px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
         }
 
         .line-item {
             display: grid;
-            grid-template-columns: 3fr 1fr 1fr 1fr 40px;
+            grid-template-columns: 2fr 0.8fr 1fr 1fr 0.8fr 40px;
             gap: 10px;
             align-items: center;
             margin-bottom: 15px;
             padding: 15px;
             background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .line-item input {
-            padding: 8px 12px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-
-        .remove-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            font-size: 1.2rem;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
             transition: all 0.3s ease;
         }
 
+        .line-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .line-item input, .line-item select {
+            padding: 8px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .remove-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .remove-btn:hover {
-            background: #c0392b;
+            background: linear-gradient(135deg, #c0392b, #a93226);
             transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
         }
 
         .add-item-btn {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
             margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .add-item-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
         }
 
         .actions {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
             margin-top: 30px;
         }
 
         .btn {
-            padding: 15px 30px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            flex: 1;
+            text-align: center;
         }
 
         .btn-primary {
@@ -186,50 +294,100 @@
             color: white;
         }
 
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+        }
+
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .quote-preview {
             border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 30px;
+            border-radius: 15px;
+            padding: 40px;
             background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .quote-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 15px 15px 0 0;
         }
 
         .quote-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
             border-bottom: 3px solid #3498db;
+            position: relative;
         }
 
         .quote-header h2 {
             color: #2c3e50;
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .quote-header .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        .company-logo {
+            position: absolute;
+            top: -10px;
+            right: 0;
+            max-width: 120px;
+            max-height: 80px;
         }
 
         .quote-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .info-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
         }
 
         .info-section h4 {
-            color: #3498db;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
             border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
         }
 
         .info-section p {
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        .info-section .highlight {
+            background: #3498db;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
         }
 
         .quote-table {
@@ -237,9 +395,9 @@
             border-collapse: collapse;
             margin-bottom: 30px;
             background: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
 
         .quote-table th {
@@ -248,11 +406,13 @@
             padding: 15px;
             text-align: left;
             font-weight: 600;
+            font-size: 0.95rem;
         }
 
         .quote-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #ecf0f1;
+            font-size: 0.9rem;
         }
 
         .quote-table tr:nth-child(even) {
@@ -261,42 +421,120 @@
 
         .quote-table tr:hover {
             background: #e8f4f8;
+            transform: translateX(2px);
+            transition: all 0.3s ease;
         }
 
         .quote-totals {
             margin-left: auto;
-            width: 300px;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
+            width: 350px;
+            background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 8px 0;
+            margin-bottom: 12px;
+            padding: 10px 0;
+            font-size: 1rem;
         }
 
         .total-row.final {
-            border-top: 2px solid #3498db;
+            border-top: 3px solid #3498db;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #2c3e50;
             margin-top: 15px;
             padding-top: 15px;
+            background: white;
+            margin-left: -15px;
+            margin-right: -15px;
+            padding-left: 15px;
+            padding-right: 15px;
+            border-radius: 8px;
+        }
+
+        .quote-terms {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .quote-terms h4 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         .quote-footer {
             text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 40px;
+            padding-top: 25px;
             border-top: 2px solid #ecf0f1;
             color: #7f8c8d;
         }
 
-        @media (max-width: 768px) {
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .signature-box {
+            text-align: center;
+            padding: 30px 20px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .tab-container {
+            margin-bottom: 25px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #ecf0f1;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #3498db;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -304,9 +542,14 @@
             .form-section {
                 border-right: none;
                 border-bottom: 1px solid #e9ecef;
+                max-height: none;
             }
             
-            .form-row {
+            .preview-section {
+                max-height: none;
+            }
+            
+            .form-row, .form-row-3 {
                 grid-template-columns: 1fr;
             }
             
@@ -316,6 +559,14 @@
             }
             
             .quote-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .signature-section {
                 grid-template-columns: 1fr;
             }
         }
@@ -341,200 +592,589 @@
             
             .preview-section {
                 padding: 20px;
+                max-height: none;
             }
+            
+            .quote-preview {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 120px;
+            color: rgba(52, 152, 219, 0.03);
+            font-weight: bold;
+            z-index: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
+    <div class="watermark">QUOTATION</div>
+    
     <div class="container">
         <div class="header">
-            <h1>✨ Professional Quotation Generator</h1>
-            <p>Create stunning quotes in seconds</p>
+            <h1>🏢 Enterprise Quotation Generator Pro</h1>
+            <p>Professional Business Quotations with Comprehensive Details</p>
         </div>
         
         <div class="main-content">
             <div class="form-section">
-                <h2 style="color: #2c3e50; margin-bottom: 30px; font-size: 1.5rem;">Quote Details</h2>
-                
-                <div class="form-group">
-                    <label>Company Name</label>
-                    <input type="text" id="companyName" placeholder="Your Company Name" value="Your Company Ltd.">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="companyEmail" placeholder="contact@company.com" value="contact@company.com">
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="switchTab('company')">Company</button>
+                        <button class="tab-button" onclick="switchTab('client')">Client</button>
+                        <button class="tab-button" onclick="switchTab('items')">Items</button>
+                        <button class="tab-button" onclick="switchTab('terms')">Terms</button>
                     </div>
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 123-4567">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Company Address</label>
-                    <textarea id="companyAddress" rows="3" placeholder="123 Business St, City, State 12345">123 Business Street
-City, State 12345
-Country</textarea>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Client Name</label>
-                        <input type="text" id="clientName" placeholder="Client Name" value="ABC Corporation">
-                    </div>
-                    <div class="form-group">
-                        <label>Quote Number</label>
-                        <input type="text" id="quoteNumber" placeholder="Q-001" value="Q-001">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Client Address</label>
-                    <textarea id="clientAddress" rows="3" placeholder="Client address">456 Client Avenue
-Client City, State 67890</textarea>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Quote Date</label>
-                        <input type="date" id="quoteDate">
-                    </div>
-                    <div class="form-group">
-                        <label>Valid Until</label>
-                        <input type="date" id="validUntil">
-                    </div>
-                </div>
-                
-                <div class="line-items">
-                    <h3>📋 Line Items</h3>
-                    <div id="lineItems">
-                        <div class="line-item">
-                            <input type="text" placeholder="Description" value="Web Development Services">
-                            <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                            <input type="number" placeholder="Unit Price" value="2500.00" min="0" step="0.01">
-                            <input type="text" placeholder="Total" readonly>
-                            <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                    
+                    <!-- Company Tab -->
+                    <div id="company-tab" class="tab-content active">
+                        <div class="section-card">
+                            <div class="section-header">🏢 Company Information</div>
+                            
+                            <div class="form-group">
+                                <label>Company Logo</label>
+                                <div class="logo-upload" onclick="document.getElementById('logoFile').click()">
+                                    <input type="file" id="logoFile" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+                                    <img id="logoPreview" class="logo-preview" style="display:none">
+                                    <div id="logoPlaceholder">
+                                        📷 Click to upload logo<br>
+                                        <small>Or enter logo URL below</small>
+                                    </div>
+                                </div>
+                                <input type="url" id="logoUrl" placeholder="Or enter logo URL" style="margin-top: 10px;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Company Name *</label>
+                                <input type="text" id="companyName" placeholder="Your Company Name" value="TechSolutions Pro Ltd.">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Company Tagline</label>
+                                <input type="text" id="companyTagline" placeholder="Your business tagline" value="Innovation Through Technology">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Registration Number</label>
+                                    <input type="text" id="companyRegNumber" placeholder="REG123456789" value="REG987654321">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tax ID / VAT Number</label>
+                                    <input type="text" id="companyTaxId" placeholder="TAX123456789" value="VAT987654321">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Business Address *</label>
+                                <textarea id="companyAddress" rows="3" placeholder="Complete business address">123 Technology Plaza, Suite 500
+Innovation District, Tech City 12345
+United States of America</textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Primary Email *</label>
+                                    <input type="email" id="companyEmail" placeholder="contact@company.com" value="quotes@techsolutions.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Secondary Email</label>
+                                    <input type="email" id="companyEmail2" placeholder="sales@company.com" value="sales@techsolutions.com">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Primary Phone *</label>
+                                    <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 987-6543">
+                                </div>
+                                <div class="form-group">
+                                    <label>Mobile/WhatsApp</label>
+                                    <input type="text" id="companyMobile" placeholder="+1 (555) 987-6543" value="+1 (555) 123-9876">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Website</label>
+                                    <input type="url" id="companyWebsite" placeholder="https://www.company.com" value="https://www.techsolutions.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Fax Number</label>
+                                    <input type="text" id="companyFax" placeholder="+1 (555) 123-4568" value="+1 (555) 987-6544">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">👤 Contact Person</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Contact Name *</label>
+                                    <input type="text" id="contactName" placeholder="John Smith" value="Michael Johnson">
+                                </div>
+                                <div class="form-group">
+                                    <label>Position/Title</label>
+                                    <input type="text" id="contactTitle" placeholder="Sales Manager" value="Business Development Manager">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Direct Email</label>
+                                    <input type="email" id="contactEmail" placeholder="john@company.com" value="michael.j@techsolutions.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Direct Phone</label>
+                                    <input type="text" id="contactPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 987-6545">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">🏦 Banking Information</div>
+                            
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" id="bankName" placeholder="First National Bank" value="TechBank International">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Account Number</label>
+                                    <input type="text" id="accountNumber" placeholder="1234567890" value="ACC-9876543210">
+                                </div>
+                                <div class="form-group">
+                                    <label>Routing Number</label>
+                                    <input type="text" id="routingNumber" placeholder="021000021" value="TECH123456">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>SWIFT/BIC Code</label>
+                                    <input type="text" id="swiftCode" placeholder="BOFAUS3N" value="TECHBANK123">
+                                </div>
+                                <div class="form-group">
+                                    <label>IBAN</label>
+                                    <input type="text" id="iban" placeholder="GB29 NWBK 6016 1331 9268 19" value="US29 TECH 6016 1331 9268 19">
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button type="button" class="add-item-btn" onclick="addLineItem()">+ Add Item</button>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tax Rate (%)</label>
-                        <input type="number" id="taxRate" placeholder="0" value="10" min="0" max="100" step="0.01">
+                    
+                    <!-- Client Tab -->
+                    <div id="client-tab" class="tab-content">
+                        <div class="section-card">
+                            <div class="section-header">🏢 Client Company Details</div>
+                            
+                            <div class="form-group">
+                                <label>Client Company Name *</label>
+                                <input type="text" id="clientCompany" placeholder="Client Company Name" value="Global Innovations Corp">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Industry/Sector</label>
+                                    <input type="text" id="clientIndustry" placeholder="Technology, Healthcare, etc." value="Technology & Innovation">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company Size</label>
+                                    <select id="clientSize">
+                                        <option value="">Select size</option>
+                                        <option value="1-10">1-10 employees</option>
+                                        <option value="11-50">11-50 employees</option>
+                                        <option value="51-200" selected>51-200 employees</option>
+                                        <option value="201-1000">201-1000 employees</option>
+                                        <option value="1000+">1000+ employees</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Client Tax ID</label>
+                                    <input type="text" id="clientTaxId" placeholder="TAX987654321" value="TAX456789123">
+                                </div>
+                                <div class="form-group">
+                                    <label>Client Website</label>
+                                    <input type="url" id="clientWebsite" placeholder="https://www.client.com" value="https://www.globalinnovations.com">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">👤 Primary Contact Person</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Contact Name *</label>
+                                    <input type="text" id="clientContactName" placeholder="Jane Doe" value="Sarah Williams">
+                                </div>
+                                <div class="form-group">
+                                    <label>Position/Title</label>
+                                    <input type="text" id="clientContactTitle" placeholder="Procurement Manager" value="Chief Technology Officer">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Department</label>
+                                    <input type="text" id="clientDepartment" placeholder="IT, Finance, etc." value="Technology & Innovation">
+                                </div>
+                                <div class="form-group">
+                                    <label>Employee ID</label>
+                                    <input type="text" id="clientEmployeeId" placeholder="EMP001" value="GI-CTO-2023">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Email Address *</label>
+                                    <input type="email" id="clientEmail" placeholder="jane@client.com" value="sarah.w@globalinnovations.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 456-7890">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">📍 Address Information</div>
+                            
+                            <div class="form-group">
+                                <label>Billing Address *</label>
+                                <textarea id="clientBillingAddress" rows="3" placeholder="Complete billing address">456 Innovation Boulevard, Floor 25
+Business District, Metro City 67890
+United States of America</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Shipping/Delivery Address</label>
+                                <textarea id="clientShippingAddress" rows="3" placeholder="If different from billing address">Same as billing address</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">📋 Project Information</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Quote Number *</label>
+                                    <input type="text" id="quoteNumber" placeholder="Q-001" value="TS-Q-2025-001">
+                                </div>
+                                <div class="form-group">
+                                    <label>Project Reference</label>
+                                    <input type="text" id="projectReference" placeholder="PROJECT-001" value="GI-TECH-UPGRADE-2025">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Purchase Order Number</label>
+                                    <input type="text" id="poNumber" placeholder="PO-123456" value="GI-PO-2025-0158">
+                                </div>
+                                <div class="form-group">
+                                    <label>RFQ Number</label>
+                                    <input type="text" id="rfqNumber" placeholder="RFQ-123456" value="GI-RFQ-2025-0089">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Currency</label>
-                        <select id="currency">
-                            <option value="$">USD ($)</option>
-                            <option value="€">EUR (€)</option>
-                            <option value="£">GBP (£)</option>
-                            <option value="¥">JPY (¥)</option>
-                            <option value="₹">INR (₹)</option>
-                        </select>
+                    
+                    <!-- Items Tab -->
+                    <div id="items-tab" class="tab-content">
+                        <div class="section-card">
+                            <div class="section-header">💰 Quote Configuration</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Quote Date *</label>
+                                    <input type="date" id="quoteDate">
+                                </div>
+                                <div class="form-group">
+                                    <label>Valid Until *</label>
+                                    <input type="date" id="validUntil">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Currency *</label>
+                                    <select id="currency">
+                                        <option value="$">USD ($)</option>
+                                        <option value="€">EUR (€)</option>
+                                        <option value="£">GBP (£)</option>
+                                        <option value="¥">JPY (¥)</option>
+                                        <option value="₹">INR (₹)</option>
+                                        <option value="CAD$">CAD (CAD$)</option>
+                                        <option value="AUD$">AUD (AUD$)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Quote Status</label>
+                                    <select id="quoteStatus">
+                                        <option value="Draft">Draft</option>
+                                        <option value="Pending" selected>Pending Review</option>
+                                        <option value="Sent">Sent to Client</option>
+                                        <option value="Accepted">Accepted</option>
+                                        <option value="Rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="line-items">
+                            <h3>📋 Line Items & Services</h3>
+                            <div id="lineItems">
+                                <div class="line-item">
+                                    <input type="text" placeholder="Product/Service Description" value="Enterprise Software Development">
+                                    <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                                    <select class="unit-select">
+                                        <option value="each">Each</option>
+                                        <option value="hour" selected>Hours</option>
+                                        <option value="day">Days</option>
+                                        <option value="month">Months</option>
+                                        <option value="year">Years</option>
+                                        <option value="piece">Pieces</option>
+                                        <option value="kg">Kilograms</option>
+                                        <option value="meter">Meters</option>
+                                    </select>
+                                    <input type="number" placeholder="Unit Price" value="125.00" min="0" step="0.01">
+                                    <input type="text" placeholder="Total" readonly>
+                                    <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                                </div>
+                                <div class="line-item">
+                                    <input type="text" placeholder="Product/Service Description" value="Database Optimization">
+                                    <input type="number" placeholder="Qty" value="40" min="0" step="0.01">
+                                    <select class="unit-select">
+                                        <option value="each">Each</option>
+                                        <option value="hour" selected>Hours</option>
+                                        <option value="day">Days</option>
+                                        <option value="month">Months</option>
+                                        <option value="year">Years</option>
+                                        <option value="piece">Pieces</option>
+                                        <option value="kg">Kilograms</option>
+                                        <option value="meter">Meters</option>
+                                    </select>
+                                    <input type="number" placeholder="Unit Price" value="95.00" min="0" step="0.01">
+                                    <input type="text" placeholder="Total" readonly>
+                                    <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-item-btn" onclick="addLineItem()">+ Add New Item</button>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">🧮 Financial Calculations</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Discount Rate (%)</label>
+                                    <input type="number" id="discountRate" placeholder="0" value="5" min="0" max="100" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tax Rate (%)</label>
+                                    <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Shipping/Delivery</label>
+                                    <input type="number" id="shippingCost" placeholder="0.00" value="150.00" min="0" step="0.01">
+                                </div>
+                                <div class="form-group">
+                                    <label>Processing Fee</label>
+                                    <input type="number" id="processingFee" placeholder="0.00" value="75.00" min="0" step="0.01">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Notes/Terms</label>
-                    <textarea id="notes" rows="3" placeholder="Additional notes or terms">Payment due within 30 days.
-50% deposit required to start work.
-Thank you for your business!</textarea>
+                    
+                    <!-- Terms Tab -->
+                    <div id="terms-tab" class="tab-content">
+                        <div class="section-card">
+                            <div class="section-header">📋 Payment Terms</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Payment Terms</label>
+                                    <select id="paymentTerms">
+                                        <option value="Net 15">Net 15 Days</option>
+                                        <option value="Net 30" selected>Net 30 Days</option>
+                                        <option value="Net 45">Net 45 Days</option>
+                                        <option value="Net 60">Net 60 Days</option>
+                                        <option value="COD">Cash on Delivery</option>
+                                        <option value="Advance">100% Advance</option>
+                                        <option value="50% Advance">50% Advance</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Deposit Required (%)</label>
+                                    <input type="number" id="depositPercent" placeholder="0" value="30" min="0" max="100" step="1">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Accepted Payment Methods</label>
+                                <textarea id="paymentMethods" rows="3" placeholder="Bank transfer, Credit card, etc.">• Bank Wire Transfer (Preferred)
+• Credit Card (Visa, MasterCard, Amex)
+• PayPal Business Payments
+• Certified Check</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">🚚 Delivery Terms</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Delivery Timeline</label>
+                                    <input type="text" id="deliveryTimeline" placeholder="2-3 weeks" value="6-8 weeks from contract signing">
+                                </div>
+                                <div class="form-group">
+                                    <label>Delivery Method</label>
+                                    <select id="deliveryMethod">
+                                        <option value="Standard">Standard Delivery</option>
+                                        <option value="Express">Express Delivery</option>
+                                        <option value="Digital" selected>Digital/Remote Delivery</option>
+                                        <option value="On-site">On-site Installation</option>
+                                        <option value="Pickup">Customer Pickup</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Delivery Terms & Conditions</label>
+                                <textarea id="deliveryTerms" rows="4" placeholder="Delivery terms and conditions">• Delivery schedule subject to deposit payment
+• Installation and training included for on-site delivery
+• Remote delivery via secure encrypted channels
+• Final acceptance testing period: 7 business days
+• Client responsible for providing necessary access and resources</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">🛡️ Warranty & Support</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Warranty Period</label>
+                                    <input type="text" id="warrantyPeriod" placeholder="12 months" value="12 months from delivery">
+                                </div>
+                                <div class="form-group">
+                                    <label>Support Level</label>
+                                    <select id="supportLevel">
+                                        <option value="Basic">Basic Support</option>
+                                        <option value="Standard" selected>Standard Support</option>
+                                        <option value="Premium">Premium Support</option>
+                                        <option value="Enterprise">Enterprise Support</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Support Details</label>
+                                <textarea id="supportDetails" rows="4" placeholder="Support terms and coverage">• 12 months free technical support included
+• Email support: Response within 24 hours
+• Phone support: Business hours (9 AM - 6 PM EST)
+• Bug fixes and minor updates included
+• Major version upgrades available at 50% discount</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="section-card">
+                            <div class="section-header">📜 Terms & Conditions</div>
+                            
+                            <div class="form-group">
+                                <label>General Terms</label>
+                                <textarea id="generalTerms" rows="6" placeholder="General terms and conditions">1. This quotation is valid for 30 days from the date issued.
+2. Prices are subject to change without notice after quote expiration.
+3. All work will be performed in accordance with industry best practices.
+4. Client is responsible for providing accurate requirements and timely feedback.
+5. Any changes to scope will require written approval and may affect pricing.
+6. Confidentiality agreement covers all project information and deliverables.
+7. Force majeure clause applies to delays beyond our reasonable control.
+8. Disputes will be resolved through binding arbitration in our jurisdiction.</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Cancellation Policy</label>
+                                <textarea id="cancellationPolicy" rows="3" placeholder="Cancellation terms">• Cancellation within 48 hours: Full refund of deposit
+• Cancellation after project start: Pro-rated billing for work completed
+• Client-initiated scope changes may incur additional charges
+• 30-day written notice required for project termination</textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="actions">
                     <button type="button" class="btn btn-primary" onclick="generateQuote()">🔄 Update Preview</button>
-                    <button type="button" class="btn btn-success" onclick="printQuote()">🖨️ Print Quote</button>
+                    <button type="button" class="btn btn-warning" onclick="saveQuote()">💾 Save Quote</button>
+                    <button type="button" class="btn btn-success" onclick="printQuote()">🖨️ Print/PDF</button>
                 </div>
             </div>
             
             <div class="preview-section">
                 <div class="quote-preview" id="quotePreview">
-                    <div class="quote-header">
-                        <h2>QUOTATION</h2>
-                        <p style="color: #7f8c8d;">Professional Services Quote</p>
-                    </div>
-                    
-                    <div class="quote-info">
-                        <div class="info-section">
-                            <h4>From:</h4>
-                            <p><strong id="previewCompanyName">Your Company Ltd.</strong></p>
-                            <p id="previewCompanyEmail">contact@company.com</p>
-                            <p id="previewCompanyPhone">+1 (555) 123-4567</p>
-                            <div id="previewCompanyAddress">123 Business Street<br>City, State 12345<br>Country</div>
-                        </div>
-                        
-                        <div class="info-section">
-                            <h4>To:</h4>
-                            <p><strong id="previewClientName">ABC Corporation</strong></p>
-                            <div id="previewClientAddress">456 Client Avenue<br>Client City, State 67890</div>
-                            <br>
-                            <p><strong>Quote #:</strong> <span id="previewQuoteNumber">Q-001</span></p>
-                            <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
-                            <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
-                        </div>
-                    </div>
-                    
-                    <table class="quote-table">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Qty</th>
-                                <th>Unit Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewTableBody">
-                            <tr>
-                                <td>Web Development Services</td>
-                                <td>1</td>
-                                <td>$2,500.00</td>
-                                <td>$2,500.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <div class="quote-totals">
-                        <div class="total-row">
-                            <span>Subtotal:</span>
-                            <span id="previewSubtotal">$2,500.00</span>
-                        </div>
-                        <div class="total-row">
-                            <span>Tax (<span id="previewTaxRate">10</span>%):</span>
-                            <span id="previewTax">$250.00</span>
-                        </div>
-                        <div class="total-row final">
-                            <span>Total:</span>
-                            <span id="previewTotal">$2,750.00</span>
-                        </div>
-                    </div>
-                    
-                    <div class="quote-footer">
-                        <div id="previewNotes">
-                            Payment due within 30 days.<br>
-                            50% deposit required to start work.<br>
-                            Thank you for your business!
-                        </div>
-                    </div>
+                    <!-- Quote content will be generated here -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Set today's date as default
+        // Initialize dates
         document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
-        
-        // Set valid until date (30 days from today)
         const validUntilDate = new Date();
         validUntilDate.setDate(validUntilDate.getDate() + 30);
         document.getElementById('validUntil').value = validUntilDate.toISOString().split('T')[0];
         
-        // Generate initial quote
-        generateQuote();
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Logo handling
+        function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('logoPreview');
+                    const placeholder = document.getElementById('logoPlaceholder');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                    generateQuote();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
         
         // Auto-update on input change
         document.addEventListener('input', function(e) {
@@ -543,13 +1183,26 @@ Thank you for your business!</textarea>
             }
         });
         
+        // Generate initial quote
+        generateQuote();
+        
         function addLineItem() {
             const lineItems = document.getElementById('lineItems');
             const newItem = document.createElement('div');
             newItem.className = 'line-item';
             newItem.innerHTML = `
-                <input type="text" placeholder="Description">
+                <input type="text" placeholder="Product/Service Description">
                 <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                <select class="unit-select">
+                    <option value="each">Each</option>
+                    <option value="hour">Hours</option>
+                    <option value="day">Days</option>
+                    <option value="month">Months</option>
+                    <option value="year">Years</option>
+                    <option value="piece">Pieces</option>
+                    <option value="kg">Kilograms</option>
+                    <option value="meter">Meters</option>
+                </select>
                 <input type="number" placeholder="Unit Price" value="0.00" min="0" step="0.01">
                 <input type="text" placeholder="Total" readonly>
                 <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
@@ -557,7 +1210,7 @@ Thank you for your business!</textarea>
             lineItems.appendChild(newItem);
             
             // Add event listeners to new inputs
-            newItem.querySelectorAll('input').forEach(input => {
+            newItem.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', generateQuote);
             });
             
@@ -574,63 +1227,214 @@ Thank you for your business!</textarea>
         }
         
         function generateQuote() {
-            // Update company info
-            document.getElementById('previewCompanyName').textContent = document.getElementById('companyName').value || 'Your Company Ltd.';
-            document.getElementById('previewCompanyEmail').textContent = document.getElementById('companyEmail').value || 'contact@company.com';
-            document.getElementById('previewCompanyPhone').textContent = document.getElementById('companyPhone').value || '+1 (555) 123-4567';
-            document.getElementById('previewCompanyAddress').innerHTML = (document.getElementById('companyAddress').value || '123 Business Street\nCity, State 12345\nCountry').replace(/\n/g, '<br>');
-            
-            // Update client info
-            document.getElementById('previewClientName').textContent = document.getElementById('clientName').value || 'ABC Corporation';
-            document.getElementById('previewClientAddress').innerHTML = (document.getElementById('clientAddress').value || '456 Client Avenue\nClient City, State 67890').replace(/\n/g, '<br>');
-            
-            // Update quote details
-            document.getElementById('previewQuoteNumber').textContent = document.getElementById('quoteNumber').value || 'Q-001';
-            document.getElementById('previewQuoteDate').textContent = formatDate(document.getElementById('quoteDate').value);
-            document.getElementById('previewValidUntil').textContent = formatDate(document.getElementById('validUntil').value);
-            
-            // Update line items and calculate totals
-            const lineItems = document.querySelectorAll('.line-item');
-            const tableBody = document.getElementById('previewTableBody');
             const currency = document.getElementById('currency').value;
-            let subtotal = 0;
             
-            tableBody.innerHTML = '';
+            // Get logo source
+            const logoFile = document.getElementById('logoPreview').src;
+            const logoUrl = document.getElementById('logoUrl').value;
+            const finalLogoSrc = logoFile && logoFile !== window.location.href ? logoFile : logoUrl;
+            
+            // Calculate line items
+            const lineItems = document.querySelectorAll('.line-item');
+            let subtotal = 0;
+            let tableRows = '';
             
             lineItems.forEach(item => {
                 const inputs = item.querySelectorAll('input');
+                const unitSelect = item.querySelector('.unit-select');
                 const description = inputs[0].value || 'Service';
                 const qty = parseFloat(inputs[1].value) || 0;
-                const unitPrice = parseFloat(inputs[2].value) || 0;
+                const unit = unitSelect.value;
+                const unitPrice = parseFloat(inputs[3].value) || 0;
                 const total = qty * unitPrice;
                 
                 // Update total in form
-                inputs[3].value = formatCurrency(total, currency);
+                inputs[4].value = formatCurrency(total, currency);
                 
                 subtotal += total;
                 
-                // Add row to preview table
-                const row = tableBody.insertRow();
-                row.innerHTML = `
-                    <td>${description}</td>
-                    <td>${qty}</td>
-                    <td>${formatCurrency(unitPrice, currency)}</td>
-                    <td>${formatCurrency(total, currency)}</td>
+                tableRows += `
+                    <tr>
+                        <td>${description}</td>
+                        <td>${qty} ${unit}</td>
+                        <td>${formatCurrency(unitPrice, currency)}</td>
+                        <td>${formatCurrency(total, currency)}</td>
+                    </tr>
                 `;
             });
             
+            // Calculate totals
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+            const discount = subtotal * (discountRate / 100);
+            const discountedSubtotal = subtotal - discount;
+            
+            const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
+            const processingFee = parseFloat(document.getElementById('processingFee').value) || 0;
+            
+            const preTaxTotal = discountedSubtotal + shippingCost + processingFee;
             const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const tax = subtotal * (taxRate / 100);
-            const finalTotal = subtotal + tax;
+            const tax = preTaxTotal * (taxRate / 100);
+            const finalTotal = preTaxTotal + tax;
             
-            // Update totals
-            document.getElementById('previewSubtotal').textContent = formatCurrency(subtotal, currency);
-            document.getElementById('previewTaxRate').textContent = taxRate.toFixed(1);
-            document.getElementById('previewTax').textContent = formatCurrency(tax, currency);
-            document.getElementById('previewTotal').textContent = formatCurrency(finalTotal, currency);
+            // Generate the complete quote HTML
+            const quoteHtml = `
+                <div class="quote-header">
+                    ${finalLogoSrc ? `<img src="${finalLogoSrc}" class="company-logo" alt="Company Logo">` : ''}
+                    <h2>PROFESSIONAL QUOTATION</h2>
+                    <p class="subtitle">${document.getElementById('companyTagline').value || 'Professional Services Quote'}</p>
+                </div>
+                
+                <div class="quote-info">
+                    <div class="info-section">
+                        <h4>💼 From:</h4>
+                        <p><strong>${document.getElementById('companyName').value || 'Your Company'}</strong></p>
+                        ${document.getElementById('contactName').value ? `<p>${document.getElementById('contactName').value}${document.getElementById('contactTitle').value ? `, ${document.getElementById('contactTitle').value}` : ''}</p>` : ''}
+                        <p>${(document.getElementById('companyAddress').value || '').replace(/\n/g, '<br>')}</p>
+                        <p><strong>📧</strong> ${document.getElementById('companyEmail').value || ''}</p>
+                        <p><strong>📞</strong> ${document.getElementById('companyPhone').value || ''}</p>
+                        ${document.getElementById('companyWebsite').value ? `<p><strong>🌐</strong> ${document.getElementById('companyWebsite').value}</p>` : ''}
+                        ${document.getElementById('companyTaxId').value ? `<p><strong>Tax ID:</strong> ${document.getElementById('companyTaxId').value}</p>` : ''}
+                    </div>
+                    
+                    <div class="info-section">
+                        <h4>🏢 To:</h4>
+                        <p><strong>${document.getElementById('clientCompany').value || 'Client Company'}</strong></p>
+                        ${document.getElementById('clientContactName').value ? `<p>${document.getElementById('clientContactName').value}${document.getElementById('clientContactTitle').value ? `, ${document.getElementById('clientContactTitle').value}` : ''}</p>` : ''}
+                        ${document.getElementById('clientDepartment').value ? `<p><em>${document.getElementById('clientDepartment').value}</em></p>` : ''}
+                        <p>${(document.getElementById('clientBillingAddress').value || '').replace(/\n/g, '<br>')}</p>
+                        ${document.getElementById('clientEmail').value ? `<p><strong>📧</strong> ${document.getElementById('clientEmail').value}</p>` : ''}
+                        ${document.getElementById('clientPhone').value ? `<p><strong>📞</strong> ${document.getElementById('clientPhone').value}</p>` : ''}
+                        
+                        <br>
+                        <p><strong>Quote #:</strong> <span class="highlight">${document.getElementById('quoteNumber').value || 'Q-001'}</span></p>
+                        <p><strong>Date:</strong> ${formatDate(document.getElementById('quoteDate').value)}</p>
+                        <p><strong>Valid Until:</strong> ${formatDate(document.getElementById('validUntil').value)}</p>
+                        <p><strong>Status:</strong> <span class="highlight">${document.getElementById('quoteStatus').value || 'Pending'}</span></p>
+                        ${document.getElementById('projectReference').value ? `<p><strong>Project:</strong> ${document.getElementById('projectReference').value}</p>` : ''}
+                        ${document.getElementById('poNumber').value ? `<p><strong>PO #:</strong> ${document.getElementById('poNumber').value}</p>` : ''}
+                    </div>
+                </div>
+                
+                <table class="quote-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                
+                <div class="quote-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span>${formatCurrency(subtotal, currency)}</span>
+                    </div>
+                    ${discount > 0 ? `
+                        <div class="total-row">
+                            <span>Discount (${discountRate}%):</span>
+                            <span>-${formatCurrency(discount, currency)}</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Subtotal after discount:</span>
+                            <span>${formatCurrency(discountedSubtotal, currency)}</span>
+                        </div>
+                    ` : ''}
+                    ${shippingCost > 0 ? `
+                        <div class="total-row">
+                            <span>Shipping/Delivery:</span>
+                            <span>${formatCurrency(shippingCost, currency)}</span>
+                        </div>
+                    ` : ''}
+                    ${processingFee > 0 ? `
+                        <div class="total-row">
+                            <span>Processing Fee:</span>
+                            <span>${formatCurrency(processingFee, currency)}</span>
+                        </div>
+                    ` : ''}
+                    <div class="total-row">
+                        <span>Tax (${taxRate}%):</span>
+                        <span>${formatCurrency(tax, currency)}</span>
+                    </div>
+                    <div class="total-row final">
+                        <span>Total Amount:</span>
+                        <span>${formatCurrency(finalTotal, currency)}</span>
+                    </div>
+                </div>
+                
+                <div class="quote-terms">
+                    <h4>💰 Payment Terms</h4>
+                    <p><strong>Payment Due:</strong> ${document.getElementById('paymentTerms').value || 'Net 30 Days'}</p>
+                    ${document.getElementById('depositPercent').value > 0 ? `<p><strong>Deposit Required:</strong> ${document.getElementById('depositPercent').value}% (${formatCurrency(finalTotal * (document.getElementById('depositPercent').value / 100), currency)})</p>` : ''}
+                    <p><strong>Delivery:</strong> ${document.getElementById('deliveryTimeline').value || 'TBD'} via ${document.getElementById('deliveryMethod').value || 'Standard'}</p>
+                    <p><strong>Warranty:</strong> ${document.getElementById('warrantyPeriod').value || 'Standard warranty'}</p>
+                </div>
+                
+                ${document.getElementById('paymentMethods').value ? `
+                    <div class="quote-terms">
+                        <h4>💳 Payment Methods</h4>
+                        <div>${(document.getElementById('paymentMethods').value || '').replace(/\n/g, '<br>')}</div>
+                    </div>
+                ` : ''}
+                
+                ${document.getElementById('deliveryTerms').value ? `
+                    <div class="quote-terms">
+                        <h4>🚚 Delivery Terms</h4>
+                        <div>${(document.getElementById('deliveryTerms').value || '').replace(/\n/g, '<br>')}</div>
+                    </div>
+                ` : ''}
+                
+                ${document.getElementById('supportDetails').value ? `
+                    <div class="quote-terms">
+                        <h4>🛡️ Support & Warranty</h4>
+                        <div>${(document.getElementById('supportDetails').value || '').replace(/\n/g, '<br>')}</div>
+                    </div>
+                ` : ''}
+                
+                ${document.getElementById('generalTerms').value ? `
+                    <div class="quote-terms">
+                        <h4>📋 Terms & Conditions</h4>
+                        <div>${(document.getElementById('generalTerms').value || '').replace(/\n/g, '<br>')}</div>
+                    </div>
+                ` : ''}
+                
+                <div class="signature-section">
+                    <div class="signature-box">
+                        <p><strong>Client Signature</strong></p>
+                        <br><br><br>
+                        <p>_____________________________</p>
+                        <p>Date: _________________</p>
+                    </div>
+                    <div class="signature-box">
+                        <p><strong>Company Representative</strong></p>
+                        <br><br><br>
+                        <p>_____________________________</p>
+                        <p>${document.getElementById('contactName').value || 'Authorized Signatory'}</p>
+                    </div>
+                </div>
+                
+                <div class="quote-footer">
+                    <p><strong>Thank you for considering our services!</strong></p>
+                    <p>This quotation was generated on ${new Date().toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</p>
+                    ${document.getElementById('bankName').value ? `
+                        <p><strong>Banking Details:</strong> ${document.getElementById('bankName').value} 
+                        ${document.getElementById('accountNumber').value ? `| Account: ${document.getElementById('accountNumber').value}` : ''}
+                        ${document.getElementById('swiftCode').value ? `| SWIFT: ${document.getElementById('swiftCode').value}` : ''}</p>
+                    ` : ''}
+                </div>
+            `;
             
-            // Update notes
-            document.getElementById('previewNotes').innerHTML = (document.getElementById('notes').value || '').replace(/\n/g, '<br>');
+            document.getElementById('quotePreview').innerHTML = quoteHtml;
         }
         
         function formatCurrency(amount, currency) {
@@ -652,6 +1456,45 @@ Thank you for your business!</textarea>
         
         function printQuote() {
             window.print();
+        }
+        
+        function saveQuote() {
+            const quoteData = {
+                company: {
+                    name: document.getElementById('companyName').value,
+                    tagline: document.getElementById('companyTagline').value,
+                    address: document.getElementById('companyAddress').value,
+                    email: document.getElementById('companyEmail').value,
+                    phone: document.getElementById('companyPhone').value,
+                    website: document.getElementById('companyWebsite').value,
+                    taxId: document.getElementById('companyTaxId').value,
+                    regNumber: document.getElementById('companyRegNumber').value
+                },
+                client: {
+                    company: document.getElementById('clientCompany').value,
+                    contactName: document.getElementById('clientContactName').value,
+                    email: document.getElementById('clientEmail').value,
+                    address: document.getElementById('clientBillingAddress').value
+                },
+                quote: {
+                    number: document.getElementById('quoteNumber').value,
+                    date: document.getElementById('quoteDate').value,
+                    validUntil: document.getElementById('validUntil').value,
+                    status: document.getElementById('quoteStatus').value
+                }
+            };
+            
+            const dataStr = JSON.stringify(quoteData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `quote-${document.getElementById('quoteNumber').value || 'draft'}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            alert('Quote data saved! You can load this data later to continue editing.');
         }
     </script>
 </body>
