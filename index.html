@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional General Contractor Quotation Generator</title>
+    <title>Simple Professional Quotation Generator</title>
     <style>
         * {
             margin: 0;
@@ -13,101 +13,89 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
+            background: linear-gradient(135deg, #2c3e50, #3498db);
             color: white;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 2rem;
+            margin-bottom: 8px;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
-            min-height: 900px;
+            min-height: 700px;
         }
 
         .form-section {
-            padding: 25px;
+            padding: 30px;
             background: #f8f9fa;
             border-right: 1px solid #e9ecef;
-            overflow-y: auto;
-            max-height: 950px;
         }
 
         .preview-section {
-            padding: 25px;
+            padding: 30px;
             background: white;
-            overflow-y: auto;
-            max-height: 950px;
         }
 
-        .section-header {
-            background: linear-gradient(135deg, #e67e22, #f39c12);
-            color: white;
-            padding: 15px 20px;
-            margin: -10px -10px 25px -10px;
+        .section {
+            background: white;
+            padding: 20px;
             border-radius: 10px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .form-section-group {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 12px;
             border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
         }
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #e67e22;
-            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+            border-color: #3498db;
         }
 
         .form-row {
@@ -116,100 +104,36 @@
             gap: 15px;
         }
 
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-        }
-
-        .logo-upload {
-            border: 2px dashed #e67e22;
+        .items-section {
+            background: white;
             border-radius: 10px;
             padding: 20px;
-            text-align: center;
-            background: #f8f9fa;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .logo-upload:hover {
-            background: #fff3e0;
-            border-color: #d35400;
-        }
-
-        .logo-upload input {
-            display: none;
-        }
-
-        .logo-preview {
-            max-width: 200px;
-            max-height: 100px;
-            margin: 10px auto;
-            display: block;
-            border-radius: 5px;
-        }
-
-        .construction-phases {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #e9ecef;
-        }
-
-        .construction-phases h3 {
+        .items-section h3 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-        }
-
-        .phase-item {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 4px solid #e67e22;
-        }
-
-        .phase-header {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 40px;
-            gap: 15px;
-            align-items: center;
             margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
-        .phase-header input {
-            padding: 8px 12px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .line-items-container {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .line-item {
+        .item {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px;
+            grid-template-columns: 3fr 1fr 1fr 1fr 40px;
             gap: 10px;
             align-items: center;
             margin-bottom: 10px;
             padding: 12px;
-            background: white;
-            border-radius: 5px;
-            border: 1px solid #e9ecef;
+            background: #f8f9fa;
+            border-radius: 6px;
         }
 
-        .line-item input, .line-item select {
-            padding: 6px 10px;
+        .item input {
+            padding: 8px 10px;
             border: 1px solid #dee2e6;
             border-radius: 4px;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
         .remove-btn {
@@ -217,10 +141,10 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
         }
 
@@ -230,183 +154,106 @@
         }
 
         .add-btn {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            background: #27ae60;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            margin: 10px 5px;
+            margin-top: 10px;
         }
 
         .add-btn:hover {
+            background: #229954;
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
-        }
-
-        .add-phase-btn {
-            background: linear-gradient(135deg, #e67e22, #f39c12);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .add-phase-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(230, 126, 34, 0.3);
         }
 
         .actions {
             display: flex;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 15px 25px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             transition: all 0.3s ease;
             flex: 1;
-            min-width: 140px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: #3498db;
             color: white;
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: white;
-        }
-
-        .btn-warning {
-            background: linear-gradient(135deg, #f39c12, #e67e22);
+            background: #27ae60;
             color: white;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         .quote-preview {
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            padding: 30px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 25px;
             background: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .quote-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #e67e22;
-        }
-
-        .quote-header .logo-section img {
-            max-width: 150px;
-            max-height: 80px;
-        }
-
-        .quote-header .title-section {
-            text-align: right;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
         }
 
         .quote-header h2 {
             color: #2c3e50;
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 5px;
         }
 
         .quote-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 30px;
-        }
-
-        .info-section h4 {
-            color: #e67e22;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 8px;
-        }
-
-        .info-section p {
-            margin-bottom: 5px;
-            color: #2c3e50;
-            line-height: 1.6;
-        }
-
-        .info-section .highlight {
-            background: #fff3e0;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-left: 4px solid #e67e22;
-        }
-
-        .project-details {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
+            gap: 25px;
             margin-bottom: 25px;
-            border: 1px solid #e9ecef;
         }
 
-        .project-details h4 {
-            color: #e67e22;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+        .info-box h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
 
-        .phase-section {
-            margin-bottom: 30px;
-            page-break-inside: avoid;
+        .info-box p {
+            margin-bottom: 3px;
+            color: #2c3e50;
+            font-size: 0.9rem;
         }
 
-        .phase-title {
-            background: linear-gradient(135deg, #34495e, #2c3e50);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .phase-table {
+        .quote-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .phase-table th {
-            background: linear-gradient(135deg, #e67e22, #f39c12);
+        .quote-table th {
+            background: #34495e;
             color: white;
             padding: 12px;
             text-align: left;
@@ -414,117 +261,52 @@
             font-size: 0.9rem;
         }
 
-        .phase-table td {
+        .quote-table td {
             padding: 10px 12px;
             border-bottom: 1px solid #ecf0f1;
-            vertical-align: top;
             font-size: 0.9rem;
         }
 
-        .phase-table tr:nth-child(even) {
+        .quote-table tr:nth-child(even) {
             background: #f8f9fa;
-        }
-
-        .phase-table tr:hover {
-            background: #fff3e0;
-        }
-
-        .phase-total {
-            text-align: right;
-            margin-bottom: 15px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: #2c3e50;
-            padding: 10px;
-            background: #ecf0f1;
-            border-radius: 5px;
         }
 
         .quote-totals {
             margin-left: auto;
-            width: 400px;
+            width: 300px;
             background: #f8f9fa;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 6px;
             border: 1px solid #e9ecef;
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
-            padding: 10px 0;
-            font-size: 1.05rem;
+            margin-bottom: 8px;
+            padding: 5px 0;
+            font-size: 0.95rem;
         }
 
         .total-row.final {
-            border-top: 3px solid #e67e22;
+            border-top: 2px solid #3498db;
             font-weight: bold;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: #2c3e50;
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
         }
 
         .quote-footer {
-            margin-top: 40px;
-            padding-top: 25px;
-            border-top: 2px solid #ecf0f1;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9rem;
         }
 
-        .footer-sections {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
-
-        .footer-section h5 {
-            color: #e67e22;
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-        }
-
-        .required {
-            color: #e74c3c;
-        }
-
-        .tab-buttons {
-            display: flex;
-            margin-bottom: 20px;
-            background: #34495e;
-            border-radius: 8px;
-            padding: 5px;
-            flex-wrap: wrap;
-        }
-
-        .tab-button {
-            flex: 1;
-            padding: 12px;
-            background: transparent;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            min-width: 120px;
-        }
-
-        .tab-button.active {
-            background: #e67e22;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @media (max-width: 1200px) {
+        @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -532,40 +314,19 @@
             .form-section {
                 border-right: none;
                 border-bottom: 1px solid #e9ecef;
-                max-height: none;
             }
             
-            .preview-section {
-                max-height: none;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .form-row, .form-row-3 {
+            .form-row {
                 grid-template-columns: 1fr;
             }
             
-            .phase-header {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            
-            .line-item {
+            .item {
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
             
-            .quote-info, .footer-sections {
+            .quote-info {
                 grid-template-columns: 1fr;
-            }
-            
-            .quote-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .tab-buttons {
-                flex-direction: column;
             }
             
             .actions {
@@ -594,567 +355,223 @@
             
             .preview-section {
                 padding: 20px;
-                max-height: none;
             }
+        }
+
+        .required {
+            color: #e74c3c;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🏗️ Professional General Contractor Quotation</h1>
-            <p>Comprehensive Construction Project Estimates & Proposals</p>
+            <h1>📋 Simple Quotation Generator</h1>
+            <p>Create professional quotes in minutes</p>
         </div>
         
         <div class="main-content">
             <div class="form-section">
-                <div class="tab-buttons">
-                    <button class="tab-button active" onclick="switchTab('contractor')">Contractor</button>
-                    <button class="tab-button" onclick="switchTab('client')">Client</button>
-                    <button class="tab-button" onclick="switchTab('project')">Project</button>
-                    <button class="tab-button" onclick="switchTab('phases')">Work Phases</button>
-                    <button class="tab-button" onclick="switchTab('terms')">Terms</button>
+                <!-- Company Information -->
+                <div class="section">
+                    <h3>🏢 Your Company</h3>
+                    <div class="form-group">
+                        <label>Company Name <span class="required">*</span></label>
+                        <input type="text" id="companyName" placeholder="Your Company Name" value="ABC Services Ltd.">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="companyEmail" placeholder="contact@company.com" value="contact@company.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea id="companyAddress" rows="2" placeholder="Your business address">123 Business Street, City, State 12345</textarea>
+                    </div>
                 </div>
 
-                <!-- Contractor Information Tab -->
-                <div id="contractorTab" class="tab-content active">
-                    <div class="form-section-group">
-                        <div class="section-header">🏗️ Contractor Information</div>
-                        
+                <!-- Client Information -->
+                <div class="section">
+                    <h3>👤 Client Details</h3>
+                    <div class="form-group">
+                        <label>Client Name <span class="required">*</span></label>
+                        <input type="text" id="clientName" placeholder="Client Name" value="John Smith">
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>Company Logo</label>
-                            <div class="logo-upload" onclick="document.getElementById('logoInput').click()">
-                                <input type="file" id="logoInput" accept="image/*" onchange="handleLogoUpload(event)">
-                                <div id="logoUploadText">📷 Click to upload company logo</div>
-                                <img id="logoPreview" class="logo-preview" style="display: none;">
-                            </div>
+                            <label>Phone</label>
+                            <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-6543">
                         </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Company Name <span class="required">*</span></label>
-                                <input type="text" id="companyName" placeholder="ABC Construction Company" value="Premier Construction LLC">
-                            </div>
-                            <div class="form-group">
-                                <label>Contractor License #</label>
-                                <input type="text" id="licenseNumber" placeholder="LIC123456" value="LIC789456123">
-                            </div>
-                        </div>
-                        
                         <div class="form-group">
-                            <label>Business Address <span class="required">*</span></label>
-                            <textarea id="companyAddress" rows="3" placeholder="Complete business address">123 Construction Way, Suite 100
-Industrial District, Builder City
-State 12345, USA</textarea>
-                        </div>
-                        
-                        <div class="form-row-3">
-                            <div class="form-group">
-                                <label>Phone <span class="required">*</span></label>
-                                <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 123-BUILD">
-                            </div>
-                            <div class="form-group">
-                                <label>Emergency Phone</label>
-                                <input type="text" id="emergencyPhone" placeholder="+1 (555) 999-9999" value="+1 (555) 999-HELP">
-                            </div>
-                            <div class="form-group">
-                                <label>Fax</label>
-                                <input type="text" id="companyFax" placeholder="+1 (555) 123-4568">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Email <span class="required">*</span></label>
-                                <input type="email" id="companyEmail" placeholder="info@construction.com" value="contact@premierconstruction.com">
-                            </div>
-                            <div class="form-group">
-                                <label>Website</label>
-                                <input type="url" id="companyWebsite" placeholder="https://www.construction.com" value="https://www.premierconstruction.com">
-                            </div>
+                            <label>Email</label>
+                            <input type="email" id="clientEmail" placeholder="client@email.com" value="john.smith@email.com">
                         </div>
                     </div>
-                    
-                    <div class="form-section-group">
-                        <div class="section-header">👤 Project Manager</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Manager Name <span class="required">*</span></label>
-                                <input type="text" id="managerName" placeholder="John Smith" value="Mike Johnson">
-                            </div>
-                            <div class="form-group">
-                                <label>Title</label>
-                                <input type="text" id="managerTitle" placeholder="Project Manager" value="Senior Project Manager">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Direct Phone</label>
-                                <input type="text" id="managerPhone" placeholder="+1 (555) 123-4569" value="+1 (555) 123-PROJ">
-                            </div>
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" id="managerEmail" placeholder="manager@construction.com" value="mike.johnson@premierconstruction.com">
-                            </div>
-                        </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea id="clientAddress" rows="2" placeholder="Client address">456 Client Avenue, City, State 67890</textarea>
                     </div>
+                </div>
 
-                    <div class="form-section-group">
-                        <div class="section-header">📋 Licenses & Insurance</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>General Liability Insurance</label>
-                                <input type="text" id="generalLiability" placeholder="$2,000,000" value="$2,000,000">
-                            </div>
-                            <div class="form-group">
-                                <label>Workers' Compensation</label>
-                                <input type="text" id="workersComp" placeholder="State Covered" value="State Covered - Policy #WC123456">
-                            </div>
+                <!-- Quote Details -->
+                <div class="section">
+                    <h3>📄 Quote Info</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Quote Number</label>
+                            <input type="text" id="quoteNumber" placeholder="Q-001" value="Q-001">
                         </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Bonding Capacity</label>
-                                <input type="text" id="bondingCapacity" placeholder="$5,000,000" value="$5,000,000">
-                            </div>
-                            <div class="form-group">
-                                <label>Professional License Exp.</label>
-                                <input type="date" id="licenseExpiry">
-                            </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="quoteDate">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Valid Until</label>
+                            <input type="date" id="validUntil">
+                        </div>
+                        <div class="form-group">
+                            <label>Currency</label>
+                            <select id="currency">
+                                <option value="$">USD ($)</option>
+                                <option value="€">EUR (€)</option>
+                                <option value="£">GBP (£)</option>
+                                <option value="¥">JPY (¥)</option>
+                                <option value="₹">INR (₹)</option>
+                            </select>
                         </div>
                     </div>
                 </div>
 
-                <!-- Client Information Tab -->
-                <div id="clientTab" class="tab-content">
-                    <div class="form-section-group">
-                        <div class="section-header">🤝 Client Information</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Client Name <span class="required">*</span></label>
-                                <input type="text" id="clientName" placeholder="Jane Doe" value="Robert & Sarah Williams">
-                            </div>
-                            <div class="form-group">
-                                <label>Property Type</label>
-                                <select id="propertyType">
-                                    <option value="Residential">Residential</option>
-                                    <option value="Commercial">Commercial</option>
-                                    <option value="Industrial">Industrial</option>
-                                    <option value="Multi-Family">Multi-Family</option>
-                                    <option value="Retail">Retail</option>
-                                </select>
-                            </div>
+                <!-- Items/Services -->
+                <div class="items-section">
+                    <h3>📦 Items/Services</h3>
+                    <div id="itemsList">
+                        <div class="item">
+                            <input type="text" placeholder="Description" value="Website Development">
+                            <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="1500.00" min="0" step="0.01">
+                            <input type="text" placeholder="Total" readonly>
+                            <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
-                        
-                        <div class="form-group">
-                            <label>Project Address <span class="required">*</span></label>
-                            <textarea id="projectAddress" rows="3" placeholder="Property/Project address">456 Maple Street
-Residential District, Hometown
-State 67890, USA</textarea>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Client Phone <span class="required">*</span></label>
-                                <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-HOME">
-                            </div>
-                            <div class="form-group">
-                                <label>Client Email</label>
-                                <input type="email" id="clientEmail" placeholder="client@email.com" value="rwilliams@email.com">
-                            </div>
+                        <div class="item">
+                            <input type="text" placeholder="Description" value="SEO Optimization">
+                            <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="500.00" min="0" step="0.01">
+                            <input type="text" placeholder="Total" readonly>
+                            <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
                     </div>
-                    
-                    <div class="form-section-group">
-                        <div class="section-header">📧 Additional Contacts</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Secondary Contact</label>
-                                <input type="text" id="secondaryContact" placeholder="Spouse/Partner Name" value="Sarah Williams">
-                            </div>
-                            <div class="form-group">
-                                <label>Secondary Phone</label>
-                                <input type="text" id="secondaryPhone" placeholder="+1 (555) 987-6544" value="+1 (555) 987-WORK">
-                            </div>
+                    <button type="button" class="add-btn" onclick="addItem()">+ Add Item</button>
+                </div>
+
+                <!-- Settings -->
+                <div class="section">
+                    <h3>⚙️ Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Tax Rate (%)</label>
+                            <input type="number" id="taxRate" placeholder="0" value="10" min="0" max="100" step="0.01">
                         </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Architect (if applicable)</label>
-                                <input type="text" id="architect" placeholder="Architect Name & Contact">
-                            </div>
-                            <div class="form-group">
-                                <label>Engineer (if applicable)</label>
-                                <input type="text" id="engineer" placeholder="Engineer Name & Contact">
-                            </div>
+                        <div class="form-group">
+                            <label>Discount (%)</label>
+                            <input type="number" id="discountRate" placeholder="0" value="0" min="0" max="100" step="0.01">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notes</label>
+                        <textarea id="notes" rows="3" placeholder="Payment terms, delivery notes, etc.">Payment due within 30 days.
+Thank you for your business!</textarea>
                     </div>
                 </div>
 
-                <!-- Project Information Tab -->
-                <div id="projectTab" class="tab-content">
-                    <div class="form-section-group">
-                        <div class="section-header">🏠 Project Details</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Project Name <span class="required">*</span></label>
-                                <input type="text" id="projectName" placeholder="Kitchen Renovation Project" value="Complete Kitchen Renovation">
-                            </div>
-                            <div class="form-group">
-                                <label>Quote Number <span class="required">*</span></label>
-                                <input type="text" id="quoteNumber" placeholder="EST-2025-001" value="EST-2025-001">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Project Description</label>
-                            <textarea id="projectDescription" rows="4" placeholder="Detailed project description">Complete kitchen renovation including demolition of existing cabinets, new custom cabinetry installation, granite countertops, tile backsplash, new flooring, electrical work for under-cabinet lighting, and plumbing for new sink and dishwasher.</textarea>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Project Square Footage</label>
-                                <input type="number" id="squareFootage" placeholder="200" value="180">
-                            </div>
-                            <div class="form-group">
-                                <label>Estimated Timeline</label>
-                                <input type="text" id="timeline" placeholder="3-4 weeks" value="3-4 weeks">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Quote Date <span class="required">*</span></label>
-                                <input type="date" id="quoteDate">
-                            </div>
-                            <div class="form-group">
-                                <label>Quote Valid Until</label>
-                                <input type="date" id="validUntil">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Proposed Start Date</label>
-                                <input type="date" id="startDate">
-                            </div>
-                            <div class="form-group">
-                                <label>Expected Completion</label>
-                                <input type="date" id="completionDate">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section-group">
-                        <div class="section-header">🔍 Project Specifications</div>
-                        
-                        <div class="form-group">
-                            <label>Permits Required</label>
-                            <textarea id="permitsRequired" rows="2" placeholder="List all required permits">Building Permit, Electrical Permit, Plumbing Permit</textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Special Requirements/Notes</label>
-                            <textarea id="specialRequirements" rows="3" placeholder="Any special requirements or notes">Work to be performed during business hours (8 AM - 5 PM).
-Client requests minimal dust containment.
-Preserve existing hardwood floors in adjacent areas.</textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Work Phases Tab -->
-                <div id="phasesTab" class="tab-content">
-                    <div class="construction-phases">
-                        <h3>🔨 Construction Work Phases</h3>
-                        <div id="constructionPhases">
-                            <!-- Phase 1 -->
-                            <div class="phase-item">
-                                <div class="phase-header">
-                                    <input type="text" placeholder="Phase Name" value="Demolition & Preparation">
-                                    <input type="text" placeholder="Duration" value="2-3 days">
-                                    <input type="text" placeholder="Phase Total" readonly>
-                                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
-                                </div>
-                                <div class="line-items-container">
-                                    <div class="line-item">
-                                        <input type="text" placeholder="Item Description" value="Remove existing cabinets and countertops">
-                                        <select>
-                                            <option value="Labor">Labor</option>
-                                            <option value="Materials">Materials</option>
-                                            <option value="Equipment">Equipment</option>
-                                            <option value="Subcontractor">Subcontractor</option>
-                                        </select>
-                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                                        <input type="number" placeholder="Rate" value="800.00" min="0" step="0.01">
-                                        <input type="text" placeholder="Total" readonly>
-                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                    </div>
-                                    <div class="line-item">
-                                        <input type="text" placeholder="Item Description" value="Disposal and cleanup">
-                                        <select>
-                                            <option value="Labor">Labor</option>
-                                            <option value="Materials" selected>Materials</option>
-                                            <option value="Equipment">Equipment</option>
-                                            <option value="Subcontractor">Subcontractor</option>
-                                        </select>
-                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                                        <input type="number" placeholder="Rate" value="300.00" min="0" step="0.01">
-                                        <input type="text" placeholder="Total" readonly>
-                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                    </div>
-                                </div>
-                                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
-                            </div>
-                            
-                            <!-- Phase 2 -->
-                            <div class="phase-item">
-                                <div class="phase-header">
-                                    <input type="text" placeholder="Phase Name" value="Electrical & Plumbing">
-                                    <input type="text" placeholder="Duration" value="3-4 days">
-                                    <input type="text" placeholder="Phase Total" readonly>
-                                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
-                                </div>
-                                <div class="line-items-container">
-                                    <div class="line-item">
-                                        <input type="text" placeholder="Item Description" value="Under-cabinet lighting installation">
-                                        <select>
-                                            <option value="Labor">Labor</option>
-                                            <option value="Materials">Materials</option>
-                                            <option value="Equipment">Equipment</option>
-                                            <option value="Subcontractor" selected>Subcontractor</option>
-                                        </select>
-                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                                        <input type="number" placeholder="Rate" value="850.00" min="0" step="0.01">
-                                        <input type="text" placeholder="Total" readonly>
-                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                    </div>
-                                    <div class="line-item">
-                                        <input type="text" placeholder="Item Description" value="Plumbing for new sink location">
-                                        <select>
-                                            <option value="Labor">Labor</option>
-                                            <option value="Materials">Materials</option>
-                                            <option value="Equipment">Equipment</option>
-                                            <option value="Subcontractor" selected>Subcontractor</option>
-                                        </select>
-                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                                        <input type="number" placeholder="Rate" value="650.00" min="0" step="0.01">
-                                        <input type="text" placeholder="Total" readonly>
-                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                    </div>
-                                </div>
-                                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
-                            </div>
-                        </div>
-                        <button type="button" class="add-phase-btn" onclick="addPhase()">+ Add Construction Phase</button>
-                    </div>
-                </div>
-
-                <!-- Terms & Conditions Tab -->
-                <div id="termsTab" class="tab-content">
-                    <div class="form-section-group">
-                        <div class="section-header">💰 Pricing & Payment</div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Currency</label>
-                                <select id="currency">
-                                    <option value="$">USD ($)</option>
-                                    <option value="€">EUR (€)</option>
-                                    <option value="£">GBP (£)</option>
-                                    <option value="C$">CAD (C$)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Tax Rate (%)</label>
-                                <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Payment Schedule</label>
-                            <textarea id="paymentSchedule" rows="3" placeholder="Payment terms and schedule">30% deposit upon contract signing
-30% at substantial completion of rough work
-40% upon final completion and client acceptance</textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section-group">
-                        <div class="section-header">📋 Contract Terms</div>
-                        
-                        <div class="form-group">
-                            <label>Warranty Information</label>
-                            <textarea id="warranty" rows="3" placeholder="Warranty details">1-year warranty on all workmanship
-Materials carry manufacturer's warranty
-Warranty excludes normal wear and damage from misuse</textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Change Order Policy</label>
-                            <textarea id="changeOrders" rows="3" placeholder="Change order terms">All changes must be approved in writing
-Additional work billed at $75/hour labor rate
-Material costs at cost plus 15% markup</textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Terms & Conditions</label>
-                            <textarea id="terms" rows="4" placeholder="Additional terms and conditions">Quote valid for 30 days from date issued.
-Client responsible for obtaining all permits.
-Work area must be accessible and cleared of personal items.
-Final payment due upon completion.
-Lien waiver provided upon final payment.</textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-section-group">
-                        <div class="section-header">⚖️ Legal & Safety</div>
-                        
-                        <div class="form-group">
-                            <label>Safety Requirements</label>
-                            <textarea id="safetyRequirements" rows="2" placeholder="Safety protocols">All work performed in compliance with OSHA standards
-Safety equipment required for all personnel on site</textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Insurance Requirements</label>
-                            <textarea id="insuranceReq" rows="2" placeholder="Insurance requirements">Contractor maintains general liability and workers compensation
-Certificates of insurance available upon request</textarea>
-                        </div>
-                    </div>
-                </div>
-                
                 <div class="actions">
-                    <button type="button" class="btn btn-primary" onclick="generateQuote()">🔄 Update Preview</button>
-                    <button type="button" class="btn btn-success" onclick="printQuote()">🖨️ Print/PDF</button>
-                    <button type="button" class="btn btn-warning" onclick="saveTemplate()">💾 Save Template</button>
+                    <button type="button" class="btn btn-primary" onclick="updateQuote()">🔄 Update</button>
+                    <button type="button" class="btn btn-success" onclick="printQuote()">🖨️ Print</button>
                 </div>
             </div>
             
             <div class="preview-section">
-                <div class="quote-preview" id="quotePreview">
+                <div class="quote-preview">
                     <div class="quote-header">
-                        <div class="logo-section">
-                            <img id="previewLogo" style="display: none;">
-                        </div>
-                        <div class="title-section">
-                            <h2>CONSTRUCTION ESTIMATE</h2>
-                            <p style="color: #7f8c8d; font-size: 1.1rem;">Professional Construction Services</p>
-                        </div>
+                        <h2>QUOTATION</h2>
+                        <p style="color: #7f8c8d;">Professional Services Quote</p>
                     </div>
                     
                     <div class="quote-info">
-                        <div class="info-section">
-                            <h4>Contractor:</h4>
-                            <p><strong id="previewCompanyName">Premier Construction LLC</strong></p>
-                            <p><strong>License #:</strong> <span id="previewLicenseNumber">LIC789456123</span></p>
-                            <div id="previewCompanyAddress">123 Construction Way, Suite 100<br>Industrial District, Builder City<br>State 12345, USA</div>
-                            <br>
-                            <p><strong>📞</strong> <span id="previewCompanyPhone">+1 (555) 123-BUILD</span></p>
-                            <p><strong>📧</strong> <span id="previewCompanyEmail">contact@premierconstruction.com</span></p>
-                            <p><strong>🌐</strong> <span id="previewWebsite">https://www.premierconstruction.com</span></p>
-                            
-                            <div class="highlight">
-                                <p><strong>Project Manager:</strong></p>
-                                <p id="previewManagerName">Mike Johnson</p>
-                                <p id="previewManagerTitle">Senior Project Manager</p>
-                                <p id="previewManagerPhone">+1 (555) 123-PROJ</p>
-                                <p id="previewManagerEmail">mike.johnson@premierconstruction.com</p>
-                            </div>
+                        <div class="info-box">
+                            <h4>From:</h4>
+                            <p><strong id="previewCompanyName">ABC Services Ltd.</strong></p>
+                            <p id="previewCompanyPhone">+1 (555) 123-4567</p>
+                            <p id="previewCompanyEmail">contact@company.com</p>
+                            <div id="previewCompanyAddress">123 Business Street, City, State 12345</div>
                         </div>
                         
-                        <div class="info-section">
-                            <h4>Client:</h4>
-                            <p><strong id="previewClientName">Robert & Sarah Williams</strong></p>
-                            <p><strong>Property Type:</strong> <span id="previewPropertyType">Residential</span></p>
-                            <div id="previewProjectAddress">456 Maple Street<br>Residential District, Hometown<br>State 67890, USA</div>
+                        <div class="info-box">
+                            <h4>To:</h4>
+                            <p><strong id="previewClientName">John Smith</strong></p>
+                            <p id="previewClientPhone">+1 (555) 987-6543</p>
+                            <p id="previewClientEmail">john.smith@email.com</p>
+                            <div id="previewClientAddress">456 Client Avenue, City, State 67890</div>
                             <br>
-                            <p><strong>📞</strong> <span id="previewClientPhone">+1 (555) 987-HOME</span></p>
-                            <p><strong>📧</strong> <span id="previewClientEmail">rwilliams@email.com</span></p>
-                            
-                            <br>
-                            <p><strong>Estimate #:</strong> <span id="previewQuoteNumber">EST-2025-001</span></p>
+                            <p><strong>Quote #:</strong> <span id="previewQuoteNumber">Q-001</span></p>
                             <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
                             <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
-                            <p><strong>Timeline:</strong> <span id="previewTimeline">3-4 weeks</span></p>
                         </div>
                     </div>
                     
-                    <div class="project-details">
-                        <h4>🏠 Project Information</h4>
-                        <p><strong>Project:</strong> <span id="previewProjectName">Complete Kitchen Renovation</span></p>
-                        <p><strong>Square Footage:</strong> <span id="previewSquareFootage">180</span> sq ft</p>
-                        <p><strong>Description:</strong></p>
-                        <div id="previewProjectDescription">Complete kitchen renovation including demolition of existing cabinets, new custom cabinetry installation, granite countertops, tile backsplash, new flooring, electrical work for under-cabinet lighting, and plumbing for new sink and dishwasher.</div>
-                        <p><strong>Proposed Start:</strong> <span id="previewStartDate">TBD</span></p>
-                        <p><strong>Expected Completion:</strong> <span id="previewCompletionDate">TBD</span></p>
-                    </div>
-                    
-                    <div id="previewPhases">
-                        <!-- Phases will be generated here -->
-                    </div>
+                    <table class="quote-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewTableBody">
+                            <tr>
+                                <td>Website Development</td>
+                                <td>1</td>
+                                <td>$1,500.00</td>
+                                <td>$1,500.00</td>
+                            </tr>
+                            <tr>
+                                <td>SEO Optimization</td>
+                                <td>1</td>
+                                <td>$500.00</td>
+                                <td>$500.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     
                     <div class="quote-totals">
                         <div class="total-row">
                             <span>Subtotal:</span>
-                            <span id="previewSubtotal">$2,600.00</span>
+                            <span id="previewSubtotal">$2,000.00</span>
+                        </div>
+                        <div class="total-row" id="discountRow" style="display: none;">
+                            <span>Discount (<span id="previewDiscountRate">0</span>%):</span>
+                            <span id="previewDiscount">$0.00</span>
                         </div>
                         <div class="total-row">
-                            <span>Tax (<span id="previewTaxRate">8.5</span>%):</span>
-                            <span id="previewTax">$221.00</span>
+                            <span>Tax (<span id="previewTaxRate">10</span>%):</span>
+                            <span id="previewTax">$200.00</span>
                         </div>
                         <div class="total-row final">
-                            <span>Total Project Cost:</span>
-                            <span id="previewTotal">$2,821.00</span>
+                            <span>Total:</span>
+                            <span id="previewTotal">$2,200.00</span>
                         </div>
                     </div>
                     
                     <div class="quote-footer">
-                        <div class="footer-sections">
-                            <div class="footer-section">
-                                <h5>💳 Payment Schedule</h5>
-                                <div id="previewPaymentSchedule">30% deposit upon contract signing<br>30% at substantial completion of rough work<br>40% upon final completion and client acceptance</div>
-                                
-                                <h5 style="margin-top: 20px;">🛡️ Warranty</h5>
-                                <div id="previewWarranty">1-year warranty on all workmanship<br>Materials carry manufacturer's warranty<br>Warranty excludes normal wear and damage from misuse</div>
-                            </div>
-                            
-                            <div class="footer-section">
-                                <h5>📋 Important Information</h5>
-                                <p><strong>Insurance:</strong></p>
-                                <p>General Liability: <span id="previewGeneralLiability">$2,000,000</span></p>
-                                <p>Workers' Comp: <span id="previewWorkersComp">State Covered - Policy #WC123456</span></p>
-                                <p>Bonding: <span id="previewBondingCapacity">$5,000,000</span></p>
-                                
-                                <p style="margin-top: 15px;"><strong>Permits Required:</strong></p>
-                                <div id="previewPermitsRequired">Building Permit, Electrical Permit, Plumbing Permit</div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 25px;">
-                            <h5 style="color: #e67e22; margin-bottom: 15px;">📝 Terms & Conditions</h5>
-                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #e67e22;">
-                                <div id="previewTerms">Quote valid for 30 days from date issued.<br>Client responsible for obtaining all permits.<br>Work area must be accessible and cleared of personal items.<br>Final payment due upon completion.<br>Lien waiver provided upon final payment.</div>
-                                
-                                <div style="margin-top: 15px;">
-                                    <strong>Change Orders:</strong><br>
-                                    <div id="previewChangeOrders">All changes must be approved in writing<br>Additional work billed at $75/hour labor rate<br>Material costs at cost plus 15% markup</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 30px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-                            <p><strong>Prepared by:</strong> <span id="previewSignatureName">Mike Johnson</span></p>
-                            <p>Date: <span id="previewSignatureDate">June 24, 2025</span></p>
-                            <br>
-                            <p style="font-size: 0.9rem; color: #7f8c8d;">This estimate is subject to the terms and conditions outlined above. Client signature indicates acceptance of all terms.</p>
-                            <br>
-                            <p>Client Signature: _________________________ Date: _____________</p>
-                        </div>
+                        <div id="previewNotes">Payment due within 30 days.<br>Thank you for your business!</div>
                     </div>
                 </div>
             </div>
@@ -1162,310 +579,138 @@ Certificates of insurance available upon request</textarea>
     </div>
 
     <script>
-        // Set initial dates
-        const today = new Date();
-        document.getElementById('quoteDate').value = today.toISOString().split('T')[0];
-        
-        const validUntilDate = new Date();
-        validUntilDate.setDate(validUntilDate.getDate() + 30);
-        document.getElementById('validUntil').value = validUntilDate.toISOString().split('T')[0];
-        
-        const licenseExpiry = new Date();
-        licenseExpiry.setFullYear(licenseExpiry.getFullYear() + 1);
-        document.getElementById('licenseExpiry').value = licenseExpiry.toISOString().split('T')[0];
-        
-        // Generate initial quote
-        generateQuote();
+        // Set default dates
+        document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
+        const validDate = new Date();
+        validDate.setDate(validDate.getDate() + 30);
+        document.getElementById('validUntil').value = validDate.toISOString().split('T')[0];
         
         // Auto-update on input change
-        document.addEventListener('input', function(e) {
-            if (e.target.type !== 'button') {
-                generateQuote();
-            }
-        });
+        document.addEventListener('input', updateQuote);
         
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName + 'Tab').classList.add('active');
-            
-            // Activate button
-            event.target.classList.add('active');
-        }
+        // Initial update
+        updateQuote();
         
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const logoPreview = document.getElementById('logoPreview');
-                    const logoUploadText = document.getElementById('logoUploadText');
-                    const previewLogo = document.getElementById('previewLogo');
-                    
-                    logoPreview.src = e.target.result;
-                    logoPreview.style.display = 'block';
-                    logoUploadText.style.display = 'none';
-                    
-                    previewLogo.src = e.target.result;
-                    previewLogo.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        function addPhase() {
-            const phasesContainer = document.getElementById('constructionPhases');
-            const newPhase = document.createElement('div');
-            newPhase.className = 'phase-item';
-            newPhase.innerHTML = `
-                <div class="phase-header">
-                    <input type="text" placeholder="Phase Name">
-                    <input type="text" placeholder="Duration">
-                    <input type="text" placeholder="Phase Total" readonly>
-                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
-                </div>
-                <div class="line-items-container">
-                    <div class="line-item">
-                        <input type="text" placeholder="Item Description">
-                        <select>
-                            <option value="Labor">Labor</option>
-                            <option value="Materials">Materials</option>
-                            <option value="Equipment">Equipment</option>
-                            <option value="Subcontractor">Subcontractor</option>
-                        </select>
-                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                        <input type="number" placeholder="Rate" value="0.00" min="0" step="0.01">
-                        <input type="text" placeholder="Total" readonly>
-                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                    </div>
-                </div>
-                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
-            `;
-            phasesContainer.appendChild(newPhase);
-            
-            // Add event listeners
-            newPhase.querySelectorAll('input, select').forEach(input => {
-                input.addEventListener('input', generateQuote);
-            });
-            
-            generateQuote();
-        }
-        
-        function removePhase(button) {
-            if (document.querySelectorAll('.phase-item').length > 1) {
-                button.closest('.phase-item').remove();
-                generateQuote();
-            } else {
-                alert('At least one construction phase is required.');
-            }
-        }
-        
-        function addLineItem(button) {
-            const phaseItem = button.closest('.phase-item');
-            const lineItemsContainer = phaseItem.querySelector('.line-items-container');
+        function addItem() {
+            const itemsList = document.getElementById('itemsList');
             const newItem = document.createElement('div');
-            newItem.className = 'line-item';
+            newItem.className = 'item';
             newItem.innerHTML = `
-                <input type="text" placeholder="Item Description">
-                <select>
-                    <option value="Labor">Labor</option>
-                    <option value="Materials">Materials</option>
-                    <option value="Equipment">Equipment</option>
-                    <option value="Subcontractor">Subcontractor</option>
-                </select>
+                <input type="text" placeholder="Description">
                 <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                <input type="number" placeholder="Rate" value="0.00" min="0" step="0.01">
+                <input type="number" placeholder="Price" value="0.00" min="0" step="0.01">
                 <input type="text" placeholder="Total" readonly>
-                <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
             `;
-            lineItemsContainer.appendChild(newItem);
+            itemsList.appendChild(newItem);
             
             // Add event listeners
-            newItem.querySelectorAll('input, select').forEach(input => {
-                input.addEventListener('input', generateQuote);
+            newItem.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', updateQuote);
             });
             
-            generateQuote();
+            updateQuote();
         }
         
-        function removeLineItem(button) {
-            const phaseItem = button.closest('.phase-item');
-            const lineItems = phaseItem.querySelectorAll('.line-item');
-            
-            if (lineItems.length > 1) {
-                button.closest('.line-item').remove();
-                generateQuote();
+        function removeItem(button) {
+            if (document.querySelectorAll('.item').length > 1) {
+                button.parentElement.remove();
+                updateQuote();
             } else {
-                alert('At least one line item is required per phase.');
+                alert('At least one item is required.');
             }
         }
         
-        function generateQuote() {
-            // Update all preview fields
-            updatePreviewField('companyName', 'previewCompanyName');
-            updatePreviewField('licenseNumber', 'previewLicenseNumber');
-            updatePreviewField('companyAddress', 'previewCompanyAddress', '', true);
-            updatePreviewField('companyPhone', 'previewCompanyPhone');
-            updatePreviewField('companyEmail', 'previewCompanyEmail');
-            updatePreviewField('companyWebsite', 'previewWebsite');
+        function updateQuote() {
+            // Update company info
+            document.getElementById('previewCompanyName').textContent = 
+                document.getElementById('companyName').value || 'Your Company';
+            document.getElementById('previewCompanyPhone').textContent = 
+                document.getElementById('companyPhone').value || '';
+            document.getElementById('previewCompanyEmail').textContent = 
+                document.getElementById('companyEmail').value || '';
+            document.getElementById('previewCompanyAddress').innerHTML = 
+                (document.getElementById('companyAddress').value || '').replace(/\n/g, '<br>');
             
-            updatePreviewField('managerName', 'previewManagerName');
-            updatePreviewField('managerTitle', 'previewManagerTitle');
-            updatePreviewField('managerPhone', 'previewManagerPhone');
-            updatePreviewField('managerEmail', 'previewManagerEmail');
+            // Update client info
+            document.getElementById('previewClientName').textContent = 
+                document.getElementById('clientName').value || 'Client Name';
+            document.getElementById('previewClientPhone').textContent = 
+                document.getElementById('clientPhone').value || '';
+            document.getElementById('previewClientEmail').textContent = 
+                document.getElementById('clientEmail').value || '';
+            document.getElementById('previewClientAddress').innerHTML = 
+                (document.getElementById('clientAddress').value || '').replace(/\n/g, '<br>');
             
-            updatePreviewField('clientName', 'previewClientName');
-            updatePreviewField('propertyType', 'previewPropertyType');
-            updatePreviewField('projectAddress', 'previewProjectAddress', '', true);
-            updatePreviewField('clientPhone', 'previewClientPhone');
-            updatePreviewField('clientEmail', 'previewClientEmail');
+            // Update quote details
+            document.getElementById('previewQuoteNumber').textContent = 
+                document.getElementById('quoteNumber').value || 'Q-001';
+            document.getElementById('previewQuoteDate').textContent = 
+                formatDate(document.getElementById('quoteDate').value);
+            document.getElementById('previewValidUntil').textContent = 
+                formatDate(document.getElementById('validUntil').value);
             
-            updatePreviewField('projectName', 'previewProjectName');
-            updatePreviewField('quoteNumber', 'previewQuoteNumber');
-            updatePreviewField('timeline', 'previewTimeline');
-            updatePreviewField('squareFootage', 'previewSquareFootage');
-            updatePreviewField('projectDescription', 'previewProjectDescription', '', true);
+            // Calculate and update items
+            calculateTotals();
             
-            updatePreviewField('generalLiability', 'previewGeneralLiability');
-            updatePreviewField('workersComp', 'previewWorkersComp');
-            updatePreviewField('bondingCapacity', 'previewBondingCapacity');
-            updatePreviewField('permitsRequired', 'previewPermitsRequired', '', true);
-            
-            updatePreviewField('paymentSchedule', 'previewPaymentSchedule', '', true);
-            updatePreviewField('warranty', 'previewWarranty', '', true);
-            updatePreviewField('changeOrders', 'previewChangeOrders', '', true);
-            updatePreviewField('terms', 'previewTerms', '', true);
-            
-            // Update dates
-            document.getElementById('previewQuoteDate').textContent = formatDate(document.getElementById('quoteDate').value);
-            document.getElementById('previewValidUntil').textContent = formatDate(document.getElementById('validUntil').value);
-            document.getElementById('previewStartDate').textContent = formatDate(document.getElementById('startDate').value) || 'TBD';
-            document.getElementById('previewCompletionDate').textContent = formatDate(document.getElementById('completionDate').value) || 'TBD';
-            document.getElementById('previewSignatureDate').textContent = formatDate(document.getElementById('quoteDate').value);
-            
-            // Update signature
-            updatePreviewField('managerName', 'previewSignatureName');
-            
-            // Generate phases and calculate totals
-            generatePhasesPreview();
+            // Update notes
+            document.getElementById('previewNotes').innerHTML = 
+                (document.getElementById('notes').value || '').replace(/\n/g, '<br>');
         }
         
-        function updatePreviewField(sourceId, targetId, prefix = '', isTextarea = false) {
-            const sourceElement = document.getElementById(sourceId);
-            const targetElement = document.getElementById(targetId);
-            
-            if (sourceElement && targetElement) {
-                let value = sourceElement.value || '';
-                if (isTextarea) {
-                    value = value.replace(/\n/g, '<br>');
-                    targetElement.innerHTML = prefix + value;
-                } else {
-                    targetElement.textContent = prefix + value;
-                }
-            }
-        }
-        
-        function generatePhasesPreview() {
-            const phases = document.querySelectorAll('.phase-item');
-            const previewContainer = document.getElementById('previewPhases');
+        function calculateTotals() {
+            const items = document.querySelectorAll('.item');
+            const tableBody = document.getElementById('previewTableBody');
             const currency = document.getElementById('currency').value;
-            let grandTotal = 0;
+            let subtotal = 0;
             
-            previewContainer.innerHTML = '';
+            tableBody.innerHTML = '';
             
-            phases.forEach((phase, index) => {
-                const phaseInputs = phase.querySelector('.phase-header').querySelectorAll('input');
-                const phaseName = phaseInputs[0].value || `Phase ${index + 1}`;
-                const phaseDuration = phaseInputs[1].value || 'TBD';
+            items.forEach(item => {
+                const inputs = item.querySelectorAll('input');
+                const description = inputs[0].value || 'Service';
+                const qty = parseFloat(inputs[1].value) || 0;
+                const price = parseFloat(inputs[2].value) || 0;
+                const total = qty * price;
                 
-                const lineItems = phase.querySelectorAll('.line-item');
-                let phaseTotal = 0;
+                // Update total in form
+                inputs[3].value = formatCurrency(total, currency);
                 
-                // Create phase section
-                const phaseSection = document.createElement('div');
-                phaseSection.className = 'phase-section';
+                subtotal += total;
                 
-                const phaseTitle = document.createElement('div');
-                phaseTitle.className = 'phase-title';
-                phaseTitle.textContent = `${phaseName} (${phaseDuration})`;
-                phaseSection.appendChild(phaseTitle);
-                
-                // Create phase table
-                const table = document.createElement('table');
-                table.className = 'phase-table';
-                table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Type</th>
-                            <th>Qty</th>
-                            <th>Rate</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
+                // Add row to preview table
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${qty}</td>
+                    <td>${formatCurrency(price, currency)}</td>
+                    <td>${formatCurrency(total, currency)}</td>
                 `;
-                
-                const tbody = table.querySelector('tbody');
-                
-                lineItems.forEach(item => {
-                    const inputs = item.querySelectorAll('input, select');
-                    const description = inputs[0].value || 'Service';
-                    const type = inputs[1].value || 'Labor';
-                    const qty = parseFloat(inputs[2].value) || 0;
-                    const rate = parseFloat(inputs[3].value) || 0;
-                    const total = qty * rate;
-                    
-                    // Update total in form
-                    inputs[4].value = formatCurrency(total, currency);
-                    
-                    phaseTotal += total;
-                    
-                    // Add row to table
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${description}</td>
-                        <td>${type}</td>
-                        <td>${qty}</td>
-                        <td>${formatCurrency(rate, currency)}</td>
-                        <td>${formatCurrency(total, currency)}</td>
-                    `;
-                });
-                
-                phaseSection.appendChild(table);
-                
-                // Phase total
-                const phaseTotalDiv = document.createElement('div');
-                phaseTotalDiv.className = 'phase-total';
-                phaseTotalDiv.textContent = `Phase Total: ${formatCurrency(phaseTotal, currency)}`;
-                phaseSection.appendChild(phaseTotalDiv);
-                
-                // Update phase total in form
-                phaseInputs[2].value = formatCurrency(phaseTotal, currency);
-                
-                previewContainer.appendChild(phaseSection);
-                grandTotal += phaseTotal;
             });
             
-            // Calculate final totals
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const tax = grandTotal * (taxRate / 100);
-            const finalTotal = grandTotal + tax;
+            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
+            const discount = subtotal * (discountRate / 100);
+            const afterDiscount = subtotal - discount;
             
-            // Update totals display
-            document.getElementById('previewSubtotal').textContent = formatCurrency(grandTotal, currency);
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const tax = afterDiscount * (taxRate / 100);
+            const finalTotal = afterDiscount + tax;
+            
+            // Update totals
+            document.getElementById('previewSubtotal').textContent = formatCurrency(subtotal, currency);
             document.getElementById('previewTaxRate').textContent = taxRate.toFixed(1);
             document.getElementById('previewTax').textContent = formatCurrency(tax, currency);
             document.getElementById('previewTotal').textContent = formatCurrency(finalTotal, currency);
+            
+            // Show/hide discount row
+            const discountRow = document.getElementById('discountRow');
+            if (discountRate > 0) {
+                discountRow.style.display = 'flex';
+                document.getElementById('previewDiscountRate').textContent = discountRate.toFixed(1);
+                document.getElementById('previewDiscount').textContent = '-' + formatCurrency(discount, currency);
+            } else {
+                discountRow.style.display = 'none';
+            }
         }
         
         function formatCurrency(amount, currency) {
@@ -1487,52 +732,6 @@ Certificates of insurance available upon request</textarea>
         
         function printQuote() {
             window.print();
-        }
-        
-        function saveTemplate() {
-            // Create template object with all form data
-            const template = {};
-            
-            // Get all input, textarea, and select elements
-            document.querySelectorAll('input, textarea, select').forEach(element => {
-                if (element.id && element.type !== 'file') {
-                    template[element.id] = element.value;
-                }
-            });
-            
-            // Get phases data
-            template.phases = [];
-            document.querySelectorAll('.phase-item').forEach(phase => {
-                const phaseData = {
-                    header: [],
-                    items: []
-                };
-                
-                // Get phase header data
-                phase.querySelector('.phase-header').querySelectorAll('input').forEach(input => {
-                    phaseData.header.push(input.value);
-                });
-                
-                // Get line items data
-                phase.querySelectorAll('.line-item').forEach(item => {
-                    const itemData = [];
-                    item.querySelectorAll('input, select').forEach(input => {
-                        itemData.push(input.value);
-                    });
-                    phaseData.items.push(itemData);
-                });
-                
-                template.phases.push(phaseData);
-            });
-            
-            // Save to local storage
-            const templateName = prompt('Enter template name:', 'Construction Template');
-            if (templateName) {
-                const savedTemplates = JSON.parse(localStorage.getItem('constructionTemplates') || '{}');
-                savedTemplates[templateName] = template;
-                localStorage.setItem('constructionTemplates', JSON.stringify(savedTemplates));
-                alert('Template saved successfully!');
-            }
         }
     </script>
 </body>
