@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Quotation Generator</title>
+    <title>Neon Glass Quotation Generator - Mobile Optimized</title>
     <style>
         * {
             margin: 0;
@@ -12,44 +12,54 @@
         }
 
         :root {
-            /* Light Mode Colors */
-            --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            --bg-secondary: rgba(255, 255, 255, 0.95);
-            --bg-section: rgba(255, 255, 255, 0.9);
-            --text-primary: #2c3e50;
-            --text-secondary: #7f8c8d;
-            --border-color: #e9ecef;
-            --neon-primary: #00ffff;
-            --neon-secondary: #ff00ff;
-            --neon-accent: #ffff00;
-            --shadow-color: rgba(0, 255, 255, 0.3);
-        }
-
-        [data-theme="dark"] {
-            /* Dark Mode Colors */
-            --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            --bg-secondary: rgba(20, 20, 30, 0.95);
-            --bg-section: rgba(25, 25, 35, 0.9);
+            /* Dark Theme Base */
+            --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
+            --bg-secondary: rgba(255, 255, 255, 0.08);
+            --bg-glass: rgba(255, 255, 255, 0.12);
+            --bg-glass-hover: rgba(255, 255, 255, 0.18);
             --text-primary: #ffffff;
             --text-secondary: #b8b8b8;
-            --border-color: #444;
+            --text-muted: #888888;
+            
+            /* Neon Colors */
             --neon-primary: #00ffff;
             --neon-secondary: #ff00ff;
             --neon-accent: #ffff00;
-            --shadow-color: rgba(0, 255, 255, 0.5);
+            --neon-success: #00ff00;
+            --neon-danger: #ff0040;
+            --malaysia-gold: #FFD700;
+            --malaysia-blue: #0047AB;
+            
+            /* Glass Effects */
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+            --neon-glow: 0 0 20px;
+            --neon-glow-strong: 0 0 40px;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 25%, #667eea 50%, #764ba2 75%, #f093fb 100%);
+            --bg-secondary: rgba(255, 255, 255, 0.25);
+            --bg-glass: rgba(255, 255, 255, 0.35);
+            --bg-glass-hover: rgba(255, 255, 255, 0.45);
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --text-muted: #7f8c8d;
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: var(--bg-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             transition: all 0.3s ease;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Animated Neon Background Effects */
+        /* Animated Background Pattern */
         body::before {
             content: '';
             position: fixed;
@@ -58,277 +68,440 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
             z-index: -1;
-            animation: neonPulse 4s ease-in-out infinite alternate;
+            animation: backgroundFlow 8s ease-in-out infinite alternate;
         }
 
-        @keyframes neonPulse {
-            0% { opacity: 0.5; transform: scale(1); }
-            100% { opacity: 0.8; transform: scale(1.05); }
+        @keyframes backgroundFlow {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            100% { transform: scale(1.1) rotate(1deg); opacity: 0.6; }
+        }
+
+        @keyframes neonBorder {
+            0%, 100% { 
+                border-color: var(--neon-primary);
+                box-shadow: var(--neon-glow) var(--neon-primary);
+            }
+            25% { 
+                border-color: var(--neon-secondary);
+                box-shadow: var(--neon-glow) var(--neon-secondary);
+            }
+            50% { 
+                border-color: var(--malaysia-gold);
+                box-shadow: var(--neon-glow) var(--malaysia-gold);
+            }
+            75% { 
+                border-color: var(--neon-success);
+                box-shadow: var(--neon-glow) var(--neon-success);
+            }
         }
 
         @keyframes neonGlow {
             0%, 100% { 
                 box-shadow: 
-                    0 0 20px var(--neon-primary),
-                    0 0 40px var(--neon-primary),
-                    0 0 60px var(--neon-primary);
+                    var(--neon-glow) var(--neon-primary),
+                    inset 0 0 20px rgba(0, 255, 255, 0.1);
             }
             50% { 
                 box-shadow: 
-                    0 0 10px var(--neon-primary),
-                    0 0 20px var(--neon-primary),
-                    0 0 30px var(--neon-primary);
+                    var(--neon-glow-strong) var(--neon-primary),
+                    inset 0 0 30px rgba(0, 255, 255, 0.2);
             }
         }
 
-        @keyframes neonBorder {
-            0%, 100% { border-color: var(--neon-primary); }
-            25% { border-color: var(--neon-secondary); }
-            50% { border-color: var(--neon-accent); }
-            75% { border-color: var(--neon-secondary); }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: var(--bg-secondary);
-            border-radius: 20px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
             box-shadow: 
-                0 15px 35px rgba(0,0,0,0.2),
-                0 0 50px var(--shadow-color);
+                0 20px 40px var(--glass-shadow),
+                inset 0 0 0 2px var(--neon-primary);
             overflow: hidden;
-            border: 2px solid var(--neon-primary);
-            animation: neonGlow 3s ease-in-out infinite;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+            animation: neonBorder 6s linear infinite;
+            position: relative;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--neon-primary), 
+                var(--neon-secondary), 
+                var(--malaysia-gold), 
+                var(--neon-success),
+                var(--neon-primary));
+            border-radius: 25px;
+            z-index: -1;
+            animation: neonBorder 4s linear infinite;
         }
 
         .header {
             background: linear-gradient(135deg, 
                 rgba(0, 255, 255, 0.1), 
                 rgba(255, 0, 255, 0.1), 
-                rgba(255, 255, 0, 0.1));
+                rgba(255, 215, 0, 0.1));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             color: var(--text-primary);
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             position: relative;
-            border-bottom: 2px solid var(--neon-primary);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .header::before {
+            content: '🇲🇾';
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 1.8rem;
+            animation: pulseGlow 2s ease-in-out infinite;
         }
 
         .header h1 {
-            font-size: 2.2rem;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
             margin-bottom: 8px;
             text-shadow: 
-                0 0 10px var(--neon-primary),
-                0 0 20px var(--neon-primary),
+                var(--neon-glow) var(--neon-primary),
                 0 0 30px var(--neon-primary);
-            animation: neonText 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes neonText {
-            0% { text-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-primary); }
-            100% { text-shadow: 0 0 20px var(--neon-primary), 0 0 30px var(--neon-primary), 0 0 40px var(--neon-primary); }
+            animation: neonGlow 3s ease-in-out infinite;
+            font-weight: 700;
         }
 
         .header p {
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            margin-top: 5px;
         }
 
         .theme-toggle {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 15px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .theme-btn {
-            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
-            border: none;
-            padding: 10px 15px;
-            border-radius: 25px;
-            color: #000;
-            font-weight: bold;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--neon-primary);
+            padding: 8px 12px;
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 0 15px var(--shadow-color);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            box-shadow: var(--neon-glow) var(--neon-primary);
         }
 
-        .theme-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 
-                0 5px 15px rgba(0,0,0,0.3),
-                0 0 25px var(--shadow-color);
-        }
-
-        .theme-btn.active {
-            background: linear-gradient(135deg, var(--neon-accent), var(--neon-primary));
-            animation: neonPulseBtn 1.5s ease-in-out infinite;
-        }
-
-        @keyframes neonPulseBtn {
-            0%, 100% { box-shadow: 0 0 15px var(--shadow-color); }
-            50% { box-shadow: 0 0 25px var(--shadow-color), 0 0 35px var(--shadow-color); }
+        .theme-btn:hover, .theme-btn.active {
+            background: var(--bg-glass-hover);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: var(--neon-glow-strong) var(--neon-primary);
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 700px;
+            grid-template-columns: 1fr;
+            min-height: 600px;
         }
 
-        .form-section {
-            padding: 30px;
-            background: var(--bg-section);
-            border-right: 2px solid var(--neon-primary);
+        .form-section, .preview-section {
+            padding: 20px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             transition: all 0.3s ease;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .preview-section {
-            padding: 30px;
-            background: var(--bg-secondary);
-            transition: all 0.3s ease;
+            border-bottom: none;
         }
 
         .section {
-            background: var(--bg-section);
-            padding: 20px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 18px;
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--glass-border);
             box-shadow: 
-                0 5px 15px rgba(0,0,0,0.1),
-                0 0 20px var(--shadow-color);
-            border: 1px solid var(--neon-primary);
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                var(--neon-primary), 
+                var(--neon-secondary), 
+                var(--malaysia-gold));
+            border-radius: 15px 15px 0 0;
+            animation: neonBorder 3s linear infinite;
         }
 
         .section:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            background: var(--bg-glass-hover);
             box-shadow: 
-                0 10px 25px rgba(0,0,0,0.2),
-                0 0 30px var(--shadow-color);
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                var(--neon-glow) var(--neon-primary);
         }
 
         .section h3 {
             color: var(--text-primary);
             margin-bottom: 15px;
             font-size: 1.1rem;
-            border-bottom: 2px solid var(--neon-primary);
+            font-weight: 600;
+            border-bottom: 1px solid var(--glass-border);
             padding-bottom: 8px;
-            text-shadow: 0 0 10px var(--shadow-color);
+            text-shadow: 0 0 10px var(--neon-primary);
+        }
+
+        .logo-section {
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            border: 2px dashed var(--malaysia-gold);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--malaysia-gold), 
+                var(--neon-primary), 
+                var(--neon-secondary), 
+                var(--malaysia-gold));
+            border-radius: 20px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-section:hover::before {
+            opacity: 0.3;
+        }
+
+        .logo-section:hover {
+            transform: scale(1.02);
+            box-shadow: var(--neon-glow) var(--malaysia-gold);
+            border-color: transparent;
+        }
+
+        .logo-upload {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload input {
+            display: none;
+        }
+
+        .logo-preview {
+            max-width: 180px;
+            max-height: 100px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: var(--neon-glow) var(--neon-primary);
+            transition: all 0.3s ease;
+        }
+
+        .logo-preview:hover {
+            transform: scale(1.05);
+            box-shadow: var(--neon-glow-strong) var(--neon-primary);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: var(--text-primary);
             font-size: 0.9rem;
-            text-shadow: 0 0 5px var(--shadow-color);
+            text-shadow: 0 0 5px var(--neon-primary);
         }
 
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input, 
+        .form-group textarea, 
+        .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 0.95rem;
+            padding: 14px 16px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            background: var(--bg-section);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: var(--text-primary);
-            backdrop-filter: blur(5px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
 
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+        .form-group input:focus, 
+        .form-group textarea:focus, 
+        .form-group select:focus {
             outline: none;
             border-color: var(--neon-primary);
+            background: var(--bg-glass-hover);
             box-shadow: 
-                0 0 15px var(--shadow-color),
-                inset 0 0 15px rgba(0, 255, 255, 0.1);
+                var(--neon-glow) var(--neon-primary),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
             transform: scale(1.02);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 12px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
         }
 
         .items-section {
-            background: var(--bg-section);
-            border-radius: 15px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 
-                0 5px 15px rgba(0,0,0,0.1),
-                0 0 20px var(--shadow-color);
+            margin-bottom: 16px;
             border: 1px solid var(--neon-secondary);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                var(--neon-glow) var(--neon-secondary);
             transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .items-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                var(--neon-secondary), 
+                var(--malaysia-gold), 
+                var(--neon-secondary));
+            border-radius: 20px 20px 0 0;
+            animation: neonBorder 4s linear infinite;
         }
 
         .items-section h3 {
             color: var(--text-primary);
             margin-bottom: 15px;
             font-size: 1.1rem;
-            text-shadow: 0 0 10px var(--neon-secondary);
+            font-weight: 600;
+            text-shadow: var(--neon-glow) var(--neon-secondary);
         }
 
         .item {
             display: grid;
-            grid-template-columns: 3fr 1fr 1fr 1fr 40px;
-            gap: 10px;
+            grid-template-columns: 2fr 80px 100px 100px 40px;
+            gap: 8px;
             align-items: center;
             margin-bottom: 12px;
-            padding: 15px;
-            background: var(--bg-section);
-            border-radius: 10px;
-            border: 1px solid var(--neon-accent);
+            padding: 12px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid var(--malaysia-gold);
             transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
 
         .item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 5px 15px var(--shadow-color);
+            transform: translateX(5px);
+            background: var(--bg-glass-hover);
+            box-shadow: var(--neon-glow) var(--malaysia-gold);
         }
 
         .item input {
             padding: 10px 12px;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--glass-border);
             border-radius: 8px;
             font-size: 0.9rem;
-            background: var(--bg-secondary);
+            background: var(--bg-glass);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             color: var(--text-primary);
             transition: all 0.3s ease;
         }
 
         .item input:focus {
-            border-color: var(--neon-accent);
-            box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+            border-color: var(--malaysia-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            background: var(--bg-glass-hover);
         }
 
         .remove-btn {
-            background: linear-gradient(135deg, #ff0040, #ff4081);
+            background: linear-gradient(135deg, var(--neon-danger), #ff4081);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(255, 0, 64, 0.5);
+            font-weight: bold;
         }
 
         .remove-btn:hover {
@@ -340,42 +513,44 @@
             background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
             color: #000;
             border: none;
-            padding: 15px 25px;
+            padding: 14px 24px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            margin-top: 15px;
-            box-shadow: 0 0 20px var(--shadow-color);
+            margin-top: 12px;
+            box-shadow: var(--neon-glow) var(--neon-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .add-btn:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 
-                0 5px 15px rgba(0,0,0,0.3),
-                0 0 30px var(--shadow-color);
+            box-shadow: var(--neon-glow-strong) var(--neon-primary);
         }
 
         .actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 15px 25px;
+            padding: 16px 20px;
             border: none;
             border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            flex: 1;
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .btn::before {
@@ -396,234 +571,442 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
             color: #000;
-            box-shadow: 0 0 20px var(--shadow-color);
+            box-shadow: var(--neon-glow) var(--neon-primary);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--neon-accent), var(--neon-primary));
+            background: linear-gradient(135deg, var(--malaysia-gold), var(--neon-success));
             color: #000;
-            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+            box-shadow: var(--neon-glow) var(--malaysia-gold);
         }
 
         .btn:hover {
             transform: translateY(-3px) scale(1.05);
-            box-shadow: 
-                0 8px 25px rgba(0,0,0,0.3),
-                0 0 35px var(--shadow-color);
+            box-shadow: var(--neon-glow-strong) var(--neon-primary);
         }
 
+        /* Enhanced Quote Preview */
         .quote-preview {
-            border: 2px solid var(--neon-primary);
-            border-radius: 15px;
-            padding: 25px;
-            background: var(--bg-section);
+            border: 2px solid transparent;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 0;
             box-shadow: 
-                0 5px 15px rgba(0,0,0,0.1),
-                0 0 30px var(--shadow-color);
+                0 20px 40px var(--glass-shadow),
+                inset 0 0 0 1px var(--glass-border);
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            animation: neonBorder 4s linear infinite;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .quote-preview::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--neon-primary), 
+                var(--neon-secondary), 
+                var(--malaysia-gold), 
+                var(--neon-success));
+            border-radius: 20px;
+            z-index: -1;
+            animation: neonBorder 5s linear infinite;
+        }
+
+        .quote-letterhead {
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 255, 0.05), 
+                rgba(255, 215, 0, 0.05), 
+                rgba(255, 0, 255, 0.05));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px;
+            border-bottom: 2px solid var(--malaysia-gold);
+            position: relative;
+        }
+
+        .quote-letterhead::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #FF0000 0%, #FF0000 7.7%, 
+                #FFFFFF 7.7%, #FFFFFF 15.4%, 
+                #FF0000 15.4%, #FF0000 23.1%, 
+                #FFFFFF 23.1%, #FFFFFF 30.8%, 
+                #FF0000 30.8%, #FF0000 38.5%, 
+                #FFFFFF 38.5%, #FFFFFF 46.2%, 
+                #FF0000 46.2%, #FF0000 53.9%, 
+                #FFFFFF 53.9%, #FFFFFF 61.6%, 
+                #0047AB 61.6%, #0047AB 100%);
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        .letterhead-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .company-logo {
+            margin-bottom: 15px;
+        }
+
+        .company-logo img {
+            max-width: 160px;
+            max-height: 80px;
+            border-radius: 10px;
+            box-shadow: var(--neon-glow) var(--neon-primary);
+            transition: all 0.3s ease;
+        }
+
+        .company-logo img:hover {
+            transform: scale(1.05);
+            box-shadow: var(--neon-glow-strong) var(--neon-primary);
+        }
+
+        .company-name {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            text-shadow: var(--neon-glow) var(--neon-primary);
+        }
+
+        .company-tagline {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .company-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 3px;
+        }
+
+        .contact-item .icon {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+            color: var(--malaysia-gold);
         }
 
         .quote-header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px 20px;
             text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--neon-primary);
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .quote-header h2 {
             color: var(--text-primary);
-            font-size: 2.2rem;
-            margin-bottom: 8px;
-            text-shadow: 
-                0 0 15px var(--neon-primary),
-                0 0 25px var(--neon-primary);
-            animation: neonText 3s ease-in-out infinite alternate;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            margin-bottom: 5px;
+            text-shadow: var(--neon-glow) var(--neon-primary);
+            animation: neonGlow 3s ease-in-out infinite;
+            font-weight: 700;
+        }
+
+        .quote-content {
+            padding: 20px;
         }
 
         .quote-info {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 25px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .info-box {
-            background: var(--bg-section);
-            padding: 20px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 15px;
             border-radius: 12px;
             border: 1px solid var(--neon-secondary);
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+            box-shadow: 
+                0 4px 16px rgba(0, 0, 0, 0.1),
+                var(--neon-glow) var(--neon-secondary);
             transition: all 0.3s ease;
         }
 
         .info-box:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+            background: var(--bg-glass-hover);
+            box-shadow: var(--neon-glow-strong) var(--neon-secondary);
         }
 
         .info-box h4 {
             color: var(--text-primary);
-            margin-bottom: 12px;
-            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
             text-shadow: 0 0 10px var(--neon-secondary);
+            border-bottom: 1px solid var(--malaysia-gold);
+            padding-bottom: 5px;
         }
 
         .info-box p {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: var(--text-primary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
         }
 
         .quote-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            border-radius: 10px;
+            margin-bottom: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 0 20px var(--shadow-color);
+            box-shadow: var(--neon-glow) var(--neon-primary);
             border: 1px solid var(--neon-primary);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .quote-table th {
-            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            background: linear-gradient(135deg, var(--malaysia-gold), var(--neon-primary));
             color: #000;
-            padding: 15px 12px;
+            padding: 12px 8px;
             text-align: left;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .quote-table td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.8rem;
             color: var(--text-primary);
-            background: var(--bg-section);
+            background: var(--bg-glass);
             transition: all 0.3s ease;
         }
 
         .quote-table tr:hover td {
-            background: var(--bg-secondary);
-            transform: scale(1.01);
+            background: var(--bg-glass-hover);
         }
 
         .quote-totals {
-            margin-left: auto;
-            width: 320px;
-            background: var(--bg-section);
-            padding: 25px;
+            width: 100%;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px;
             border-radius: 15px;
-            border: 2px solid var(--neon-accent);
-            box-shadow: 0 0 25px rgba(255, 255, 0, 0.3);
+            border: 2px solid var(--malaysia-gold);
+            box-shadow: var(--neon-glow) var(--malaysia-gold);
             transition: all 0.3s ease;
+            margin-top: 15px;
         }
 
         .quote-totals:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 35px rgba(255, 255, 0, 0.5);
+            background: var(--bg-glass-hover);
+            box-shadow: var(--neon-glow-strong) var(--malaysia-gold);
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 8px 0;
-            font-size: 1rem;
+            align-items: center;
+            margin-bottom: 8px;
+            padding: 6px 0;
+            font-size: 0.9rem;
             color: var(--text-primary);
         }
 
         .total-row.final {
-            border-top: 2px solid var(--neon-accent);
-            font-weight: bold;
-            font-size: 1.3rem;
+            border-top: 2px solid var(--malaysia-gold);
+            font-weight: 700;
+            font-size: 1.1rem;
             color: var(--text-primary);
-            margin-top: 15px;
-            padding-top: 15px;
-            text-shadow: 0 0 10px var(--neon-accent);
+            margin-top: 12px;
+            padding-top: 12px;
+            text-shadow: var(--neon-glow) var(--malaysia-gold);
         }
 
         .quote-footer {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
+            margin-top: 20px;
+            padding: 15px;
+            border-top: 1px solid var(--glass-border);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 0 0 20px 20px;
             text-align: center;
             color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        .malaysia-footer {
+            background: linear-gradient(90deg, var(--malaysia-gold), var(--malaysia-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            margin-top: 10px;
             font-size: 0.9rem;
-            background: var(--bg-section);
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid var(--neon-primary);
         }
 
         .required {
-            color: #ff0040;
-            text-shadow: 0 0 5px #ff0040;
+            color: var(--neon-danger);
+            text-shadow: 0 0 5px var(--neon-danger);
         }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-section);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(var(--neon-primary), var(--neon-secondary));
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--shadow-color);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(var(--neon-secondary), var(--neon-accent));
-        }
-
+        /* Mobile Specific Optimizations */
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
+            body {
+                padding: 5px;
             }
-            
-            .form-section {
-                border-right: none;
-                border-bottom: 2px solid var(--neon-primary);
+
+            .container {
+                border-radius: 15px;
+                margin: 5px auto;
             }
-            
-            .form-row {
-                grid-template-columns: 1fr;
+
+            .header {
+                padding: 15px;
             }
-            
-            .item {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            
-            .quote-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions {
-                flex-direction: column;
+
+            .header::before {
+                font-size: 1.5rem;
+                top: 12px;
+                left: 15px;
             }
 
             .theme-toggle {
-                position: relative;
-                top: auto;
-                right: auto;
-                justify-content: center;
-                margin-top: 15px;
+                top: 12px;
+                right: 12px;
+                gap: 6px;
             }
 
-            .header h1 {
-                font-size: 1.8rem;
+            .theme-btn {
+                padding: 6px 10px;
+                font-size: 0.75rem;
+            }
+
+            .form-section, .preview-section {
+                padding: 15px;
+            }
+
+            .section {
+                padding: 15px;
+                margin-bottom: 12px;
+            }
+
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .item {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .item input {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            .actions {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 16px;
+                font-size: 0.9rem;
+            }
+
+            .quote-content {
+                padding: 15px;
+            }
+
+            .quote-table th,
+            .quote-table td {
+                padding: 8px 6px;
+                font-size: 0.75rem;
+            }
+
+            .quote-totals {
+                padding: 15px;
+            }
+
+            .total-row {
+                font-size: 0.85rem;
+            }
+
+            .total-row.final {
+                font-size: 1rem;
+            }
+
+            .company-details {
+                font-size: 0.8rem;
+            }
+
+            .contact-item {
+                justify-content: flex-start;
+            }
+
+            .letterhead-top {
+                align-items: flex-start;
+                text-align: left;
             }
         }
 
+        /* Touch Interactions */
+        @media (hover: none) and (pointer: coarse) {
+            .section:hover,
+            .item:hover,
+            .info-box:hover,
+            .quote-totals:hover {
+                transform: none;
+            }
+            
+            .btn:hover,
+            .add-btn:hover,
+            .remove-btn:hover {
+                transform: none;
+            }
+
+            .section:active,
+            .btn:active,
+            .add-btn:active {
+                transform: scale(0.98);
+            }
+        }
+
+        /* Print Styles */
         @media print {
             body {
                 background: white;
@@ -635,61 +1018,154 @@
                 border-radius: 0;
                 border: none;
                 animation: none;
+                background: white;
+            }
+            
+            .container::before {
+                display: none;
             }
             
             .form-section, .theme-toggle {
                 display: none;
             }
             
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
             .preview-section {
-                padding: 20px;
+                padding: 0;
+                background: white;
+                border: none;
             }
 
             .quote-preview {
                 border: 1px solid #000;
                 animation: none;
                 box-shadow: none;
+                background: white;
             }
+
+            .quote-preview::before {
+                display: none;
+            }
+
+            .quote-letterhead,
+            .quote-header,
+            .quote-content,
+            .section,
+            .info-box,
+            .quote-totals {
+                background: white !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                box-shadow: none !important;
+                animation: none !important;
+            }
+
+            .quote-letterhead::before {
+                display: none;
+            }
+
+            * {
+                color: #000 !important;
+                text-shadow: none !important;
+            }
+        }
+
+        /* Enhanced Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-glass);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--malaysia-gold), var(--neon-primary));
+            border-radius: 10px;
+            box-shadow: var(--neon-glow) var(--neon-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--neon-secondary), var(--malaysia-gold));
         }
     </style>
 </head>
-<body data-theme="light">
+<body data-theme="dark">
     <div class="container">
         <div class="header">
             <div class="theme-toggle">
-                <button class="theme-btn active" onclick="setTheme('light')">🌞 Light</button>
-                <button class="theme-btn" onclick="setTheme('dark')">🌙 Dark</button>
+                <button class="theme-btn" onclick="setTheme('light')">🌞 Light</button>
+                <button class="theme-btn active" onclick="setTheme('dark')">🌙 Dark</button>
             </div>
-            <h1>⚡ NEON QUOTATION GENERATOR ⚡</h1>
-            <p>Create stunning quotes with neon-powered technology</p>
+            <h1>🇲🇾 NEON QUOTATION GENERATOR 🇲🇾</h1>
+            <p>Professional Malaysian Business Solutions with Glass Morphism Design</p>
         </div>
         
         <div class="main-content">
             <div class="form-section">
+                <!-- Company Logo Section -->
+                <div class="logo-section">
+                    <h3 style="color: var(--malaysia-gold); border-bottom: 1px solid var(--malaysia-gold); margin-bottom: 15px;">🏢 Company Logo & Branding</h3>
+                    <div class="logo-upload" onclick="document.getElementById('logoInput').click()">
+                        <input type="file" id="logoInput" accept="image/*" onchange="handleLogoUpload(event)">
+                        <div id="logoUploadText">
+                            <p style="font-size: 1.1rem; margin-bottom: 8px; font-weight: 600;">📷 Upload Company Logo</p>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem;">Tap to add your company logo<br>Recommended: 300x150px, PNG/JPG</p>
+                        </div>
+                        <img id="logoPreview" class="logo-preview" style="display: none;">
+                    </div>
+                </div>
+
                 <!-- Company Information -->
                 <div class="section">
-                    <h3>🏢 Your Company</h3>
+                    <h3>🏢 Company Information</h3>
                     <div class="form-group">
                         <label>Company Name <span class="required">*</span></label>
-                        <input type="text" id="companyName" placeholder="Your Company Name" value="NeonTech Services">
+                        <input type="text" id="companyName" placeholder="Your Company Name" value="NeonTech Solutions Sdn Bhd">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) NEON-TECH">
+                            <label>Registration No.</label>
+                            <input type="text" id="regNumber" placeholder="202201012345" value="202201012345">
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="companyEmail" placeholder="contact@company.com" value="hello@neontech.com">
+                            <label>SSM No.</label>
+                            <input type="text" id="ssmNumber" placeholder="SSM-567890-A" value="SSM-567890-A">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Address</label>
-                        <textarea id="companyAddress" rows="2" placeholder="Your business address">123 Neon Boulevard, Tech City, TC 12345</textarea>
+                        <label>Company Tagline</label>
+                        <input type="text" id="companyTagline" placeholder="Your business tagline" value="Powering Malaysia's Digital Future">
+                    </div>
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>Office Phone</label>
+                            <input type="text" id="companyPhone" placeholder="03-1234 5678" value="03-7890 1234">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile</label>
+                            <input type="text" id="mobilePhone" placeholder="012-345 6789" value="012-890 1234">
+                        </div>
+                        <div class="form-group">
+                            <label>Fax</label>
+                            <input type="text" id="companyFax" placeholder="03-1234 5679">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="companyEmail" placeholder="info@company.com.my" value="hello@neontech.com.my">
+                        </div>
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="url" id="companyWebsite" placeholder="www.company.com.my" value="https://www.neontech.com.my">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address <span class="required">*</span></label>
+                        <textarea id="companyAddress" rows="3" placeholder="Complete business address">Suite 15-3, Level 15, Menara Neon
+No. 123, Jalan Technology, Cyberjaya
+63000 Cyberjaya, Selangor, Malaysia</textarea>
                     </div>
                 </div>
 
@@ -697,32 +1173,44 @@
                 <div class="section">
                     <h3>👤 Client Details</h3>
                     <div class="form-group">
-                        <label>Client Name <span class="required">*</span></label>
-                        <input type="text" id="clientName" placeholder="Client Name" value="Future Corp Ltd.">
+                        <label>Client/Company Name <span class="required">*</span></label>
+                        <input type="text" id="clientName" placeholder="Client Name" value="Future Tech Sdn Bhd">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Contact Person</label>
+                            <input type="text" id="contactPerson" placeholder="Encik/Puan Ahmad" value="Encik Ahmad bin Ali">
+                        </div>
+                        <div class="form-group">
+                            <label>Position</label>
+                            <input type="text" id="contactPosition" placeholder="General Manager" value="Chief Technology Officer">
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-FUTURE">
+                            <input type="text" id="clientPhone" placeholder="03-8765 4321" value="03-5678 9012">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" id="clientEmail" placeholder="client@email.com" value="contact@futurecorp.com">
+                            <input type="email" id="clientEmail" placeholder="client@email.com.my" value="ahmad@futuretech.com.my">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea id="clientAddress" rows="2" placeholder="Client address">456 Innovation Drive, Future City, FC 67890</textarea>
+                        <textarea id="clientAddress" rows="3" placeholder="Client address">Level 8, Plaza Future
+No. 456, Jalan Innovation
+50450 Kuala Lumpur, Malaysia</textarea>
                     </div>
                 </div>
 
                 <!-- Quote Details -->
                 <div class="section">
-                    <h3>📄 Quote Info</h3>
+                    <h3>📄 Quote Information</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Quote Number</label>
-                            <input type="text" id="quoteNumber" placeholder="Q-001" value="NEON-001">
+                            <input type="text" id="quoteNumber" placeholder="QUO-001/2025" value="QUO-NT-001/2025">
                         </div>
                         <div class="form-group">
                             <label>Date</label>
@@ -737,11 +1225,11 @@
                         <div class="form-group">
                             <label>Currency</label>
                             <select id="currency">
+                                <option value="RM" selected>Malaysian Ringgit (RM)</option>
                                 <option value="$">USD ($)</option>
                                 <option value="€">EUR (€)</option>
                                 <option value="£">GBP (£)</option>
-                                <option value="¥">JPY (¥)</option>
-                                <option value="₹">INR (₹)</option>
+                                <option value="S$">SGD (S$)</option>
                             </select>
                         </div>
                     </div>
@@ -752,16 +1240,23 @@
                     <h3>⚡ Services & Products</h3>
                     <div id="itemsList">
                         <div class="item">
-                            <input type="text" placeholder="Description" value="Neon Website Design">
+                            <input type="text" placeholder="Description" value="E-commerce Website Development">
                             <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                            <input type="number" placeholder="Price" value="2500.00" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="15000.00" min="0" step="0.01">
                             <input type="text" placeholder="Total" readonly>
                             <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
                         <div class="item">
-                            <input type="text" placeholder="Description" value="Interactive UI/UX">
+                            <input type="text" placeholder="Description" value="Mobile App Development">
                             <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                            <input type="number" placeholder="Price" value="1800.00" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="25000.00" min="0" step="0.01">
+                            <input type="text" placeholder="Total" readonly>
+                            <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
+                        </div>
+                        <div class="item">
+                            <input type="text" placeholder="Description" value="Digital Marketing Setup">
+                            <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="8000.00" min="0" step="0.01">
                             <input type="text" placeholder="Total" readonly>
                             <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
@@ -774,8 +1269,8 @@
                     <h3>⚙️ Settings</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Tax Rate (%)</label>
-                            <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
+                            <label>SST/GST Rate (%)</label>
+                            <input type="number" id="taxRate" placeholder="6" value="6" min="0" max="100" step="0.01">
                         </div>
                         <div class="form-group">
                             <label>Discount (%)</label>
@@ -783,10 +1278,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Notes</label>
-                        <textarea id="notes" rows="3" placeholder="Payment terms, delivery notes, etc.">Payment due within 30 days.
-Project delivery in 2-3 weeks.
-Thank you for choosing NeonTech! ⚡</textarea>
+                        <label>Terms & Conditions</label>
+                        <textarea id="notes" rows="4" placeholder="Payment terms, delivery notes, etc.">Payment Terms: 30% deposit, 70% upon completion
+Project Duration: 8-12 weeks
+Warranty: 12 months technical support included
+Bank: CIMB Bank 8008123456 (NeonTech Solutions Sdn Bhd)
+
+Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
                     </div>
                 </div>
 
@@ -798,79 +1296,145 @@ Thank you for choosing NeonTech! ⚡</textarea>
             
             <div class="preview-section">
                 <div class="quote-preview">
+                    <!-- Enhanced Letterhead -->
+                    <div class="quote-letterhead">
+                        <div class="letterhead-top">
+                            <div class="company-logo">
+                                <img id="previewLogo" style="display: none;">
+                                <div id="noLogoPlaceholder" style="width: 160px; height: 80px; background: linear-gradient(135deg, var(--malaysia-gold), var(--neon-primary)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; text-align: center; margin: 0 auto;">
+                                    <div>
+                                        <div style="font-size: 1.2rem;">🏢</div>
+                                        <div style="font-size: 0.7rem;">Company Logo</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="company-info">
+                                <div class="company-name" id="previewCompanyName">NeonTech Solutions Sdn Bhd</div>
+                                <div class="company-tagline" id="previewCompanyTagline">Powering Malaysia's Digital Future</div>
+                                <div class="company-details">
+                                    <div class="contact-item">
+                                        <span class="icon">📞</span>
+                                        <span id="previewCompanyPhone">03-7890 1234</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="icon">📱</span>
+                                        <span id="previewMobilePhone">012-890 1234</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="icon">📧</span>
+                                        <span id="previewCompanyEmail">hello@neontech.com.my</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="icon">🌐</span>
+                                        <span id="previewWebsite">www.neontech.com.my</span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="icon">📄</span>
+                                        <span>Reg: <span id="previewRegNumber">202201012345</span></span>
+                                    </div>
+                                    <div class="contact-item">
+                                        <span class="icon">🏛️</span>
+                                        <span>SSM: <span id="previewSSMNumber">SSM-567890-A</span></span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px; padding: 8px; background: rgba(255,215,0,0.1); border-radius: 6px; border-left: 3px solid var(--malaysia-gold);">
+                                    <div id="previewCompanyAddress" style="font-size: 0.8rem; line-height: 1.3;">
+                                        Suite 15-3, Level 15, Menara Neon<br>
+                                        No. 123, Jalan Technology, Cyberjaya<br>
+                                        63000 Cyberjaya, Selangor, Malaysia
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quote Header -->
                     <div class="quote-header">
                         <h2>⚡ QUOTATION ⚡</h2>
-                        <p style="color: var(--text-secondary);">Professional Neon-Tech Services</p>
+                        <p style="color: var(--text-secondary);">Professional Technology Solutions</p>
                     </div>
                     
-                    <div class="quote-info">
-                        <div class="info-box">
-                            <h4>From:</h4>
-                            <p><strong id="previewCompanyName">NeonTech Services</strong></p>
-                            <p id="previewCompanyPhone">+1 (555) NEON-TECH</p>
-                            <p id="previewCompanyEmail">hello@neontech.com</p>
-                            <div id="previewCompanyAddress">123 Neon Boulevard, Tech City, TC 12345</div>
+                    <!-- Quote Content -->
+                    <div class="quote-content">
+                        <div class="quote-info">
+                            <div class="info-box">
+                                <h4>Bill To:</h4>
+                                <p><strong id="previewClientName">Future Tech Sdn Bhd</strong></p>
+                                <p><strong>Attn:</strong> <span id="previewContactPerson">Encik Ahmad bin Ali</span></p>
+                                <p><strong>Position:</strong> <span id="previewContactPosition">Chief Technology Officer</span></p>
+                                <p><strong>📞</strong> <span id="previewClientPhone">03-5678 9012</span></p>
+                                <p><strong>📧</strong> <span id="previewClientEmail">ahmad@futuretech.com.my</span></p>
+                                <div style="margin-top: 8px; padding: 8px; background: rgba(255,0,255,0.1); border-radius: 4px;">
+                                    <div id="previewClientAddress">Level 8, Plaza Future<br>No. 456, Jalan Innovation<br>50450 Kuala Lumpur, Malaysia</div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-box">
+                                <h4>Quote Details:</h4>
+                                <p><strong>Quote No:</strong> <span id="previewQuoteNumber">QUO-NT-001/2025</span></p>
+                                <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
+                                <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
+                                <p><strong>Currency:</strong> <span id="previewCurrency">Malaysian Ringgit (RM)</span></p>
+                                <div style="margin-top: 10px; padding: 8px; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(0,255,255,0.1)); border-radius: 6px; border: 1px solid var(--malaysia-gold);">
+                                    <p style="text-align: center; font-weight: bold; color: var(--malaysia-gold); font-size: 0.8rem;">🇲🇾 Made in Malaysia 🇲🇾</p>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="info-box">
-                            <h4>To:</h4>
-                            <p><strong id="previewClientName">Future Corp Ltd.</strong></p>
-                            <p id="previewClientPhone">+1 (555) 987-FUTURE</p>
-                            <p id="previewClientEmail">contact@futurecorp.com</p>
-                            <div id="previewClientAddress">456 Innovation Drive, Future City, FC 67890</div>
-                            <br>
-                            <p><strong>Quote #:</strong> <span id="previewQuoteNumber">NEON-001</span></p>
-                            <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
-                            <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
-                        </div>
-                    </div>
-                    
-                    <table class="quote-table">
-                        <thead>
-                            <tr>
-                                <th>Description</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewTableBody">
-                            <tr>
-                                <td>Neon Website Design</td>
-                                <td>1</td>
-                                <td>$2,500.00</td>
-                                <td>$2,500.00</td>
-                            </tr>
-                            <tr>
-                                <td>Interactive UI/UX</td>
-                                <td>1</td>
-                                <td>$1,800.00</td>
-                                <td>$1,800.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <div class="quote-totals">
-                        <div class="total-row">
-                            <span>Subtotal:</span>
-                            <span id="previewSubtotal">$4,300.00</span>
-                        </div>
-                        <div class="total-row" id="discountRow" style="display: none;">
-                            <span>Discount (<span id="previewDiscountRate">0</span>%):</span>
-                            <span id="previewDiscount">$0.00</span>
-                        </div>
-                        <div class="total-row">
-                            <span>Tax (<span id="previewTaxRate">8.5</span>%):</span>
-                            <span id="previewTax">$365.50</span>
-                        </div>
-                        <div class="total-row final">
-                            <span>⚡ TOTAL:</span>
-                            <span id="previewTotal">$4,665.50</span>
+                        <table class="quote-table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Qty</th>
+                                    <th>Unit Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewTableBody">
+                                <tr>
+                                    <td>E-commerce Website Development</td>
+                                    <td>1</td>
+                                    <td>RM 15,000.00</td>
+                                    <td>RM 15,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Mobile App Development</td>
+                                    <td>1</td>
+                                    <td>RM 25,000.00</td>
+                                    <td>RM 25,000.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Digital Marketing Setup</td>
+                                    <td>1</td>
+                                    <td>RM 8,000.00</td>
+                                    <td>RM 8,000.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="quote-totals">
+                            <div class="total-row">
+                                <span>Subtotal:</span>
+                                <span id="previewSubtotal">RM 48,000.00</span>
+                            </div>
+                            <div class="total-row" id="discountRow" style="display: none;">
+                                <span>Discount (<span id="previewDiscountRate">0</span>%):</span>
+                                <span id="previewDiscount">RM 0.00</span>
+                            </div>
+                            <div class="total-row">
+                                <span>SST (<span id="previewTaxRate">6</span>%):</span>
+                                <span id="previewTax">RM 2,880.00</span>
+                            </div>
+                            <div class="total-row final">
+                                <span>🇲🇾 TOTAL:</span>
+                                <span id="previewTotal">RM 50,880.00</span>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="quote-footer">
-                        <div id="previewNotes">Payment due within 30 days.<br>Project delivery in 2-3 weeks.<br>Thank you for choosing NeonTech! ⚡</div>
+                        <div id="previewNotes">Payment Terms: 30% deposit, 70% upon completion<br>Project Duration: 8-12 weeks<br>Warranty: 12 months technical support included<br>Bank: CIMB Bank 8008123456 (NeonTech Solutions Sdn Bhd)<br><br>Terima kasih atas kepercayaan anda! 🇲🇾</div>
+                        <div class="malaysia-footer">Proudly Malaysian • Teknologi Neon untuk Masa Depan</div>
                     </div>
                 </div>
             </div>
@@ -889,12 +1453,12 @@ Thank you for choosing NeonTech! ⚡</textarea>
             event.target.classList.add('active');
             
             // Save theme preference
-            localStorage.setItem('neon-quote-theme', theme);
+            localStorage.setItem('neon-quote-theme-mobile', theme);
         }
 
         // Load saved theme
         function loadTheme() {
-            const savedTheme = localStorage.getItem('neon-quote-theme') || 'light';
+            const savedTheme = localStorage.getItem('neon-quote-theme-mobile') || 'dark';
             document.body.setAttribute('data-theme', savedTheme);
             
             // Update button states
@@ -905,6 +1469,31 @@ Thank you for choosing NeonTech! ⚡</textarea>
                     btn.classList.add('active');
                 }
             });
+        }
+
+        // Logo Upload Handler
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const logoPreview = document.getElementById('logoPreview');
+                    const logoUploadText = document.getElementById('logoUploadText');
+                    const previewLogo = document.getElementById('previewLogo');
+                    const noLogoPlaceholder = document.getElementById('noLogoPlaceholder');
+                    
+                    // Show uploaded logo in form
+                    logoPreview.src = e.target.result;
+                    logoPreview.style.display = 'block';
+                    logoUploadText.style.display = 'none';
+                    
+                    // Show logo in quote preview
+                    previewLogo.src = e.target.result;
+                    previewLogo.style.display = 'block';
+                    noLogoPlaceholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         // Set default dates
@@ -938,12 +1527,6 @@ Thank you for choosing NeonTech! ⚡</textarea>
                 input.addEventListener('input', updateQuote);
             });
             
-            // Add hover animation
-            setTimeout(() => {
-                newItem.style.transform = 'translateX(0)';
-                newItem.style.opacity = '1';
-            }, 100);
-            
             updateQuote();
         }
         
@@ -957,66 +1540,92 @@ Thank you for choosing NeonTech! ⚡</textarea>
                     updateQuote();
                 }, 300);
             } else {
-                // Create a more stylish alert
+                // Create a stylish mobile alert
                 const alertDiv = document.createElement('div');
                 alertDiv.style.cssText = `
                     position: fixed;
                     top: 50%;
                     left: 50%;
                     transform: translate(-50%, -50%);
-                    background: linear-gradient(135deg, #ff0040, #ff4081);
+                    background: linear-gradient(135deg, var(--neon-danger), #ff4081);
                     color: white;
-                    padding: 20px 30px;
+                    padding: 20px;
                     border-radius: 15px;
                     box-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
                     z-index: 1000;
                     font-weight: bold;
-                    animation: neonPulse 0.5s ease-in-out;
+                    text-align: center;
+                    max-width: 300px;
+                    animation: pulseGlow 0.5s ease-in-out;
                 `;
-                alertDiv.textContent = '⚡ At least one item is required! ⚡';
+                alertDiv.innerHTML = '⚡ Sekurang-kurangnya satu item diperlukan! ⚡<br><small>🇲🇾 At least one item is required! 🇲🇾</small>';
                 document.body.appendChild(alertDiv);
                 
                 setTimeout(() => {
                     alertDiv.remove();
-                }, 2000);
+                }, 3000);
             }
         }
         
         function updateQuote() {
             // Update company info
-            document.getElementById('previewCompanyName').textContent = 
-                document.getElementById('companyName').value || 'Your Company';
-            document.getElementById('previewCompanyPhone').textContent = 
-                document.getElementById('companyPhone').value || '';
-            document.getElementById('previewCompanyEmail').textContent = 
-                document.getElementById('companyEmail').value || '';
-            document.getElementById('previewCompanyAddress').innerHTML = 
-                (document.getElementById('companyAddress').value || '').replace(/\n/g, '<br>');
+            updateField('companyName', 'previewCompanyName');
+            updateField('companyTagline', 'previewCompanyTagline');
+            updateField('regNumber', 'previewRegNumber');
+            updateField('ssmNumber', 'previewSSMNumber');
+            updateField('companyPhone', 'previewCompanyPhone');
+            updateField('mobilePhone', 'previewMobilePhone');
+            updateField('companyEmail', 'previewCompanyEmail');
+            updateField('companyWebsite', 'previewWebsite', '', (value) => value.replace(/^https?:\/\//, ''));
+            updateField('companyAddress', 'previewCompanyAddress', '', null, true);
             
             // Update client info
-            document.getElementById('previewClientName').textContent = 
-                document.getElementById('clientName').value || 'Client Name';
-            document.getElementById('previewClientPhone').textContent = 
-                document.getElementById('clientPhone').value || '';
-            document.getElementById('previewClientEmail').textContent = 
-                document.getElementById('clientEmail').value || '';
-            document.getElementById('previewClientAddress').innerHTML = 
-                (document.getElementById('clientAddress').value || '').replace(/\n/g, '<br>');
+            updateField('clientName', 'previewClientName');
+            updateField('contactPerson', 'previewContactPerson');
+            updateField('contactPosition', 'previewContactPosition');
+            updateField('clientPhone', 'previewClientPhone');
+            updateField('clientEmail', 'previewClientEmail');
+            updateField('clientAddress', 'previewClientAddress', '', null, true);
             
             // Update quote details
-            document.getElementById('previewQuoteNumber').textContent = 
-                document.getElementById('quoteNumber').value || 'Q-001';
-            document.getElementById('previewQuoteDate').textContent = 
-                formatDate(document.getElementById('quoteDate').value);
-            document.getElementById('previewValidUntil').textContent = 
-                formatDate(document.getElementById('validUntil').value);
+            updateField('quoteNumber', 'previewQuoteNumber');
+            document.getElementById('previewQuoteDate').textContent = formatDate(document.getElementById('quoteDate').value);
+            document.getElementById('previewValidUntil').textContent = formatDate(document.getElementById('validUntil').value);
+            
+            // Update currency display
+            const currency = document.getElementById('currency').value;
+            const currencyNames = {
+                'RM': 'Malaysian Ringgit (RM)',
+                '$': 'US Dollar ($)',
+                '€': 'Euro (€)',
+                '£': 'British Pound (£)',
+                'S$': 'Singapore Dollar (S$)'
+            };
+            document.getElementById('previewCurrency').textContent = currencyNames[currency];
             
             // Calculate and update items
             calculateTotals();
             
             // Update notes
-            document.getElementById('previewNotes').innerHTML = 
-                (document.getElementById('notes').value || '').replace(/\n/g, '<br>');
+            updateField('notes', 'previewNotes', '', null, true);
+        }
+        
+        function updateField(sourceId, targetId, prefix = '', transformer = null, isTextarea = false) {
+            const sourceElement = document.getElementById(sourceId);
+            const targetElement = document.getElementById(targetId);
+            
+            if (sourceElement && targetElement) {
+                let value = sourceElement.value || '';
+                if (transformer) {
+                    value = transformer(value);
+                }
+                if (isTextarea) {
+                    value = value.replace(/\n/g, '<br>');
+                    targetElement.innerHTML = prefix + value;
+                } else {
+                    targetElement.textContent = prefix + value;
+                }
+            }
         }
         
         function calculateTotals() {
@@ -1075,16 +1684,17 @@ Thank you for choosing NeonTech! ⚡</textarea>
         }
         
         function formatCurrency(amount, currency) {
-            return currency + amount.toLocaleString('en-US', {
+            const formatted = amount.toLocaleString('en-MY', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
+            return currency + ' ' + formatted;
         }
         
         function formatDate(dateString) {
             if (!dateString) return '';
             const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
+            return date.toLocaleDateString('en-MY', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
@@ -1092,59 +1702,66 @@ Thank you for choosing NeonTech! ⚡</textarea>
         }
         
         function printQuote() {
-            // Add a neon flash effect before printing
+            // Add vibration for mobile devices
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+            
+            // Flash effect
             const container = document.querySelector('.container');
             container.style.animation = 'neonGlow 0.5s ease-in-out';
             
             setTimeout(() => {
                 window.print();
-                container.style.animation = 'neonGlow 3s ease-in-out infinite';
+                container.style.animation = 'neonBorder 6s linear infinite';
             }, 500);
         }
 
-        // Add some interactive effects
+        // Touch and mobile optimizations
         document.addEventListener('DOMContentLoaded', function() {
-            // Add click ripple effect to buttons
-            document.querySelectorAll('.btn, .add-btn, .theme-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    const ripple = document.createElement('span');
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    const x = e.clientX - rect.left - size / 2;
-                    const y = e.clientY - rect.top - size / 2;
-                    
-                    ripple.style.cssText = `
-                        position: absolute;
-                        width: ${size}px;
-                        height: ${size}px;
-                        left: ${x}px;
-                        top: ${y}px;
-                        background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
-                        border-radius: 50%;
-                        pointer-events: none;
-                        animation: ripple 0.6s linear;
-                    `;
-                    
-                    this.style.position = 'relative';
-                    this.style.overflow = 'hidden';
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => ripple.remove(), 600);
+            // Add haptic feedback for touch devices
+            if ('vibrate' in navigator) {
+                document.querySelectorAll('.btn, .add-btn, .theme-btn').forEach(button => {
+                    button.addEventListener('touchstart', function() {
+                        navigator.vibrate(10);
+                    });
+                });
+            }
+
+            // Improve form input experience on mobile
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+
+            // Add touch feedback to interactive elements
+            document.querySelectorAll('.section, .item, .info-box').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                element.addEventListener('touchend', function() {
+                    this.style.transform = '';
                 });
             });
         });
 
-        // Add ripple animation keyframes
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+            setTimeout(updateQuote, 300);
+        });
+
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
             }
-        `;
-        document.head.appendChild(style);
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
