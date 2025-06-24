@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Quotation Generator Pro</title>
+    <title>Professional General Contractor Quotation Generator</title>
     <style>
         * {
             margin: 0;
@@ -13,117 +13,101 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
             min-height: 100vh;
             padding: 20px;
-            color: #2c3e50;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
-            padding: 40px;
+            padding: 30px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
         }
 
         .header h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
         }
 
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0;
-            min-height: 800px;
+            min-height: 900px;
         }
 
         .form-section {
-            padding: 40px;
+            padding: 25px;
             background: #f8f9fa;
             border-right: 1px solid #e9ecef;
             overflow-y: auto;
-            max-height: 800px;
+            max-height: 950px;
         }
 
         .preview-section {
-            padding: 40px;
+            padding: 25px;
             background: white;
             overflow-y: auto;
-            max-height: 800px;
+            max-height: 950px;
         }
 
         .section-header {
-            background: linear-gradient(135deg, #34495e, #2c3e50);
+            background: linear-gradient(135deg, #e67e22, #f39c12);
             color: white;
             padding: 15px 20px;
-            margin: -20px -20px 25px -20px;
-            border-radius: 12px;
-            font-size: 1.3rem;
+            margin: -10px -10px 25px -10px;
+            border-radius: 10px;
+            font-size: 1.2rem;
             font-weight: 600;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(52, 73, 94, 0.3);
+        }
+
+        .form-section-group {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #2c3e50;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 16px;
             border: 2px solid #e9ecef;
-            border-radius: 6px;
-            font-size: 0.95rem;
+            border-radius: 8px;
+            font-size: 1rem;
             transition: all 0.3s ease;
             background: white;
         }
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-            transform: translateY(-1px);
+            border-color: #e67e22;
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
         }
 
         .form-row {
@@ -135,153 +119,170 @@
         .form-row-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-        }
-
-        .section-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            position: relative;
-        }
-
-        .section-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            border-radius: 15px 15px 0 0;
+            gap: 15px;
         }
 
         .logo-upload {
-            text-align: center;
-            padding: 20px;
-            border: 2px dashed #bdc3c7;
+            border: 2px dashed #e67e22;
             border-radius: 10px;
+            padding: 20px;
+            text-align: center;
             background: #f8f9fa;
-            transition: all 0.3s ease;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .logo-upload:hover {
-            border-color: #3498db;
-            background: #ebf3fd;
+            background: #fff3e0;
+            border-color: #d35400;
+        }
+
+        .logo-upload input {
+            display: none;
         }
 
         .logo-preview {
-            max-width: 150px;
-            max-height: 80px;
+            max-width: 200px;
+            max-height: 100px;
             margin: 10px auto;
             display: block;
+            border-radius: 5px;
         }
 
-        .line-items {
+        .construction-phases {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 25px;
             border: 1px solid #e9ecef;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
 
-        .line-items h3 {
+        .construction-phases h3 {
             color: #2c3e50;
             margin-bottom: 20px;
-            font-size: 1.3rem;
-            text-align: center;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
+            font-size: 1.2rem;
+        }
+
+        .phase-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e67e22;
+        }
+
+        .phase-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 40px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .phase-header input {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .line-items-container {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
         }
 
         .line-item {
             display: grid;
-            grid-template-columns: 2fr 0.8fr 1fr 1fr 0.8fr 40px;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px;
             gap: 10px;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 5px;
             border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .line-item:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transform: translateY(-2px);
         }
 
         .line-item input, .line-item select {
-            padding: 8px 10px;
+            padding: 6px 10px;
             border: 1px solid #dee2e6;
-            border-radius: 6px;
+            border-radius: 4px;
             font-size: 0.85rem;
         }
 
         .remove-btn {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            background: #e74c3c;
             color: white;
             border: none;
             border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1rem;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .remove-btn:hover {
-            background: linear-gradient(135deg, #c0392b, #a93226);
+            background: #c0392b;
             transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
         }
 
-        .add-item-btn {
+        .add-btn {
             background: linear-gradient(135deg, #27ae60, #2ecc71);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .add-phase-btn {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            color: white;
+            border: none;
+            padding: 15px 30px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
             margin-bottom: 20px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            width: 100%;
         }
 
-        .add-item-btn:hover {
+        .add-phase-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 8px 15px rgba(230, 126, 34, 0.3);
         }
 
         .actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            display: flex;
             gap: 15px;
             margin-top: 30px;
+            flex-wrap: wrap;
         }
 
         .btn {
             padding: 15px 25px;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            text-align: center;
+            flex: 1;
+            min-width: 140px;
         }
 
         .btn-primary {
@@ -300,139 +301,152 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
         }
 
         .quote-preview {
             border: 2px solid #e9ecef;
-            border-radius: 15px;
-            padding: 40px;
+            border-radius: 12px;
+            padding: 30px;
             background: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .quote-preview::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
 
         .quote-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 25px;
-            border-bottom: 3px solid #3498db;
-            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #e67e22;
+        }
+
+        .quote-header .logo-section img {
+            max-width: 150px;
+            max-height: 80px;
+        }
+
+        .quote-header .title-section {
+            text-align: right;
         }
 
         .quote-header h2 {
             color: #2c3e50;
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-
-        .quote-header .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
-        .company-logo {
-            position: absolute;
-            top: -10px;
-            right: 0;
-            max-width: 120px;
-            max-height: 80px;
+            margin-bottom: 5px;
         }
 
         .quote-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .info-section {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            border-left: 4px solid #3498db;
+            margin-bottom: 30px;
         }
 
         .info-section h4 {
-            color: #2c3e50;
+            color: #e67e22;
             margin-bottom: 15px;
             font-size: 1.2rem;
-            font-weight: 600;
             border-bottom: 2px solid #ecf0f1;
             padding-bottom: 8px;
         }
 
         .info-section p {
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: #2c3e50;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .info-section .highlight {
-            background: #3498db;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
+            background: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #e67e22;
         }
 
-        .quote-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            background: white;
+        .project-details {
+            background: #f8f9fa;
+            padding: 20px;
             border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
         }
 
-        .quote-table th {
+        .project-details h4 {
+            color: #e67e22;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .phase-section {
+            margin-bottom: 30px;
+            page-break-inside: avoid;
+        }
+
+        .phase-title {
             background: linear-gradient(135deg, #34495e, #2c3e50);
             color: white;
-            padding: 15px;
-            text-align: left;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            margin-bottom: 15px;
         }
 
-        .quote-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ecf0f1;
+        .phase-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .phase-table th {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
             font-size: 0.9rem;
         }
 
-        .quote-table tr:nth-child(even) {
+        .phase-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: top;
+            font-size: 0.9rem;
+        }
+
+        .phase-table tr:nth-child(even) {
             background: #f8f9fa;
         }
 
-        .quote-table tr:hover {
-            background: #e8f4f8;
-            transform: translateX(2px);
-            transition: all 0.3s ease;
+        .phase-table tr:hover {
+            background: #fff3e0;
+        }
+
+        .phase-total {
+            text-align: right;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
         }
 
         .quote-totals {
             margin-left: auto;
-            width: 350px;
-            background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+            width: 400px;
+            background: #f8f9fa;
             padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
         }
 
         .total-row {
@@ -440,90 +454,66 @@
             justify-content: space-between;
             margin-bottom: 12px;
             padding: 10px 0;
-            font-size: 1rem;
+            font-size: 1.05rem;
         }
 
         .total-row.final {
-            border-top: 3px solid #3498db;
+            border-top: 3px solid #e67e22;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #2c3e50;
-            margin-top: 15px;
-            padding-top: 15px;
-            background: white;
-            margin-left: -15px;
-            margin-right: -15px;
-            padding-left: 15px;
-            padding-right: 15px;
-            border-radius: 8px;
-        }
-
-        .quote-terms {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 12px;
-            margin-top: 30px;
-            border-left: 4px solid #27ae60;
-        }
-
-        .quote-terms h4 {
-            color: #27ae60;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
+            margin-top: 20px;
+            padding-top: 20px;
         }
 
         .quote-footer {
-            text-align: center;
             margin-top: 40px;
             padding-top: 25px;
             border-top: 2px solid #ecf0f1;
-            color: #7f8c8d;
         }
 
-        .signature-section {
+        .footer-sections {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 2px solid #ecf0f1;
+            gap: 30px;
+            margin-bottom: 20px;
         }
 
-        .signature-box {
-            text-align: center;
-            padding: 30px 20px;
-            border: 2px dashed #bdc3c7;
-            border-radius: 10px;
-            background: #f8f9fa;
+        .footer-section h5 {
+            color: #e67e22;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
         }
 
-        .tab-container {
-            margin-bottom: 25px;
+        .required {
+            color: #e74c3c;
         }
 
         .tab-buttons {
             display: flex;
-            background: #ecf0f1;
-            border-radius: 10px;
-            padding: 5px;
             margin-bottom: 20px;
+            background: #34495e;
+            border-radius: 8px;
+            padding: 5px;
+            flex-wrap: wrap;
         }
 
         .tab-button {
             flex: 1;
             padding: 12px;
-            border: none;
             background: transparent;
-            border-radius: 6px;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: 600;
             transition: all 0.3s ease;
+            font-weight: 600;
+            min-width: 120px;
         }
 
         .tab-button.active {
-            background: white;
-            color: #3498db;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background: #e67e22;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .tab-content {
@@ -534,7 +524,7 @@
             display: block;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -548,26 +538,38 @@
             .preview-section {
                 max-height: none;
             }
-            
+        }
+
+        @media (max-width: 768px) {
             .form-row, .form-row-3 {
                 grid-template-columns: 1fr;
             }
             
-            .line-item {
+            .phase-header {
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
             
-            .quote-info {
+            .line-item {
                 grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .quote-info, .footer-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .quote-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .tab-buttons {
+                flex-direction: column;
             }
             
             .actions {
-                grid-template-columns: 1fr;
-            }
-            
-            .signature-section {
-                grid-template-columns: 1fr;
+                flex-direction: column;
             }
         }
 
@@ -594,587 +596,586 @@
                 padding: 20px;
                 max-height: none;
             }
-            
-            .quote-preview {
-                border: none;
-                box-shadow: none;
-                padding: 0;
-            }
-        }
-
-        .watermark {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            font-size: 120px;
-            color: rgba(52, 152, 219, 0.03);
-            font-weight: bold;
-            z-index: 0;
-            pointer-events: none;
         }
     </style>
 </head>
 <body>
-    <div class="watermark">QUOTATION</div>
-    
     <div class="container">
         <div class="header">
-            <h1>🏢 Enterprise Quotation Generator Pro</h1>
-            <p>Professional Business Quotations with Comprehensive Details</p>
+            <h1>🏗️ Professional General Contractor Quotation</h1>
+            <p>Comprehensive Construction Project Estimates & Proposals</p>
         </div>
         
         <div class="main-content">
             <div class="form-section">
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-button active" onclick="switchTab('company')">Company</button>
-                        <button class="tab-button" onclick="switchTab('client')">Client</button>
-                        <button class="tab-button" onclick="switchTab('items')">Items</button>
-                        <button class="tab-button" onclick="switchTab('terms')">Terms</button>
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="switchTab('contractor')">Contractor</button>
+                    <button class="tab-button" onclick="switchTab('client')">Client</button>
+                    <button class="tab-button" onclick="switchTab('project')">Project</button>
+                    <button class="tab-button" onclick="switchTab('phases')">Work Phases</button>
+                    <button class="tab-button" onclick="switchTab('terms')">Terms</button>
+                </div>
+
+                <!-- Contractor Information Tab -->
+                <div id="contractorTab" class="tab-content active">
+                    <div class="form-section-group">
+                        <div class="section-header">🏗️ Contractor Information</div>
+                        
+                        <div class="form-group">
+                            <label>Company Logo</label>
+                            <div class="logo-upload" onclick="document.getElementById('logoInput').click()">
+                                <input type="file" id="logoInput" accept="image/*" onchange="handleLogoUpload(event)">
+                                <div id="logoUploadText">📷 Click to upload company logo</div>
+                                <img id="logoPreview" class="logo-preview" style="display: none;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Company Name <span class="required">*</span></label>
+                                <input type="text" id="companyName" placeholder="ABC Construction Company" value="Premier Construction LLC">
+                            </div>
+                            <div class="form-group">
+                                <label>Contractor License #</label>
+                                <input type="text" id="licenseNumber" placeholder="LIC123456" value="LIC789456123">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Business Address <span class="required">*</span></label>
+                            <textarea id="companyAddress" rows="3" placeholder="Complete business address">123 Construction Way, Suite 100
+Industrial District, Builder City
+State 12345, USA</textarea>
+                        </div>
+                        
+                        <div class="form-row-3">
+                            <div class="form-group">
+                                <label>Phone <span class="required">*</span></label>
+                                <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 123-BUILD">
+                            </div>
+                            <div class="form-group">
+                                <label>Emergency Phone</label>
+                                <input type="text" id="emergencyPhone" placeholder="+1 (555) 999-9999" value="+1 (555) 999-HELP">
+                            </div>
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <input type="text" id="companyFax" placeholder="+1 (555) 123-4568">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email <span class="required">*</span></label>
+                                <input type="email" id="companyEmail" placeholder="info@construction.com" value="contact@premierconstruction.com">
+                            </div>
+                            <div class="form-group">
+                                <label>Website</label>
+                                <input type="url" id="companyWebsite" placeholder="https://www.construction.com" value="https://www.premierconstruction.com">
+                            </div>
+                        </div>
                     </div>
                     
-                    <!-- Company Tab -->
-                    <div id="company-tab" class="tab-content active">
-                        <div class="section-card">
-                            <div class="section-header">🏢 Company Information</div>
-                            
+                    <div class="form-section-group">
+                        <div class="section-header">👤 Project Manager</div>
+                        
+                        <div class="form-row">
                             <div class="form-group">
-                                <label>Company Logo</label>
-                                <div class="logo-upload" onclick="document.getElementById('logoFile').click()">
-                                    <input type="file" id="logoFile" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
-                                    <img id="logoPreview" class="logo-preview" style="display:none">
-                                    <div id="logoPlaceholder">
-                                        📷 Click to upload logo<br>
-                                        <small>Or enter logo URL below</small>
+                                <label>Manager Name <span class="required">*</span></label>
+                                <input type="text" id="managerName" placeholder="John Smith" value="Mike Johnson">
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input type="text" id="managerTitle" placeholder="Project Manager" value="Senior Project Manager">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Direct Phone</label>
+                                <input type="text" id="managerPhone" placeholder="+1 (555) 123-4569" value="+1 (555) 123-PROJ">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="managerEmail" placeholder="manager@construction.com" value="mike.johnson@premierconstruction.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section-group">
+                        <div class="section-header">📋 Licenses & Insurance</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>General Liability Insurance</label>
+                                <input type="text" id="generalLiability" placeholder="$2,000,000" value="$2,000,000">
+                            </div>
+                            <div class="form-group">
+                                <label>Workers' Compensation</label>
+                                <input type="text" id="workersComp" placeholder="State Covered" value="State Covered - Policy #WC123456">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Bonding Capacity</label>
+                                <input type="text" id="bondingCapacity" placeholder="$5,000,000" value="$5,000,000">
+                            </div>
+                            <div class="form-group">
+                                <label>Professional License Exp.</label>
+                                <input type="date" id="licenseExpiry">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Information Tab -->
+                <div id="clientTab" class="tab-content">
+                    <div class="form-section-group">
+                        <div class="section-header">🤝 Client Information</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Client Name <span class="required">*</span></label>
+                                <input type="text" id="clientName" placeholder="Jane Doe" value="Robert & Sarah Williams">
+                            </div>
+                            <div class="form-group">
+                                <label>Property Type</label>
+                                <select id="propertyType">
+                                    <option value="Residential">Residential</option>
+                                    <option value="Commercial">Commercial</option>
+                                    <option value="Industrial">Industrial</option>
+                                    <option value="Multi-Family">Multi-Family</option>
+                                    <option value="Retail">Retail</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Project Address <span class="required">*</span></label>
+                            <textarea id="projectAddress" rows="3" placeholder="Property/Project address">456 Maple Street
+Residential District, Hometown
+State 67890, USA</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Client Phone <span class="required">*</span></label>
+                                <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-HOME">
+                            </div>
+                            <div class="form-group">
+                                <label>Client Email</label>
+                                <input type="email" id="clientEmail" placeholder="client@email.com" value="rwilliams@email.com">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-group">
+                        <div class="section-header">📧 Additional Contacts</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Secondary Contact</label>
+                                <input type="text" id="secondaryContact" placeholder="Spouse/Partner Name" value="Sarah Williams">
+                            </div>
+                            <div class="form-group">
+                                <label>Secondary Phone</label>
+                                <input type="text" id="secondaryPhone" placeholder="+1 (555) 987-6544" value="+1 (555) 987-WORK">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Architect (if applicable)</label>
+                                <input type="text" id="architect" placeholder="Architect Name & Contact">
+                            </div>
+                            <div class="form-group">
+                                <label>Engineer (if applicable)</label>
+                                <input type="text" id="engineer" placeholder="Engineer Name & Contact">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Information Tab -->
+                <div id="projectTab" class="tab-content">
+                    <div class="form-section-group">
+                        <div class="section-header">🏠 Project Details</div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Project Name <span class="required">*</span></label>
+                                <input type="text" id="projectName" placeholder="Kitchen Renovation Project" value="Complete Kitchen Renovation">
+                            </div>
+                            <div class="form-group">
+                                <label>Quote Number <span class="required">*</span></label>
+                                <input type="text" id="quoteNumber" placeholder="EST-2025-001" value="EST-2025-001">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Project Description</label>
+                            <textarea id="projectDescription" rows="4" placeholder="Detailed project description">Complete kitchen renovation including demolition of existing cabinets, new custom cabinetry installation, granite countertops, tile backsplash, new flooring, electrical work for under-cabinet lighting, and plumbing for new sink and dishwasher.</textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Project Square Footage</label>
+                                <input type="number" id="squareFootage" placeholder="200" value="180">
+                            </div>
+                            <div class="form-group">
+                                <label>Estimated Timeline</label>
+                                <input type="text" id="timeline" placeholder="3-4 weeks" value="3-4 weeks">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Quote Date <span class="required">*</span></label>
+                                <input type="date" id="quoteDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Quote Valid Until</label>
+                                <input type="date" id="validUntil">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Proposed Start Date</label>
+                                <input type="date" id="startDate">
+                            </div>
+                            <div class="form-group">
+                                <label>Expected Completion</label>
+                                <input type="date" id="completionDate">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section-group">
+                        <div class="section-header">🔍 Project Specifications</div>
+                        
+                        <div class="form-group">
+                            <label>Permits Required</label>
+                            <textarea id="permitsRequired" rows="2" placeholder="List all required permits">Building Permit, Electrical Permit, Plumbing Permit</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Special Requirements/Notes</label>
+                            <textarea id="specialRequirements" rows="3" placeholder="Any special requirements or notes">Work to be performed during business hours (8 AM - 5 PM).
+Client requests minimal dust containment.
+Preserve existing hardwood floors in adjacent areas.</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Work Phases Tab -->
+                <div id="phasesTab" class="tab-content">
+                    <div class="construction-phases">
+                        <h3>🔨 Construction Work Phases</h3>
+                        <div id="constructionPhases">
+                            <!-- Phase 1 -->
+                            <div class="phase-item">
+                                <div class="phase-header">
+                                    <input type="text" placeholder="Phase Name" value="Demolition & Preparation">
+                                    <input type="text" placeholder="Duration" value="2-3 days">
+                                    <input type="text" placeholder="Phase Total" readonly>
+                                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
+                                </div>
+                                <div class="line-items-container">
+                                    <div class="line-item">
+                                        <input type="text" placeholder="Item Description" value="Remove existing cabinets and countertops">
+                                        <select>
+                                            <option value="Labor">Labor</option>
+                                            <option value="Materials">Materials</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Subcontractor">Subcontractor</option>
+                                        </select>
+                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                                        <input type="number" placeholder="Rate" value="800.00" min="0" step="0.01">
+                                        <input type="text" placeholder="Total" readonly>
+                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                                    </div>
+                                    <div class="line-item">
+                                        <input type="text" placeholder="Item Description" value="Disposal and cleanup">
+                                        <select>
+                                            <option value="Labor">Labor</option>
+                                            <option value="Materials" selected>Materials</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Subcontractor">Subcontractor</option>
+                                        </select>
+                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                                        <input type="number" placeholder="Rate" value="300.00" min="0" step="0.01">
+                                        <input type="text" placeholder="Total" readonly>
+                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
                                     </div>
                                 </div>
-                                <input type="url" id="logoUrl" placeholder="Or enter logo URL" style="margin-top: 10px;">
+                                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
                             </div>
                             
+                            <!-- Phase 2 -->
+                            <div class="phase-item">
+                                <div class="phase-header">
+                                    <input type="text" placeholder="Phase Name" value="Electrical & Plumbing">
+                                    <input type="text" placeholder="Duration" value="3-4 days">
+                                    <input type="text" placeholder="Phase Total" readonly>
+                                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
+                                </div>
+                                <div class="line-items-container">
+                                    <div class="line-item">
+                                        <input type="text" placeholder="Item Description" value="Under-cabinet lighting installation">
+                                        <select>
+                                            <option value="Labor">Labor</option>
+                                            <option value="Materials">Materials</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Subcontractor" selected>Subcontractor</option>
+                                        </select>
+                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                                        <input type="number" placeholder="Rate" value="850.00" min="0" step="0.01">
+                                        <input type="text" placeholder="Total" readonly>
+                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                                    </div>
+                                    <div class="line-item">
+                                        <input type="text" placeholder="Item Description" value="Plumbing for new sink location">
+                                        <select>
+                                            <option value="Labor">Labor</option>
+                                            <option value="Materials">Materials</option>
+                                            <option value="Equipment">Equipment</option>
+                                            <option value="Subcontractor" selected>Subcontractor</option>
+                                        </select>
+                                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                                        <input type="number" placeholder="Rate" value="650.00" min="0" step="0.01">
+                                        <input type="text" placeholder="Total" readonly>
+                                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
+                            </div>
+                        </div>
+                        <button type="button" class="add-phase-btn" onclick="addPhase()">+ Add Construction Phase</button>
+                    </div>
+                </div>
+
+                <!-- Terms & Conditions Tab -->
+                <div id="termsTab" class="tab-content">
+                    <div class="form-section-group">
+                        <div class="section-header">💰 Pricing & Payment</div>
+                        
+                        <div class="form-row">
                             <div class="form-group">
-                                <label>Company Name *</label>
-                                <input type="text" id="companyName" placeholder="Your Company Name" value="TechSolutions Pro Ltd.">
+                                <label>Currency</label>
+                                <select id="currency">
+                                    <option value="$">USD ($)</option>
+                                    <option value="€">EUR (€)</option>
+                                    <option value="£">GBP (£)</option>
+                                    <option value="C$">CAD (C$)</option>
+                                </select>
                             </div>
-                            
                             <div class="form-group">
-                                <label>Company Tagline</label>
-                                <input type="text" id="companyTagline" placeholder="Your business tagline" value="Innovation Through Technology">
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Registration Number</label>
-                                    <input type="text" id="companyRegNumber" placeholder="REG123456789" value="REG987654321">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tax ID / VAT Number</label>
-                                    <input type="text" id="companyTaxId" placeholder="TAX123456789" value="VAT987654321">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Business Address *</label>
-                                <textarea id="companyAddress" rows="3" placeholder="Complete business address">123 Technology Plaza, Suite 500
-Innovation District, Tech City 12345
-United States of America</textarea>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Primary Email *</label>
-                                    <input type="email" id="companyEmail" placeholder="contact@company.com" value="quotes@techsolutions.com">
-                                </div>
-                                <div class="form-group">
-                                    <label>Secondary Email</label>
-                                    <input type="email" id="companyEmail2" placeholder="sales@company.com" value="sales@techsolutions.com">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Primary Phone *</label>
-                                    <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 987-6543">
-                                </div>
-                                <div class="form-group">
-                                    <label>Mobile/WhatsApp</label>
-                                    <input type="text" id="companyMobile" placeholder="+1 (555) 987-6543" value="+1 (555) 123-9876">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Website</label>
-                                    <input type="url" id="companyWebsite" placeholder="https://www.company.com" value="https://www.techsolutions.com">
-                                </div>
-                                <div class="form-group">
-                                    <label>Fax Number</label>
-                                    <input type="text" id="companyFax" placeholder="+1 (555) 123-4568" value="+1 (555) 987-6544">
-                                </div>
+                                <label>Tax Rate (%)</label>
+                                <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
                             </div>
                         </div>
                         
-                        <div class="section-card">
-                            <div class="section-header">👤 Contact Person</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Contact Name *</label>
-                                    <input type="text" id="contactName" placeholder="John Smith" value="Michael Johnson">
-                                </div>
-                                <div class="form-group">
-                                    <label>Position/Title</label>
-                                    <input type="text" id="contactTitle" placeholder="Sales Manager" value="Business Development Manager">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Direct Email</label>
-                                    <input type="email" id="contactEmail" placeholder="john@company.com" value="michael.j@techsolutions.com">
-                                </div>
-                                <div class="form-group">
-                                    <label>Direct Phone</label>
-                                    <input type="text" id="contactPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 987-6545">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">🏦 Banking Information</div>
-                            
-                            <div class="form-group">
-                                <label>Bank Name</label>
-                                <input type="text" id="bankName" placeholder="First National Bank" value="TechBank International">
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Account Number</label>
-                                    <input type="text" id="accountNumber" placeholder="1234567890" value="ACC-9876543210">
-                                </div>
-                                <div class="form-group">
-                                    <label>Routing Number</label>
-                                    <input type="text" id="routingNumber" placeholder="021000021" value="TECH123456">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>SWIFT/BIC Code</label>
-                                    <input type="text" id="swiftCode" placeholder="BOFAUS3N" value="TECHBANK123">
-                                </div>
-                                <div class="form-group">
-                                    <label>IBAN</label>
-                                    <input type="text" id="iban" placeholder="GB29 NWBK 6016 1331 9268 19" value="US29 TECH 6016 1331 9268 19">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Payment Schedule</label>
+                            <textarea id="paymentSchedule" rows="3" placeholder="Payment terms and schedule">30% deposit upon contract signing
+30% at substantial completion of rough work
+40% upon final completion and client acceptance</textarea>
                         </div>
                     </div>
                     
-                    <!-- Client Tab -->
-                    <div id="client-tab" class="tab-content">
-                        <div class="section-card">
-                            <div class="section-header">🏢 Client Company Details</div>
-                            
-                            <div class="form-group">
-                                <label>Client Company Name *</label>
-                                <input type="text" id="clientCompany" placeholder="Client Company Name" value="Global Innovations Corp">
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Industry/Sector</label>
-                                    <input type="text" id="clientIndustry" placeholder="Technology, Healthcare, etc." value="Technology & Innovation">
-                                </div>
-                                <div class="form-group">
-                                    <label>Company Size</label>
-                                    <select id="clientSize">
-                                        <option value="">Select size</option>
-                                        <option value="1-10">1-10 employees</option>
-                                        <option value="11-50">11-50 employees</option>
-                                        <option value="51-200" selected>51-200 employees</option>
-                                        <option value="201-1000">201-1000 employees</option>
-                                        <option value="1000+">1000+ employees</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Client Tax ID</label>
-                                    <input type="text" id="clientTaxId" placeholder="TAX987654321" value="TAX456789123">
-                                </div>
-                                <div class="form-group">
-                                    <label>Client Website</label>
-                                    <input type="url" id="clientWebsite" placeholder="https://www.client.com" value="https://www.globalinnovations.com">
-                                </div>
-                            </div>
+                    <div class="form-section-group">
+                        <div class="section-header">📋 Contract Terms</div>
+                        
+                        <div class="form-group">
+                            <label>Warranty Information</label>
+                            <textarea id="warranty" rows="3" placeholder="Warranty details">1-year warranty on all workmanship
+Materials carry manufacturer's warranty
+Warranty excludes normal wear and damage from misuse</textarea>
                         </div>
                         
-                        <div class="section-card">
-                            <div class="section-header">👤 Primary Contact Person</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Contact Name *</label>
-                                    <input type="text" id="clientContactName" placeholder="Jane Doe" value="Sarah Williams">
-                                </div>
-                                <div class="form-group">
-                                    <label>Position/Title</label>
-                                    <input type="text" id="clientContactTitle" placeholder="Procurement Manager" value="Chief Technology Officer">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Department</label>
-                                    <input type="text" id="clientDepartment" placeholder="IT, Finance, etc." value="Technology & Innovation">
-                                </div>
-                                <div class="form-group">
-                                    <label>Employee ID</label>
-                                    <input type="text" id="clientEmployeeId" placeholder="EMP001" value="GI-CTO-2023">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Email Address *</label>
-                                    <input type="email" id="clientEmail" placeholder="jane@client.com" value="sarah.w@globalinnovations.com">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 456-7890">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Change Order Policy</label>
+                            <textarea id="changeOrders" rows="3" placeholder="Change order terms">All changes must be approved in writing
+Additional work billed at $75/hour labor rate
+Material costs at cost plus 15% markup</textarea>
                         </div>
                         
-                        <div class="section-card">
-                            <div class="section-header">📍 Address Information</div>
-                            
-                            <div class="form-group">
-                                <label>Billing Address *</label>
-                                <textarea id="clientBillingAddress" rows="3" placeholder="Complete billing address">456 Innovation Boulevard, Floor 25
-Business District, Metro City 67890
-United States of America</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Shipping/Delivery Address</label>
-                                <textarea id="clientShippingAddress" rows="3" placeholder="If different from billing address">Same as billing address</textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">📋 Project Information</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Quote Number *</label>
-                                    <input type="text" id="quoteNumber" placeholder="Q-001" value="TS-Q-2025-001">
-                                </div>
-                                <div class="form-group">
-                                    <label>Project Reference</label>
-                                    <input type="text" id="projectReference" placeholder="PROJECT-001" value="GI-TECH-UPGRADE-2025">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Purchase Order Number</label>
-                                    <input type="text" id="poNumber" placeholder="PO-123456" value="GI-PO-2025-0158">
-                                </div>
-                                <div class="form-group">
-                                    <label>RFQ Number</label>
-                                    <input type="text" id="rfqNumber" placeholder="RFQ-123456" value="GI-RFQ-2025-0089">
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label>Terms & Conditions</label>
+                            <textarea id="terms" rows="4" placeholder="Additional terms and conditions">Quote valid for 30 days from date issued.
+Client responsible for obtaining all permits.
+Work area must be accessible and cleared of personal items.
+Final payment due upon completion.
+Lien waiver provided upon final payment.</textarea>
                         </div>
                     </div>
                     
-                    <!-- Items Tab -->
-                    <div id="items-tab" class="tab-content">
-                        <div class="section-card">
-                            <div class="section-header">💰 Quote Configuration</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Quote Date *</label>
-                                    <input type="date" id="quoteDate">
-                                </div>
-                                <div class="form-group">
-                                    <label>Valid Until *</label>
-                                    <input type="date" id="validUntil">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Currency *</label>
-                                    <select id="currency">
-                                        <option value="$">USD ($)</option>
-                                        <option value="€">EUR (€)</option>
-                                        <option value="£">GBP (£)</option>
-                                        <option value="¥">JPY (¥)</option>
-                                        <option value="₹">INR (₹)</option>
-                                        <option value="CAD$">CAD (CAD$)</option>
-                                        <option value="AUD$">AUD (AUD$)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Quote Status</label>
-                                    <select id="quoteStatus">
-                                        <option value="Draft">Draft</option>
-                                        <option value="Pending" selected>Pending Review</option>
-                                        <option value="Sent">Sent to Client</option>
-                                        <option value="Accepted">Accepted</option>
-                                        <option value="Rejected">Rejected</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="form-section-group">
+                        <div class="section-header">⚖️ Legal & Safety</div>
+                        
+                        <div class="form-group">
+                            <label>Safety Requirements</label>
+                            <textarea id="safetyRequirements" rows="2" placeholder="Safety protocols">All work performed in compliance with OSHA standards
+Safety equipment required for all personnel on site</textarea>
                         </div>
                         
-                        <div class="line-items">
-                            <h3>📋 Line Items & Services</h3>
-                            <div id="lineItems">
-                                <div class="line-item">
-                                    <input type="text" placeholder="Product/Service Description" value="Enterprise Software Development">
-                                    <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                                    <select class="unit-select">
-                                        <option value="each">Each</option>
-                                        <option value="hour" selected>Hours</option>
-                                        <option value="day">Days</option>
-                                        <option value="month">Months</option>
-                                        <option value="year">Years</option>
-                                        <option value="piece">Pieces</option>
-                                        <option value="kg">Kilograms</option>
-                                        <option value="meter">Meters</option>
-                                    </select>
-                                    <input type="number" placeholder="Unit Price" value="125.00" min="0" step="0.01">
-                                    <input type="text" placeholder="Total" readonly>
-                                    <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                </div>
-                                <div class="line-item">
-                                    <input type="text" placeholder="Product/Service Description" value="Database Optimization">
-                                    <input type="number" placeholder="Qty" value="40" min="0" step="0.01">
-                                    <select class="unit-select">
-                                        <option value="each">Each</option>
-                                        <option value="hour" selected>Hours</option>
-                                        <option value="day">Days</option>
-                                        <option value="month">Months</option>
-                                        <option value="year">Years</option>
-                                        <option value="piece">Pieces</option>
-                                        <option value="kg">Kilograms</option>
-                                        <option value="meter">Meters</option>
-                                    </select>
-                                    <input type="number" placeholder="Unit Price" value="95.00" min="0" step="0.01">
-                                    <input type="text" placeholder="Total" readonly>
-                                    <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
-                                </div>
-                            </div>
-                            <button type="button" class="add-item-btn" onclick="addLineItem()">+ Add New Item</button>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">🧮 Financial Calculations</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Discount Rate (%)</label>
-                                    <input type="number" id="discountRate" placeholder="0" value="5" min="0" max="100" step="0.01">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tax Rate (%)</label>
-                                    <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Shipping/Delivery</label>
-                                    <input type="number" id="shippingCost" placeholder="0.00" value="150.00" min="0" step="0.01">
-                                </div>
-                                <div class="form-group">
-                                    <label>Processing Fee</label>
-                                    <input type="number" id="processingFee" placeholder="0.00" value="75.00" min="0" step="0.01">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Terms Tab -->
-                    <div id="terms-tab" class="tab-content">
-                        <div class="section-card">
-                            <div class="section-header">📋 Payment Terms</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Payment Terms</label>
-                                    <select id="paymentTerms">
-                                        <option value="Net 15">Net 15 Days</option>
-                                        <option value="Net 30" selected>Net 30 Days</option>
-                                        <option value="Net 45">Net 45 Days</option>
-                                        <option value="Net 60">Net 60 Days</option>
-                                        <option value="COD">Cash on Delivery</option>
-                                        <option value="Advance">100% Advance</option>
-                                        <option value="50% Advance">50% Advance</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Deposit Required (%)</label>
-                                    <input type="number" id="depositPercent" placeholder="0" value="30" min="0" max="100" step="1">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Accepted Payment Methods</label>
-                                <textarea id="paymentMethods" rows="3" placeholder="Bank transfer, Credit card, etc.">• Bank Wire Transfer (Preferred)
-• Credit Card (Visa, MasterCard, Amex)
-• PayPal Business Payments
-• Certified Check</textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">🚚 Delivery Terms</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Delivery Timeline</label>
-                                    <input type="text" id="deliveryTimeline" placeholder="2-3 weeks" value="6-8 weeks from contract signing">
-                                </div>
-                                <div class="form-group">
-                                    <label>Delivery Method</label>
-                                    <select id="deliveryMethod">
-                                        <option value="Standard">Standard Delivery</option>
-                                        <option value="Express">Express Delivery</option>
-                                        <option value="Digital" selected>Digital/Remote Delivery</option>
-                                        <option value="On-site">On-site Installation</option>
-                                        <option value="Pickup">Customer Pickup</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Delivery Terms & Conditions</label>
-                                <textarea id="deliveryTerms" rows="4" placeholder="Delivery terms and conditions">• Delivery schedule subject to deposit payment
-• Installation and training included for on-site delivery
-• Remote delivery via secure encrypted channels
-• Final acceptance testing period: 7 business days
-• Client responsible for providing necessary access and resources</textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">🛡️ Warranty & Support</div>
-                            
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Warranty Period</label>
-                                    <input type="text" id="warrantyPeriod" placeholder="12 months" value="12 months from delivery">
-                                </div>
-                                <div class="form-group">
-                                    <label>Support Level</label>
-                                    <select id="supportLevel">
-                                        <option value="Basic">Basic Support</option>
-                                        <option value="Standard" selected>Standard Support</option>
-                                        <option value="Premium">Premium Support</option>
-                                        <option value="Enterprise">Enterprise Support</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Support Details</label>
-                                <textarea id="supportDetails" rows="4" placeholder="Support terms and coverage">• 12 months free technical support included
-• Email support: Response within 24 hours
-• Phone support: Business hours (9 AM - 6 PM EST)
-• Bug fixes and minor updates included
-• Major version upgrades available at 50% discount</textarea>
-                            </div>
-                        </div>
-                        
-                        <div class="section-card">
-                            <div class="section-header">📜 Terms & Conditions</div>
-                            
-                            <div class="form-group">
-                                <label>General Terms</label>
-                                <textarea id="generalTerms" rows="6" placeholder="General terms and conditions">1. This quotation is valid for 30 days from the date issued.
-2. Prices are subject to change without notice after quote expiration.
-3. All work will be performed in accordance with industry best practices.
-4. Client is responsible for providing accurate requirements and timely feedback.
-5. Any changes to scope will require written approval and may affect pricing.
-6. Confidentiality agreement covers all project information and deliverables.
-7. Force majeure clause applies to delays beyond our reasonable control.
-8. Disputes will be resolved through binding arbitration in our jurisdiction.</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Cancellation Policy</label>
-                                <textarea id="cancellationPolicy" rows="3" placeholder="Cancellation terms">• Cancellation within 48 hours: Full refund of deposit
-• Cancellation after project start: Pro-rated billing for work completed
-• Client-initiated scope changes may incur additional charges
-• 30-day written notice required for project termination</textarea>
-                            </div>
+                        <div class="form-group">
+                            <label>Insurance Requirements</label>
+                            <textarea id="insuranceReq" rows="2" placeholder="Insurance requirements">Contractor maintains general liability and workers compensation
+Certificates of insurance available upon request</textarea>
                         </div>
                     </div>
                 </div>
                 
                 <div class="actions">
                     <button type="button" class="btn btn-primary" onclick="generateQuote()">🔄 Update Preview</button>
-                    <button type="button" class="btn btn-warning" onclick="saveQuote()">💾 Save Quote</button>
                     <button type="button" class="btn btn-success" onclick="printQuote()">🖨️ Print/PDF</button>
+                    <button type="button" class="btn btn-warning" onclick="saveTemplate()">💾 Save Template</button>
                 </div>
             </div>
             
             <div class="preview-section">
                 <div class="quote-preview" id="quotePreview">
-                    <!-- Quote content will be generated here -->
+                    <div class="quote-header">
+                        <div class="logo-section">
+                            <img id="previewLogo" style="display: none;">
+                        </div>
+                        <div class="title-section">
+                            <h2>CONSTRUCTION ESTIMATE</h2>
+                            <p style="color: #7f8c8d; font-size: 1.1rem;">Professional Construction Services</p>
+                        </div>
+                    </div>
+                    
+                    <div class="quote-info">
+                        <div class="info-section">
+                            <h4>Contractor:</h4>
+                            <p><strong id="previewCompanyName">Premier Construction LLC</strong></p>
+                            <p><strong>License #:</strong> <span id="previewLicenseNumber">LIC789456123</span></p>
+                            <div id="previewCompanyAddress">123 Construction Way, Suite 100<br>Industrial District, Builder City<br>State 12345, USA</div>
+                            <br>
+                            <p><strong>📞</strong> <span id="previewCompanyPhone">+1 (555) 123-BUILD</span></p>
+                            <p><strong>📧</strong> <span id="previewCompanyEmail">contact@premierconstruction.com</span></p>
+                            <p><strong>🌐</strong> <span id="previewWebsite">https://www.premierconstruction.com</span></p>
+                            
+                            <div class="highlight">
+                                <p><strong>Project Manager:</strong></p>
+                                <p id="previewManagerName">Mike Johnson</p>
+                                <p id="previewManagerTitle">Senior Project Manager</p>
+                                <p id="previewManagerPhone">+1 (555) 123-PROJ</p>
+                                <p id="previewManagerEmail">mike.johnson@premierconstruction.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4>Client:</h4>
+                            <p><strong id="previewClientName">Robert & Sarah Williams</strong></p>
+                            <p><strong>Property Type:</strong> <span id="previewPropertyType">Residential</span></p>
+                            <div id="previewProjectAddress">456 Maple Street<br>Residential District, Hometown<br>State 67890, USA</div>
+                            <br>
+                            <p><strong>📞</strong> <span id="previewClientPhone">+1 (555) 987-HOME</span></p>
+                            <p><strong>📧</strong> <span id="previewClientEmail">rwilliams@email.com</span></p>
+                            
+                            <br>
+                            <p><strong>Estimate #:</strong> <span id="previewQuoteNumber">EST-2025-001</span></p>
+                            <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
+                            <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
+                            <p><strong>Timeline:</strong> <span id="previewTimeline">3-4 weeks</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="project-details">
+                        <h4>🏠 Project Information</h4>
+                        <p><strong>Project:</strong> <span id="previewProjectName">Complete Kitchen Renovation</span></p>
+                        <p><strong>Square Footage:</strong> <span id="previewSquareFootage">180</span> sq ft</p>
+                        <p><strong>Description:</strong></p>
+                        <div id="previewProjectDescription">Complete kitchen renovation including demolition of existing cabinets, new custom cabinetry installation, granite countertops, tile backsplash, new flooring, electrical work for under-cabinet lighting, and plumbing for new sink and dishwasher.</div>
+                        <p><strong>Proposed Start:</strong> <span id="previewStartDate">TBD</span></p>
+                        <p><strong>Expected Completion:</strong> <span id="previewCompletionDate">TBD</span></p>
+                    </div>
+                    
+                    <div id="previewPhases">
+                        <!-- Phases will be generated here -->
+                    </div>
+                    
+                    <div class="quote-totals">
+                        <div class="total-row">
+                            <span>Subtotal:</span>
+                            <span id="previewSubtotal">$2,600.00</span>
+                        </div>
+                        <div class="total-row">
+                            <span>Tax (<span id="previewTaxRate">8.5</span>%):</span>
+                            <span id="previewTax">$221.00</span>
+                        </div>
+                        <div class="total-row final">
+                            <span>Total Project Cost:</span>
+                            <span id="previewTotal">$2,821.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="quote-footer">
+                        <div class="footer-sections">
+                            <div class="footer-section">
+                                <h5>💳 Payment Schedule</h5>
+                                <div id="previewPaymentSchedule">30% deposit upon contract signing<br>30% at substantial completion of rough work<br>40% upon final completion and client acceptance</div>
+                                
+                                <h5 style="margin-top: 20px;">🛡️ Warranty</h5>
+                                <div id="previewWarranty">1-year warranty on all workmanship<br>Materials carry manufacturer's warranty<br>Warranty excludes normal wear and damage from misuse</div>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h5>📋 Important Information</h5>
+                                <p><strong>Insurance:</strong></p>
+                                <p>General Liability: <span id="previewGeneralLiability">$2,000,000</span></p>
+                                <p>Workers' Comp: <span id="previewWorkersComp">State Covered - Policy #WC123456</span></p>
+                                <p>Bonding: <span id="previewBondingCapacity">$5,000,000</span></p>
+                                
+                                <p style="margin-top: 15px;"><strong>Permits Required:</strong></p>
+                                <div id="previewPermitsRequired">Building Permit, Electrical Permit, Plumbing Permit</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 25px;">
+                            <h5 style="color: #e67e22; margin-bottom: 15px;">📝 Terms & Conditions</h5>
+                            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 4px solid #e67e22;">
+                                <div id="previewTerms">Quote valid for 30 days from date issued.<br>Client responsible for obtaining all permits.<br>Work area must be accessible and cleared of personal items.<br>Final payment due upon completion.<br>Lien waiver provided upon final payment.</div>
+                                
+                                <div style="margin-top: 15px;">
+                                    <strong>Change Orders:</strong><br>
+                                    <div id="previewChangeOrders">All changes must be approved in writing<br>Additional work billed at $75/hour labor rate<br>Material costs at cost plus 15% markup</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                            <p><strong>Prepared by:</strong> <span id="previewSignatureName">Mike Johnson</span></p>
+                            <p>Date: <span id="previewSignatureDate">June 24, 2025</span></p>
+                            <br>
+                            <p style="font-size: 0.9rem; color: #7f8c8d;">This estimate is subject to the terms and conditions outlined above. Client signature indicates acceptance of all terms.</p>
+                            <br>
+                            <p>Client Signature: _________________________ Date: _____________</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initialize dates
-        document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
+        // Set initial dates
+        const today = new Date();
+        document.getElementById('quoteDate').value = today.toISOString().split('T')[0];
+        
         const validUntilDate = new Date();
         validUntilDate.setDate(validUntilDate.getDate() + 30);
         document.getElementById('validUntil').value = validUntilDate.toISOString().split('T')[0];
         
-        // Tab switching
-        function switchTab(tabName) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Show selected tab
-            document.getElementById(tabName + '-tab').classList.add('active');
-            event.target.classList.add('active');
-        }
+        const licenseExpiry = new Date();
+        licenseExpiry.setFullYear(licenseExpiry.getFullYear() + 1);
+        document.getElementById('licenseExpiry').value = licenseExpiry.toISOString().split('T')[0];
         
-        // Logo handling
-        function handleLogoUpload(input) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const preview = document.getElementById('logoPreview');
-                    const placeholder = document.getElementById('logoPlaceholder');
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    placeholder.style.display = 'none';
-                    generateQuote();
-                };
-                reader.readAsDataURL(file);
-            }
-        }
+        // Generate initial quote
+        generateQuote();
         
         // Auto-update on input change
         document.addEventListener('input', function(e) {
@@ -1183,33 +1184,112 @@ United States of America</textarea>
             }
         });
         
-        // Generate initial quote
-        generateQuote();
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Activate button
+            event.target.classList.add('active');
+        }
         
-        function addLineItem() {
-            const lineItems = document.getElementById('lineItems');
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const logoPreview = document.getElementById('logoPreview');
+                    const logoUploadText = document.getElementById('logoUploadText');
+                    const previewLogo = document.getElementById('previewLogo');
+                    
+                    logoPreview.src = e.target.result;
+                    logoPreview.style.display = 'block';
+                    logoUploadText.style.display = 'none';
+                    
+                    previewLogo.src = e.target.result;
+                    previewLogo.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function addPhase() {
+            const phasesContainer = document.getElementById('constructionPhases');
+            const newPhase = document.createElement('div');
+            newPhase.className = 'phase-item';
+            newPhase.innerHTML = `
+                <div class="phase-header">
+                    <input type="text" placeholder="Phase Name">
+                    <input type="text" placeholder="Duration">
+                    <input type="text" placeholder="Phase Total" readonly>
+                    <button type="button" class="remove-btn" onclick="removePhase(this)">×</button>
+                </div>
+                <div class="line-items-container">
+                    <div class="line-item">
+                        <input type="text" placeholder="Item Description">
+                        <select>
+                            <option value="Labor">Labor</option>
+                            <option value="Materials">Materials</option>
+                            <option value="Equipment">Equipment</option>
+                            <option value="Subcontractor">Subcontractor</option>
+                        </select>
+                        <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                        <input type="number" placeholder="Rate" value="0.00" min="0" step="0.01">
+                        <input type="text" placeholder="Total" readonly>
+                        <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
+                    </div>
+                </div>
+                <button type="button" class="add-btn" onclick="addLineItem(this)">+ Add Item</button>
+            `;
+            phasesContainer.appendChild(newPhase);
+            
+            // Add event listeners
+            newPhase.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('input', generateQuote);
+            });
+            
+            generateQuote();
+        }
+        
+        function removePhase(button) {
+            if (document.querySelectorAll('.phase-item').length > 1) {
+                button.closest('.phase-item').remove();
+                generateQuote();
+            } else {
+                alert('At least one construction phase is required.');
+            }
+        }
+        
+        function addLineItem(button) {
+            const phaseItem = button.closest('.phase-item');
+            const lineItemsContainer = phaseItem.querySelector('.line-items-container');
             const newItem = document.createElement('div');
             newItem.className = 'line-item';
             newItem.innerHTML = `
-                <input type="text" placeholder="Product/Service Description">
-                <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                <select class="unit-select">
-                    <option value="each">Each</option>
-                    <option value="hour">Hours</option>
-                    <option value="day">Days</option>
-                    <option value="month">Months</option>
-                    <option value="year">Years</option>
-                    <option value="piece">Pieces</option>
-                    <option value="kg">Kilograms</option>
-                    <option value="meter">Meters</option>
+                <input type="text" placeholder="Item Description">
+                <select>
+                    <option value="Labor">Labor</option>
+                    <option value="Materials">Materials</option>
+                    <option value="Equipment">Equipment</option>
+                    <option value="Subcontractor">Subcontractor</option>
                 </select>
-                <input type="number" placeholder="Unit Price" value="0.00" min="0" step="0.01">
+                <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
+                <input type="number" placeholder="Rate" value="0.00" min="0" step="0.01">
                 <input type="text" placeholder="Total" readonly>
                 <button type="button" class="remove-btn" onclick="removeLineItem(this)">×</button>
             `;
-            lineItems.appendChild(newItem);
+            lineItemsContainer.appendChild(newItem);
             
-            // Add event listeners to new inputs
+            // Add event listeners
             newItem.querySelectorAll('input, select').forEach(input => {
                 input.addEventListener('input', generateQuote);
             });
@@ -1218,223 +1298,174 @@ United States of America</textarea>
         }
         
         function removeLineItem(button) {
-            if (document.querySelectorAll('.line-item').length > 1) {
-                button.parentElement.remove();
+            const phaseItem = button.closest('.phase-item');
+            const lineItems = phaseItem.querySelectorAll('.line-item');
+            
+            if (lineItems.length > 1) {
+                button.closest('.line-item').remove();
                 generateQuote();
             } else {
-                alert('At least one line item is required.');
+                alert('At least one line item is required per phase.');
             }
         }
         
         function generateQuote() {
+            // Update all preview fields
+            updatePreviewField('companyName', 'previewCompanyName');
+            updatePreviewField('licenseNumber', 'previewLicenseNumber');
+            updatePreviewField('companyAddress', 'previewCompanyAddress', '', true);
+            updatePreviewField('companyPhone', 'previewCompanyPhone');
+            updatePreviewField('companyEmail', 'previewCompanyEmail');
+            updatePreviewField('companyWebsite', 'previewWebsite');
+            
+            updatePreviewField('managerName', 'previewManagerName');
+            updatePreviewField('managerTitle', 'previewManagerTitle');
+            updatePreviewField('managerPhone', 'previewManagerPhone');
+            updatePreviewField('managerEmail', 'previewManagerEmail');
+            
+            updatePreviewField('clientName', 'previewClientName');
+            updatePreviewField('propertyType', 'previewPropertyType');
+            updatePreviewField('projectAddress', 'previewProjectAddress', '', true);
+            updatePreviewField('clientPhone', 'previewClientPhone');
+            updatePreviewField('clientEmail', 'previewClientEmail');
+            
+            updatePreviewField('projectName', 'previewProjectName');
+            updatePreviewField('quoteNumber', 'previewQuoteNumber');
+            updatePreviewField('timeline', 'previewTimeline');
+            updatePreviewField('squareFootage', 'previewSquareFootage');
+            updatePreviewField('projectDescription', 'previewProjectDescription', '', true);
+            
+            updatePreviewField('generalLiability', 'previewGeneralLiability');
+            updatePreviewField('workersComp', 'previewWorkersComp');
+            updatePreviewField('bondingCapacity', 'previewBondingCapacity');
+            updatePreviewField('permitsRequired', 'previewPermitsRequired', '', true);
+            
+            updatePreviewField('paymentSchedule', 'previewPaymentSchedule', '', true);
+            updatePreviewField('warranty', 'previewWarranty', '', true);
+            updatePreviewField('changeOrders', 'previewChangeOrders', '', true);
+            updatePreviewField('terms', 'previewTerms', '', true);
+            
+            // Update dates
+            document.getElementById('previewQuoteDate').textContent = formatDate(document.getElementById('quoteDate').value);
+            document.getElementById('previewValidUntil').textContent = formatDate(document.getElementById('validUntil').value);
+            document.getElementById('previewStartDate').textContent = formatDate(document.getElementById('startDate').value) || 'TBD';
+            document.getElementById('previewCompletionDate').textContent = formatDate(document.getElementById('completionDate').value) || 'TBD';
+            document.getElementById('previewSignatureDate').textContent = formatDate(document.getElementById('quoteDate').value);
+            
+            // Update signature
+            updatePreviewField('managerName', 'previewSignatureName');
+            
+            // Generate phases and calculate totals
+            generatePhasesPreview();
+        }
+        
+        function updatePreviewField(sourceId, targetId, prefix = '', isTextarea = false) {
+            const sourceElement = document.getElementById(sourceId);
+            const targetElement = document.getElementById(targetId);
+            
+            if (sourceElement && targetElement) {
+                let value = sourceElement.value || '';
+                if (isTextarea) {
+                    value = value.replace(/\n/g, '<br>');
+                    targetElement.innerHTML = prefix + value;
+                } else {
+                    targetElement.textContent = prefix + value;
+                }
+            }
+        }
+        
+        function generatePhasesPreview() {
+            const phases = document.querySelectorAll('.phase-item');
+            const previewContainer = document.getElementById('previewPhases');
             const currency = document.getElementById('currency').value;
+            let grandTotal = 0;
             
-            // Get logo source
-            const logoFile = document.getElementById('logoPreview').src;
-            const logoUrl = document.getElementById('logoUrl').value;
-            const finalLogoSrc = logoFile && logoFile !== window.location.href ? logoFile : logoUrl;
+            previewContainer.innerHTML = '';
             
-            // Calculate line items
-            const lineItems = document.querySelectorAll('.line-item');
-            let subtotal = 0;
-            let tableRows = '';
-            
-            lineItems.forEach(item => {
-                const inputs = item.querySelectorAll('input');
-                const unitSelect = item.querySelector('.unit-select');
-                const description = inputs[0].value || 'Service';
-                const qty = parseFloat(inputs[1].value) || 0;
-                const unit = unitSelect.value;
-                const unitPrice = parseFloat(inputs[3].value) || 0;
-                const total = qty * unitPrice;
+            phases.forEach((phase, index) => {
+                const phaseInputs = phase.querySelector('.phase-header').querySelectorAll('input');
+                const phaseName = phaseInputs[0].value || `Phase ${index + 1}`;
+                const phaseDuration = phaseInputs[1].value || 'TBD';
                 
-                // Update total in form
-                inputs[4].value = formatCurrency(total, currency);
+                const lineItems = phase.querySelectorAll('.line-item');
+                let phaseTotal = 0;
                 
-                subtotal += total;
+                // Create phase section
+                const phaseSection = document.createElement('div');
+                phaseSection.className = 'phase-section';
                 
-                tableRows += `
-                    <tr>
-                        <td>${description}</td>
-                        <td>${qty} ${unit}</td>
-                        <td>${formatCurrency(unitPrice, currency)}</td>
-                        <td>${formatCurrency(total, currency)}</td>
-                    </tr>
-                `;
-            });
-            
-            // Calculate totals
-            const discountRate = parseFloat(document.getElementById('discountRate').value) || 0;
-            const discount = subtotal * (discountRate / 100);
-            const discountedSubtotal = subtotal - discount;
-            
-            const shippingCost = parseFloat(document.getElementById('shippingCost').value) || 0;
-            const processingFee = parseFloat(document.getElementById('processingFee').value) || 0;
-            
-            const preTaxTotal = discountedSubtotal + shippingCost + processingFee;
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const tax = preTaxTotal * (taxRate / 100);
-            const finalTotal = preTaxTotal + tax;
-            
-            // Generate the complete quote HTML
-            const quoteHtml = `
-                <div class="quote-header">
-                    ${finalLogoSrc ? `<img src="${finalLogoSrc}" class="company-logo" alt="Company Logo">` : ''}
-                    <h2>PROFESSIONAL QUOTATION</h2>
-                    <p class="subtitle">${document.getElementById('companyTagline').value || 'Professional Services Quote'}</p>
-                </div>
+                const phaseTitle = document.createElement('div');
+                phaseTitle.className = 'phase-title';
+                phaseTitle.textContent = `${phaseName} (${phaseDuration})`;
+                phaseSection.appendChild(phaseTitle);
                 
-                <div class="quote-info">
-                    <div class="info-section">
-                        <h4>💼 From:</h4>
-                        <p><strong>${document.getElementById('companyName').value || 'Your Company'}</strong></p>
-                        ${document.getElementById('contactName').value ? `<p>${document.getElementById('contactName').value}${document.getElementById('contactTitle').value ? `, ${document.getElementById('contactTitle').value}` : ''}</p>` : ''}
-                        <p>${(document.getElementById('companyAddress').value || '').replace(/\n/g, '<br>')}</p>
-                        <p><strong>📧</strong> ${document.getElementById('companyEmail').value || ''}</p>
-                        <p><strong>📞</strong> ${document.getElementById('companyPhone').value || ''}</p>
-                        ${document.getElementById('companyWebsite').value ? `<p><strong>🌐</strong> ${document.getElementById('companyWebsite').value}</p>` : ''}
-                        ${document.getElementById('companyTaxId').value ? `<p><strong>Tax ID:</strong> ${document.getElementById('companyTaxId').value}</p>` : ''}
-                    </div>
-                    
-                    <div class="info-section">
-                        <h4>🏢 To:</h4>
-                        <p><strong>${document.getElementById('clientCompany').value || 'Client Company'}</strong></p>
-                        ${document.getElementById('clientContactName').value ? `<p>${document.getElementById('clientContactName').value}${document.getElementById('clientContactTitle').value ? `, ${document.getElementById('clientContactTitle').value}` : ''}</p>` : ''}
-                        ${document.getElementById('clientDepartment').value ? `<p><em>${document.getElementById('clientDepartment').value}</em></p>` : ''}
-                        <p>${(document.getElementById('clientBillingAddress').value || '').replace(/\n/g, '<br>')}</p>
-                        ${document.getElementById('clientEmail').value ? `<p><strong>📧</strong> ${document.getElementById('clientEmail').value}</p>` : ''}
-                        ${document.getElementById('clientPhone').value ? `<p><strong>📞</strong> ${document.getElementById('clientPhone').value}</p>` : ''}
-                        
-                        <br>
-                        <p><strong>Quote #:</strong> <span class="highlight">${document.getElementById('quoteNumber').value || 'Q-001'}</span></p>
-                        <p><strong>Date:</strong> ${formatDate(document.getElementById('quoteDate').value)}</p>
-                        <p><strong>Valid Until:</strong> ${formatDate(document.getElementById('validUntil').value)}</p>
-                        <p><strong>Status:</strong> <span class="highlight">${document.getElementById('quoteStatus').value || 'Pending'}</span></p>
-                        ${document.getElementById('projectReference').value ? `<p><strong>Project:</strong> ${document.getElementById('projectReference').value}</p>` : ''}
-                        ${document.getElementById('poNumber').value ? `<p><strong>PO #:</strong> ${document.getElementById('poNumber').value}</p>` : ''}
-                    </div>
-                </div>
-                
-                <table class="quote-table">
+                // Create phase table
+                const table = document.createElement('table');
+                table.className = 'phase-table';
+                table.innerHTML = `
                     <thead>
                         <tr>
                             <th>Description</th>
-                            <th>Quantity</th>
-                            <th>Unit Price</th>
+                            <th>Type</th>
+                            <th>Qty</th>
+                            <th>Rate</th>
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        ${tableRows}
-                    </tbody>
-                </table>
+                    <tbody></tbody>
+                `;
                 
-                <div class="quote-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span>${formatCurrency(subtotal, currency)}</span>
-                    </div>
-                    ${discount > 0 ? `
-                        <div class="total-row">
-                            <span>Discount (${discountRate}%):</span>
-                            <span>-${formatCurrency(discount, currency)}</span>
-                        </div>
-                        <div class="total-row">
-                            <span>Subtotal after discount:</span>
-                            <span>${formatCurrency(discountedSubtotal, currency)}</span>
-                        </div>
-                    ` : ''}
-                    ${shippingCost > 0 ? `
-                        <div class="total-row">
-                            <span>Shipping/Delivery:</span>
-                            <span>${formatCurrency(shippingCost, currency)}</span>
-                        </div>
-                    ` : ''}
-                    ${processingFee > 0 ? `
-                        <div class="total-row">
-                            <span>Processing Fee:</span>
-                            <span>${formatCurrency(processingFee, currency)}</span>
-                        </div>
-                    ` : ''}
-                    <div class="total-row">
-                        <span>Tax (${taxRate}%):</span>
-                        <span>${formatCurrency(tax, currency)}</span>
-                    </div>
-                    <div class="total-row final">
-                        <span>Total Amount:</span>
-                        <span>${formatCurrency(finalTotal, currency)}</span>
-                    </div>
-                </div>
+                const tbody = table.querySelector('tbody');
                 
-                <div class="quote-terms">
-                    <h4>💰 Payment Terms</h4>
-                    <p><strong>Payment Due:</strong> ${document.getElementById('paymentTerms').value || 'Net 30 Days'}</p>
-                    ${document.getElementById('depositPercent').value > 0 ? `<p><strong>Deposit Required:</strong> ${document.getElementById('depositPercent').value}% (${formatCurrency(finalTotal * (document.getElementById('depositPercent').value / 100), currency)})</p>` : ''}
-                    <p><strong>Delivery:</strong> ${document.getElementById('deliveryTimeline').value || 'TBD'} via ${document.getElementById('deliveryMethod').value || 'Standard'}</p>
-                    <p><strong>Warranty:</strong> ${document.getElementById('warrantyPeriod').value || 'Standard warranty'}</p>
-                </div>
+                lineItems.forEach(item => {
+                    const inputs = item.querySelectorAll('input, select');
+                    const description = inputs[0].value || 'Service';
+                    const type = inputs[1].value || 'Labor';
+                    const qty = parseFloat(inputs[2].value) || 0;
+                    const rate = parseFloat(inputs[3].value) || 0;
+                    const total = qty * rate;
+                    
+                    // Update total in form
+                    inputs[4].value = formatCurrency(total, currency);
+                    
+                    phaseTotal += total;
+                    
+                    // Add row to table
+                    const row = tbody.insertRow();
+                    row.innerHTML = `
+                        <td>${description}</td>
+                        <td>${type}</td>
+                        <td>${qty}</td>
+                        <td>${formatCurrency(rate, currency)}</td>
+                        <td>${formatCurrency(total, currency)}</td>
+                    `;
+                });
                 
-                ${document.getElementById('paymentMethods').value ? `
-                    <div class="quote-terms">
-                        <h4>💳 Payment Methods</h4>
-                        <div>${(document.getElementById('paymentMethods').value || '').replace(/\n/g, '<br>')}</div>
-                    </div>
-                ` : ''}
+                phaseSection.appendChild(table);
                 
-                ${document.getElementById('deliveryTerms').value ? `
-                    <div class="quote-terms">
-                        <h4>🚚 Delivery Terms</h4>
-                        <div>${(document.getElementById('deliveryTerms').value || '').replace(/\n/g, '<br>')}</div>
-                    </div>
-                ` : ''}
+                // Phase total
+                const phaseTotalDiv = document.createElement('div');
+                phaseTotalDiv.className = 'phase-total';
+                phaseTotalDiv.textContent = `Phase Total: ${formatCurrency(phaseTotal, currency)}`;
+                phaseSection.appendChild(phaseTotalDiv);
                 
-                ${document.getElementById('supportDetails').value ? `
-                    <div class="quote-terms">
-                        <h4>🛡️ Support & Warranty</h4>
-                        <div>${(document.getElementById('supportDetails').value || '').replace(/\n/g, '<br>')}</div>
-                    </div>
-                ` : ''}
+                // Update phase total in form
+                phaseInputs[2].value = formatCurrency(phaseTotal, currency);
                 
-                ${document.getElementById('generalTerms').value ? `
-                    <div class="quote-terms">
-                        <h4>📋 Terms & Conditions</h4>
-                        <div>${(document.getElementById('generalTerms').value || '').replace(/\n/g, '<br>')}</div>
-                    </div>
-                ` : ''}
-                
-                <div class="signature-section">
-                    <div class="signature-box">
-                        <p><strong>Client Signature</strong></p>
-                        <br><br><br>
-                        <p>_____________________________</p>
-                        <p>Date: _________________</p>
-                    </div>
-                    <div class="signature-box">
-                        <p><strong>Company Representative</strong></p>
-                        <br><br><br>
-                        <p>_____________________________</p>
-                        <p>${document.getElementById('contactName').value || 'Authorized Signatory'}</p>
-                    </div>
-                </div>
-                
-                <div class="quote-footer">
-                    <p><strong>Thank you for considering our services!</strong></p>
-                    <p>This quotation was generated on ${new Date().toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })}</p>
-                    ${document.getElementById('bankName').value ? `
-                        <p><strong>Banking Details:</strong> ${document.getElementById('bankName').value} 
-                        ${document.getElementById('accountNumber').value ? `| Account: ${document.getElementById('accountNumber').value}` : ''}
-                        ${document.getElementById('swiftCode').value ? `| SWIFT: ${document.getElementById('swiftCode').value}` : ''}</p>
-                    ` : ''}
-                </div>
-            `;
+                previewContainer.appendChild(phaseSection);
+                grandTotal += phaseTotal;
+            });
             
-            document.getElementById('quotePreview').innerHTML = quoteHtml;
+            // Calculate final totals
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const tax = grandTotal * (taxRate / 100);
+            const finalTotal = grandTotal + tax;
+            
+            // Update totals display
+            document.getElementById('previewSubtotal').textContent = formatCurrency(grandTotal, currency);
+            document.getElementById('previewTaxRate').textContent = taxRate.toFixed(1);
+            document.getElementById('previewTax').textContent = formatCurrency(tax, currency);
+            document.getElementById('previewTotal').textContent = formatCurrency(finalTotal, currency);
         }
         
         function formatCurrency(amount, currency) {
@@ -1458,43 +1489,50 @@ United States of America</textarea>
             window.print();
         }
         
-        function saveQuote() {
-            const quoteData = {
-                company: {
-                    name: document.getElementById('companyName').value,
-                    tagline: document.getElementById('companyTagline').value,
-                    address: document.getElementById('companyAddress').value,
-                    email: document.getElementById('companyEmail').value,
-                    phone: document.getElementById('companyPhone').value,
-                    website: document.getElementById('companyWebsite').value,
-                    taxId: document.getElementById('companyTaxId').value,
-                    regNumber: document.getElementById('companyRegNumber').value
-                },
-                client: {
-                    company: document.getElementById('clientCompany').value,
-                    contactName: document.getElementById('clientContactName').value,
-                    email: document.getElementById('clientEmail').value,
-                    address: document.getElementById('clientBillingAddress').value
-                },
-                quote: {
-                    number: document.getElementById('quoteNumber').value,
-                    date: document.getElementById('quoteDate').value,
-                    validUntil: document.getElementById('validUntil').value,
-                    status: document.getElementById('quoteStatus').value
+        function saveTemplate() {
+            // Create template object with all form data
+            const template = {};
+            
+            // Get all input, textarea, and select elements
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                if (element.id && element.type !== 'file') {
+                    template[element.id] = element.value;
                 }
-            };
+            });
             
-            const dataStr = JSON.stringify(quoteData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            // Get phases data
+            template.phases = [];
+            document.querySelectorAll('.phase-item').forEach(phase => {
+                const phaseData = {
+                    header: [],
+                    items: []
+                };
+                
+                // Get phase header data
+                phase.querySelector('.phase-header').querySelectorAll('input').forEach(input => {
+                    phaseData.header.push(input.value);
+                });
+                
+                // Get line items data
+                phase.querySelectorAll('.line-item').forEach(item => {
+                    const itemData = [];
+                    item.querySelectorAll('input, select').forEach(input => {
+                        itemData.push(input.value);
+                    });
+                    phaseData.items.push(itemData);
+                });
+                
+                template.phases.push(phaseData);
+            });
             
-            const exportFileDefaultName = `quote-${document.getElementById('quoteNumber').value || 'draft'}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            alert('Quote data saved! You can load this data later to continue editing.');
+            // Save to local storage
+            const templateName = prompt('Enter template name:', 'Construction Template');
+            if (templateName) {
+                const savedTemplates = JSON.parse(localStorage.getItem('constructionTemplates') || '{}');
+                savedTemplates[templateName] = template;
+                localStorage.setItem('constructionTemplates', JSON.stringify(savedTemplates));
+                alert('Template saved successfully!');
+            }
         }
     </script>
 </body>
