@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Professional Quotation Generator</title>
+    <title>Neon Quotation Generator</title>
     <style>
         * {
             margin: 0;
@@ -11,32 +11,170 @@
             box-sizing: border-box;
         }
 
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --bg-secondary: rgba(255, 255, 255, 0.95);
+            --bg-section: rgba(255, 255, 255, 0.9);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --border-color: #e9ecef;
+            --neon-primary: #00ffff;
+            --neon-secondary: #ff00ff;
+            --neon-accent: #ffff00;
+            --shadow-color: rgba(0, 255, 255, 0.3);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Colors */
+            --bg-primary: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --bg-secondary: rgba(20, 20, 30, 0.95);
+            --bg-section: rgba(25, 25, 35, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --border-color: #444;
+            --neon-primary: #00ffff;
+            --neon-secondary: #ff00ff;
+            --neon-accent: #ffff00;
+            --shadow-color: rgba(0, 255, 255, 0.5);
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary);
             min-height: 100vh;
             padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Neon Background Effects */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(255, 255, 0, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: neonPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonPulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes neonGlow {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 20px var(--neon-primary),
+                    0 0 40px var(--neon-primary),
+                    0 0 60px var(--neon-primary);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 10px var(--neon-primary),
+                    0 0 20px var(--neon-primary),
+                    0 0 30px var(--neon-primary);
+            }
+        }
+
+        @keyframes neonBorder {
+            0%, 100% { border-color: var(--neon-primary); }
+            25% { border-color: var(--neon-secondary); }
+            50% { border-color: var(--neon-accent); }
+            75% { border-color: var(--neon-secondary); }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.2),
+                0 0 50px var(--shadow-color);
             overflow: hidden;
+            border: 2px solid var(--neon-primary);
+            animation: neonGlow 3s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
-            color: white;
+            background: linear-gradient(135deg, 
+                rgba(0, 255, 255, 0.1), 
+                rgba(255, 0, 255, 0.1), 
+                rgba(255, 255, 0, 0.1));
+            color: var(--text-primary);
             padding: 25px;
             text-align: center;
+            position: relative;
+            border-bottom: 2px solid var(--neon-primary);
         }
 
         .header h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 8px;
+            text-shadow: 
+                0 0 10px var(--neon-primary),
+                0 0 20px var(--neon-primary),
+                0 0 30px var(--neon-primary);
+            animation: neonText 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonText {
+            0% { text-shadow: 0 0 10px var(--neon-primary), 0 0 20px var(--neon-primary); }
+            100% { text-shadow: 0 0 20px var(--neon-primary), 0 0 30px var(--neon-primary), 0 0 40px var(--neon-primary); }
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px var(--shadow-color);
+            font-size: 0.9rem;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                0 0 25px var(--shadow-color);
+        }
+
+        .theme-btn.active {
+            background: linear-gradient(135deg, var(--neon-accent), var(--neon-primary));
+            animation: neonPulseBtn 1.5s ease-in-out infinite;
+        }
+
+        @keyframes neonPulseBtn {
+            0%, 100% { box-shadow: 0 0 15px var(--shadow-color); }
+            50% { box-shadow: 0 0 25px var(--shadow-color), 0 0 35px var(--shadow-color); }
         }
 
         .main-content {
@@ -47,29 +185,44 @@
 
         .form-section {
             padding: 30px;
-            background: #f8f9fa;
-            border-right: 1px solid #e9ecef;
+            background: var(--bg-section);
+            border-right: 2px solid var(--neon-primary);
+            transition: all 0.3s ease;
         }
 
         .preview-section {
             padding: 30px;
-            background: white;
+            background: var(--bg-secondary);
+            transition: all 0.3s ease;
         }
 
         .section {
-            background: white;
+            background: var(--bg-section);
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.1),
+                0 0 20px var(--shadow-color);
+            border: 1px solid var(--neon-primary);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.2),
+                0 0 30px var(--shadow-color);
         }
 
         .section h3 {
-            color: #2c3e50;
+            color: var(--text-primary);
             margin-bottom: 15px;
             font-size: 1.1rem;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
+            border-bottom: 2px solid var(--neon-primary);
+            padding-bottom: 8px;
+            text-shadow: 0 0 10px var(--shadow-color);
         }
 
         .form-group {
@@ -80,22 +233,30 @@
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
-            color: #2c3e50;
+            color: var(--text-primary);
             font-size: 0.9rem;
+            text-shadow: 0 0 5px var(--shadow-color);
         }
 
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 6px;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
             font-size: 0.95rem;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            background: var(--bg-section);
+            color: var(--text-primary);
+            backdrop-filter: blur(5px);
         }
 
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: var(--neon-primary);
+            box-shadow: 
+                0 0 15px var(--shadow-color),
+                inset 0 0 15px rgba(0, 255, 255, 0.1);
+            transform: scale(1.02);
         }
 
         .form-row {
@@ -105,17 +266,22 @@
         }
 
         .items-section {
-            background: white;
-            border-radius: 10px;
+            background: var(--bg-section);
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.1),
+                0 0 20px var(--shadow-color);
+            border: 1px solid var(--neon-secondary);
+            transition: all 0.3s ease;
         }
 
         .items-section h3 {
-            color: #2c3e50;
+            color: var(--text-primary);
             margin-bottom: 15px;
             font-size: 1.1rem;
+            text-shadow: 0 0 10px var(--neon-secondary);
         }
 
         .item {
@@ -123,105 +289,157 @@
             grid-template-columns: 3fr 1fr 1fr 1fr 40px;
             gap: 10px;
             align-items: center;
-            margin-bottom: 10px;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 6px;
+            margin-bottom: 12px;
+            padding: 15px;
+            background: var(--bg-section);
+            border-radius: 10px;
+            border: 1px solid var(--neon-accent);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px var(--shadow-color);
         }
 
         .item input {
-            padding: 8px 10px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             font-size: 0.9rem;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .item input:focus {
+            border-color: var(--neon-accent);
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
         }
 
         .remove-btn {
-            background: #e74c3c;
+            background: linear-gradient(135deg, #ff0040, #ff4081);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 64, 0.5);
         }
 
         .remove-btn:hover {
-            background: #c0392b;
-            transform: scale(1.1);
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 0 25px rgba(255, 0, 64, 0.8);
         }
 
         .add-btn {
-            background: #27ae60;
-            color: white;
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            color: #000;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 15px 25px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            margin-top: 15px;
+            box-shadow: 0 0 20px var(--shadow-color);
         }
 
         .add-btn:hover {
-            background: #229954;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                0 0 30px var(--shadow-color);
         }
 
         .actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 25px;
         }
 
         .btn {
-            padding: 12px 20px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 6px;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
             flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: #3498db;
-            color: white;
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            color: #000;
+            box-shadow: 0 0 20px var(--shadow-color);
         }
 
         .btn-success {
-            background: #27ae60;
-            color: white;
+            background: linear-gradient(135deg, var(--neon-accent), var(--neon-primary));
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 8px 25px rgba(0,0,0,0.3),
+                0 0 35px var(--shadow-color);
         }
 
         .quote-preview {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+            border: 2px solid var(--neon-primary);
+            border-radius: 15px;
             padding: 25px;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: var(--bg-section);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.1),
+                0 0 30px var(--shadow-color);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: neonBorder 4s linear infinite;
         }
 
         .quote-header {
             text-align: center;
             margin-bottom: 25px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #3498db;
+            border-bottom: 2px solid var(--neon-primary);
         }
 
         .quote-header h2 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 5px;
+            color: var(--text-primary);
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            text-shadow: 
+                0 0 15px var(--neon-primary),
+                0 0 25px var(--neon-primary);
+            animation: neonText 3s ease-in-out infinite alternate;
         }
 
         .quote-info {
@@ -231,15 +449,30 @@
             margin-bottom: 25px;
         }
 
+        .info-box {
+            background: var(--bg-section);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--neon-secondary);
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 25px rgba(255, 0, 255, 0.4);
+        }
+
         .info-box h4 {
-            color: #3498db;
-            margin-bottom: 10px;
-            font-size: 1rem;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            text-shadow: 0 0 10px var(--neon-secondary);
         }
 
         .info-box p {
-            margin-bottom: 3px;
-            color: #2c3e50;
+            margin-bottom: 5px;
+            color: var(--text-primary);
             font-size: 0.9rem;
         }
 
@@ -247,63 +480,108 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
-            border-radius: 6px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 20px var(--shadow-color);
+            border: 1px solid var(--neon-primary);
         }
 
         .quote-table th {
-            background: #34495e;
-            color: white;
-            padding: 12px;
+            background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+            color: #000;
+            padding: 15px 12px;
             text-align: left;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .quote-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ecf0f1;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
             font-size: 0.9rem;
+            color: var(--text-primary);
+            background: var(--bg-section);
+            transition: all 0.3s ease;
         }
 
-        .quote-table tr:nth-child(even) {
-            background: #f8f9fa;
+        .quote-table tr:hover td {
+            background: var(--bg-secondary);
+            transform: scale(1.01);
         }
 
         .quote-totals {
             margin-left: auto;
-            width: 300px;
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
+            width: 320px;
+            background: var(--bg-section);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid var(--neon-accent);
+            box-shadow: 0 0 25px rgba(255, 255, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .quote-totals:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(255, 255, 0, 0.5);
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            padding: 5px 0;
-            font-size: 0.95rem;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            font-size: 1rem;
+            color: var(--text-primary);
         }
 
         .total-row.final {
-            border-top: 2px solid #3498db;
+            border-top: 2px solid var(--neon-accent);
             font-weight: bold;
-            font-size: 1.2rem;
-            color: #2c3e50;
+            font-size: 1.3rem;
+            color: var(--text-primary);
             margin-top: 15px;
             padding-top: 15px;
+            text-shadow: 0 0 10px var(--neon-accent);
         }
 
         .quote-footer {
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #ecf0f1;
+            border-top: 1px solid var(--border-color);
             text-align: center;
-            color: #7f8c8d;
+            color: var(--text-secondary);
             font-size: 0.9rem;
+            background: var(--bg-section);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--neon-primary);
+        }
+
+        .required {
+            color: #ff0040;
+            text-shadow: 0 0 5px #ff0040;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-section);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--neon-primary), var(--neon-secondary));
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--shadow-color);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--neon-secondary), var(--neon-accent));
         }
 
         @media (max-width: 768px) {
@@ -313,7 +591,7 @@
             
             .form-section {
                 border-right: none;
-                border-bottom: 1px solid #e9ecef;
+                border-bottom: 2px solid var(--neon-primary);
             }
             
             .form-row {
@@ -332,6 +610,18 @@
             .actions {
                 flex-direction: column;
             }
+
+            .theme-toggle {
+                position: relative;
+                top: auto;
+                right: auto;
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
         }
 
         @media print {
@@ -343,9 +633,11 @@
             .container {
                 box-shadow: none;
                 border-radius: 0;
+                border: none;
+                animation: none;
             }
             
-            .form-section {
+            .form-section, .theme-toggle {
                 display: none;
             }
             
@@ -356,18 +648,24 @@
             .preview-section {
                 padding: 20px;
             }
-        }
 
-        .required {
-            color: #e74c3c;
+            .quote-preview {
+                border: 1px solid #000;
+                animation: none;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
-<body>
+<body data-theme="light">
     <div class="container">
         <div class="header">
-            <h1>📋 Simple Quotation Generator</h1>
-            <p>Create professional quotes in minutes</p>
+            <div class="theme-toggle">
+                <button class="theme-btn active" onclick="setTheme('light')">🌞 Light</button>
+                <button class="theme-btn" onclick="setTheme('dark')">🌙 Dark</button>
+            </div>
+            <h1>⚡ NEON QUOTATION GENERATOR ⚡</h1>
+            <p>Create stunning quotes with neon-powered technology</p>
         </div>
         
         <div class="main-content">
@@ -377,21 +675,21 @@
                     <h3>🏢 Your Company</h3>
                     <div class="form-group">
                         <label>Company Name <span class="required">*</span></label>
-                        <input type="text" id="companyName" placeholder="Your Company Name" value="ABC Services Ltd.">
+                        <input type="text" id="companyName" placeholder="Your Company Name" value="NeonTech Services">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) 123-4567">
+                            <input type="text" id="companyPhone" placeholder="+1 (555) 123-4567" value="+1 (555) NEON-TECH">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" id="companyEmail" placeholder="contact@company.com" value="contact@company.com">
+                            <input type="email" id="companyEmail" placeholder="contact@company.com" value="hello@neontech.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea id="companyAddress" rows="2" placeholder="Your business address">123 Business Street, City, State 12345</textarea>
+                        <textarea id="companyAddress" rows="2" placeholder="Your business address">123 Neon Boulevard, Tech City, TC 12345</textarea>
                     </div>
                 </div>
 
@@ -400,21 +698,21 @@
                     <h3>👤 Client Details</h3>
                     <div class="form-group">
                         <label>Client Name <span class="required">*</span></label>
-                        <input type="text" id="clientName" placeholder="Client Name" value="John Smith">
+                        <input type="text" id="clientName" placeholder="Client Name" value="Future Corp Ltd.">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Phone</label>
-                            <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-6543">
+                            <input type="text" id="clientPhone" placeholder="+1 (555) 987-6543" value="+1 (555) 987-FUTURE">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" id="clientEmail" placeholder="client@email.com" value="john.smith@email.com">
+                            <input type="email" id="clientEmail" placeholder="client@email.com" value="contact@futurecorp.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea id="clientAddress" rows="2" placeholder="Client address">456 Client Avenue, City, State 67890</textarea>
+                        <textarea id="clientAddress" rows="2" placeholder="Client address">456 Innovation Drive, Future City, FC 67890</textarea>
                     </div>
                 </div>
 
@@ -424,7 +722,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Quote Number</label>
-                            <input type="text" id="quoteNumber" placeholder="Q-001" value="Q-001">
+                            <input type="text" id="quoteNumber" placeholder="Q-001" value="NEON-001">
                         </div>
                         <div class="form-group">
                             <label>Date</label>
@@ -451,24 +749,24 @@
 
                 <!-- Items/Services -->
                 <div class="items-section">
-                    <h3>📦 Items/Services</h3>
+                    <h3>⚡ Services & Products</h3>
                     <div id="itemsList">
                         <div class="item">
-                            <input type="text" placeholder="Description" value="Website Development">
+                            <input type="text" placeholder="Description" value="Neon Website Design">
                             <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                            <input type="number" placeholder="Price" value="1500.00" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="2500.00" min="0" step="0.01">
                             <input type="text" placeholder="Total" readonly>
                             <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
                         <div class="item">
-                            <input type="text" placeholder="Description" value="SEO Optimization">
+                            <input type="text" placeholder="Description" value="Interactive UI/UX">
                             <input type="number" placeholder="Qty" value="1" min="0" step="0.01">
-                            <input type="number" placeholder="Price" value="500.00" min="0" step="0.01">
+                            <input type="number" placeholder="Price" value="1800.00" min="0" step="0.01">
                             <input type="text" placeholder="Total" readonly>
                             <button type="button" class="remove-btn" onclick="removeItem(this)">×</button>
                         </div>
                     </div>
-                    <button type="button" class="add-btn" onclick="addItem()">+ Add Item</button>
+                    <button type="button" class="add-btn" onclick="addItem()">⚡ Add Item</button>
                 </div>
 
                 <!-- Settings -->
@@ -477,7 +775,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label>Tax Rate (%)</label>
-                            <input type="number" id="taxRate" placeholder="0" value="10" min="0" max="100" step="0.01">
+                            <input type="number" id="taxRate" placeholder="0" value="8.5" min="0" max="100" step="0.01">
                         </div>
                         <div class="form-group">
                             <label>Discount (%)</label>
@@ -487,7 +785,8 @@
                     <div class="form-group">
                         <label>Notes</label>
                         <textarea id="notes" rows="3" placeholder="Payment terms, delivery notes, etc.">Payment due within 30 days.
-Thank you for your business!</textarea>
+Project delivery in 2-3 weeks.
+Thank you for choosing NeonTech! ⚡</textarea>
                     </div>
                 </div>
 
@@ -500,27 +799,27 @@ Thank you for your business!</textarea>
             <div class="preview-section">
                 <div class="quote-preview">
                     <div class="quote-header">
-                        <h2>QUOTATION</h2>
-                        <p style="color: #7f8c8d;">Professional Services Quote</p>
+                        <h2>⚡ QUOTATION ⚡</h2>
+                        <p style="color: var(--text-secondary);">Professional Neon-Tech Services</p>
                     </div>
                     
                     <div class="quote-info">
                         <div class="info-box">
                             <h4>From:</h4>
-                            <p><strong id="previewCompanyName">ABC Services Ltd.</strong></p>
-                            <p id="previewCompanyPhone">+1 (555) 123-4567</p>
-                            <p id="previewCompanyEmail">contact@company.com</p>
-                            <div id="previewCompanyAddress">123 Business Street, City, State 12345</div>
+                            <p><strong id="previewCompanyName">NeonTech Services</strong></p>
+                            <p id="previewCompanyPhone">+1 (555) NEON-TECH</p>
+                            <p id="previewCompanyEmail">hello@neontech.com</p>
+                            <div id="previewCompanyAddress">123 Neon Boulevard, Tech City, TC 12345</div>
                         </div>
                         
                         <div class="info-box">
                             <h4>To:</h4>
-                            <p><strong id="previewClientName">John Smith</strong></p>
-                            <p id="previewClientPhone">+1 (555) 987-6543</p>
-                            <p id="previewClientEmail">john.smith@email.com</p>
-                            <div id="previewClientAddress">456 Client Avenue, City, State 67890</div>
+                            <p><strong id="previewClientName">Future Corp Ltd.</strong></p>
+                            <p id="previewClientPhone">+1 (555) 987-FUTURE</p>
+                            <p id="previewClientEmail">contact@futurecorp.com</p>
+                            <div id="previewClientAddress">456 Innovation Drive, Future City, FC 67890</div>
                             <br>
-                            <p><strong>Quote #:</strong> <span id="previewQuoteNumber">Q-001</span></p>
+                            <p><strong>Quote #:</strong> <span id="previewQuoteNumber">NEON-001</span></p>
                             <p><strong>Date:</strong> <span id="previewQuoteDate">June 24, 2025</span></p>
                             <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
                         </div>
@@ -537,16 +836,16 @@ Thank you for your business!</textarea>
                         </thead>
                         <tbody id="previewTableBody">
                             <tr>
-                                <td>Website Development</td>
+                                <td>Neon Website Design</td>
                                 <td>1</td>
-                                <td>$1,500.00</td>
-                                <td>$1,500.00</td>
+                                <td>$2,500.00</td>
+                                <td>$2,500.00</td>
                             </tr>
                             <tr>
-                                <td>SEO Optimization</td>
+                                <td>Interactive UI/UX</td>
                                 <td>1</td>
-                                <td>$500.00</td>
-                                <td>$500.00</td>
+                                <td>$1,800.00</td>
+                                <td>$1,800.00</td>
                             </tr>
                         </tbody>
                     </table>
@@ -554,24 +853,24 @@ Thank you for your business!</textarea>
                     <div class="quote-totals">
                         <div class="total-row">
                             <span>Subtotal:</span>
-                            <span id="previewSubtotal">$2,000.00</span>
+                            <span id="previewSubtotal">$4,300.00</span>
                         </div>
                         <div class="total-row" id="discountRow" style="display: none;">
                             <span>Discount (<span id="previewDiscountRate">0</span>%):</span>
                             <span id="previewDiscount">$0.00</span>
                         </div>
                         <div class="total-row">
-                            <span>Tax (<span id="previewTaxRate">10</span>%):</span>
-                            <span id="previewTax">$200.00</span>
+                            <span>Tax (<span id="previewTaxRate">8.5</span>%):</span>
+                            <span id="previewTax">$365.50</span>
                         </div>
                         <div class="total-row final">
-                            <span>Total:</span>
-                            <span id="previewTotal">$2,200.00</span>
+                            <span>⚡ TOTAL:</span>
+                            <span id="previewTotal">$4,665.50</span>
                         </div>
                     </div>
                     
                     <div class="quote-footer">
-                        <div id="previewNotes">Payment due within 30 days.<br>Thank you for your business!</div>
+                        <div id="previewNotes">Payment due within 30 days.<br>Project delivery in 2-3 weeks.<br>Thank you for choosing NeonTech! ⚡</div>
                     </div>
                 </div>
             </div>
@@ -579,6 +878,35 @@ Thank you for your business!</textarea>
     </div>
 
     <script>
+        // Theme Management
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            
+            // Update button states
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Save theme preference
+            localStorage.setItem('neon-quote-theme', theme);
+        }
+
+        // Load saved theme
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('neon-quote-theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            
+            // Update button states
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if ((savedTheme === 'light' && btn.textContent.includes('Light')) ||
+                    (savedTheme === 'dark' && btn.textContent.includes('Dark'))) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
         // Set default dates
         document.getElementById('quoteDate').value = new Date().toISOString().split('T')[0];
         const validDate = new Date();
@@ -588,7 +916,8 @@ Thank you for your business!</textarea>
         // Auto-update on input change
         document.addEventListener('input', updateQuote);
         
-        // Initial update
+        // Load theme and initial update
+        loadTheme();
         updateQuote();
         
         function addItem() {
@@ -609,15 +938,47 @@ Thank you for your business!</textarea>
                 input.addEventListener('input', updateQuote);
             });
             
+            // Add hover animation
+            setTimeout(() => {
+                newItem.style.transform = 'translateX(0)';
+                newItem.style.opacity = '1';
+            }, 100);
+            
             updateQuote();
         }
         
         function removeItem(button) {
             if (document.querySelectorAll('.item').length > 1) {
-                button.parentElement.remove();
-                updateQuote();
+                const item = button.parentElement;
+                item.style.transform = 'translateX(-100px)';
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    item.remove();
+                    updateQuote();
+                }, 300);
             } else {
-                alert('At least one item is required.');
+                // Create a more stylish alert
+                const alertDiv = document.createElement('div');
+                alertDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #ff0040, #ff4081);
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
+                    z-index: 1000;
+                    font-weight: bold;
+                    animation: neonPulse 0.5s ease-in-out;
+                `;
+                alertDiv.textContent = '⚡ At least one item is required! ⚡';
+                document.body.appendChild(alertDiv);
+                
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 2000);
             }
         }
         
@@ -731,8 +1092,59 @@ Thank you for your business!</textarea>
         }
         
         function printQuote() {
-            window.print();
+            // Add a neon flash effect before printing
+            const container = document.querySelector('.container');
+            container.style.animation = 'neonGlow 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                window.print();
+                container.style.animation = 'neonGlow 3s ease-in-out infinite';
+            }, 500);
         }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click ripple effect to buttons
+            document.querySelectorAll('.btn, .add-btn, .theme-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+                        border-radius: 50%;
+                        pointer-events: none;
+                        animation: ripple 0.6s linear;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+
+        // Add ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
