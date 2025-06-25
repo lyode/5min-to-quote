@@ -12,7 +12,7 @@
         }
 
         :root {
-            /* Dark Theme Base */
+            /* Dark Theme (Default) */
             --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #000000 100%);
             --bg-secondary: rgba(255, 255, 255, 0.06);
             --bg-glass: rgba(255, 255, 255, 0.08);
@@ -20,8 +20,6 @@
             --text-primary: #ffffff;
             --text-secondary: #b8b8b8;
             --text-muted: #888888;
-            
-            /* Subtle Neon Colors */
             --neon-primary: rgba(0, 255, 255, 0.6);
             --neon-secondary: rgba(255, 0, 255, 0.6);
             --neon-accent: rgba(255, 255, 0, 0.6);
@@ -29,8 +27,6 @@
             --neon-danger: rgba(255, 0, 64, 0.7);
             --malaysia-gold: rgba(255, 215, 0, 0.7);
             --malaysia-blue: rgba(0, 71, 171, 0.7);
-            
-            /* Glass Effects */
             --glass-border: rgba(255, 255, 255, 0.15);
             --glass-shadow: rgba(0, 0, 0, 0.2);
             --subtle-glow: 0 0 8px;
@@ -50,7 +46,125 @@
             --glass-shadow: rgba(0, 0, 0, 0.08);
             --neon-primary: rgba(0, 150, 150, 0.8);
             --neon-secondary: rgba(150, 0, 150, 0.8);
+            --neon-accent: rgba(200, 200, 0, 0.8);
+            --neon-success: rgba(0, 180, 0, 0.8);
+            --neon-danger: rgba(220, 0, 64, 0.9);
             --malaysia-gold: rgba(200, 165, 0, 0.9);
+            --malaysia-blue: rgba(0, 71, 171, 0.8);
+        }
+
+        [data-theme="ocean"] {
+            --bg-primary: linear-gradient(135deg, #001122 0%, #003366 25%, #0066aa 50%, #004488 75%, #002244 100%);
+            --bg-secondary: rgba(173, 216, 230, 0.08);
+            --bg-glass: rgba(173, 216, 230, 0.12);
+            --bg-glass-hover: rgba(173, 216, 230, 0.16);
+            --text-primary: #e6f3ff;
+            --text-secondary: #b3d9ff;
+            --text-muted: #80c5ff;
+            --neon-primary: rgba(0, 191, 255, 0.7);
+            --neon-secondary: rgba(0, 123, 255, 0.7);
+            --neon-accent: rgba(64, 224, 208, 0.7);
+            --neon-success: rgba(0, 255, 127, 0.7);
+            --neon-danger: rgba(255, 69, 0, 0.8);
+            --malaysia-gold: rgba(255, 215, 0, 0.8);
+            --malaysia-blue: rgba(0, 123, 255, 0.8);
+            --glass-border: rgba(173, 216, 230, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="forest"] {
+            --bg-primary: linear-gradient(135deg, #0d1b0d 0%, #1a3d1a 25%, #2d5a2d 50%, #1f4a1f 75%, #0f2b0f 100%);
+            --bg-secondary: rgba(144, 238, 144, 0.08);
+            --bg-glass: rgba(144, 238, 144, 0.12);
+            --bg-glass-hover: rgba(144, 238, 144, 0.16);
+            --text-primary: #e8ffe8;
+            --text-secondary: #ccffcc;
+            --text-muted: #99ee99;
+            --neon-primary: rgba(50, 205, 50, 0.7);
+            --neon-secondary: rgba(34, 139, 34, 0.7);
+            --neon-accent: rgba(154, 205, 50, 0.7);
+            --neon-success: rgba(0, 255, 0, 0.7);
+            --neon-danger: rgba(220, 20, 60, 0.8);
+            --malaysia-gold: rgba(255, 215, 0, 0.8);
+            --malaysia-blue: rgba(70, 130, 180, 0.8);
+            --glass-border: rgba(144, 238, 144, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="sunset"] {
+            --bg-primary: linear-gradient(135deg, #2d1b0d 0%, #5d2a1a 25%, #8b3a2d 50%, #6b2f1f 75%, #3d1f0f 100%);
+            --bg-secondary: rgba(255, 165, 0, 0.08);
+            --bg-glass: rgba(255, 165, 0, 0.12);
+            --bg-glass-hover: rgba(255, 165, 0, 0.16);
+            --text-primary: #fff5e6;
+            --text-secondary: #ffcc99;
+            --text-muted: #ff9966;
+            --neon-primary: rgba(255, 140, 0, 0.7);
+            --neon-secondary: rgba(255, 69, 0, 0.7);
+            --neon-accent: rgba(255, 215, 0, 0.7);
+            --neon-success: rgba(255, 165, 0, 0.7);
+            --neon-danger: rgba(220, 20, 60, 0.8);
+            --malaysia-gold: rgba(255, 215, 0, 0.9);
+            --malaysia-blue: rgba(255, 140, 0, 0.8);
+            --glass-border: rgba(255, 165, 0, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="nebula"] {
+            --bg-primary: linear-gradient(135deg, #1a0d2e 0%, #3d1a78 25%, #6a2c91 50%, #4d1e6b 75%, #2e0d45 100%);
+            --bg-secondary: rgba(186, 85, 211, 0.08);
+            --bg-glass: rgba(186, 85, 211, 0.12);
+            --bg-glass-hover: rgba(186, 85, 211, 0.16);
+            --text-primary: #f3e6ff;
+            --text-secondary: #d9b3ff;
+            --text-muted: #bf80ff;
+            --neon-primary: rgba(138, 43, 226, 0.7);
+            --neon-secondary: rgba(186, 85, 211, 0.7);
+            --neon-accent: rgba(147, 112, 219, 0.7);
+            --neon-success: rgba(186, 85, 211, 0.7);
+            --neon-danger: rgba(255, 20, 147, 0.8);
+            --malaysia-gold: rgba(255, 215, 0, 0.8);
+            --malaysia-blue: rgba(138, 43, 226, 0.8);
+            --glass-border: rgba(186, 85, 211, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="rose"] {
+            --bg-primary: linear-gradient(135deg, #2e1a1a 0%, #5d3333 25%, #8b4d4d 50%, #6b3a3a 75%, #3d2020 100%);
+            --bg-secondary: rgba(255, 182, 193, 0.08);
+            --bg-glass: rgba(255, 182, 193, 0.12);
+            --bg-glass-hover: rgba(255, 182, 193, 0.16);
+            --text-primary: #ffe6ea;
+            --text-secondary: #ffb3c1;
+            --text-muted: #ff8099;
+            --neon-primary: rgba(255, 105, 180, 0.7);
+            --neon-secondary: rgba(219, 112, 147, 0.7);
+            --neon-accent: rgba(255, 182, 193, 0.7);
+            --neon-success: rgba(255, 105, 180, 0.7);
+            --neon-danger: rgba(220, 20, 60, 0.8);
+            --malaysia-gold: rgba(255, 215, 0, 0.8);
+            --malaysia-blue: rgba(255, 105, 180, 0.8);
+            --glass-border: rgba(255, 182, 193, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="mono"] {
+            --bg-primary: linear-gradient(135deg, #1a1a1a 0%, #333333 25%, #4d4d4d 50%, #404040 75%, #262626 100%);
+            --bg-secondary: rgba(255, 255, 255, 0.08);
+            --bg-glass: rgba(255, 255, 255, 0.10);
+            --bg-glass-hover: rgba(255, 255, 255, 0.14);
+            --text-primary: #f5f5f5;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --neon-primary: rgba(255, 255, 255, 0.6);
+            --neon-secondary: rgba(200, 200, 200, 0.6);
+            --neon-accent: rgba(240, 240, 240, 0.6);
+            --neon-success: rgba(255, 255, 255, 0.6);
+            --neon-danger: rgba(255, 255, 255, 0.7);
+            --malaysia-gold: rgba(255, 255, 255, 0.7);
+            --malaysia-blue: rgba(200, 200, 200, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: rgba(0, 0, 0, 0.4);
         }
 
         body {
@@ -72,16 +186,17 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 20%, rgba(0, 255, 255, 0.02) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.02) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(255, 215, 0, 0.02) 0%, transparent 50%);
+                radial-gradient(circle at 20% 20%, var(--neon-primary) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--neon-secondary) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, var(--neon-accent) 0%, transparent 50%);
+            opacity: 0.02;
             z-index: -1;
             animation: backgroundFlow 12s ease-in-out infinite alternate;
         }
 
         @keyframes backgroundFlow {
-            0% { transform: scale(1) rotate(0deg); opacity: 0.3; }
-            100% { transform: scale(1.05) rotate(0.5deg); opacity: 0.5; }
+            0% { transform: scale(1) rotate(0deg); opacity: 0.02; }
+            100% { transform: scale(1.05) rotate(0.5deg); opacity: 0.04; }
         }
 
         @keyframes subtleNeonBorder {
@@ -158,9 +273,10 @@
 
         .header {
             background: linear-gradient(135deg, 
-                rgba(0, 255, 255, 0.05), 
-                rgba(255, 0, 255, 0.05), 
-                rgba(255, 215, 0, 0.05));
+                var(--neon-primary), 
+                var(--neon-secondary), 
+                var(--malaysia-gold));
+            opacity: 0.05;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             color: var(--text-primary);
@@ -171,7 +287,7 @@
         }
 
         .header::before {
-            content: '🇲🇾';
+            content: '⭐';
             position: absolute;
             top: 15px;
             left: 20px;
@@ -194,13 +310,14 @@
             margin-top: 5px;
         }
 
-        .theme-toggle {
+        .theme-selector {
             position: absolute;
             top: 15px;
             right: 15px;
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
+            max-width: 300px;
         }
 
         .theme-btn {
@@ -208,22 +325,46 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
-            padding: 8px 12px;
-            border-radius: 20px;
-            color: var(--text-primary);
-            font-weight: 600;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.8rem;
             box-shadow: var(--subtle-glow) var(--neon-primary);
+            position: relative;
+            overflow: hidden;
         }
 
-        .theme-btn:hover, .theme-btn.active {
-            background: var(--bg-glass-hover);
-            transform: translateY(-2px) scale(1.02);
+        .theme-btn::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .theme-btn.active {
+            transform: scale(1.1);
             box-shadow: var(--medium-glow) var(--neon-primary);
             border-color: var(--neon-primary);
         }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Theme Button Colors */
+        .theme-btn[data-theme="dark"]::before { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+        .theme-btn[data-theme="light"]::before { background: linear-gradient(135deg, #f5f7fa, #c3cfe2); }
+        .theme-btn[data-theme="ocean"]::before { background: linear-gradient(135deg, #001122, #0066aa); }
+        .theme-btn[data-theme="forest"]::before { background: linear-gradient(135deg, #0d1b0d, #2d5a2d); }
+        .theme-btn[data-theme="sunset"]::before { background: linear-gradient(135deg, #2d1b0d, #8b3a2d); }
+        .theme-btn[data-theme="nebula"]::before { background: linear-gradient(135deg, #1a0d2e, #6a2c91); }
+        .theme-btn[data-theme="rose"]::before { background: linear-gradient(135deg, #2e1a1a, #8b4d4d); }
+        .theme-btn[data-theme="mono"]::before { background: linear-gradient(135deg, #1a1a1a, #4d4d4d); }
 
         .main-content {
             display: grid;
@@ -629,9 +770,10 @@
 
         .quote-letterhead {
             background: linear-gradient(135deg, 
-                rgba(0, 255, 255, 0.03), 
-                rgba(255, 215, 0, 0.03), 
-                rgba(255, 0, 255, 0.03));
+                var(--neon-primary), 
+                var(--neon-accent), 
+                var(--neon-secondary));
+            opacity: 0.03;
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             padding: 20px;
@@ -893,6 +1035,31 @@
             text-shadow: 0 0 5px var(--neon-danger);
         }
 
+        /* Theme Selector Labels */
+        .theme-tooltip {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            border: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .theme-btn:hover .theme-tooltip {
+            opacity: 1;
+        }
+
         /* Mobile Specific Optimizations */
         @media (max-width: 768px) {
             body {
@@ -914,15 +1081,16 @@
                 left: 15px;
             }
 
-            .theme-toggle {
+            .theme-selector {
                 top: 12px;
                 right: 12px;
-                gap: 6px;
+                gap: 4px;
+                max-width: 200px;
             }
 
             .theme-btn {
-                padding: 6px 10px;
-                font-size: 0.75rem;
+                width: 28px;
+                height: 28px;
             }
 
             .form-section, .preview-section {
@@ -1037,7 +1205,7 @@
                 display: none;
             }
             
-            .form-section, .theme-toggle {
+            .form-section, .theme-selector {
                 display: none;
             }
             
@@ -1105,9 +1273,31 @@
 <body data-theme="dark">
     <div class="container">
         <div class="header">
-            <div class="theme-toggle">
-                <button class="theme-btn" onclick="setTheme('light')">🌞 Light</button>
-                <button class="theme-btn active" onclick="setTheme('dark')">🌙 Dark</button>
+            <div class="theme-selector">
+                <button class="theme-btn active" data-theme="dark" onclick="setTheme('dark')">
+                    <div class="theme-tooltip">Dark</div>
+                </button>
+                <button class="theme-btn" data-theme="light" onclick="setTheme('light')">
+                    <div class="theme-tooltip">Light</div>
+                </button>
+                <button class="theme-btn" data-theme="ocean" onclick="setTheme('ocean')">
+                    <div class="theme-tooltip">Ocean</div>
+                </button>
+                <button class="theme-btn" data-theme="forest" onclick="setTheme('forest')">
+                    <div class="theme-tooltip">Forest</div>
+                </button>
+                <button class="theme-btn" data-theme="sunset" onclick="setTheme('sunset')">
+                    <div class="theme-tooltip">Sunset</div>
+                </button>
+                <button class="theme-btn" data-theme="nebula" onclick="setTheme('nebula')">
+                    <div class="theme-tooltip">Nebula</div>
+                </button>
+                <button class="theme-btn" data-theme="rose" onclick="setTheme('rose')">
+                    <div class="theme-tooltip">Rose</div>
+                </button>
+                <button class="theme-btn" data-theme="mono" onclick="setTheme('mono')">
+                    <div class="theme-tooltip">Mono</div>
+                </button>
             </div>
             <h1>Professional Quotation Generator</h1>
             <p>Create stunning business quotes with advanced technology</p>
@@ -1147,7 +1337,7 @@
                     </div>
                     <div class="form-group">
                         <label>Company Tagline</label>
-                        <input type="text" id="companyTagline" placeholder="Your business tagline" value="Powering Malaysia's Digital Future">
+                        <input type="text" id="companyTagline" placeholder="Your business tagline" value="Powering Digital Innovation">
                     </div>
                     <div class="form-row-3">
                         <div class="form-group">
@@ -1296,7 +1486,7 @@ Project Duration: 8-12 weeks
 Warranty: 12 months technical support included
 Bank: CIMB Bank 8008123456 (NeonTech Solutions Sdn Bhd)
 
-Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
+Thank you for your business!</textarea>
                     </div>
                 </div>
 
@@ -1322,7 +1512,7 @@ Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
                             </div>
                             <div class="company-info">
                                 <div class="company-name" id="previewCompanyName">NeonTech Solutions Sdn Bhd</div>
-                                <div class="company-tagline" id="previewCompanyTagline">Powering Malaysia's Digital Future</div>
+                                <div class="company-tagline" id="previewCompanyTagline">Powering Digital Innovation</div>
                                 <div class="company-details">
                                     <div class="contact-item">
                                         <span class="icon">📞</span>
@@ -1388,7 +1578,7 @@ Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
                                 <p><strong>Valid Until:</strong> <span id="previewValidUntil">July 24, 2025</span></p>
                                 <p><strong>Currency:</strong> <span id="previewCurrency">Malaysian Ringgit (RM)</span></p>
                                 <div style="margin-top: 10px; padding: 8px; background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,255,255,0.05)); border-radius: 6px; border: 1px solid var(--malaysia-gold);">
-                                    <p style="text-align: center; font-weight: bold; color: var(--malaysia-gold); font-size: 0.8rem;">🇲🇾 Made in Malaysia 🇲🇾</p>
+                                    <p style="text-align: center; font-weight: bold; color: var(--malaysia-gold); font-size: 0.8rem;">⭐ Professional Service ⭐</p>
                                 </div>
                             </div>
                         </div>
@@ -1438,15 +1628,15 @@ Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
                                 <span id="previewTax">RM 2,880.00</span>
                             </div>
                             <div class="total-row final">
-                                <span>🇲🇾 TOTAL:</span>
+                                <span>⭐ TOTAL:</span>
                                 <span id="previewTotal">RM 50,880.00</span>
                             </div>
                         </div>
                     </div>
                     
                     <div class="quote-footer">
-                        <div id="previewNotes">Payment Terms: 30% deposit, 70% upon completion<br>Project Duration: 8-12 weeks<br>Warranty: 12 months technical support included<br>Bank: CIMB Bank 8008123456 (NeonTech Solutions Sdn Bhd)<br><br>Terima kasih atas kepercayaan anda! 🇲🇾</div>
-                        <div class="malaysia-footer">Proudly Malaysian • Teknologi Neon untuk Masa Depan</div>
+                        <div id="previewNotes">Payment Terms: 30% deposit, 70% upon completion<br>Project Duration: 8-12 weeks<br>Warranty: 12 months technical support included<br>Bank: CIMB Bank 8008123456 (NeonTech Solutions Sdn Bhd)<br><br>Thank you for your business!</div>
+                        <div class="malaysia-footer">Professional Technology Solutions • Powered by Innovation</div>
                     </div>
                 </div>
             </div>
@@ -1462,7 +1652,7 @@ Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
             document.querySelectorAll('.theme-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
             
             // Save theme preference
             localStorage.setItem('quote-theme', theme);
@@ -1476,11 +1666,8 @@ Terima kasih atas kepercayaan anda! 🇲🇾</textarea>
             // Update button states
             document.querySelectorAll('.theme-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if ((savedTheme === 'light' && btn.textContent.includes('Light')) ||
-                    (savedTheme === 'dark' && btn.textContent.includes('Dark'))) {
-                    btn.classList.add('active');
-                }
             });
+            document.querySelector(`[data-theme="${savedTheme}"]`).classList.add('active');
         }
 
         // Logo Upload Handler
