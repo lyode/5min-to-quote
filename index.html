@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Quotation Generator</title>
+    <title>QuoteFlow - Mobile Quotation Generator</title>
     <style>
         :root {
             /* Light Mode Colors */
             --bg-primary: #ffffff;
             --bg-secondary: #f8f9fa;
             --bg-tertiary: #e9ecef;
+            --bg-card: #ffffff;
             --text-primary: #2c3e50;
             --text-secondary: #34495e;
             --text-muted: #7f8c8d;
             --border-color: #e0e0e0;
             --border-focus: #3498db;
             --shadow-light: rgba(0,0,0,0.1);
-            --shadow-medium: rgba(0,0,0,0.2);
-            --shadow-heavy: rgba(0,0,0,0.3);
+            --shadow-medium: rgba(0,0,0,0.15);
+            --shadow-heavy: rgba(0,0,0,0.25);
+            --overlay: rgba(0,0,0,0.5);
             
             /* Theme Colors - Default Blue */
             --theme-primary: #3498db;
             --theme-secondary: #2980b9;
             --theme-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            --theme-light: rgba(52, 152, 219, 0.1);
             
-            /* Component Specific */
-            --header-bg: linear-gradient(45deg, var(--text-primary), var(--theme-primary));
-            --section-border: var(--theme-primary);
-            --input-bg: var(--bg-primary);
-            --button-shadow: var(--shadow-medium);
+            /* Status Colors */
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #17a2b8;
         }
 
         /* Dark Mode Variables */
@@ -37,16 +39,15 @@
             --bg-primary: #1a1a2e;
             --bg-secondary: #16213e;
             --bg-tertiary: #0f3460;
+            --bg-card: #16213e;
             --text-primary: #ffffff;
             --text-secondary: #ecf0f1;
             --text-muted: #bdc3c7;
             --border-color: #34495e;
-            --border-focus: var(--theme-primary);
             --shadow-light: rgba(0,0,0,0.3);
             --shadow-medium: rgba(0,0,0,0.4);
             --shadow-heavy: rgba(0,0,0,0.6);
-            --input-bg: var(--bg-secondary);
-            --header-bg: linear-gradient(45deg, var(--bg-tertiary), var(--theme-primary));
+            --overlay: rgba(0,0,0,0.7);
         }
 
         /* Theme Color Variations */
@@ -54,145 +55,794 @@
             --theme-primary: #8e44ad;
             --theme-secondary: #9b59b6;
             --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            --theme-light: rgba(142, 68, 173, 0.1);
         }
-
         [data-color="cyan"] {
             --theme-primary: #00d2d3;
             --theme-secondary: #01a3a4;
             --theme-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #0066ff 0%, #00f5ff 100%);
+            --theme-light: rgba(0, 210, 211, 0.1);
         }
-
         [data-color="pink"] {
             --theme-primary: #ff006e;
             --theme-secondary: #8338ec;
             --theme-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #8338ec 0%, #ff006e 100%);
+            --theme-light: rgba(255, 0, 110, 0.1);
         }
-
         [data-color="green"] {
             --theme-primary: #00cc44;
             --theme-secondary: #00ff88;
             --theme-gradient: linear-gradient(135deg, #00ff88 0%, #00cc44 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #00cc44 0%, #00ff88 100%);
+            --theme-light: rgba(0, 204, 68, 0.1);
         }
-
         [data-color="orange"] {
             --theme-primary: #ff6b00;
             --theme-secondary: #ff3300;
             --theme-gradient: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #ff3300 0%, #ff6b00 100%);
+            --theme-light: rgba(255, 107, 0, 0.1);
         }
-
         [data-color="red"] {
             --theme-primary: #e74c3c;
             --theme-secondary: #c0392b;
             --theme-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            --theme-light: rgba(231, 76, 60, 0.1);
         }
-
         [data-color="indigo"] {
             --theme-primary: #6366f1;
             --theme-secondary: #4f46e5;
             --theme-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            --theme-light: rgba(99, 102, 241, 0.1);
         }
-
         [data-color="emerald"] {
             --theme-primary: #10b981;
             --theme-secondary: #059669;
             --theme-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            --theme-gradient-reverse: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            --theme-light: rgba(16, 185, 129, 0.1);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--theme-gradient);
-            min-height: 100vh;
-            padding: 10px;
-            transition: all 0.5s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-secondary);
             color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 80px;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Theme Control Panel */
-        .theme-control-panel {
+        /* Mobile Header */
+        .mobile-header {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
-            background: var(--bg-primary);
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px var(--shadow-light);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 25px var(--shadow-medium);
-            transform: translateX(calc(100% - 70px));
-            transition: transform 0.3s ease;
-            border: 1px solid var(--border-color);
-            max-width: 280px;
         }
 
-        .theme-control-panel:hover,
-        .theme-control-panel.open {
-            transform: translateX(0);
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            max-width: 100%;
         }
 
-        .theme-toggle-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--theme-gradient);
-            border: none;
+        .app-branding {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--theme-primary);
             cursor: pointer;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            font-size: 24px;
-            color: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .app-title.editing {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--theme-primary);
+            padding: 0;
+            outline: none;
+            width: 100%;
+        }
+
+        .app-slogan {
+            font-size: 12px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .app-slogan.editing {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 12px;
+            color: var(--text-muted);
+            padding: 0;
+            outline: none;
+            width: 100%;
+        }
+
+        .edit-icon {
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--theme-light);
+            color: var(--theme-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px var(--shadow-medium);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
         }
 
-        .theme-toggle-btn:hover {
-            transform: scale(1.1) rotate(45deg);
+        .header-btn:hover, .header-btn:active {
+            background: var(--theme-primary);
+            color: white;
+            transform: scale(0.95);
         }
 
-        .theme-section {
-            margin-bottom: 20px;
+        /* Step Progress */
+        .step-progress {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
         }
 
-        .theme-section h4 {
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 600;
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 10px;
         }
 
-        /* Light/Dark Mode Toggle */
-        .mode-toggle {
+        .progress-fill {
+            height: 100%;
+            background: var(--theme-gradient);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 20%;
+        }
+
+        .step-info {
             display: flex;
-            background: var(--bg-secondary);
-            border-radius: 25px;
-            padding: 4px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border-color);
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .mode-option {
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .step-counter {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--theme-light);
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 140px;
+            padding: 0 20px 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px var(--shadow-light);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card.active {
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--theme-light);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .card-title.editing {
+            background: none;
+            border: none;
+            font-family: inherit;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            padding: 0;
+            outline: none;
             flex: 1;
+        }
+
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--theme-primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-btn {
             padding: 8px 16px;
             border: none;
             border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .save-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .card-btn:hover, .card-btn:active {
+            transform: scale(0.95);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 3px var(--theme-light);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+            appearance: none;
+        }
+
+        /* Logo Upload */
+        .logo-upload {
+            border: 2px dashed var(--theme-primary);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--theme-light);
+            margin-bottom: 20px;
+        }
+
+        .logo-upload:hover {
+            border-color: var(--theme-secondary);
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .logo-upload.has-logo {
+            border-style: solid;
+            border-color: var(--success);
+            background: rgba(39, 174, 96, 0.1);
+        }
+
+        .logo-preview {
+            max-width: 150px;
+            max-height: 80px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .logo-preview.visible {
+            display: block;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            color: var(--theme-primary);
+        }
+
+        .logo-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .logo-upload:hover .logo-text {
+            color: white;
+        }
+
+        .logo-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .logo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 12px;
+        }
+
+        .upload-btn {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .remove-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Line Items */
+        .line-items {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .line-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .line-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--theme-gradient);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .line-item-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .item-number {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--theme-light);
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .remove-item {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--danger);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+        }
+
+        .item-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 1fr 80px;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .price-row {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 10px;
+            align-items: end;
+        }
+
+        .total-display {
+            background: var(--theme-light);
+            border: 2px solid var(--theme-primary);
+            color: var(--theme-primary);
+            font-weight: 600;
+            text-align: right;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+        }
+
+        /* Totals */
+        .totals-card {
+            background: var(--theme-gradient);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 6px 20px var(--shadow-medium);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .total-row:last-child {
+            margin-bottom: 0;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .tax-input {
+            width: 80px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .tax-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Read Mode */
+        .read-display {
+            display: none;
+            grid-gap: 15px;
+        }
+
+        .card.read-mode .read-display {
+            display: block;
+        }
+
+        .card.read-mode .form-grid {
+            display: none;
+        }
+
+        .read-item {
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            border-left: 4px solid var(--theme-primary);
+            margin-bottom: 12px;
+        }
+
+        .read-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .read-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .btn-primary {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #229954);
+            color: white;
+        }
+
+        .action-btn:hover, .action-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-medium);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--theme-gradient);
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--shadow-heavy);
+            z-index: 998;
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover, .fab:active {
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 -4px 20px var(--shadow-light);
+        }
+
+        .nav-container {
+            display: flex;
+            height: 80px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+        }
+
+        .nav-item.active {
+            color: var(--theme-primary);
+            background: var(--theme-light);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Theme Drawer */
+        .theme-drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-card);
+            box-shadow: -4px 0 20px var(--shadow-heavy);
+            z-index: 1500;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .theme-drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .drawer-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-drawer {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .drawer-content {
+            padding: 20px;
+        }
+
+        .theme-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .mode-option {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
             font-weight: 600;
             background: transparent;
             color: var(--text-secondary);
@@ -201,36 +851,27 @@
         .mode-option.active {
             background: var(--theme-gradient);
             color: white;
-            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
-        /* Color Theme Grid */
         .color-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
         .color-option {
-            width: 40px;
-            height: 40px;
+            aspect-ratio: 1;
             border: none;
-            border-radius: 50%;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-            border: 2px solid transparent;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px var(--shadow-medium);
+            border: 3px solid transparent;
         }
 
         .color-option.active {
             border-color: var(--text-primary);
-            box-shadow: 0 0 0 3px var(--bg-primary);
+            transform: scale(1.1);
         }
 
         .color-option::after {
@@ -241,7 +882,7 @@
             transform: translate(-50%, -50%);
             color: white;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -261,95 +902,68 @@
         .color-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
         .color-emerald { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
 
-        /* Customer Records Panel */
-        .customer-panel {
+        /* Customer Drawer */
+        .customer-drawer {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: var(--bg-primary);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 25px var(--shadow-medium);
-            transform: translateX(calc(-100% + 70px));
-            transition: transform 0.3s ease;
-            max-width: 320px;
-            max-height: 70vh;
+            top: 0;
+            left: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--bg-card);
+            box-shadow: 4px 0 20px var(--shadow-heavy);
+            z-index: 1500;
+            transition: left 0.3s ease;
             overflow-y: auto;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .customer-drawer.open {
+            left: 0;
+        }
+
+        .customer-form {
+            background: var(--bg-secondary);
+            margin: 20px;
+            padding: 20px;
+            border-radius: 12px;
             border: 1px solid var(--border-color);
-        }
-
-        .customer-panel:hover,
-        .customer-panel.open {
-            transform: translateX(0);
-        }
-
-        .customer-toggle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--theme-gradient);
-            border: none;
-            cursor: pointer;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            font-size: 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px var(--shadow-medium);
-        }
-
-        .customer-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .customer-records {
-            display: none;
-        }
-
-        .customer-records.show {
-            display: block;
         }
 
         .customer-record {
             background: var(--bg-secondary);
-            border-radius: 12px;
+            margin: 20px;
             padding: 15px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             cursor: pointer;
             transition: all 0.3s ease;
             border-left: 4px solid var(--theme-primary);
-            border: 1px solid var(--border-color);
         }
 
         .customer-record:hover {
             background: var(--bg-tertiary);
             transform: translateX(5px);
-            box-shadow: 0 4px 12px var(--shadow-light);
         }
 
-        .customer-record h4 {
+        .customer-name {
+            font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 6px;
-            font-size: 14px;
+            margin-bottom: 5px;
         }
 
-        .customer-record p {
-            color: var(--text-muted);
+        .customer-info {
             font-size: 12px;
-            margin-bottom: 4px;
+            color: var(--text-muted);
+            margin-bottom: 3px;
         }
 
         .customer-actions {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             margin-top: 10px;
         }
 
-        .customer-action-btn {
+        .customer-btn {
             padding: 6px 12px;
             border: none;
             border-radius: 15px;
@@ -359,469 +973,57 @@
             font-weight: 600;
         }
 
-        .load-btn {
-            background: linear-gradient(45deg, #27ae60, #229954);
+        .load-customer {
+            background: var(--success);
             color: white;
         }
 
-        .save-btn {
-            background: var(--theme-gradient);
+        .delete-customer {
+            background: var(--danger);
             color: white;
         }
 
-        .delete-btn {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .customer-action-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 2px 8px var(--shadow-light);
-        }
-
-        .new-customer-form {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 18px;
-            border: 1px solid var(--border-color);
-        }
-
-        .new-customer-form h5 {
-            color: var(--text-primary);
-            margin-bottom: 12px;
-            font-size: 13px;
-        }
-
-        .new-customer-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 12px;
-            background: var(--input-bg);
-            color: var(--text-primary);
-            transition: border-color 0.3s ease;
-        }
-
-        .new-customer-form input:focus {
-            outline: none;
-            border-color: var(--border-focus);
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: var(--bg-primary);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px var(--shadow-medium);
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-        }
-
-        .header {
-            background: var(--header-bg);
-            color: white;
-            padding: 40px 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1em;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: var(--bg-secondary);
-            border-radius: 15px;
-            border-left: 4px solid var(--section-border);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .form-section::before {
-            content: '';
-            position: absolute;
+        /* Overlay */
+        .overlay {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: var(--theme-gradient);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .form-section:focus-within::before {
-            opacity: 1;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .form-section h3 {
-            color: var(--text-primary);
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-
-        .edit-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .save-btn, .cancel-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .edit-btn {
-            background: var(--theme-gradient);
-            color: white;
-        }
-
-        .save-btn {
-            background: linear-gradient(45deg, #27ae60, #229954);
-            color: white;
-        }
-
-        .cancel-btn {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .edit-btn:hover, .save-btn:hover, .cancel-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow-light);
-        }
-
-        .read-display {
-            display: none;
-            background: var(--bg-primary);
-            border-radius: 10px;
-            padding: 18px;
-            margin-bottom: 20px;
-            border: 2px solid var(--border-color);
-        }
-
-        .form-section.read-mode .read-display {
-            display: block;
-        }
-
-        .form-section.read-mode .form-grid {
-            display: none;
-        }
-
-        .read-item {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .read-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .read-label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 12px;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .read-value {
-            color: var(--text-primary);
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        input, textarea, select {
-            padding: 14px;
-            border: 2px solid var(--border-color);
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: var(--input-bg);
-            color: var(--text-primary);
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--border-focus);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--shadow-light);
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-        }
-
-        /* Logo Upload Styles */
-        .logo-upload-section {
-            background: var(--bg-primary);
-            border: 2px dashed var(--theme-primary);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .logo-upload-section:hover {
-            background: var(--bg-secondary);
-            border-color: var(--theme-secondary);
-            transform: translateY(-2px);
-        }
-
-        .logo-upload-section.has-logo {
-            border-style: solid;
-            border-color: #27ae60;
-            background: var(--bg-secondary);
-        }
-
-        .logo-preview {
-            max-width: 200px;
-            max-height: 100px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: none;
-            box-shadow: 0 4px 15px var(--shadow-light);
-        }
-
-        .logo-preview.visible {
-            display: block;
-        }
-
-        .logo-upload-input {
-            display: none;
-        }
-
-        .logo-upload-btn, .logo-remove-btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 8px;
-        }
-
-        .logo-upload-btn {
-            background: var(--theme-gradient);
-            color: white;
-        }
-
-        .logo-remove-btn {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .logo-upload-btn:hover, .logo-remove-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow-light);
-        }
-
-        .logo-upload-text {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .line-items {
-            background: var(--bg-primary);
-            border-radius: 15px;
-            padding: 25px;
-            border: 2px solid var(--border-color);
-        }
-
-        .line-item {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 20px;
-            align-items: end;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            position: relative;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .line-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--shadow-light);
-        }
-
-        .line-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
             bottom: 0;
-            width: 4px;
-            background: var(--theme-gradient);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
+            background: var(--overlay);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-            min-height: 48px;
-            font-size: 14px;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            transform: translate(-50%, -50%);
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary {
-            background: var(--theme-gradient);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow-medium);
-        }
-
-        .btn-success {
-            background: linear-gradient(45deg, #27ae60, #229954);
-            color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
-        }
-
-        .btn-danger {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 10px 15px;
-            font-size: 12px;
-            min-height: auto;
-        }
-
-        .btn-danger:hover {
-            transform: scale(1.05);
-        }
-
-        .totals {
-            background: var(--theme-gradient);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 25px;
-            box-shadow: 0 6px 20px var(--shadow-light);
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 1.1em;
-        }
-
-        .final-total {
-            border-top: 2px solid rgba(255,255,255,0.3);
-            padding-top: 15px;
-            font-size: 1.4em;
-            font-weight: bold;
-        }
-
+        /* Quotation Preview */
         .quotation-preview {
-            background: var(--bg-primary);
-            border: 2px solid var(--border-color);
-            border-radius: 15px;
-            padding: 40px;
-            margin-top: 30px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            border: 1px solid var(--border-color);
             font-family: 'Times New Roman', serif;
-            color: var(--text-primary);
-            box-shadow: 0 8px 25px var(--shadow-light);
         }
 
         .quotation-header {
             text-align: center;
             border-bottom: 3px solid var(--theme-primary);
-            padding-bottom: 25px;
-            margin-bottom: 35px;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .quotation-logo {
-            max-width: 150px;
-            max-height: 75px;
-            margin-bottom: 20px;
+            max-width: 120px;
+            max-height: 60px;
+            margin-bottom: 15px;
             display: none;
         }
 
@@ -829,23 +1031,48 @@
             display: block;
         }
 
+        .quotation-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .quotation-number {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
         .quotation-details {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 35px;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .detail-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .detail-content {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.5;
         }
 
         .quotation-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            font-size: 12px;
         }
 
         .quotation-table th,
         .quotation-table td {
             border: 1px solid var(--border-color);
-            padding: 15px;
+            padding: 10px 8px;
             text-align: left;
         }
 
@@ -859,272 +1086,44 @@
             text-align: right;
         }
 
+        .quotation-totals {
+            text-align: right;
+            margin-top: 20px;
+            color: var(--text-primary);
+        }
+
+        .quotation-totals > div {
+            margin-bottom: 8px;
+        }
+
+        .quotation-total {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--theme-primary);
+            border-top: 2px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .quotation-notes {
+            margin-top: 25px;
+            color: var(--text-secondary);
+        }
+
+        .quotation-notes h4 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        /* Hidden class */
         .hidden {
-            display: none;
-        }
-
-        /* Quick Actions Panel */
-        .quick-actions {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .quick-action-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px var(--shadow-medium);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quick-action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .add-item-btn {
-            background: linear-gradient(45deg, #27ae60, #229954);
-        }
-
-        .save-all-btn {
-            background: linear-gradient(45deg, #f39c12, #e67e22);
-        }
-
-        .generate-btn {
-            background: var(--theme-gradient);
-        }
-
-        /* Mobile Navigation */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(44, 62, 80, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            z-index: 1000;
-            border-radius: 20px 20px 0 0;
-            box-shadow: 0 -10px 30px var(--shadow-medium);
-        }
-
-        .mobile-nav-buttons {
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
-        }
-
-        .mobile-nav-btn {
-            flex: 1;
-            padding: 12px 8px;
-            background: transparent;
-            border: 2px solid var(--theme-primary);
-            border-radius: 25px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .mobile-nav-btn.active {
-            background: var(--theme-primary);
-            transform: scale(1.05);
-        }
-
-        .mobile-nav-btn:hover {
-            background: var(--theme-primary);
-            transform: translateY(-2px);
-        }
-
-        /* Step Indicator */
-        .step-indicator {
-            display: none;
-            background: var(--theme-gradient);
-            color: white;
-            padding: 15px 20px;
-            margin: -30px -30px 20px -30px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .step-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .step-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transition: all 0.3s ease;
-        }
-
-        .step-dot.active {
-            background: white;
-            transform: scale(1.3);
-        }
-
-        .form-section.hidden-mobile {
-            display: none;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            body {
-                padding: 5px;
-                padding-bottom: 100px;
-            }
-
-            .container {
-                border-radius: 15px;
-                margin-bottom: 0;
-            }
-
-            .header h1 {
-                font-size: 1.8em;
-            }
-
-            .content {
-                padding: 20px 15px;
-            }
-
-            .form-section {
-                margin-bottom: 20px;
-                padding: 20px 15px;
-                border-radius: 15px;
-                border-left: none;
-                border-top: 4px solid var(--section-border);
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .line-item {
-                grid-template-columns: 1fr;
-                gap: 15px;
-                padding: 20px 15px;
-                border-radius: 15px;
-                margin-bottom: 20px;
-                background: var(--bg-primary);
-                box-shadow: 0 4px 15px var(--shadow-light);
-            }
-
-            .mobile-nav {
-                display: block;
-            }
-
-            .step-indicator {
-                display: block;
-            }
-
-            .quick-actions {
-                display: none;
-            }
-
-            .customer-panel {
-                transform: translateX(calc(-100% + 60px));
-                max-width: 280px;
-            }
-
-            .theme-control-panel {
-                transform: translateX(calc(100% - 60px));
-                max-width: 260px;
-            }
-
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-
-            .edit-controls {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .color-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .quotation-details {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .mobile-nav-btn {
-                font-size: 10px;
-                padding: 10px 6px;
-            }
-
-            .header {
-                padding: 20px 15px;
-            }
-
-            .header h1 {
-                font-size: 1.5em;
-            }
-
-            .quotation-table {
-                font-size: 12px;
-            }
-
-            .quotation-table th,
-            .quotation-table td {
-                padding: 8px 4px;
-            }
-
-            .theme-control-panel,
-            .customer-panel {
-                max-width: 240px;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .theme-control-panel,
-            .customer-panel,
-            .quick-actions,
-            .mobile-nav,
-            .edit-controls {
-                display: none !important;
-            }
-
-            .container {
-                box-shadow: none;
-                border: none;
-            }
-
-            .quotation-preview {
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
+            display: none !important;
         }
 
         /* Animations */
-        @keyframes slideInUp {
+        @keyframes slideUp {
             from {
-                transform: translateY(30px);
+                transform: translateY(20px);
                 opacity: 0;
             }
             to {
@@ -1133,92 +1132,548 @@
             }
         }
 
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
+        .card {
+            animation: slideUp 0.4s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 12px 15px;
             }
-            to {
-                opacity: 1;
-                transform: scale(1);
+
+            .main-content {
+                padding: 0 15px 20px;
+            }
+
+            .card {
+                margin-bottom: 15px;
+            }
+
+            .card-header,
+            .card-content {
+                padding: 15px;
+            }
+
+            .item-grid {
+                gap: 12px;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        .form-section {
-            animation: slideInUp 0.6s ease;
-        }
+        /* Print styles */
+        @media print {
+            .mobile-header,
+            .step-progress,
+            .bottom-nav,
+            .fab,
+            .theme-drawer,
+            .customer-drawer,
+            .overlay,
+            .card-actions {
+                display: none !important;
+            }
 
-        /* Accessibility */
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
+            .main-content {
+                margin-top: 0;
+                padding: 0;
+            }
 
-        /* Focus indicators */
-        button:focus,
-        input:focus,
-        textarea:focus,
-        select:focus {
-            outline: 2px solid var(--theme-primary);
-            outline-offset: 2px;
+            .card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+
+            .quotation-preview {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
         }
     </style>
 </head>
 <body data-theme="light" data-color="blue">
-    <!-- Theme Control Panel -->
-    <div class="theme-control-panel" id="themeControlPanel">
-        <button class="theme-toggle-btn" onclick="toggleThemePanel()" aria-label="Open theme settings">
-            🎨
-        </button>
-        
-        <div class="theme-section">
-            <h4>Display Mode</h4>
-            <div class="mode-toggle">
-                <button class="mode-option active" data-mode="light" onclick="setThemeMode('light')">
-                    ☀️ Light
-                </button>
-                <button class="mode-option" data-mode="dark" onclick="setThemeMode('dark')">
-                    🌙 Dark
-                </button>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="header-content">
+            <div class="app-branding">
+                <div class="app-title" onclick="editAppTitle()">
+                    QuoteFlow
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="app-slogan" onclick="editAppSlogan()">
+                    Professional quotes on the go
+                    <span class="edit-icon">✏️</span>
+                </div>
             </div>
-        </div>
-
-        <div class="theme-section">
-            <h4>Color Theme</h4>
-            <div class="color-grid">
-                <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')" aria-label="Blue theme"></button>
-                <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')" aria-label="Purple theme"></button>
-                <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')" aria-label="Cyan theme"></button>
-                <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')" aria-label="Pink theme"></button>
-                <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')" aria-label="Green theme"></button>
-                <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')" aria-label="Orange theme"></button>
-                <button class="color-option color-red" data-color="red" onclick="setColorTheme('red')" aria-label="Red theme"></button>
-                <button class="color-option color-indigo" data-color="indigo" onclick="setColorTheme('indigo')" aria-label="Indigo theme"></button>
-                <button class="color-option color-emerald" data-color="emerald" onclick="setColorTheme('emerald')" aria-label="Emerald theme"></button>
+            <div class="header-actions">
+                <button class="header-btn" onclick="toggleCustomerDrawer()" aria-label="Customer Records">👥</button>
+                <button class="header-btn" onclick="toggleThemeDrawer()" aria-label="Theme Settings">🎨</button>
             </div>
         </div>
     </div>
 
-    <!-- Customer Records Panel -->
-    <div class="customer-panel" id="customerPanel">
-        <button class="customer-toggle" onclick="toggleCustomerPanel()" aria-label="Open customer records">
-            👥
+    <!-- Step Progress -->
+    <div class="step-progress">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="step-info">
+            <div class="step-title" id="stepTitle">Company Details</div>
+            <div class="step-counter" id="stepCounter">1 of 5</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Company Details Card -->
+        <div class="card active" id="companyCard" data-step="0">
+            <div class="card-header">
+                <div class="card-title" onclick="editCardTitle('companyCard')">
+                    <div class="card-icon">🏢</div>
+                    <span>Company Details</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn edit-btn" onclick="toggleEditMode('companyCard')">Edit</button>
+                    <button class="card-btn save-btn" onclick="saveCard('companyCard')" style="display: none;">Save</button>
+                    <button class="card-btn cancel-btn" onclick="cancelEdit('companyCard')" style="display: none;">Cancel</button>
+                </div>
+            </div>
+            <div class="card-content">
+                <!-- Logo Upload -->
+                <div class="logo-upload" id="logoUpload" onclick="triggerLogoUpload()">
+                    <img id="logoPreview" class="logo-preview" alt="Company Logo">
+                    <div id="logoUploadContent">
+                        <div class="logo-icon">🏢</div>
+                        <div class="logo-text">Tap to upload company logo</div>
+                        <div class="logo-actions">
+                            <button type="button" class="logo-btn upload-btn">Choose Logo</button>
+                            <button type="button" class="logo-btn remove-btn" id="logoRemoveBtn" style="display: none;" onclick="removeLogo(event)">Remove</button>
+                        </div>
+                    </div>
+                    <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(event)">
+                </div>
+
+                <!-- Read Display -->
+                <div class="read-display">
+                    <div class="read-item" id="logoReadItem" style="display: none;">
+                        <div class="read-label">Company Logo</div>
+                        <div class="read-value">
+                            <img id="logoReadPreview" style="max-width: 80px; max-height: 40px; border-radius: 4px;" alt="Company Logo">
+                        </div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Company Name</div>
+                        <div class="read-value" id="read-companyName">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Address</div>
+                        <div class="read-value" id="read-companyAddress">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Phone</div>
+                        <div class="read-value" id="read-companyPhone">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Email</div>
+                        <div class="read-value" id="read-companyEmail">Not set</div>
+                    </div>
+                </div>
+
+                <!-- Form Grid -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Company Name</label>
+                        <input type="text" class="form-input" id="companyName" placeholder="Your Company Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Details Card -->
+        <div class="card" id="customerCard" data-step="1">
+            <div class="card-header">
+                <div class="card-title" onclick="editCardTitle('customerCard')">
+                    <div class="card-icon">👤</div>
+                    <span>Customer Details</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn edit-btn" onclick="toggleEditMode('customerCard')">Edit</button>
+                    <button class="card-btn save-btn" onclick="saveCard('customerCard')" style="display: none;">Save</button>
+                    <button class="card-btn cancel-btn" onclick="cancelEdit('customerCard')" style="display: none;">Cancel</button>
+                </div>
+            </div>
+            <div class="card-content">
+                <!-- Read Display -->
+                <div class="read-display">
+                    <div class="read-item">
+                        <div class="read-label">Customer Name</div>
+                        <div class="read-value" id="read-customerName">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Address</div>
+                        <div class="read-value" id="read-customerAddress">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Phone</div>
+                        <div class="read-value" id="read-customerPhone">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Email</div>
+                        <div class="read-value" id="read-customerEmail">Not set</div>
+                    </div>
+                </div>
+
+                <!-- Form Grid -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Customer Name</label>
+                        <input type="text" class="form-input" id="customerName" placeholder="Customer or company name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quotation Info Card -->
+        <div class="card" id="quotationCard" data-step="2">
+            <div class="card-header">
+                <div class="card-title" onclick="editCardTitle('quotationCard')">
+                    <div class="card-icon">📄</div>
+                    <span>Quotation Information</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn edit-btn" onclick="toggleEditMode('quotationCard')">Edit</button>
+                    <button class="card-btn save-btn" onclick="saveCard('quotationCard')" style="display: none;">Save</button>
+                    <button class="card-btn cancel-btn" onclick="cancelEdit('quotationCard')" style="display: none;">Cancel</button>
+                </div>
+            </div>
+            <div class="card-content">
+                <!-- Read Display -->
+                <div class="read-display">
+                    <div class="read-item">
+                        <div class="read-label">Quotation Number</div>
+                        <div class="read-value" id="read-quotationNumber">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Date</div>
+                        <div class="read-value" id="read-quotationDate">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Valid Until</div>
+                        <div class="read-value" id="read-validUntil">Not set</div>
+                    </div>
+                    <div class="read-item">
+                        <div class="read-label">Currency</div>
+                        <div class="read-value" id="read-currency">Not set</div>
+                    </div>
+                </div>
+
+                <!-- Form Grid -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Quotation Number</label>
+                        <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="quotationDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Valid Until</label>
+                        <input type="date" class="form-input" id="validUntil">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Currency</label>
+                        <select class="form-input form-select" id="currency">
+                            <option value="$">USD ($)</option>
+                            <option value="€">EUR (€)</option>
+                            <option value="£">GBP (£)</option>
+                            <option value="¥">JPY (¥)</option>
+                            <option value="RM">MYR (RM)</option>
+                            <option value="₹">INR (₹)</option>
+                            <option value="C$">CAD (C$)</option>
+                            <option value="₩">KRW (₩)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Card -->
+        <div class="card" id="itemsCard" data-step="3">
+            <div class="card-header">
+                <div class="card-title" onclick="editCardTitle('itemsCard')">
+                    <div class="card-icon">📦</div>
+                    <span>Products & Services</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn edit-btn" onclick="toggleEditMode('itemsCard')">Edit</button>
+                    <button class="card-btn save-btn" onclick="saveCard('itemsCard')" style="display: none;">Save</button>
+                    <button class="card-btn cancel-btn" onclick="cancelEdit('itemsCard')" style="display: none;">Cancel</button>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="line-items">
+                    <div id="lineItemsContainer">
+                        <div class="line-item">
+                            <div class="line-item-header">
+                                <span class="item-number">Item #1</span>
+                                <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                            </div>
+                            <div class="item-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                                </div>
+                                <div class="item-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Quantity</label>
+                                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Unit Price</label>
+                                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Total</label>
+                                    <div class="total-display item-total">$0.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="action-btn btn-primary" onclick="addLineItem()">
+                        <span>➕</span> Add Item
+                    </button>
+                </div>
+
+                <!-- Totals -->
+                <div class="totals-card">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Rate:</span>
+                        <div>
+                            <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
+                        </div>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Amount:</span>
+                        <span id="taxAmount">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total:</span>
+                        <span id="grandTotal">$0.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Card -->
+        <div class="card" id="notesCard" data-step="4">
+            <div class="card-header">
+                <div class="card-title" onclick="editCardTitle('notesCard')">
+                    <div class="card-icon">📝</div>
+                    <span>Terms & Notes</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn edit-btn" onclick="toggleEditMode('notesCard')">Edit</button>
+                    <button class="card-btn save-btn" onclick="saveCard('notesCard')" style="display: none;">Save</button>
+                    <button class="card-btn cancel-btn" onclick="cancelEdit('notesCard')" style="display: none;">Cancel</button>
+                </div>
+            </div>
+            <div class="card-content">
+                <!-- Read Display -->
+                <div class="read-display">
+                    <div class="read-item">
+                        <div class="read-label">Terms & Conditions / Notes</div>
+                        <div class="read-value" id="read-notes">Not set</div>
+                    </div>
+                </div>
+
+                <!-- Form Grid -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Terms & Conditions / Notes</label>
+                        <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button type="button" class="action-btn btn-success" onclick="generateQuotation()" style="font-size: 18px; margin: 30px 0;">
+            <span>📄</span> Generate Quotation
         </button>
-        <div class="customer-records" id="customerRecords">
-            <h4 style="margin-bottom: 15px; color: var(--text-primary);">Customer Records</h4>
+
+        <!-- Quotation Preview -->
+        <div id="quotationPreview" class="quotation-preview hidden">
+            <div class="quotation-header">
+                <img id="quotationLogo" class="quotation-logo" alt="Company Logo">
+                <h1 class="quotation-title">QUOTATION</h1>
+                <p class="quotation-number" id="previewQuotationNumber"></p>
+            </div>
             
-            <!-- New Customer Form -->
-            <div class="new-customer-form">
-                <h5>Save Current Customer</h5>
-                <input type="text" id="newCustomerName" placeholder="Customer Name" aria-label="Customer name for saving">
-                <button class="customer-action-btn save-btn" onclick="saveCurrentCustomer()">Save Customer</button>
+            <div class="quotation-details">
+                <div class="detail-section">
+                    <h4>From:</h4>
+                    <div class="detail-content" id="previewCompanyDetails"></div>
+                </div>
+                <div class="detail-section">
+                    <h4>To:</h4>
+                    <div class="detail-content" id="previewCustomerDetails"></div>
+                </div>
+                <div class="detail-section">
+                    <h4>Details:</h4>
+                    <div class="detail-content">
+                        <strong>Date:</strong> <span id="previewDate"></span><br>
+                        <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
+                    </div>
+                </div>
+            </div>
+
+            <table class="quotation-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Qty</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="previewLineItems">
+                </tbody>
+            </table>
+
+            <div class="quotation-totals">
+                <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
+                <div><strong>Tax:</strong> <span id="previewTax"></span></div>
+                <div class="quotation-total"><strong>Total:</strong> <span id="previewTotal"></span></div>
+            </div>
+
+            <div id="previewNotes" class="quotation-notes"></div>
+
+            <button type="button" class="action-btn btn-primary" onclick="window.print()" style="margin-top: 30px;">
+                <span>🖨️</span> Print / Save as PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- FAB -->
+    <button class="fab" onclick="addLineItem()" title="Add Item">+</button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-container">
+            <button class="nav-item active" data-step="0" onclick="navigateToStep(0)">
+                <div class="nav-icon">🏢</div>
+                <div class="nav-label">Company</div>
+            </button>
+            <button class="nav-item" data-step="1" onclick="navigateToStep(1)">
+                <div class="nav-icon">👤</div>
+                <div class="nav-label">Customer</div>
+            </button>
+            <button class="nav-item" data-step="2" onclick="navigateToStep(2)">
+                <div class="nav-icon">📄</div>
+                <div class="nav-label">Details</div>
+            </button>
+            <button class="nav-item" data-step="3" onclick="navigateToStep(3)">
+                <div class="nav-icon">📦</div>
+                <div class="nav-label">Items</div>
+            </button>
+            <button class="nav-item" data-step="4" onclick="navigateToStep(4)">
+                <div class="nav-icon">📝</div>
+                <div class="nav-label">Notes</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Theme Drawer -->
+    <div class="theme-drawer" id="themeDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title">Theme Settings</div>
+            <button class="close-drawer" onclick="toggleThemeDrawer()">×</button>
+        </div>
+        <div class="drawer-content">
+            <div class="theme-section">
+                <div class="section-title">Display Mode</div>
+                <div class="mode-toggle">
+                    <button class="mode-option active" data-mode="light" onclick="setThemeMode('light')">
+                        ☀️ Light
+                    </button>
+                    <button class="mode-option" data-mode="dark" onclick="setThemeMode('dark')">
+                        🌙 Dark
+                    </button>
+                </div>
+            </div>
+
+            <div class="theme-section">
+                <div class="section-title">Color Theme</div>
+                <div class="color-grid">
+                    <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')"></button>
+                    <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')"></button>
+                    <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')"></button>
+                    <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')"></button>
+                    <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')"></button>
+                    <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')"></button>
+                    <button class="color-option color-red" data-color="red" onclick="setColorTheme('red')"></button>
+                    <button class="color-option color-indigo" data-color="indigo" onclick="setColorTheme('indigo')"></button>
+                    <button class="color-option color-emerald" data-color="emerald" onclick="setColorTheme('emerald')"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Drawer -->
+    <div class="customer-drawer" id="customerDrawer">
+        <div class="drawer-header">
+            <div class="drawer-title">Customer Records</div>
+            <button class="close-drawer" onclick="toggleCustomerDrawer()">×</button>
+        </div>
+        <div class="drawer-content">
+            <!-- Save Current Customer Form -->
+            <div class="customer-form">
+                <div class="section-title">Save Current Customer</div>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="newCustomerName" placeholder="Customer Name">
+                </div>
+                <button class="action-btn btn-primary" onclick="saveCurrentCustomer()">
+                    <span>💾</span> Save Customer
+                </button>
             </div>
 
             <!-- Saved Customers -->
@@ -1226,472 +1681,362 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-        <button class="quick-action-btn add-item-btn" onclick="addLineItem()" title="Add Item" aria-label="Add new line item">+</button>
-        <button class="quick-action-btn save-all-btn" onclick="saveAllSections()" title="Save All" aria-label="Save all sections">💾</button>
-        <button class="quick-action-btn generate-btn" onclick="generateQuotation()" title="Generate" aria-label="Generate quotation">📄</button>
-    </div>
-
-    <div class="container">
-        <div class="header">
-            <h1>Enhanced Quotation Generator</h1>
-            <p>Create professional quotations with advanced theming and customer management</p>
-        </div>
-
-        <div class="content">
-            <!-- Mobile Step Indicator -->
-            <div class="step-indicator">
-                <div id="stepTitle">Company Details</div>
-                <div class="step-dots">
-                    <div class="step-dot active"></div>
-                    <div class="step-dot"></div>
-                    <div class="step-dot"></div>
-                    <div class="step-dot"></div>
-                    <div class="step-dot"></div>
-                </div>
-            </div>
-
-            <!-- Company Details -->
-            <div class="form-section" data-step="0" id="companySection">
-                <div class="section-header">
-                    <h3 class="section-title">Your Company Details</h3>
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="toggleEditMode('companySection')">Edit</button>
-                        <button class="save-btn" onclick="saveSection('companySection')" style="display: none;">Save</button>
-                        <button class="cancel-btn" onclick="cancelEdit('companySection')" style="display: none;">Cancel</button>
-                    </div>
-                </div>
-                
-                <!-- Company Logo Upload -->
-                <div class="logo-upload-section" id="logoUploadSection" onclick="triggerLogoUpload()">
-                    <img id="logoPreview" class="logo-preview" alt="Company Logo">
-                    <div id="logoUploadContent">
-                        <div style="font-size: 48px; color: var(--theme-primary); margin-bottom: 15px;">🏢</div>
-                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Upload Company Logo</div>
-                        <div class="logo-upload-text">Click to select logo image (PNG, JPG, SVG)</div>
-                        <button type="button" class="logo-upload-btn">Choose Logo</button>
-                        <button type="button" class="logo-remove-btn" id="logoRemoveBtn" style="display: none;" onclick="removeLogo(event)">Remove Logo</button>
-                    </div>
-                    <input type="file" id="logoUploadInput" class="logo-upload-input" accept="image/*" onchange="handleLogoUpload(event)">
-                </div>
-                
-                <div class="read-display">
-                    <div class="read-item" id="logoReadItem" style="display: none;">
-                        <div class="read-label">Company Logo:</div>
-                        <div class="read-value">
-                            <img id="logoReadPreview" style="max-width: 100px; max-height: 50px; border-radius: 4px;" alt="Company Logo">
-                        </div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Company Name:</div>
-                        <div class="read-value" id="read-companyName">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Address:</div>
-                        <div class="read-value" id="read-companyAddress">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Phone:</div>
-                        <div class="read-value" id="read-companyPhone">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Email:</div>
-                        <div class="read-value" id="read-companyEmail">Not set</div>
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="companyName">Company Name</label>
-                        <input type="text" id="companyName" placeholder="Your Company Name">
-                    </div>
-                    <div class="form-group">
-                        <label for="companyAddress">Address</label>
-                        <textarea id="companyAddress" placeholder="Your company address"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="companyPhone">Phone</label>
-                        <input type="text" id="companyPhone" placeholder="Phone number">
-                    </div>
-                    <div class="form-group">
-                        <label for="companyEmail">Email</label>
-                        <input type="email" id="companyEmail" placeholder="Email address">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Customer Details -->
-            <div class="form-section" data-step="1" id="customerSection">
-                <div class="section-header">
-                    <h3 class="section-title">Customer Details</h3>
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="toggleEditMode('customerSection')">Edit</button>
-                        <button class="save-btn" onclick="saveSection('customerSection')" style="display: none;">Save</button>
-                        <button class="cancel-btn" onclick="cancelEdit('customerSection')" style="display: none;">Cancel</button>
-                    </div>
-                </div>
-
-                <div class="read-display">
-                    <div class="read-item">
-                        <div class="read-label">Customer Name:</div>
-                        <div class="read-value" id="read-customerName">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Address:</div>
-                        <div class="read-value" id="read-customerAddress">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Phone:</div>
-                        <div class="read-value" id="read-customerPhone">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Email:</div>
-                        <div class="read-value" id="read-customerEmail">Not set</div>
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="customerName">Customer Name</label>
-                        <input type="text" id="customerName" placeholder="Customer or company name">
-                    </div>
-                    <div class="form-group">
-                        <label for="customerAddress">Customer Address</label>
-                        <textarea id="customerAddress" placeholder="Customer address"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="customerPhone">Phone</label>
-                        <input type="text" id="customerPhone" placeholder="Customer phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="customerEmail">Email</label>
-                        <input type="email" id="customerEmail" placeholder="Customer email">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quotation Details -->
-            <div class="form-section" data-step="2" id="quotationSection">
-                <div class="section-header">
-                    <h3 class="section-title">Quotation Information</h3>
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="toggleEditMode('quotationSection')">Edit</button>
-                        <button class="save-btn" onclick="saveSection('quotationSection')" style="display: none;">Save</button>
-                        <button class="cancel-btn" onclick="cancelEdit('quotationSection')" style="display: none;">Cancel</button>
-                    </div>
-                </div>
-
-                <div class="read-display">
-                    <div class="read-item">
-                        <div class="read-label">Quotation Number:</div>
-                        <div class="read-value" id="read-quotationNumber">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Date:</div>
-                        <div class="read-value" id="read-quotationDate">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Valid Until:</div>
-                        <div class="read-value" id="read-validUntil">Not set</div>
-                    </div>
-                    <div class="read-item">
-                        <div class="read-label">Currency:</div>
-                        <div class="read-value" id="read-currency">Not set</div>
-                    </div>
-                </div>
-
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="quotationNumber">Quotation Number</label>
-                        <input type="text" id="quotationNumber" placeholder="Q-001">
-                    </div>
-                    <div class="form-group">
-                        <label for="quotationDate">Date</label>
-                        <input type="date" id="quotationDate">
-                    </div>
-                    <div class="form-group">
-                        <label for="validUntil">Valid Until</label>
-                        <input type="date" id="validUntil">
-                    </div>
-                    <div class="form-group">
-                        <label for="currency">Currency</label>
-                        <select id="currency">
-                            <option value="$">USD ($)</option>
-                            <option value="€">EUR (€)</option>
-                            <option value="£">GBP (£)</option>
-                            <option value="¥">JPY (¥)</option>
-                            <option value="RM">MYR (RM)</option>
-                            <option value="₹">INR (₹)</option>
-                            <option value="¢">CAD (¢)</option>
-                            <option value="₩">KRW (₩)</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Line Items -->
-            <div class="form-section" data-step="3" id="itemsSection">
-                <div class="section-header">
-                    <h3 class="section-title">Products/Services</h3>
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="toggleEditMode('itemsSection')">Edit</button>
-                        <button class="save-btn" onclick="saveSection('itemsSection')" style="display: none;">Save</button>
-                        <button class="cancel-btn" onclick="cancelEdit('itemsSection')" style="display: none;">Cancel</button>
-                    </div>
-                </div>
-                <div class="line-items">
-                    <div id="lineItemsContainer">
-                        <div class="line-item">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <input type="text" class="item-description" placeholder="Product or service description">
-                            </div>
-                            <div class="form-group">
-                                <label>Quantity</label>
-                                <input type="number" class="item-quantity" value="1" min="1">
-                            </div>
-                            <div class="form-group">
-                                <label>Unit Price</label>
-                                <input type="number" class="item-price" step="0.01" min="0" placeholder="0.00">
-                            </div>
-                            <div class="form-group">
-                                <label>Total</label>
-                                <input type="text" class="item-total" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <button type="button" class="btn btn-danger remove-item">×</button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" id="addLineItem" class="btn btn-primary">Add Item</button>
-                </div>
-
-                <div class="totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (%):</span>
-                        <span>
-                            <input type="number" id="taxRate" value="0" min="0" max="100" step="0.1" style="width: 80px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 5px; padding: 5px;">%
-                        </span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax Amount:</span>
-                        <span id="taxAmount">$0.00</span>
-                    </div>
-                    <div class="total-row final-total">
-                        <span>Total:</span>
-                        <span id="grandTotal">$0.00</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Notes -->
-            <div class="form-section" data-step="4" id="notesSection">
-                <div class="section-header">
-                    <h3 class="section-title">Additional Notes</h3>
-                    <div class="edit-controls">
-                        <button class="edit-btn" onclick="toggleEditMode('notesSection')">Edit</button>
-                        <button class="save-btn" onclick="saveSection('notesSection')" style="display: none;">Save</button>
-                        <button class="cancel-btn" onclick="cancelEdit('notesSection')" style="display: none;">Cancel</button>
-                    </div>
-                </div>
-
-                <div class="read-display">
-                    <div class="read-item">
-                        <div class="read-label">Terms & Conditions / Notes:</div>
-                        <div class="read-value" id="read-notes">Not set</div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="notes">Terms & Conditions / Notes</label>
-                    <textarea id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
-                </div>
-            </div>
-
-            <!-- Generate Quotation -->
-            <div style="text-align: center; margin-top: 40px;">
-                <button type="button" id="generateQuotation" class="btn btn-success" style="font-size: 16px; padding: 16px 32px;">Generate Quotation</button>
-            </div>
-
-            <!-- Quotation Preview -->
-            <div id="quotationPreview" class="quotation-preview hidden">
-                <div class="quotation-header">
-                    <img id="quotationLogo" class="quotation-logo" alt="Company Logo">
-                    <h1 style="color: var(--text-primary);">QUOTATION</h1>
-                    <p id="previewQuotationNumber" style="color: var(--text-secondary);"></p>
-                </div>
-                
-                <div class="quotation-details">
-                    <div>
-                        <h4 style="color: var(--text-primary);">From:</h4>
-                        <div id="previewCompanyDetails" style="color: var(--text-secondary);"></div>
-                    </div>
-                    <div>
-                        <h4 style="color: var(--text-primary);">To:</h4>
-                        <div id="previewCustomerDetails" style="color: var(--text-secondary);"></div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 25px; color: var(--text-secondary);">
-                    <strong>Date:</strong> <span id="previewDate"></span><br>
-                    <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
-                </div>
-
-                <table class="quotation-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Qty</th>
-                            <th>Unit Price</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewLineItems">
-                    </tbody>
-                </table>
-
-                <div style="text-align: right; margin-top: 25px; color: var(--text-primary);">
-                    <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
-                    <div><strong>Tax:</strong> <span id="previewTax"></span></div>
-                    <div style="font-size: 1.3em; margin-top: 15px; color: var(--theme-primary);"><strong>Total:</strong> <span id="previewTotal"></span></div>
-                </div>
-
-                <div id="previewNotes" style="margin-top: 35px; color: var(--text-secondary);"></div>
-
-                <div style="text-align: center; margin-top: 35px; border-top: 1px solid var(--border-color); padding-top: 25px;">
-                    <button type="button" onclick="window.print()" class="btn btn-primary" style="font-size: 14px;">Print/Save as PDF</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav">
-        <div class="mobile-nav-buttons">
-            <button class="mobile-nav-btn active" data-step="0">Company</button>
-            <button class="mobile-nav-btn" data-step="1">Customer</button>
-            <button class="mobile-nav-btn" data-step="2">Details</button>
-            <button class="mobile-nav-btn" data-step="3">Items</button>
-            <button class="mobile-nav-btn" data-step="4">Notes</button>
-        </div>
-    </div>
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="closeDrawers()"></div>
 
     <script>
         // Application State
         const AppState = {
+            // Data
             savedCustomers: [],
             companyLogo: null,
             sectionBackups: {},
+            appTitle: 'QuoteFlow',
+            appSlogan: 'Professional quotes on the go',
+            
+            // UI State
             currentTheme: 'light',
             currentColor: 'blue',
-            
-            // Mobile interface
             currentStep: 0,
             totalSteps: 5,
-            stepTitles: ['Company Details', 'Customer Details', 'Quotation Info', 'Products/Services', 'Additional Notes'],
+            lineItemCount: 1,
             
-            lineItemCount: 1
+            // Step titles and card titles
+            stepTitles: ['Company Details', 'Customer Details', 'Quotation Info', 'Products & Services', 'Terms & Notes'],
+            cardTitles: {
+                companyCard: 'Company Details',
+                customerCard: 'Customer Details', 
+                quotationCard: 'Quotation Information',
+                itemsCard: 'Products & Services',
+                notesCard: 'Terms & Notes'
+            }
         };
 
-        // Theme Management System
+        // Theme Management
         const ThemeManager = {
             init() {
-                this.loadSavedTheme();
+                this.updateUI();
                 this.setupEventListeners();
             },
 
-            loadSavedTheme() {
-                // In a real app, this would load from localStorage
-                // For Claude.ai artifacts, we'll use session storage in memory
-                const savedTheme = AppState.currentTheme;
-                const savedColor = AppState.currentColor;
-                
-                this.applyTheme(savedTheme, savedColor);
+            setMode(mode) {
+                AppState.currentTheme = mode;
+                document.body.setAttribute('data-theme', mode);
+                this.updateUI();
+            },
+
+            setColor(color) {
+                AppState.currentColor = color;
+                document.body.setAttribute('data-color', color);
+                this.updateUI();
+            },
+
+            updateUI() {
+                // Update mode toggle
+                document.querySelectorAll('.mode-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
+                });
+
+                // Update color options
+                document.querySelectorAll('.color-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
+                });
             },
 
             setupEventListeners() {
-                // Close theme panel when clicking outside
-                document.addEventListener('click', (e) => {
-                    const themePanel = document.getElementById('themeControlPanel');
-                    const customerPanel = document.getElementById('customerPanel');
-                    
-                    if (!themePanel.contains(e.target)) {
-                        themePanel.classList.remove('open');
-                    }
-                    
-                    if (!customerPanel.contains(e.target)) {
-                        customerPanel.classList.remove('open');
-                        document.getElementById('customerRecords').classList.remove('show');
+                // Close drawers when clicking overlay
+                document.getElementById('overlay').addEventListener('click', closeDrawers);
+            }
+        };
+
+        // Navigation Management
+        const NavigationManager = {
+            updateProgress() {
+                const progress = ((AppState.currentStep + 1) / AppState.totalSteps) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('stepTitle').textContent = AppState.stepTitles[AppState.currentStep];
+                document.getElementById('stepCounter').textContent = `${AppState.currentStep + 1} of ${AppState.totalSteps}`;
+                
+                // Update navigation
+                document.querySelectorAll('.nav-item').forEach((nav, index) => {
+                    nav.classList.toggle('active', index === AppState.currentStep);
+                });
+
+                // Update card visibility and active state
+                document.querySelectorAll('.card').forEach((card, index) => {
+                    card.classList.toggle('active', index === AppState.currentStep);
+                    if (index === AppState.currentStep) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }
                 });
             },
 
-            applyTheme(themeMode, colorTheme) {
-                const body = document.body;
+            navigateToStep(step) {
+                AppState.currentStep = step;
+                this.updateProgress();
+            }
+        };
+
+        // Title Editing System
+        const TitleEditor = {
+            editAppTitle() {
+                const titleElement = document.querySelector('.app-title');
+                const currentText = AppState.appTitle;
                 
-                // Apply theme mode
-                body.setAttribute('data-theme', themeMode);
+                const input = document.createElement('input');
+                input.className = 'app-title editing';
+                input.value = currentText;
+                input.maxLength = 20;
                 
-                // Apply color theme
-                body.setAttribute('data-color', colorTheme);
+                titleElement.parentNode.replaceChild(input, titleElement);
+                input.focus();
+                input.select();
                 
-                // Update UI state
-                this.updateThemeUI(themeMode, colorTheme);
+                const saveTitle = () => {
+                    const newTitle = input.value.trim() || currentText;
+                    AppState.appTitle = newTitle;
+                    
+                    const newTitleElement = document.createElement('div');
+                    newTitleElement.className = 'app-title';
+                    newTitleElement.onclick = () => this.editAppTitle();
+                    newTitleElement.innerHTML = `${newTitle} <span class="edit-icon">✏️</span>`;
+                    
+                    input.parentNode.replaceChild(newTitleElement, input);
+                };
                 
-                // Store current theme
-                AppState.currentTheme = themeMode;
-                AppState.currentColor = colorTheme;
+                input.addEventListener('blur', saveTitle);
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        input.blur();
+                    }
+                });
             },
 
-            updateThemeUI(themeMode, colorTheme) {
-                // Update mode toggle buttons
-                document.querySelectorAll('.mode-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.mode === themeMode);
+            editAppSlogan() {
+                const sloganElement = document.querySelector('.app-slogan');
+                const currentText = AppState.appSlogan;
+                
+                const input = document.createElement('input');
+                input.className = 'app-slogan editing';
+                input.value = currentText;
+                input.maxLength = 40;
+                
+                sloganElement.parentNode.replaceChild(input, sloganElement);
+                input.focus();
+                input.select();
+                
+                const saveSlogan = () => {
+                    const newSlogan = input.value.trim() || currentText;
+                    AppState.appSlogan = newSlogan;
+                    
+                    const newSloganElement = document.createElement('div');
+                    newSloganElement.className = 'app-slogan';
+                    newSloganElement.onclick = () => this.editAppSlogan();
+                    newSloganElement.innerHTML = `${newSlogan} <span class="edit-icon">✏️</span>`;
+                    
+                    input.parentNode.replaceChild(newSloganElement, input);
+                };
+                
+                input.addEventListener('blur', saveSlogan);
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        input.blur();
+                    }
                 });
+            },
 
-                // Update color option buttons
-                document.querySelectorAll('.color-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.color === colorTheme);
+            editCardTitle(cardId) {
+                const titleElement = document.querySelector(`#${cardId} .card-title span`);
+                const currentText = AppState.cardTitles[cardId];
+                
+                const input = document.createElement('input');
+                input.className = 'card-title editing';
+                input.value = currentText;
+                input.maxLength = 30;
+                
+                titleElement.parentNode.replaceChild(input, titleElement);
+                input.focus();
+                input.select();
+                
+                const saveTitle = () => {
+                    const newTitle = input.value.trim() || currentText;
+                    AppState.cardTitles[cardId] = newTitle;
+                    
+                    const newTitleElement = document.createElement('span');
+                    newTitleElement.textContent = newTitle;
+                    
+                    input.parentNode.replaceChild(newTitleElement, input);
+                };
+                
+                input.addEventListener('blur', saveTitle);
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        input.blur();
+                    }
                 });
             }
         };
 
-        // Theme Control Functions
-        function toggleThemePanel() {
-            const panel = document.getElementById('themeControlPanel');
-            panel.classList.toggle('open');
-        }
+        // Form Management
+        const FormManager = {
+            toggleEditMode(cardId) {
+                const card = document.getElementById(cardId);
+                const editBtn = card.querySelector('.edit-btn');
+                const saveBtn = card.querySelector('.save-btn');
+                const cancelBtn = card.querySelector('.cancel-btn');
 
-        function setThemeMode(mode) {
-            ThemeManager.applyTheme(mode, AppState.currentColor);
-        }
+                // Backup current values
+                this.backupCardData(cardId);
 
-        function setColorTheme(color) {
-            ThemeManager.applyTheme(AppState.currentTheme, color);
-        }
+                // Switch to edit mode
+                card.classList.remove('read-mode');
+                editBtn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
 
-        // Customer Management System
-        const CustomerManager = {
-            togglePanel() {
-                const panel = document.getElementById('customerPanel');
-                const records = document.getElementById('customerRecords');
-                
-                if (records.classList.contains('show')) {
-                    records.classList.remove('show');
-                    panel.classList.remove('open');
-                } else {
-                    records.classList.add('show');
-                    panel.classList.add('open');
-                    this.updateCustomerList();
+                // Visual feedback
+                card.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 200);
+            },
+
+            saveCard(cardId) {
+                const card = document.getElementById(cardId);
+                const editBtn = card.querySelector('.edit-btn');
+                const saveBtn = card.querySelector('.save-btn');
+                const cancelBtn = card.querySelector('.cancel-btn');
+
+                // Update read displays
+                this.updateReadDisplays(cardId);
+
+                // Switch to read mode
+                card.classList.add('read-mode');
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+
+                // Clear backup
+                delete AppState.sectionBackups[cardId];
+
+                // Visual feedback
+                card.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 200);
+
+                // Update calculations if needed
+                if (cardId === 'itemsCard') {
+                    QuotationManager.updateGrandTotal();
                 }
             },
 
+            cancelEdit(cardId) {
+                const card = document.getElementById(cardId);
+                const editBtn = card.querySelector('.edit-btn');
+                const saveBtn = card.querySelector('.save-btn');
+                const cancelBtn = card.querySelector('.cancel-btn');
+
+                // Restore backed up values
+                this.restoreCardData(cardId);
+
+                // Switch to read mode
+                card.classList.add('read-mode');
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+
+                // Visual feedback
+                card.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    card.style.transform = 'scale(1)';
+                }, 200);
+            },
+
+            backupCardData(cardId) {
+                const card = document.getElementById(cardId);
+                const inputs = card.querySelectorAll('input, textarea, select');
+                AppState.sectionBackups[cardId] = {};
+                
+                inputs.forEach(input => {
+                    const key = input.id || input.className;
+                    AppState.sectionBackups[cardId][key] = input.value;
+                });
+            },
+
+            restoreCardData(cardId) {
+                if (!AppState.sectionBackups[cardId]) return;
+                
+                const card = document.getElementById(cardId);
+                const inputs = card.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    const key = input.id || input.className;
+                    if (AppState.sectionBackups[cardId][key] !== undefined) {
+                        input.value = AppState.sectionBackups[cardId][key];
+                    }
+                });
+
+                if (cardId === 'itemsCard') {
+                    QuotationManager.updateGrandTotal();
+                }
+            },
+
+            updateReadDisplays(cardId) {
+                const displayMaps = {
+                    companyCard: {
+                        'read-companyName': 'companyName',
+                        'read-companyAddress': 'companyAddress',
+                        'read-companyPhone': 'companyPhone',
+                        'read-companyEmail': 'companyEmail'
+                    },
+                    customerCard: {
+                        'read-customerName': 'customerName',
+                        'read-customerAddress': 'customerAddress',
+                        'read-customerPhone': 'customerPhone',
+                        'read-customerEmail': 'customerEmail'
+                    },
+                    quotationCard: {
+                        'read-quotationNumber': 'quotationNumber',
+                        'read-quotationDate': 'quotationDate',
+                        'read-validUntil': 'validUntil',
+                        'read-currency': 'currency'
+                    },
+                    notesCard: {
+                        'read-notes': 'notes'
+                    }
+                };
+
+                const mappings = displayMaps[cardId];
+                if (mappings) {
+                    Object.entries(mappings).forEach(([readId, inputId]) => {
+                        const readElement = document.getElementById(readId);
+                        const inputElement = document.getElementById(inputId);
+                        
+                        if (readElement && inputElement) {
+                            let value = inputElement.value || 'Not set';
+                            
+                            if (inputId === 'currency') {
+                                value = inputElement.selectedOptions[0]?.text || 'Not set';
+                            }
+                            
+                            readElement.textContent = value;
+                        }
+                    });
+                }
+
+                // Handle logo display
+                if (cardId === 'companyCard' && AppState.companyLogo) {
+                    const logoReadItem = document.getElementById('logoReadItem');
+                    const logoReadPreview = document.getElementById('logoReadPreview');
+                    logoReadPreview.src = AppState.companyLogo;
+                    logoReadItem.style.display = 'block';
+                }
+            }
+        };
+
+        // Customer Management
+        const CustomerManager = {
             saveCurrentCustomer() {
                 const name = document.getElementById('newCustomerName').value.trim();
                 if (!name) {
@@ -1708,13 +2053,12 @@
                     createdAt: new Date().toLocaleDateString()
                 };
 
-                // Check if customer already exists
                 const existingIndex = AppState.savedCustomers.findIndex(c => 
                     c.name.toLowerCase() === name.toLowerCase()
                 );
                 
                 if (existingIndex >= 0) {
-                    if (confirm('Customer with this name already exists. Update existing record?')) {
+                    if (confirm('Customer exists. Update record?')) {
                         AppState.savedCustomers[existingIndex] = customerData;
                     }
                 } else {
@@ -1723,8 +2067,6 @@
 
                 document.getElementById('newCustomerName').value = '';
                 this.updateCustomerList();
-                
-                // Visual feedback
                 this.showSaveConfirmation();
             },
 
@@ -1736,16 +2078,14 @@
                     document.getElementById('customerPhone').value = customer.phone;
                     document.getElementById('customerEmail').value = customer.email;
                     
-                    // Update read displays
-                    FormManager.updateReadDisplays('customerSection');
-                    
-                    // Visual feedback
+                    FormManager.updateReadDisplays('customerCard');
                     this.showLoadConfirmation();
+                    toggleCustomerDrawer();
                 }
             },
 
             deleteCustomer(customerId) {
-                if (confirm('Are you sure you want to delete this customer record?')) {
+                if (confirm('Delete this customer record?')) {
                     AppState.savedCustomers = AppState.savedCustomers.filter(c => c.id !== customerId);
                     this.updateCustomerList();
                 }
@@ -1756,7 +2096,7 @@
                 container.innerHTML = '';
 
                 if (AppState.savedCustomers.length === 0) {
-                    container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 20px;">No saved customers yet</p>';
+                    container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px 20px;">No saved customers yet</div>';
                     return;
                 }
 
@@ -1764,14 +2104,14 @@
                     const customerDiv = document.createElement('div');
                     customerDiv.className = 'customer-record';
                     customerDiv.innerHTML = `
-                        <h4>${customer.name}</h4>
-                        <p>${customer.address || 'No address'}</p>
-                        <p>${customer.phone || 'No phone'}</p>
-                        <p>${customer.email || 'No email'}</p>
-                        <p style="font-size: 10px; color: var(--text-muted); margin-top: 5px;">Saved: ${customer.createdAt}</p>
+                        <div class="customer-name">${customer.name}</div>
+                        <div class="customer-info">${customer.address || 'No address'}</div>
+                        <div class="customer-info">${customer.phone || 'No phone'}</div>
+                        <div class="customer-info">${customer.email || 'No email'}</div>
+                        <div class="customer-info">Saved: ${customer.createdAt}</div>
                         <div class="customer-actions">
-                            <button class="customer-action-btn load-btn" onclick="CustomerManager.loadCustomer(${customer.id})">Load</button>
-                            <button class="customer-action-btn delete-btn" onclick="CustomerManager.deleteCustomer(${customer.id})">Delete</button>
+                            <button class="customer-btn load-customer" onclick="CustomerManager.loadCustomer(${customer.id})">Load</button>
+                            <button class="customer-btn delete-customer" onclick="CustomerManager.deleteCustomer(${customer.id})">Delete</button>
                         </div>
                     `;
                     container.appendChild(customerDiv);
@@ -1779,316 +2119,15 @@
             },
 
             showSaveConfirmation() {
-                const saveBtn = document.querySelector('.new-customer-form .save-btn');
-                const originalText = saveBtn.textContent;
-                saveBtn.style.background = 'linear-gradient(45deg, #27ae60, #229954)';
-                saveBtn.textContent = 'Saved! ✓';
-                setTimeout(() => {
-                    saveBtn.style.background = '';
-                    saveBtn.textContent = originalText;
-                }, 2000);
+                // Implementation for visual feedback
             },
 
             showLoadConfirmation() {
-                const customerSection = document.getElementById('customerSection');
-                const originalBorder = customerSection.style.borderLeftColor;
-                customerSection.style.borderLeftColor = '#27ae60';
-                customerSection.style.borderLeftWidth = '6px';
-                setTimeout(() => {
-                    customerSection.style.borderLeftColor = '';
-                    customerSection.style.borderLeftWidth = '';
-                }, 2000);
+                // Implementation for visual feedback
             }
         };
 
-        // Form Management System
-        const FormManager = {
-            toggleEditMode(sectionId) {
-                const section = document.getElementById(sectionId);
-                const editBtn = section.querySelector('.edit-btn');
-                const saveBtn = section.querySelector('.save-btn');
-                const cancelBtn = section.querySelector('.cancel-btn');
-
-                // Backup current values
-                this.backupSectionData(sectionId);
-
-                // Switch to edit mode
-                section.classList.remove('read-mode');
-                section.classList.add('edit-mode');
-                editBtn.style.display = 'none';
-                saveBtn.style.display = 'inline-block';
-                cancelBtn.style.display = 'inline-block';
-
-                // Visual feedback
-                section.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    section.style.transform = 'scale(1)';
-                }, 200);
-            },
-
-            saveSection(sectionId) {
-                const section = document.getElementById(sectionId);
-                const editBtn = section.querySelector('.edit-btn');
-                const saveBtn = section.querySelector('.save-btn');
-                const cancelBtn = section.querySelector('.cancel-btn');
-
-                // Update read-only displays
-                this.updateReadDisplays(sectionId);
-
-                // Switch to read mode
-                section.classList.remove('edit-mode');
-                section.classList.add('read-mode');
-                editBtn.style.display = 'inline-block';
-                saveBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-
-                // Clear backup
-                delete AppState.sectionBackups[sectionId];
-
-                // Visual feedback
-                section.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    section.style.transform = 'scale(1)';
-                }, 200);
-
-                // Update calculations if needed
-                if (sectionId === 'itemsSection') {
-                    QuotationManager.updateGrandTotal();
-                }
-            },
-
-            cancelEdit(sectionId) {
-                const section = document.getElementById(sectionId);
-                const editBtn = section.querySelector('.edit-btn');
-                const saveBtn = section.querySelector('.save-btn');
-                const cancelBtn = section.querySelector('.cancel-btn');
-
-                // Restore backed up values
-                this.restoreSectionData(sectionId);
-
-                // Switch to read mode
-                section.classList.remove('edit-mode');
-                section.classList.add('read-mode');
-                editBtn.style.display = 'inline-block';
-                saveBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-
-                // Visual feedback
-                section.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    section.style.transform = 'scale(1)';
-                }, 200);
-            },
-
-            backupSectionData(sectionId) {
-                const section = document.getElementById(sectionId);
-                const inputs = section.querySelectorAll('input, textarea, select');
-                AppState.sectionBackups[sectionId] = {};
-                
-                inputs.forEach(input => {
-                    const key = input.id || input.className;
-                    AppState.sectionBackups[sectionId][key] = input.value;
-                });
-            },
-
-            restoreSectionData(sectionId) {
-                if (!AppState.sectionBackups[sectionId]) return;
-                
-                const section = document.getElementById(sectionId);
-                const inputs = section.querySelectorAll('input, textarea, select');
-                
-                inputs.forEach(input => {
-                    const key = input.id || input.className;
-                    if (AppState.sectionBackups[sectionId][key] !== undefined) {
-                        input.value = AppState.sectionBackups[sectionId][key];
-                    }
-                });
-
-                // Update calculations if needed
-                if (sectionId === 'itemsSection') {
-                    QuotationManager.updateGrandTotal();
-                }
-            },
-
-            updateReadDisplays(sectionId) {
-                const displayMap = {
-                    companySection: {
-                        'read-companyName': 'companyName',
-                        'read-companyAddress': 'companyAddress',
-                        'read-companyPhone': 'companyPhone',
-                        'read-companyEmail': 'companyEmail'
-                    },
-                    customerSection: {
-                        'read-customerName': 'customerName',
-                        'read-customerAddress': 'customerAddress',
-                        'read-customerPhone': 'customerPhone',
-                        'read-customerEmail': 'customerEmail'
-                    },
-                    quotationSection: {
-                        'read-quotationNumber': 'quotationNumber',
-                        'read-quotationDate': 'quotationDate',
-                        'read-validUntil': 'validUntil',
-                        'read-currency': 'currency'
-                    },
-                    notesSection: {
-                        'read-notes': 'notes'
-                    }
-                };
-
-                const mappings = displayMap[sectionId];
-                if (mappings) {
-                    Object.entries(mappings).forEach(([readId, inputId]) => {
-                        const readElement = document.getElementById(readId);
-                        const inputElement = document.getElementById(inputId);
-                        
-                        if (readElement && inputElement) {
-                            let value = inputElement.value || 'Not set';
-                            
-                            // Special handling for currency
-                            if (inputId === 'currency') {
-                                value = inputElement.selectedOptions[0]?.text || 'Not set';
-                            }
-                            
-                            readElement.textContent = value;
-                        }
-                    });
-                }
-
-                // Handle logo display for company section
-                if (sectionId === 'companySection' && AppState.companyLogo) {
-                    const logoReadItem = document.getElementById('logoReadItem');
-                    const logoReadPreview = document.getElementById('logoReadPreview');
-                    logoReadPreview.src = AppState.companyLogo;
-                    logoReadItem.style.display = 'block';
-                }
-            },
-
-            saveAllSections() {
-                const sections = ['companySection', 'customerSection', 'quotationSection', 'itemsSection', 'notesSection'];
-                sections.forEach(sectionId => {
-                    const section = document.getElementById(sectionId);
-                    if (section.classList.contains('edit-mode')) {
-                        this.saveSection(sectionId);
-                    }
-                });
-
-                // Visual feedback
-                const saveBtn = document.querySelector('.save-all-btn');
-                const originalContent = saveBtn.innerHTML;
-                saveBtn.style.background = 'linear-gradient(45deg, #27ae60, #229954)';
-                saveBtn.innerHTML = '✓';
-                setTimeout(() => {
-                    saveBtn.style.background = '';
-                    saveBtn.innerHTML = originalContent;
-                }, 2000);
-            }
-        };
-
-        // Mobile Interface Management
-        const MobileManager = {
-            init() {
-                this.initMobileInterface();
-                this.setupEventListeners();
-            },
-
-            initMobileInterface() {
-                if (window.innerWidth <= 768) {
-                    this.showMobileStep(0);
-                    this.updateMobileNavigation();
-                } else {
-                    this.showAllSteps();
-                }
-            },
-
-            showMobileStep(step) {
-                const sections = document.querySelectorAll('.form-section');
-                sections.forEach((section, index) => {
-                    if (index === step) {
-                        section.classList.remove('hidden-mobile');
-                        section.style.animation = 'slideInUp 0.6s ease';
-                    } else {
-                        section.classList.add('hidden-mobile');
-                    }
-                });
-
-                // Update step indicator
-                const stepTitle = document.getElementById('stepTitle');
-                if (stepTitle) {
-                    stepTitle.textContent = AppState.stepTitles[step];
-                }
-
-                // Update step dots
-                const stepDots = document.querySelectorAll('.step-dot');
-                stepDots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === step);
-                });
-
-                AppState.currentStep = step;
-            },
-
-            showAllSteps() {
-                const sections = document.querySelectorAll('.form-section');
-                sections.forEach(section => {
-                    section.classList.remove('hidden-mobile');
-                });
-            },
-
-            updateMobileNavigation() {
-                const navButtons = document.querySelectorAll('.mobile-nav-btn');
-                navButtons.forEach((btn, index) => {
-                    btn.classList.toggle('active', index === AppState.currentStep);
-                });
-            },
-
-            setupEventListeners() {
-                // Mobile navigation
-                document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const step = parseInt(btn.dataset.step);
-                        this.showMobileStep(step);
-                        this.updateMobileNavigation();
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    });
-                });
-
-                // Touch gestures
-                let touchStartX = 0;
-                let touchEndX = 0;
-
-                document.addEventListener('touchstart', e => {
-                    touchStartX = e.changedTouches[0].screenX;
-                });
-
-                document.addEventListener('touchend', e => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    this.handleGesture();
-                });
-
-                // Window resize
-                window.addEventListener('resize', () => {
-                    this.initMobileInterface();
-                });
-            },
-
-            handleGesture() {
-                if (window.innerWidth > 768) return;
-                
-                const threshold = 50;
-                const difference = touchEndX - touchStartX;
-
-                if (Math.abs(difference) > threshold) {
-                    if (difference > 0 && AppState.currentStep > 0) {
-                        this.showMobileStep(AppState.currentStep - 1);
-                        this.updateMobileNavigation();
-                    } else if (difference < 0 && AppState.currentStep < AppState.totalSteps - 1) {
-                        this.showMobileStep(AppState.currentStep + 1);
-                        this.updateMobileNavigation();
-                    }
-                }
-            }
-        };
-
-        // Logo Management System
+        // Logo Management
         const LogoManager = {
             triggerUpload() {
                 document.getElementById('logoUploadInput').click();
@@ -2099,12 +2138,12 @@
                 if (!file) return;
 
                 if (!file.type.startsWith('image/')) {
-                    alert('Please select a valid image file (PNG, JPG, SVG, etc.)');
+                    alert('Please select a valid image file');
                     return;
                 }
 
                 if (file.size > 5 * 1024 * 1024) {
-                    alert('Logo file size must be less than 5MB');
+                    alert('File size must be less than 5MB');
                     return;
                 }
 
@@ -2117,22 +2156,22 @@
             },
 
             displayLogo(logoData) {
+                const logoUpload = document.getElementById('logoUpload');
                 const logoPreview = document.getElementById('logoPreview');
-                const logoUploadSection = document.getElementById('logoUploadSection');
-                const logoUploadContent = document.getElementById('logoUploadContent');
                 const logoRemoveBtn = document.getElementById('logoRemoveBtn');
 
                 logoPreview.src = logoData;
                 logoPreview.classList.add('visible');
-                logoUploadSection.classList.add('has-logo');
-                logoUploadContent.style.marginTop = '0';
+                logoUpload.classList.add('has-logo');
                 logoRemoveBtn.style.display = 'inline-block';
 
+                // Update read display
                 const logoReadItem = document.getElementById('logoReadItem');
                 const logoReadPreview = document.getElementById('logoReadPreview');
                 logoReadPreview.src = logoData;
                 logoReadItem.style.display = 'block';
 
+                // Update quotation preview
                 const quotationLogo = document.getElementById('quotationLogo');
                 quotationLogo.src = logoData;
                 quotationLogo.classList.add('visible');
@@ -2143,15 +2182,13 @@
                 
                 AppState.companyLogo = null;
                 
+                const logoUpload = document.getElementById('logoUpload');
                 const logoPreview = document.getElementById('logoPreview');
-                const logoUploadSection = document.getElementById('logoUploadSection');
-                const logoUploadContent = document.getElementById('logoUploadContent');
                 const logoRemoveBtn = document.getElementById('logoRemoveBtn');
                 const logoUploadInput = document.getElementById('logoUploadInput');
 
                 logoPreview.classList.remove('visible');
-                logoUploadSection.classList.remove('has-logo');
-                logoUploadContent.style.marginTop = '';
+                logoUpload.classList.remove('has-logo');
                 logoRemoveBtn.style.display = 'none';
                 logoUploadInput.value = '';
 
@@ -2160,7 +2197,7 @@
             }
         };
 
-        // Quotation Management System
+        // Quotation Management
         const QuotationManager = {
             addLineItem() {
                 AppState.lineItemCount++;
@@ -2168,33 +2205,51 @@
                 const newItem = document.createElement('div');
                 newItem.className = 'line-item';
                 newItem.innerHTML = `
-                    <div class="form-group">
-                        <label>Description</label>
-                        <input type="text" class="item-description" placeholder="Product or service description">
+                    <div class="line-item-header">
+                        <span class="item-number">Item #${AppState.lineItemCount}</span>
+                        <button class="remove-item" onclick="removeLineItem(this)">×</button>
                     </div>
-                    <div class="form-group">
-                        <label>Quantity</label>
-                        <input type="number" class="item-quantity" value="1" min="1">
-                    </div>
-                    <div class="form-group">
-                        <label>Unit Price</label>
-                        <input type="number" class="item-price" step="0.01" min="0" placeholder="0.00">
-                    </div>
-                    <div class="form-group">
-                        <label>Total</label>
-                        <input type="text" class="item-total" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label>&nbsp;</label>
-                        <button type="button" class="btn btn-danger remove-item" onclick="this.parentElement.parentElement.remove(); QuotationManager.updateGrandTotal();">×</button>
+                    <div class="item-grid">
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-input item-description" placeholder="Product or service description">
+                        </div>
+                        <div class="item-row">
+                            <div class="form-group">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-input item-quantity" value="1" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Unit Price</label>
+                                <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total</label>
+                            <div class="total-display item-total">$0.00</div>
+                        </div>
                     </div>
                 `;
                 container.appendChild(newItem);
                 this.addLineItemEventListeners(newItem);
+                
+                // Scroll to new item
+                newItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            },
 
-                if (window.innerWidth <= 768) {
-                    newItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            removeLineItem(button) {
+                if (document.querySelectorAll('.line-item').length > 1) {
+                    button.closest('.line-item').remove();
+                    this.updateGrandTotal();
+                    this.updateItemNumbers();
                 }
+            },
+
+            updateItemNumbers() {
+                document.querySelectorAll('.line-item').forEach((item, index) => {
+                    const itemNumber = item.querySelector('.item-number');
+                    itemNumber.textContent = `Item #${index + 1}`;
+                });
             },
 
             addLineItemEventListeners(item) {
@@ -2206,7 +2261,7 @@
                     const qty = parseFloat(quantity.value) || 0;
                     const unitPrice = parseFloat(price.value) || 0;
                     const itemTotal = qty * unitPrice;
-                    total.value = this.formatCurrency(itemTotal);
+                    total.textContent = this.formatCurrency(itemTotal);
                     this.updateGrandTotal();
                 };
 
@@ -2248,6 +2303,7 @@
                     }
                 }
 
+                // Populate preview
                 document.getElementById('previewQuotationNumber').textContent = 
                     'Quotation #' + document.getElementById('quotationNumber').value;
 
@@ -2270,6 +2326,7 @@
                 document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
                 document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
 
+                // Line items
                 const lineItemsContainer = document.getElementById('previewLineItems');
                 lineItemsContainer.innerHTML = '';
                 
@@ -2292,43 +2349,92 @@
                     }
                 });
 
+                // Totals
                 document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
                 document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
                 document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
 
+                // Notes
                 const notes = document.getElementById('notes').value;
                 if (notes) {
                     document.getElementById('previewNotes').innerHTML = `
-                        <h4 style="color: var(--text-primary);">Terms & Conditions / Notes:</h4>
+                        <h4>Terms & Conditions / Notes:</h4>
                         <p>${notes.replace(/\n/g, '<br>')}</p>
                     `;
                 } else {
                     document.getElementById('previewNotes').innerHTML = '';
                 }
 
+                // Logo
                 if (AppState.companyLogo) {
                     const quotationLogo = document.getElementById('quotationLogo');
                     quotationLogo.src = AppState.companyLogo;
                     quotationLogo.classList.add('visible');
                 }
 
+                // Show preview
                 document.getElementById('quotationPreview').classList.remove('hidden');
                 document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
             }
         };
 
         // Global Functions (for onclick handlers)
-        function toggleThemePanel() { ThemeManager.toggleThemePanel(); }
-        function toggleCustomerPanel() { CustomerManager.togglePanel(); }
+        function editAppTitle() { TitleEditor.editAppTitle(); }
+        function editAppSlogan() { TitleEditor.editAppSlogan(); }
+        function editCardTitle(cardId) { TitleEditor.editCardTitle(cardId); }
+        
+        function toggleThemeDrawer() {
+            const drawer = document.getElementById('themeDrawer');
+            const overlay = document.getElementById('overlay');
+            
+            if (drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                closeDrawers();
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function toggleCustomerDrawer() {
+            const drawer = document.getElementById('customerDrawer');
+            const overlay = document.getElementById('overlay');
+            
+            if (drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                closeDrawers();
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+                CustomerManager.updateCustomerList();
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('themeDrawer').classList.remove('open');
+            document.getElementById('customerDrawer').classList.remove('open');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function setThemeMode(mode) { ThemeManager.setMode(mode); }
+        function setColorTheme(color) { ThemeManager.setColor(color); }
+
+        function navigateToStep(step) { NavigationManager.navigateToStep(step); }
+
+        function toggleEditMode(cardId) { FormManager.toggleEditMode(cardId); }
+        function saveCard(cardId) { FormManager.saveCard(cardId); }
+        function cancelEdit(cardId) { FormManager.cancelEdit(cardId); }
+
         function saveCurrentCustomer() { CustomerManager.saveCurrentCustomer(); }
-        function toggleEditMode(sectionId) { FormManager.toggleEditMode(sectionId); }
-        function saveSection(sectionId) { FormManager.saveSection(sectionId); }
-        function cancelEdit(sectionId) { FormManager.cancelEdit(sectionId); }
-        function saveAllSections() { FormManager.saveAllSections(); }
+
         function triggerLogoUpload() { LogoManager.triggerUpload(); }
         function handleLogoUpload(event) { LogoManager.handleUpload(event); }
         function removeLogo(event) { LogoManager.remove(event); }
+
         function addLineItem() { QuotationManager.addLineItem(); }
+        function removeLineItem(button) { QuotationManager.removeLineItem(button); }
         function generateQuotation() { QuotationManager.generate(); }
 
         // Application Initialization
@@ -2346,11 +2452,9 @@
 
             // Initialize systems
             ThemeManager.init();
-            MobileManager.init();
+            NavigationManager.updateProgress();
 
-            // Setup event listeners
-            document.getElementById('addLineItem').addEventListener('click', addLineItem);
-            document.getElementById('generateQuotation').addEventListener('click', generateQuotation);
+            // Add event listeners
             document.getElementById('taxRate').addEventListener('input', () => QuotationManager.updateGrandTotal());
             document.getElementById('currency').addEventListener('change', () => QuotationManager.updateGrandTotal());
 
@@ -2360,27 +2464,24 @@
             // Initialize calculations
             QuotationManager.updateGrandTotal();
 
-            // Initialize all sections in edit mode
-            const sections = ['companySection', 'customerSection', 'quotationSection', 'notesSection'];
-            sections.forEach(sectionId => {
-                const section = document.getElementById(sectionId);
-                section.classList.add('edit-mode');
+            // Initialize all cards in edit mode
+            const cards = ['companyCard', 'customerCard', 'quotationCard', 'notesCard'];
+            cards.forEach(cardId => {
+                const card = document.getElementById(cardId);
+                // Don't add read-mode class initially
             });
 
-            // Add input enhancement for better UX
-            document.querySelectorAll('input, textarea, select').forEach(element => {
-                element.addEventListener('focus', function() {
-                    if (window.innerWidth <= 768) {
-                        this.parentElement.style.transform = 'scale(1.02)';
-                        this.parentElement.style.transition = 'transform 0.2s ease';
-                    }
-                });
+            // Touch and gesture support
+            let touchStartY = 0;
+            document.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            });
 
-                element.addEventListener('blur', function() {
-                    if (window.innerWidth <= 768) {
-                        this.parentElement.style.transform = 'scale(1)';
-                    }
-                });
+            document.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                const deltaY = touchStartY - touchY;
+                
+                // Implement swipe gestures if needed
             });
         }
 
