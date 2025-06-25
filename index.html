@@ -5,6 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enhanced Quotation Generator</title>
     <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --text-muted: #7f8c8d;
+            --border-color: #e0e0e0;
+            --border-focus: #3498db;
+            --shadow-light: rgba(0,0,0,0.1);
+            --shadow-medium: rgba(0,0,0,0.2);
+            --shadow-heavy: rgba(0,0,0,0.3);
+            
+            /* Theme Colors - Default Blue */
+            --theme-primary: #3498db;
+            --theme-secondary: #2980b9;
+            --theme-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+            
+            /* Component Specific */
+            --header-bg: linear-gradient(45deg, var(--text-primary), var(--theme-primary));
+            --section-border: var(--theme-primary);
+            --input-bg: var(--bg-primary);
+            --button-shadow: var(--shadow-medium);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #ffffff;
+            --text-secondary: #ecf0f1;
+            --text-muted: #bdc3c7;
+            --border-color: #34495e;
+            --border-focus: var(--theme-primary);
+            --shadow-light: rgba(0,0,0,0.3);
+            --shadow-medium: rgba(0,0,0,0.4);
+            --shadow-heavy: rgba(0,0,0,0.6);
+            --input-bg: var(--bg-secondary);
+            --header-bg: linear-gradient(45deg, var(--bg-tertiary), var(--theme-primary));
+        }
+
+        /* Theme Color Variations */
+        [data-color="purple"] {
+            --theme-primary: #8e44ad;
+            --theme-secondary: #9b59b6;
+            --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        [data-color="cyan"] {
+            --theme-primary: #00d2d3;
+            --theme-secondary: #01a3a4;
+            --theme-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #0066ff 0%, #00f5ff 100%);
+        }
+
+        [data-color="pink"] {
+            --theme-primary: #ff006e;
+            --theme-secondary: #8338ec;
+            --theme-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #8338ec 0%, #ff006e 100%);
+        }
+
+        [data-color="green"] {
+            --theme-primary: #00cc44;
+            --theme-secondary: #00ff88;
+            --theme-gradient: linear-gradient(135deg, #00ff88 0%, #00cc44 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #00cc44 0%, #00ff88 100%);
+        }
+
+        [data-color="orange"] {
+            --theme-primary: #ff6b00;
+            --theme-secondary: #ff3300;
+            --theme-gradient: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #ff3300 0%, #ff6b00 100%);
+        }
+
+        [data-color="red"] {
+            --theme-primary: #e74c3c;
+            --theme-secondary: #c0392b;
+            --theme-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        }
+
+        [data-color="indigo"] {
+            --theme-primary: #6366f1;
+            --theme-secondary: #4f46e5;
+            --theme-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+        }
+
+        [data-color="emerald"] {
+            --theme-primary: #10b981;
+            --theme-secondary: #059669;
+            --theme-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --theme-gradient-reverse: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,99 +114,152 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--theme-gradient);
             min-height: 100vh;
             padding: 10px;
-            transition: background 0.5s ease;
+            transition: all 0.5s ease;
+            color: var(--text-primary);
         }
 
-        /* Theme Backgrounds */
-        body.theme-neon-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        body.theme-neon-cyan { background: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%); }
-        body.theme-neon-pink { background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%); }
-        body.theme-neon-green { background: linear-gradient(135deg, #00ff88 0%, #00cc44 100%); }
-        body.theme-neon-orange { background: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%); }
-        body.theme-neon-blue { background: linear-gradient(135deg, #0099ff 0%, #003366 100%); }
-        body.theme-dark-neon { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-
-        /* Theme Selector */
-        .theme-selector {
+        /* Theme Control Panel */
+        .theme-control-panel {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 1001;
-            background: rgba(255, 255, 255, 0.9);
+            background: var(--bg-primary);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            transform: translateX(calc(100% - 60px));
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px var(--shadow-medium);
+            transform: translateX(calc(100% - 70px));
             transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+            max-width: 280px;
         }
 
-        .theme-selector:hover,
-        .theme-selector.open {
+        .theme-control-panel:hover,
+        .theme-control-panel.open {
             transform: translateX(0);
         }
 
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
+        .theme-toggle-btn {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #ff006e, #8338ec);
+            background: var(--theme-gradient);
             border: none;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transition: all 0.3s ease;
-            font-size: 20px;
+            font-size: 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--shadow-medium);
         }
 
-        .theme-toggle:hover {
+        .theme-toggle-btn:hover {
             transform: scale(1.1) rotate(45deg);
         }
 
-        .theme-options {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 200px;
+        .theme-section {
+            margin-bottom: 20px;
         }
 
-        .theme-option {
-            width: 100%;
-            height: 40px;
+        .theme-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Light/Dark Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            background: var(--bg-secondary);
+            border-radius: 25px;
+            padding: 4px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .mode-option {
+            flex: 1;
+            padding: 8px 16px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            font-size: 12px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-secondary);
         }
 
-        .theme-option::before {
-            content: attr(data-name);
+        .mode-option.active {
+            background: var(--theme-gradient);
+            color: white;
+            box-shadow: 0 2px 8px var(--shadow-light);
+        }
+
+        /* Color Theme Grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        .color-option.active {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 3px var(--bg-primary);
+        }
+
+        .color-option::after {
+            content: '✓';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
-            font-weight: 600;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            font-size: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .theme-option:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        .color-option.active::after {
+            opacity: 1;
         }
 
-        .theme-neon-purple-btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .theme-neon-cyan-btn { background: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%); }
-        .theme-neon-pink-btn { background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%); }
-        .theme-neon-green-btn { background: linear-gradient(135deg, #00ff88 0%, #00cc44 100%); }
-        .theme-neon-orange-btn { background: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%); }
-        .theme-neon-blue-btn { background: linear-gradient(135deg, #0099ff 0%, #003366 100%); }
-        .theme-dark-neon-btn { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+        /* Color Definitions */
+        .color-blue { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .color-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .color-cyan { background: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%); }
+        .color-pink { background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%); }
+        .color-green { background: linear-gradient(135deg, #00ff88 0%, #00cc44 100%); }
+        .color-orange { background: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%); }
+        .color-red { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .color-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+        .color-emerald { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
 
         /* Customer Records Panel */
         .customer-panel {
@@ -113,16 +267,17 @@
             top: 20px;
             left: 20px;
             z-index: 1001;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--bg-primary);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            transform: translateX(calc(-100% + 60px));
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px var(--shadow-medium);
+            transform: translateX(calc(-100% + 70px));
             transition: transform 0.3s ease;
-            max-width: 300px;
+            max-width: 320px;
             max-height: 70vh;
             overflow-y: auto;
+            border: 1px solid var(--border-color);
         }
 
         .customer-panel:hover,
@@ -131,16 +286,20 @@
         }
 
         .customer-toggle {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #3498db, #2980b9);
+            background: var(--theme-gradient);
             border: none;
             cursor: pointer;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             transition: all 0.3s ease;
-            font-size: 16px;
+            font-size: 20px;
             color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px var(--shadow-medium);
         }
 
         .customer-toggle:hover {
@@ -156,89 +315,594 @@
         }
 
         .customer-record {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid var(--theme-primary);
+            border: 1px solid var(--border-color);
         }
 
         .customer-record:hover {
-            background: #e9ecef;
+            background: var(--bg-tertiary);
             transform: translateX(5px);
+            box-shadow: 0 4px 12px var(--shadow-light);
         }
 
         .customer-record h4 {
-            color: #2c3e50;
-            margin-bottom: 5px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
             font-size: 14px;
         }
 
         .customer-record p {
-            color: #7f8c8d;
+            color: var(--text-muted);
             font-size: 12px;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .customer-actions {
             display: flex;
-            gap: 5px;
-            margin-top: 8px;
+            gap: 6px;
+            margin-top: 10px;
         }
 
         .customer-action-btn {
-            padding: 4px 8px;
+            padding: 6px 12px;
             border: none;
             border-radius: 15px;
-            font-size: 10px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 600;
         }
 
         .load-btn {
-            background: #27ae60;
+            background: linear-gradient(45deg, #27ae60, #229954);
             color: white;
         }
 
         .save-btn {
-            background: #3498db;
+            background: var(--theme-gradient);
             color: white;
         }
 
         .delete-btn {
-            background: #e74c3c;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
             color: white;
         }
 
         .customer-action-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px var(--shadow-light);
         }
 
         .new-customer-form {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 15px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border-color);
+        }
+
+        .new-customer-form h5 {
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            font-size: 13px;
         }
 
         .new-customer-form input {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             font-size: 12px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            transition: border-color 0.3s ease;
+        }
+
+        .new-customer-form input:focus {
+            outline: none;
+            border-color: var(--border-focus);
         }
 
         .container {
             max-width: 1000px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px var(--shadow-medium);
             overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            background: var(--header-bg);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            border-left: 4px solid var(--section-border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--theme-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-section:focus-within::before {
+            opacity: 1;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .form-section h3 {
+            color: var(--text-primary);
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .edit-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-btn, .save-btn, .cancel-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .save-btn {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .edit-btn:hover, .save-btn:hover, .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .read-display {
+            display: none;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border-color);
+        }
+
+        .form-section.read-mode .read-display {
+            display: block;
+        }
+
+        .form-section.read-mode .form-grid {
+            display: none;
+        }
+
+        .read-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .read-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .read-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .read-value {
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: var(--input-bg);
+            color: var(--text-primary);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Logo Upload Styles */
+        .logo-upload-section {
+            background: var(--bg-primary);
+            border: 2px dashed var(--theme-primary);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .logo-upload-section:hover {
+            background: var(--bg-secondary);
+            border-color: var(--theme-secondary);
+            transform: translateY(-2px);
+        }
+
+        .logo-upload-section.has-logo {
+            border-style: solid;
+            border-color: #27ae60;
+            background: var(--bg-secondary);
+        }
+
+        .logo-preview {
+            max-width: 200px;
+            max-height: 100px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .logo-preview.visible {
+            display: block;
+        }
+
+        .logo-upload-input {
+            display: none;
+        }
+
+        .logo-upload-btn, .logo-remove-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px;
+        }
+
+        .logo-upload-btn {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .logo-remove-btn {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .logo-upload-btn:hover, .logo-remove-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .logo-upload-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .line-items {
+            background: var(--bg-primary);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--border-color);
+        }
+
+        .line-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .line-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-light);
+        }
+
+        .line-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--theme-gradient);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            min-height: 48px;
+            font-size: 14px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-medium);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 10px 15px;
+            font-size: 12px;
+            min-height: auto;
+        }
+
+        .btn-danger:hover {
+            transform: scale(1.05);
+        }
+
+        .totals {
+            background: var(--theme-gradient);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            box-shadow: 0 6px 20px var(--shadow-light);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .final-total {
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 15px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .quotation-preview {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            padding: 40px;
+            margin-top: 30px;
+            font-family: 'Times New Roman', serif;
+            color: var(--text-primary);
+            box-shadow: 0 8px 25px var(--shadow-light);
+        }
+
+        .quotation-header {
+            text-align: center;
+            border-bottom: 3px solid var(--theme-primary);
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+
+        .quotation-logo {
+            max-width: 150px;
+            max-height: 75px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .quotation-logo.visible {
+            display: block;
+        }
+
+        .quotation-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 35px;
+        }
+
+        .quotation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .quotation-table th,
+        .quotation-table td {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .quotation-table th {
+            background: var(--bg-secondary);
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .quotation-table .text-right {
+            text-align: right;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Quick Actions Panel */
+        .quick-actions {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .quick-action-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px var(--shadow-medium);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-action-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .add-item-btn {
+            background: linear-gradient(45deg, #27ae60, #229954);
+        }
+
+        .save-all-btn {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+        }
+
+        .generate-btn {
+            background: var(--theme-gradient);
         }
 
         /* Mobile Navigation */
@@ -253,7 +917,7 @@
             padding: 15px;
             z-index: 1000;
             border-radius: 20px 20px 0 0;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 -10px 30px var(--shadow-medium);
         }
 
         .mobile-nav-buttons {
@@ -266,7 +930,7 @@
             flex: 1;
             padding: 12px 8px;
             background: transparent;
-            border: 2px solid #3498db;
+            border: 2px solid var(--theme-primary);
             border-radius: 25px;
             color: white;
             font-size: 12px;
@@ -277,28 +941,19 @@
         }
 
         .mobile-nav-btn.active {
-            background: #3498db;
+            background: var(--theme-primary);
             transform: scale(1.05);
         }
 
         .mobile-nav-btn:hover {
-            background: #3498db;
+            background: var(--theme-primary);
             transform: translateY(-2px);
         }
 
-        /* Section Management */
-        .form-section {
-            transition: all 0.3s ease;
-        }
-
-        .form-section.hidden-mobile {
-            display: none;
-        }
-
-        /* Mobile Step Indicator */
+        /* Step Indicator */
         .step-indicator {
             display: none;
-            background: linear-gradient(45deg, #3498db, #2980b9);
+            background: var(--theme-gradient);
             color: white;
             padding: 15px 20px;
             margin: -30px -30px 20px -30px;
@@ -326,457 +981,11 @@
             transform: scale(1.3);
         }
 
-        .header {
-            background: linear-gradient(45deg, #2c3e50, #3498db);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 300;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-            padding: 25px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border-left: 4px solid #3498db;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .form-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12, #e74c3c);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .form-section:focus-within::before {
-            opacity: 1;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .form-section h3 {
-            color: #2c3e50;
-            font-size: 1.3em;
-        }
-
-        .edit-controls {
-            display: flex;
-            gap: 10px;
-        }
-
-        .edit-btn, .save-btn, .cancel-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .edit-btn {
-            background: #3498db;
-            color: white;
-        }
-
-        .save-btn {
-            background: #27ae60;
-            color: white;
-        }
-
-        .cancel-btn {
-            background: #e74c3c;
-            color: white;
-        }
-
-        .read-display {
-            display: none;
-            background: white;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 2px solid #ecf0f1;
-        }
-
-        .form-section.read-mode .read-display {
-            display: block;
-        }
-
-        .form-section.read-mode .form-grid {
+        .form-section.hidden-mobile {
             display: none;
         }
 
-        .read-item {
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .read-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .read-label {
-            font-weight: 600;
-            color: #34495e;
-            font-size: 12px;
-            margin-bottom: 4px;
-        }
-
-        .read-value {
-            color: #2c3e50;
-            font-size: 14px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-weight: 600;
-            color: #34495e;
-            margin-bottom: 5px;
-        }
-
-        input, textarea, select {
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        /* Logo Upload Styles */
-        .logo-upload-section {
-            background: #ffffff;
-            border: 2px dashed #3498db;
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .logo-upload-section:hover {
-            background: #f8f9fa;
-            border-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .logo-upload-section.has-logo {
-            border-style: solid;
-            border-color: #27ae60;
-            background: #f8fff8;
-        }
-
-        .logo-preview {
-            max-width: 200px;
-            max-height: 100px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            display: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .logo-preview.visible {
-            display: block;
-        }
-
-        .logo-upload-input {
-            display: none;
-        }
-
-        .logo-upload-btn, .logo-remove-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 5px;
-        }
-
-        .logo-upload-btn {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .logo-remove-btn {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .logo-upload-text {
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .line-items {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            border: 2px solid #ecf0f1;
-        }
-
-        .line-item {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr auto;
-            gap: 15px;
-            align-items: end;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #fafafa;
-            border-radius: 8px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .line-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .line-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #3498db, #2ecc71);
-            border-radius: 0 4px 4px 0;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-            min-height: 44px;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            transform: translate(-50%, -50%);
-        }
-
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
-        }
-
-        .btn-success {
-            background: linear-gradient(45deg, #27ae60, #229954);
-            color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(45deg, #e74c3c, #c0392b);
-            color: white;
-            padding: 8px 12px;
-            font-size: 12px;
-        }
-
-        .btn-danger:hover {
-            transform: scale(1.05);
-        }
-
-        .totals {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 1.1em;
-        }
-
-        .final-total {
-            border-top: 2px solid #ecf0f1;
-            padding-top: 15px;
-            font-size: 1.4em;
-            font-weight: bold;
-        }
-
-        .quotation-preview {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 30px;
-            margin-top: 30px;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .quotation-header {
-            text-align: center;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .quotation-logo {
-            max-width: 150px;
-            max-height: 75px;
-            margin-bottom: 15px;
-            display: none;
-        }
-
-        .quotation-logo.visible {
-            display: block;
-        }
-
-        .quotation-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .quotation-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .quotation-table th,
-        .quotation-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .quotation-table th {
-            background: #f8f9fa;
-            font-weight: bold;
-        }
-
-        .quotation-table .text-right {
-            text-align: right;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Quick Actions Panel */
-        .quick-actions {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .quick-action-btn {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quick-action-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .add-item-btn {
-            background: linear-gradient(45deg, #27ae60, #229954);
-        }
-
-        .save-all-btn {
-            background: linear-gradient(45deg, #f39c12, #e67e22);
-        }
-
-        .generate-btn {
-            background: linear-gradient(45deg, #8e44ad, #9b59b6);
-        }
-
+        /* Responsive Design */
         @media (max-width: 768px) {
             body {
                 padding: 5px;
@@ -784,7 +993,7 @@
             }
 
             .container {
-                border-radius: 10px;
+                border-radius: 15px;
                 margin-bottom: 0;
             }
 
@@ -801,7 +1010,7 @@
                 padding: 20px 15px;
                 border-radius: 15px;
                 border-left: none;
-                border-top: 4px solid #3498db;
+                border-top: 4px solid var(--section-border);
             }
 
             .form-grid {
@@ -811,12 +1020,12 @@
 
             .line-item {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 15px;
                 padding: 20px 15px;
                 border-radius: 15px;
                 margin-bottom: 20px;
-                background: white;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                background: var(--bg-primary);
+                box-shadow: 0 4px 15px var(--shadow-light);
             }
 
             .mobile-nav {
@@ -832,23 +1041,33 @@
             }
 
             .customer-panel {
-                transform: translateX(calc(-100% + 50px));
-                max-width: 250px;
+                transform: translateX(calc(-100% + 60px));
+                max-width: 280px;
             }
 
-            .theme-selector {
-                transform: translateX(calc(100% - 50px));
+            .theme-control-panel {
+                transform: translateX(calc(100% - 60px));
+                max-width: 260px;
             }
 
             .section-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
             }
 
             .edit-controls {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .quotation-details {
+                grid-template-columns: 1fr;
+                gap: 25px;
             }
         }
 
@@ -872,36 +1091,133 @@
 
             .quotation-table th,
             .quotation-table td {
-                padding: 6px 2px;
+                padding: 8px 4px;
             }
+
+            .theme-control-panel,
+            .customer-panel {
+                max-width: 240px;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .theme-control-panel,
+            .customer-panel,
+            .quick-actions,
+            .mobile-nav,
+            .edit-controls {
+                display: none !important;
+            }
+
+            .container {
+                box-shadow: none;
+                border: none;
+            }
+
+            .quotation-preview {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-section {
+            animation: slideInUp 0.6s ease;
+        }
+
+        /* Accessibility */
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus indicators */
+        button:focus,
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 2px solid var(--theme-primary);
+            outline-offset: 2px;
         }
     </style>
 </head>
-<body>
-    <!-- Theme Selector -->
-    <div class="theme-selector" id="themeSelector">
-        <button class="theme-toggle" onclick="toggleThemeSelector()">🎨</button>
-        <div class="theme-options">
-            <button class="theme-option theme-neon-purple-btn" data-theme="theme-neon-purple" data-name="Neon Purple"></button>
-            <button class="theme-option theme-neon-cyan-btn" data-theme="theme-neon-cyan" data-name="Neon Cyan"></button>
-            <button class="theme-option theme-neon-pink-btn" data-theme="theme-neon-pink" data-name="Neon Pink"></button>
-            <button class="theme-option theme-neon-green-btn" data-theme="theme-neon-green" data-name="Neon Green"></button>
-            <button class="theme-option theme-neon-orange-btn" data-theme="theme-neon-orange" data-name="Neon Orange"></button>
-            <button class="theme-option theme-neon-blue-btn" data-theme="theme-neon-blue" data-name="Neon Blue"></button>
-            <button class="theme-option theme-dark-neon-btn" data-theme="theme-dark-neon" data-name="Dark Neon"></button>
+<body data-theme="light" data-color="blue">
+    <!-- Theme Control Panel -->
+    <div class="theme-control-panel" id="themeControlPanel">
+        <button class="theme-toggle-btn" onclick="toggleThemePanel()" aria-label="Open theme settings">
+            🎨
+        </button>
+        
+        <div class="theme-section">
+            <h4>Display Mode</h4>
+            <div class="mode-toggle">
+                <button class="mode-option active" data-mode="light" onclick="setThemeMode('light')">
+                    ☀️ Light
+                </button>
+                <button class="mode-option" data-mode="dark" onclick="setThemeMode('dark')">
+                    🌙 Dark
+                </button>
+            </div>
+        </div>
+
+        <div class="theme-section">
+            <h4>Color Theme</h4>
+            <div class="color-grid">
+                <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')" aria-label="Blue theme"></button>
+                <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')" aria-label="Purple theme"></button>
+                <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')" aria-label="Cyan theme"></button>
+                <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')" aria-label="Pink theme"></button>
+                <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')" aria-label="Green theme"></button>
+                <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')" aria-label="Orange theme"></button>
+                <button class="color-option color-red" data-color="red" onclick="setColorTheme('red')" aria-label="Red theme"></button>
+                <button class="color-option color-indigo" data-color="indigo" onclick="setColorTheme('indigo')" aria-label="Indigo theme"></button>
+                <button class="color-option color-emerald" data-color="emerald" onclick="setColorTheme('emerald')" aria-label="Emerald theme"></button>
+            </div>
         </div>
     </div>
 
     <!-- Customer Records Panel -->
     <div class="customer-panel" id="customerPanel">
-        <button class="customer-toggle" onclick="toggleCustomerPanel()">👥</button>
+        <button class="customer-toggle" onclick="toggleCustomerPanel()" aria-label="Open customer records">
+            👥
+        </button>
         <div class="customer-records" id="customerRecords">
-            <h4 style="margin-bottom: 15px; color: #2c3e50;">Customer Records</h4>
+            <h4 style="margin-bottom: 15px; color: var(--text-primary);">Customer Records</h4>
             
             <!-- New Customer Form -->
             <div class="new-customer-form">
-                <h5 style="margin-bottom: 10px; color: #34495e;">Save Current Customer</h5>
-                <input type="text" id="newCustomerName" placeholder="Customer Name">
+                <h5>Save Current Customer</h5>
+                <input type="text" id="newCustomerName" placeholder="Customer Name" aria-label="Customer name for saving">
                 <button class="customer-action-btn save-btn" onclick="saveCurrentCustomer()">Save Customer</button>
             </div>
 
@@ -912,15 +1228,15 @@
 
     <!-- Quick Actions -->
     <div class="quick-actions">
-        <button class="quick-action-btn add-item-btn" onclick="addLineItem()" title="Add Item">+</button>
-        <button class="quick-action-btn save-all-btn" onclick="saveAllSections()" title="Save All">💾</button>
-        <button class="quick-action-btn generate-btn" onclick="generateQuotation()" title="Generate">📄</button>
+        <button class="quick-action-btn add-item-btn" onclick="addLineItem()" title="Add Item" aria-label="Add new line item">+</button>
+        <button class="quick-action-btn save-all-btn" onclick="saveAllSections()" title="Save All" aria-label="Save all sections">💾</button>
+        <button class="quick-action-btn generate-btn" onclick="generateQuotation()" title="Generate" aria-label="Generate quotation">📄</button>
     </div>
 
     <div class="container">
         <div class="header">
             <h1>Enhanced Quotation Generator</h1>
-            <p>Create professional quotations with customer management</p>
+            <p>Create professional quotations with advanced theming and customer management</p>
         </div>
 
         <div class="content">
@@ -951,8 +1267,8 @@
                 <div class="logo-upload-section" id="logoUploadSection" onclick="triggerLogoUpload()">
                     <img id="logoPreview" class="logo-preview" alt="Company Logo">
                     <div id="logoUploadContent">
-                        <div style="font-size: 48px; color: #3498db; margin-bottom: 10px;">🏢</div>
-                        <div style="font-weight: 600; color: #2c3e50; margin-bottom: 5px;">Upload Company Logo</div>
+                        <div style="font-size: 48px; color: var(--theme-primary); margin-bottom: 15px;">🏢</div>
+                        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Upload Company Logo</div>
                         <div class="logo-upload-text">Click to select logo image (PNG, JPG, SVG)</div>
                         <button type="button" class="logo-upload-btn">Choose Logo</button>
                         <button type="button" class="logo-remove-btn" id="logoRemoveBtn" style="display: none;" onclick="removeLogo(event)">Remove Logo</button>
@@ -1106,6 +1422,9 @@
                             <option value="£">GBP (£)</option>
                             <option value="¥">JPY (¥)</option>
                             <option value="RM">MYR (RM)</option>
+                            <option value="₹">INR (₹)</option>
+                            <option value="¢">CAD (¢)</option>
+                            <option value="₩">KRW (₩)</option>
                         </select>
                     </div>
                 </div>
@@ -1157,7 +1476,7 @@
                     <div class="total-row">
                         <span>Tax (%):</span>
                         <span>
-                            <input type="number" id="taxRate" value="0" min="0" max="100" step="0.1" style="width: 80px; background: transparent; border: 1px solid #ecf0f1; color: white;">%
+                            <input type="number" id="taxRate" value="0" min="0" max="100" step="0.1" style="width: 80px; background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; border-radius: 5px; padding: 5px;">%
                         </span>
                     </div>
                     <div class="total-row">
@@ -1191,35 +1510,35 @@
 
                 <div class="form-group">
                     <label for="notes">Terms & Conditions / Notes</label>
-                    <textarea id="notes" placeholder="Payment terms, delivery information, or any additional notes"></textarea>
+                    <textarea id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
                 </div>
             </div>
 
             <!-- Generate Quotation -->
-            <div style="text-align: center; margin-top: 30px;">
-                <button type="button" id="generateQuotation" class="btn btn-success">Generate Quotation</button>
+            <div style="text-align: center; margin-top: 40px;">
+                <button type="button" id="generateQuotation" class="btn btn-success" style="font-size: 16px; padding: 16px 32px;">Generate Quotation</button>
             </div>
 
             <!-- Quotation Preview -->
             <div id="quotationPreview" class="quotation-preview hidden">
                 <div class="quotation-header">
                     <img id="quotationLogo" class="quotation-logo" alt="Company Logo">
-                    <h1>QUOTATION</h1>
-                    <p id="previewQuotationNumber"></p>
+                    <h1 style="color: var(--text-primary);">QUOTATION</h1>
+                    <p id="previewQuotationNumber" style="color: var(--text-secondary);"></p>
                 </div>
                 
                 <div class="quotation-details">
                     <div>
-                        <h4>From:</h4>
-                        <div id="previewCompanyDetails"></div>
+                        <h4 style="color: var(--text-primary);">From:</h4>
+                        <div id="previewCompanyDetails" style="color: var(--text-secondary);"></div>
                     </div>
                     <div>
-                        <h4>To:</h4>
-                        <div id="previewCustomerDetails"></div>
+                        <h4 style="color: var(--text-primary);">To:</h4>
+                        <div id="previewCustomerDetails" style="color: var(--text-secondary);"></div>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div style="margin-bottom: 25px; color: var(--text-secondary);">
                     <strong>Date:</strong> <span id="previewDate"></span><br>
                     <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
                 </div>
@@ -1237,16 +1556,16 @@
                     </tbody>
                 </table>
 
-                <div style="text-align: right; margin-top: 20px;">
+                <div style="text-align: right; margin-top: 25px; color: var(--text-primary);">
                     <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
                     <div><strong>Tax:</strong> <span id="previewTax"></span></div>
-                    <div style="font-size: 1.2em; margin-top: 10px;"><strong>Total:</strong> <span id="previewTotal"></span></div>
+                    <div style="font-size: 1.3em; margin-top: 15px; color: var(--theme-primary);"><strong>Total:</strong> <span id="previewTotal"></span></div>
                 </div>
 
-                <div id="previewNotes" style="margin-top: 30px;"></div>
+                <div id="previewNotes" style="margin-top: 35px; color: var(--text-secondary);"></div>
 
-                <div style="text-align: center; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px;">
-                    <button type="button" onclick="window.print()" class="btn btn-primary">Print/Save as PDF</button>
+                <div style="text-align: center; margin-top: 35px; border-top: 1px solid var(--border-color); padding-top: 25px;">
+                    <button type="button" onclick="window.print()" class="btn btn-primary" style="font-size: 14px;">Print/Save as PDF</button>
                 </div>
             </div>
         </div>
@@ -1264,416 +1583,521 @@
     </div>
 
     <script>
-        // In-memory storage for session data
-        let savedCustomers = [];
-        let companyLogo = null;
-        let sectionBackups = {};
-        let currentTheme = 'theme-neon-purple';
-
-        // Mobile interface management
-        let currentStep = 0;
-        const totalSteps = 5;
-        const stepTitles = ['Company Details', 'Customer Details', 'Quotation Info', 'Products/Services', 'Additional Notes'];
-
-        // Theme management
-        function toggleThemeSelector() {
-            const selector = document.getElementById('themeSelector');
-            selector.classList.toggle('open');
-        }
-
-        // Theme switching
-        document.querySelectorAll('.theme-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const theme = this.dataset.theme;
-                document.body.className = theme;
-                currentTheme = theme;
-                
-                // Visual feedback
-                this.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1.05)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-                }, 100);
-            });
-        });
-
-        // Customer management
-        function toggleCustomerPanel() {
-            const panel = document.getElementById('customerPanel');
-            const records = document.getElementById('customerRecords');
+        // Application State
+        const AppState = {
+            savedCustomers: [],
+            companyLogo: null,
+            sectionBackups: {},
+            currentTheme: 'light',
+            currentColor: 'blue',
             
-            if (records.classList.contains('show')) {
-                records.classList.remove('show');
-                panel.classList.remove('open');
-            } else {
-                records.classList.add('show');
-                panel.classList.add('open');
-                updateCustomerList();
+            // Mobile interface
+            currentStep: 0,
+            totalSteps: 5,
+            stepTitles: ['Company Details', 'Customer Details', 'Quotation Info', 'Products/Services', 'Additional Notes'],
+            
+            lineItemCount: 1
+        };
+
+        // Theme Management System
+        const ThemeManager = {
+            init() {
+                this.loadSavedTheme();
+                this.setupEventListeners();
+            },
+
+            loadSavedTheme() {
+                // In a real app, this would load from localStorage
+                // For Claude.ai artifacts, we'll use session storage in memory
+                const savedTheme = AppState.currentTheme;
+                const savedColor = AppState.currentColor;
+                
+                this.applyTheme(savedTheme, savedColor);
+            },
+
+            setupEventListeners() {
+                // Close theme panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    const themePanel = document.getElementById('themeControlPanel');
+                    const customerPanel = document.getElementById('customerPanel');
+                    
+                    if (!themePanel.contains(e.target)) {
+                        themePanel.classList.remove('open');
+                    }
+                    
+                    if (!customerPanel.contains(e.target)) {
+                        customerPanel.classList.remove('open');
+                        document.getElementById('customerRecords').classList.remove('show');
+                    }
+                });
+            },
+
+            applyTheme(themeMode, colorTheme) {
+                const body = document.body;
+                
+                // Apply theme mode
+                body.setAttribute('data-theme', themeMode);
+                
+                // Apply color theme
+                body.setAttribute('data-color', colorTheme);
+                
+                // Update UI state
+                this.updateThemeUI(themeMode, colorTheme);
+                
+                // Store current theme
+                AppState.currentTheme = themeMode;
+                AppState.currentColor = colorTheme;
+            },
+
+            updateThemeUI(themeMode, colorTheme) {
+                // Update mode toggle buttons
+                document.querySelectorAll('.mode-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.mode === themeMode);
+                });
+
+                // Update color option buttons
+                document.querySelectorAll('.color-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.color === colorTheme);
+                });
             }
+        };
+
+        // Theme Control Functions
+        function toggleThemePanel() {
+            const panel = document.getElementById('themeControlPanel');
+            panel.classList.toggle('open');
         }
 
-        function saveCurrentCustomer() {
-            const name = document.getElementById('newCustomerName').value.trim();
-            if (!name) {
-                alert('Please enter a customer name');
-                return;
-            }
+        function setThemeMode(mode) {
+            ThemeManager.applyTheme(mode, AppState.currentColor);
+        }
 
-            const customerData = {
-                id: Date.now(),
-                name: name,
-                address: document.getElementById('customerAddress').value,
-                phone: document.getElementById('customerPhone').value,
-                email: document.getElementById('customerEmail').value
-            };
+        function setColorTheme(color) {
+            ThemeManager.applyTheme(AppState.currentTheme, color);
+        }
 
-            // Check if customer already exists
-            const existingIndex = savedCustomers.findIndex(c => c.name.toLowerCase() === name.toLowerCase());
-            if (existingIndex >= 0) {
-                if (confirm('Customer with this name already exists. Update existing record?')) {
-                    savedCustomers[existingIndex] = customerData;
+        // Customer Management System
+        const CustomerManager = {
+            togglePanel() {
+                const panel = document.getElementById('customerPanel');
+                const records = document.getElementById('customerRecords');
+                
+                if (records.classList.contains('show')) {
+                    records.classList.remove('show');
+                    panel.classList.remove('open');
+                } else {
+                    records.classList.add('show');
+                    panel.classList.add('open');
+                    this.updateCustomerList();
                 }
-            } else {
-                savedCustomers.push(customerData);
-            }
+            },
 
-            document.getElementById('newCustomerName').value = '';
-            updateCustomerList();
-            
-            // Visual feedback
-            const saveBtn = document.querySelector('.new-customer-form .save-btn');
-            saveBtn.style.background = '#27ae60';
-            saveBtn.textContent = 'Saved!';
-            setTimeout(() => {
-                saveBtn.style.background = '#3498db';
-                saveBtn.textContent = 'Save Customer';
-            }, 1500);
-        }
+            saveCurrentCustomer() {
+                const name = document.getElementById('newCustomerName').value.trim();
+                if (!name) {
+                    alert('Please enter a customer name');
+                    return;
+                }
 
-        function loadCustomer(customerId) {
-            const customer = savedCustomers.find(c => c.id === customerId);
-            if (customer) {
-                document.getElementById('customerName').value = customer.name;
-                document.getElementById('customerAddress').value = customer.address;
-                document.getElementById('customerPhone').value = customer.phone;
-                document.getElementById('customerEmail').value = customer.email;
+                const customerData = {
+                    id: Date.now(),
+                    name: name,
+                    address: document.getElementById('customerAddress').value,
+                    phone: document.getElementById('customerPhone').value,
+                    email: document.getElementById('customerEmail').value,
+                    createdAt: new Date().toLocaleDateString()
+                };
+
+                // Check if customer already exists
+                const existingIndex = AppState.savedCustomers.findIndex(c => 
+                    c.name.toLowerCase() === name.toLowerCase()
+                );
                 
-                // Update read displays
-                updateReadDisplays('customerSection');
+                if (existingIndex >= 0) {
+                    if (confirm('Customer with this name already exists. Update existing record?')) {
+                        AppState.savedCustomers[existingIndex] = customerData;
+                    }
+                } else {
+                    AppState.savedCustomers.push(customerData);
+                }
+
+                document.getElementById('newCustomerName').value = '';
+                this.updateCustomerList();
                 
                 // Visual feedback
-                const customerSection = document.getElementById('customerSection');
-                customerSection.style.borderLeftColor = '#27ae60';
+                this.showSaveConfirmation();
+            },
+
+            loadCustomer(customerId) {
+                const customer = AppState.savedCustomers.find(c => c.id === customerId);
+                if (customer) {
+                    document.getElementById('customerName').value = customer.name;
+                    document.getElementById('customerAddress').value = customer.address;
+                    document.getElementById('customerPhone').value = customer.phone;
+                    document.getElementById('customerEmail').value = customer.email;
+                    
+                    // Update read displays
+                    FormManager.updateReadDisplays('customerSection');
+                    
+                    // Visual feedback
+                    this.showLoadConfirmation();
+                }
+            },
+
+            deleteCustomer(customerId) {
+                if (confirm('Are you sure you want to delete this customer record?')) {
+                    AppState.savedCustomers = AppState.savedCustomers.filter(c => c.id !== customerId);
+                    this.updateCustomerList();
+                }
+            },
+
+            updateCustomerList() {
+                const container = document.getElementById('savedCustomers');
+                container.innerHTML = '';
+
+                if (AppState.savedCustomers.length === 0) {
+                    container.innerHTML = '<p style="color: var(--text-muted); font-size: 12px; text-align: center; padding: 20px;">No saved customers yet</p>';
+                    return;
+                }
+
+                AppState.savedCustomers.forEach(customer => {
+                    const customerDiv = document.createElement('div');
+                    customerDiv.className = 'customer-record';
+                    customerDiv.innerHTML = `
+                        <h4>${customer.name}</h4>
+                        <p>${customer.address || 'No address'}</p>
+                        <p>${customer.phone || 'No phone'}</p>
+                        <p>${customer.email || 'No email'}</p>
+                        <p style="font-size: 10px; color: var(--text-muted); margin-top: 5px;">Saved: ${customer.createdAt}</p>
+                        <div class="customer-actions">
+                            <button class="customer-action-btn load-btn" onclick="CustomerManager.loadCustomer(${customer.id})">Load</button>
+                            <button class="customer-action-btn delete-btn" onclick="CustomerManager.deleteCustomer(${customer.id})">Delete</button>
+                        </div>
+                    `;
+                    container.appendChild(customerDiv);
+                });
+            },
+
+            showSaveConfirmation() {
+                const saveBtn = document.querySelector('.new-customer-form .save-btn');
+                const originalText = saveBtn.textContent;
+                saveBtn.style.background = 'linear-gradient(45deg, #27ae60, #229954)';
+                saveBtn.textContent = 'Saved! ✓';
                 setTimeout(() => {
-                    customerSection.style.borderLeftColor = '#3498db';
+                    saveBtn.style.background = '';
+                    saveBtn.textContent = originalText;
+                }, 2000);
+            },
+
+            showLoadConfirmation() {
+                const customerSection = document.getElementById('customerSection');
+                const originalBorder = customerSection.style.borderLeftColor;
+                customerSection.style.borderLeftColor = '#27ae60';
+                customerSection.style.borderLeftWidth = '6px';
+                setTimeout(() => {
+                    customerSection.style.borderLeftColor = '';
+                    customerSection.style.borderLeftWidth = '';
                 }, 2000);
             }
-        }
+        };
 
-        function deleteCustomer(customerId) {
-            if (confirm('Are you sure you want to delete this customer record?')) {
-                savedCustomers = savedCustomers.filter(c => c.id !== customerId);
-                updateCustomerList();
-            }
-        }
-
-        function updateCustomerList() {
-            const container = document.getElementById('savedCustomers');
-            container.innerHTML = '';
-
-            savedCustomers.forEach(customer => {
-                const customerDiv = document.createElement('div');
-                customerDiv.className = 'customer-record';
-                customerDiv.innerHTML = `
-                    <h4>${customer.name}</h4>
-                    <p>${customer.address}</p>
-                    <p>${customer.phone}</p>
-                    <p>${customer.email}</p>
-                    <div class="customer-actions">
-                        <button class="customer-action-btn load-btn" onclick="loadCustomer(${customer.id})">Load</button>
-                        <button class="customer-action-btn delete-btn" onclick="deleteCustomer(${customer.id})">Delete</button>
-                    </div>
-                `;
-                container.appendChild(customerDiv);
-            });
-        }
-
-        // Edit functionality
-        function toggleEditMode(sectionId) {
-            const section = document.getElementById(sectionId);
-            const editBtn = section.querySelector('.edit-btn');
-            const saveBtn = section.querySelector('.save-btn');
-            const cancelBtn = section.querySelector('.cancel-btn');
-
-            // Backup current values
-            backupSectionData(sectionId);
-
-            // Switch to edit mode
-            section.classList.remove('read-mode');
-            section.classList.add('edit-mode');
-            editBtn.style.display = 'none';
-            saveBtn.style.display = 'inline-block';
-            cancelBtn.style.display = 'inline-block';
-
-            // Visual feedback
-            section.style.transform = 'scale(1.02)';
-            setTimeout(() => {
-                section.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        function saveSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            const editBtn = section.querySelector('.edit-btn');
-            const saveBtn = section.querySelector('.save-btn');
-            const cancelBtn = section.querySelector('.cancel-btn');
-
-            // Update read-only displays
-            updateReadDisplays(sectionId);
-
-            // Switch to read mode
-            section.classList.remove('edit-mode');
-            section.classList.add('read-mode');
-            editBtn.style.display = 'inline-block';
-            saveBtn.style.display = 'none';
-            cancelBtn.style.display = 'none';
-
-            // Clear backup
-            delete sectionBackups[sectionId];
-
-            // Visual feedback
-            section.style.transform = 'scale(0.98)';
-            setTimeout(() => {
-                section.style.transform = 'scale(1)';
-            }, 200);
-
-            // Update calculations if needed
-            if (sectionId === 'itemsSection') {
-                updateGrandTotal();
-            }
-        }
-
-        function cancelEdit(sectionId) {
-            const section = document.getElementById(sectionId);
-            const editBtn = section.querySelector('.edit-btn');
-            const saveBtn = section.querySelector('.save-btn');
-            const cancelBtn = section.querySelector('.cancel-btn');
-
-            // Restore backed up values
-            restoreSectionData(sectionId);
-
-            // Switch to read mode
-            section.classList.remove('edit-mode');
-            section.classList.add('read-mode');
-            editBtn.style.display = 'inline-block';
-            saveBtn.style.display = 'none';
-            cancelBtn.style.display = 'none';
-
-            // Visual feedback
-            section.style.transform = 'scale(1.02)';
-            setTimeout(() => {
-                section.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        function backupSectionData(sectionId) {
-            const section = document.getElementById(sectionId);
-            const inputs = section.querySelectorAll('input, textarea, select');
-            sectionBackups[sectionId] = {};
-            
-            inputs.forEach(input => {
-                sectionBackups[sectionId][input.id || input.className] = input.value;
-            });
-        }
-
-        function restoreSectionData(sectionId) {
-            if (!sectionBackups[sectionId]) return;
-            
-            const section = document.getElementById(sectionId);
-            const inputs = section.querySelectorAll('input, textarea, select');
-            
-            inputs.forEach(input => {
-                const key = input.id || input.className;
-                if (sectionBackups[sectionId][key] !== undefined) {
-                    input.value = sectionBackups[sectionId][key];
-                }
-            });
-
-            // Update calculations if needed
-            if (sectionId === 'itemsSection') {
-                updateGrandTotal();
-            }
-        }
-
-        function updateReadDisplays(sectionId) {
-            if (sectionId === 'companySection') {
-                document.getElementById('read-companyName').textContent = 
-                    document.getElementById('companyName').value || 'Not set';
-                document.getElementById('read-companyAddress').textContent = 
-                    document.getElementById('companyAddress').value || 'Not set';
-                document.getElementById('read-companyPhone').textContent = 
-                    document.getElementById('companyPhone').value || 'Not set';
-                document.getElementById('read-companyEmail').textContent = 
-                    document.getElementById('companyEmail').value || 'Not set';
-            } else if (sectionId === 'customerSection') {
-                document.getElementById('read-customerName').textContent = 
-                    document.getElementById('customerName').value || 'Not set';
-                document.getElementById('read-customerAddress').textContent = 
-                    document.getElementById('customerAddress').value || 'Not set';
-                document.getElementById('read-customerPhone').textContent = 
-                    document.getElementById('customerPhone').value || 'Not set';
-                document.getElementById('read-customerEmail').textContent = 
-                    document.getElementById('customerEmail').value || 'Not set';
-            } else if (sectionId === 'quotationSection') {
-                document.getElementById('read-quotationNumber').textContent = 
-                    document.getElementById('quotationNumber').value || 'Not set';
-                document.getElementById('read-quotationDate').textContent = 
-                    document.getElementById('quotationDate').value || 'Not set';
-                document.getElementById('read-validUntil').textContent = 
-                    document.getElementById('validUntil').value || 'Not set';
-                document.getElementById('read-currency').textContent = 
-                    document.getElementById('currency').selectedOptions[0].text || 'Not set';
-            } else if (sectionId === 'notesSection') {
-                document.getElementById('read-notes').textContent = 
-                    document.getElementById('notes').value || 'Not set';
-            }
-        }
-
-        function saveAllSections() {
-            const sections = ['companySection', 'customerSection', 'quotationSection', 'itemsSection', 'notesSection'];
-            sections.forEach(sectionId => {
+        // Form Management System
+        const FormManager = {
+            toggleEditMode(sectionId) {
                 const section = document.getElementById(sectionId);
-                if (section.classList.contains('edit-mode')) {
-                    saveSection(sectionId);
+                const editBtn = section.querySelector('.edit-btn');
+                const saveBtn = section.querySelector('.save-btn');
+                const cancelBtn = section.querySelector('.cancel-btn');
+
+                // Backup current values
+                this.backupSectionData(sectionId);
+
+                // Switch to edit mode
+                section.classList.remove('read-mode');
+                section.classList.add('edit-mode');
+                editBtn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+                cancelBtn.style.display = 'inline-block';
+
+                // Visual feedback
+                section.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    section.style.transform = 'scale(1)';
+                }, 200);
+            },
+
+            saveSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                const editBtn = section.querySelector('.edit-btn');
+                const saveBtn = section.querySelector('.save-btn');
+                const cancelBtn = section.querySelector('.cancel-btn');
+
+                // Update read-only displays
+                this.updateReadDisplays(sectionId);
+
+                // Switch to read mode
+                section.classList.remove('edit-mode');
+                section.classList.add('read-mode');
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
+
+                // Clear backup
+                delete AppState.sectionBackups[sectionId];
+
+                // Visual feedback
+                section.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    section.style.transform = 'scale(1)';
+                }, 200);
+
+                // Update calculations if needed
+                if (sectionId === 'itemsSection') {
+                    QuotationManager.updateGrandTotal();
                 }
-            });
+            },
 
-            // Visual feedback
-            const saveBtn = document.querySelector('.save-all-btn');
-            const originalBg = saveBtn.style.background;
-            saveBtn.style.background = 'linear-gradient(45deg, #27ae60, #229954)';
-            saveBtn.innerHTML = '✓';
-            setTimeout(() => {
-                saveBtn.style.background = originalBg;
-                saveBtn.innerHTML = '💾';
-            }, 1500);
-        }
+            cancelEdit(sectionId) {
+                const section = document.getElementById(sectionId);
+                const editBtn = section.querySelector('.edit-btn');
+                const saveBtn = section.querySelector('.save-btn');
+                const cancelBtn = section.querySelector('.cancel-btn');
 
-        // Initialize mobile interface
-        function initMobileInterface() {
-            if (window.innerWidth <= 768) {
-                showMobileStep(0);
-                updateMobileNavigation();
-            } else {
-                showAllSteps();
-            }
-        }
+                // Restore backed up values
+                this.restoreSectionData(sectionId);
 
-        function showMobileStep(step) {
-            const sections = document.querySelectorAll('.form-section');
-            sections.forEach((section, index) => {
-                if (index === step) {
-                    section.classList.remove('hidden-mobile');
-                    section.style.animation = 'slideInUp 0.6s ease';
-                } else {
-                    section.classList.add('hidden-mobile');
-                }
-            });
+                // Switch to read mode
+                section.classList.remove('edit-mode');
+                section.classList.add('read-mode');
+                editBtn.style.display = 'inline-block';
+                saveBtn.style.display = 'none';
+                cancelBtn.style.display = 'none';
 
-            // Update step indicator
-            const stepTitle = document.getElementById('stepTitle');
-            if (stepTitle) {
-                stepTitle.textContent = stepTitles[step];
-            }
+                // Visual feedback
+                section.style.transform = 'scale(1.02)';
+                setTimeout(() => {
+                    section.style.transform = 'scale(1)';
+                }, 200);
+            },
 
-            // Update step dots
-            const stepDots = document.querySelectorAll('.step-dot');
-            stepDots.forEach((dot, index) => {
-                if (index === step) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-
-            currentStep = step;
-        }
-
-        function showAllSteps() {
-            const sections = document.querySelectorAll('.form-section');
-            sections.forEach(section => {
-                section.classList.remove('hidden-mobile');
-            });
-        }
-
-        function updateMobileNavigation() {
-            const navButtons = document.querySelectorAll('.mobile-nav-btn');
-            navButtons.forEach((btn, index) => {
-                if (index === currentStep) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
-        // Mobile navigation event listeners
-        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const step = parseInt(this.dataset.step);
-                showMobileStep(step);
-                updateMobileNavigation();
+            backupSectionData(sectionId) {
+                const section = document.getElementById(sectionId);
+                const inputs = section.querySelectorAll('input, textarea, select');
+                AppState.sectionBackups[sectionId] = {};
                 
-                // Smooth scroll to top on mobile
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        });
+                inputs.forEach(input => {
+                    const key = input.id || input.className;
+                    AppState.sectionBackups[sectionId][key] = input.value;
+                });
+            },
 
-        // Touch gestures for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
+            restoreSectionData(sectionId) {
+                if (!AppState.sectionBackups[sectionId]) return;
+                
+                const section = document.getElementById(sectionId);
+                const inputs = section.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    const key = input.id || input.className;
+                    if (AppState.sectionBackups[sectionId][key] !== undefined) {
+                        input.value = AppState.sectionBackups[sectionId][key];
+                    }
+                });
 
-        function handleGesture() {
-            if (window.innerWidth > 768) return;
-            
-            const threshold = 50;
-            const difference = touchEndX - touchStartX;
+                // Update calculations if needed
+                if (sectionId === 'itemsSection') {
+                    QuotationManager.updateGrandTotal();
+                }
+            },
 
-            if (Math.abs(difference) > threshold) {
-                if (difference > 0 && currentStep > 0) {
-                    showMobileStep(currentStep - 1);
-                    updateMobileNavigation();
-                } else if (difference < 0 && currentStep < totalSteps - 1) {
-                    showMobileStep(currentStep + 1);
-                    updateMobileNavigation();
+            updateReadDisplays(sectionId) {
+                const displayMap = {
+                    companySection: {
+                        'read-companyName': 'companyName',
+                        'read-companyAddress': 'companyAddress',
+                        'read-companyPhone': 'companyPhone',
+                        'read-companyEmail': 'companyEmail'
+                    },
+                    customerSection: {
+                        'read-customerName': 'customerName',
+                        'read-customerAddress': 'customerAddress',
+                        'read-customerPhone': 'customerPhone',
+                        'read-customerEmail': 'customerEmail'
+                    },
+                    quotationSection: {
+                        'read-quotationNumber': 'quotationNumber',
+                        'read-quotationDate': 'quotationDate',
+                        'read-validUntil': 'validUntil',
+                        'read-currency': 'currency'
+                    },
+                    notesSection: {
+                        'read-notes': 'notes'
+                    }
+                };
+
+                const mappings = displayMap[sectionId];
+                if (mappings) {
+                    Object.entries(mappings).forEach(([readId, inputId]) => {
+                        const readElement = document.getElementById(readId);
+                        const inputElement = document.getElementById(inputId);
+                        
+                        if (readElement && inputElement) {
+                            let value = inputElement.value || 'Not set';
+                            
+                            // Special handling for currency
+                            if (inputId === 'currency') {
+                                value = inputElement.selectedOptions[0]?.text || 'Not set';
+                            }
+                            
+                            readElement.textContent = value;
+                        }
+                    });
+                }
+
+                // Handle logo display for company section
+                if (sectionId === 'companySection' && AppState.companyLogo) {
+                    const logoReadItem = document.getElementById('logoReadItem');
+                    const logoReadPreview = document.getElementById('logoReadPreview');
+                    logoReadPreview.src = AppState.companyLogo;
+                    logoReadItem.style.display = 'block';
+                }
+            },
+
+            saveAllSections() {
+                const sections = ['companySection', 'customerSection', 'quotationSection', 'itemsSection', 'notesSection'];
+                sections.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section.classList.contains('edit-mode')) {
+                        this.saveSection(sectionId);
+                    }
+                });
+
+                // Visual feedback
+                const saveBtn = document.querySelector('.save-all-btn');
+                const originalContent = saveBtn.innerHTML;
+                saveBtn.style.background = 'linear-gradient(45deg, #27ae60, #229954)';
+                saveBtn.innerHTML = '✓';
+                setTimeout(() => {
+                    saveBtn.style.background = '';
+                    saveBtn.innerHTML = originalContent;
+                }, 2000);
+            }
+        };
+
+        // Mobile Interface Management
+        const MobileManager = {
+            init() {
+                this.initMobileInterface();
+                this.setupEventListeners();
+            },
+
+            initMobileInterface() {
+                if (window.innerWidth <= 768) {
+                    this.showMobileStep(0);
+                    this.updateMobileNavigation();
+                } else {
+                    this.showAllSteps();
+                }
+            },
+
+            showMobileStep(step) {
+                const sections = document.querySelectorAll('.form-section');
+                sections.forEach((section, index) => {
+                    if (index === step) {
+                        section.classList.remove('hidden-mobile');
+                        section.style.animation = 'slideInUp 0.6s ease';
+                    } else {
+                        section.classList.add('hidden-mobile');
+                    }
+                });
+
+                // Update step indicator
+                const stepTitle = document.getElementById('stepTitle');
+                if (stepTitle) {
+                    stepTitle.textContent = AppState.stepTitles[step];
+                }
+
+                // Update step dots
+                const stepDots = document.querySelectorAll('.step-dot');
+                stepDots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === step);
+                });
+
+                AppState.currentStep = step;
+            },
+
+            showAllSteps() {
+                const sections = document.querySelectorAll('.form-section');
+                sections.forEach(section => {
+                    section.classList.remove('hidden-mobile');
+                });
+            },
+
+            updateMobileNavigation() {
+                const navButtons = document.querySelectorAll('.mobile-nav-btn');
+                navButtons.forEach((btn, index) => {
+                    btn.classList.toggle('active', index === AppState.currentStep);
+                });
+            },
+
+            setupEventListeners() {
+                // Mobile navigation
+                document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const step = parseInt(btn.dataset.step);
+                        this.showMobileStep(step);
+                        this.updateMobileNavigation();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+                });
+
+                // Touch gestures
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                document.addEventListener('touchstart', e => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+
+                document.addEventListener('touchend', e => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.handleGesture();
+                });
+
+                // Window resize
+                window.addEventListener('resize', () => {
+                    this.initMobileInterface();
+                });
+            },
+
+            handleGesture() {
+                if (window.innerWidth > 768) return;
+                
+                const threshold = 50;
+                const difference = touchEndX - touchStartX;
+
+                if (Math.abs(difference) > threshold) {
+                    if (difference > 0 && AppState.currentStep > 0) {
+                        this.showMobileStep(AppState.currentStep - 1);
+                        this.updateMobileNavigation();
+                    } else if (difference < 0 && AppState.currentStep < AppState.totalSteps - 1) {
+                        this.showMobileStep(AppState.currentStep + 1);
+                        this.updateMobileNavigation();
+                    }
                 }
             }
-        }
+        };
 
-        document.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+        // Logo Management System
+        const LogoManager = {
+            triggerUpload() {
+                document.getElementById('logoUploadInput').click();
+            },
 
-        document.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleGesture();
-        });
+            handleUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
 
-        // Window resize handler
-        window.addEventListener('resize', function() {
-            initMobileInterface();
-        });
-
-        // Logo management
-        function triggerLogoUpload() {
-            document.getElementById('logoUploadInput').click();
-        }
-
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
                 if (!file.type.startsWith('image/')) {
                     alert('Please select a valid image file (PNG, JPG, SVG, etc.)');
                     return;
@@ -1685,236 +2109,230 @@
                 }
 
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    companyLogo = e.target.result;
-                    displayLogo(companyLogo);
+                reader.onload = (e) => {
+                    AppState.companyLogo = e.target.result;
+                    this.displayLogo(AppState.companyLogo);
                 };
                 reader.readAsDataURL(file);
-            }
-        }
+            },
 
-        function displayLogo(logoData) {
-            const logoPreview = document.getElementById('logoPreview');
-            const logoUploadSection = document.getElementById('logoUploadSection');
-            const logoUploadContent = document.getElementById('logoUploadContent');
-            const logoRemoveBtn = document.getElementById('logoRemoveBtn');
+            displayLogo(logoData) {
+                const logoPreview = document.getElementById('logoPreview');
+                const logoUploadSection = document.getElementById('logoUploadSection');
+                const logoUploadContent = document.getElementById('logoUploadContent');
+                const logoRemoveBtn = document.getElementById('logoRemoveBtn');
 
-            logoPreview.src = logoData;
-            logoPreview.classList.add('visible');
-            logoUploadSection.classList.add('has-logo');
-            logoUploadContent.style.marginTop = '0';
-            logoRemoveBtn.style.display = 'inline-block';
+                logoPreview.src = logoData;
+                logoPreview.classList.add('visible');
+                logoUploadSection.classList.add('has-logo');
+                logoUploadContent.style.marginTop = '0';
+                logoRemoveBtn.style.display = 'inline-block';
 
-            const logoReadItem = document.getElementById('logoReadItem');
-            const logoReadPreview = document.getElementById('logoReadPreview');
-            logoReadPreview.src = logoData;
-            logoReadItem.style.display = 'block';
+                const logoReadItem = document.getElementById('logoReadItem');
+                const logoReadPreview = document.getElementById('logoReadPreview');
+                logoReadPreview.src = logoData;
+                logoReadItem.style.display = 'block';
 
-            const quotationLogo = document.getElementById('quotationLogo');
-            quotationLogo.src = logoData;
-            quotationLogo.classList.add('visible');
-        }
-
-        function removeLogo(event) {
-            event.stopPropagation();
-            
-            companyLogo = null;
-            
-            const logoPreview = document.getElementById('logoPreview');
-            const logoUploadSection = document.getElementById('logoUploadSection');
-            const logoUploadContent = document.getElementById('logoUploadContent');
-            const logoRemoveBtn = document.getElementById('logoRemoveBtn');
-            const logoUploadInput = document.getElementById('logoUploadInput');
-
-            logoPreview.classList.remove('visible');
-            logoUploadSection.classList.remove('has-logo');
-            logoUploadContent.style.marginTop = '';
-            logoRemoveBtn.style.display = 'none';
-            logoUploadInput.value = '';
-
-            document.getElementById('logoReadItem').style.display = 'none';
-            document.getElementById('quotationLogo').classList.remove('visible');
-        }
-
-        // Line item management
-        let lineItemCount = 1;
-
-        function addLineItem() {
-            lineItemCount++;
-            const container = document.getElementById('lineItemsContainer');
-            const newItem = document.createElement('div');
-            newItem.className = 'line-item';
-            newItem.innerHTML = `
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" class="item-description" placeholder="Product or service description">
-                </div>
-                <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" class="item-quantity" value="1" min="1">
-                </div>
-                <div class="form-group">
-                    <label>Unit Price</label>
-                    <input type="number" class="item-price" step="0.01" min="0" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Total</label>
-                    <input type="text" class="item-total" readonly>
-                </div>
-                <div class="form-group">
-                    <label>&nbsp;</label>
-                    <button type="button" class="btn btn-danger remove-item">×</button>
-                </div>
-            `;
-            container.appendChild(newItem);
-            addLineItemEventListeners(newItem);
-
-            if (window.innerWidth <= 768) {
-                newItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
-        function addLineItemEventListeners(item) {
-            const quantity = item.querySelector('.item-quantity');
-            const price = item.querySelector('.item-price');
-            const total = item.querySelector('.item-total');
-            const removeBtn = item.querySelector('.remove-item');
-
-            function updateTotal() {
-                const qty = parseFloat(quantity.value) || 0;
-                const unitPrice = parseFloat(price.value) || 0;
-                const itemTotal = qty * unitPrice;
-                total.value = formatCurrency(itemTotal);
-                updateGrandTotal();
-            }
-
-            quantity.addEventListener('input', updateTotal);
-            price.addEventListener('input', updateTotal);
-
-            removeBtn.addEventListener('click', function() {
-                if (document.querySelectorAll('.line-item').length > 1) {
-                    item.remove();
-                    updateGrandTotal();
-                }
-            });
-        }
-
-        function formatCurrency(amount) {
-            const currency = document.getElementById('currency').value;
-            return currency + amount.toFixed(2);
-        }
-
-        function updateGrandTotal() {
-            const lineItems = document.querySelectorAll('.line-item');
-            let subtotal = 0;
-
-            lineItems.forEach(item => {
-                const qty = parseFloat(item.querySelector('.item-quantity').value) || 0;
-                const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                subtotal += qty * price;
-            });
-
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const taxAmount = subtotal * (taxRate / 100);
-            const grandTotal = subtotal + taxAmount;
-
-            document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-            document.getElementById('taxAmount').textContent = formatCurrency(taxAmount);
-            document.getElementById('grandTotal').textContent = formatCurrency(grandTotal);
-        }
-
-        function generateQuotation() {
-            document.getElementById('previewQuotationNumber').textContent = 
-                'Quotation #' + document.getElementById('quotationNumber').value;
-
-            const companyDetails = `
-                <strong>${document.getElementById('companyName').value}</strong><br>
-                ${document.getElementById('companyAddress').value.replace(/\n/g, '<br>')}<br>
-                Phone: ${document.getElementById('companyPhone').value}<br>
-                Email: ${document.getElementById('companyEmail').value}
-            `;
-            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
-
-            const customerDetails = `
-                <strong>${document.getElementById('customerName').value}</strong><br>
-                ${document.getElementById('customerAddress').value.replace(/\n/g, '<br>')}<br>
-                Phone: ${document.getElementById('customerPhone').value}<br>
-                Email: ${document.getElementById('customerEmail').value}
-            `;
-            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
-
-            document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
-            document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
-
-            const lineItemsContainer = document.getElementById('previewLineItems');
-            lineItemsContainer.innerHTML = '';
-            
-            const lineItems = document.querySelectorAll('.line-item');
-            lineItems.forEach(item => {
-                const description = item.querySelector('.item-description').value;
-                const quantity = item.querySelector('.item-quantity').value;
-                const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                const total = quantity * price;
-
-                if (description) {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${description}</td>
-                        <td class="text-right">${quantity}</td>
-                        <td class="text-right">${formatCurrency(price)}</td>
-                        <td class="text-right">${formatCurrency(total)}</td>
-                    `;
-                    lineItemsContainer.appendChild(row);
-                }
-            });
-
-            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
-            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
-            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
-
-            const notes = document.getElementById('notes').value;
-            if (notes) {
-                document.getElementById('previewNotes').innerHTML = `
-                    <h4>Terms & Conditions / Notes:</h4>
-                    <p>${notes.replace(/\n/g, '<br>')}</p>
-                `;
-            } else {
-                document.getElementById('previewNotes').innerHTML = '';
-            }
-
-            if (companyLogo) {
                 const quotationLogo = document.getElementById('quotationLogo');
-                quotationLogo.src = companyLogo;
+                quotationLogo.src = logoData;
                 quotationLogo.classList.add('visible');
+            },
+
+            remove(event) {
+                event.stopPropagation();
+                
+                AppState.companyLogo = null;
+                
+                const logoPreview = document.getElementById('logoPreview');
+                const logoUploadSection = document.getElementById('logoUploadSection');
+                const logoUploadContent = document.getElementById('logoUploadContent');
+                const logoRemoveBtn = document.getElementById('logoRemoveBtn');
+                const logoUploadInput = document.getElementById('logoUploadInput');
+
+                logoPreview.classList.remove('visible');
+                logoUploadSection.classList.remove('has-logo');
+                logoUploadContent.style.marginTop = '';
+                logoRemoveBtn.style.display = 'none';
+                logoUploadInput.value = '';
+
+                document.getElementById('logoReadItem').style.display = 'none';
+                document.getElementById('quotationLogo').classList.remove('visible');
             }
+        };
 
-            document.getElementById('quotationPreview').classList.remove('hidden');
-            document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
-        }
+        // Quotation Management System
+        const QuotationManager = {
+            addLineItem() {
+                AppState.lineItemCount++;
+                const container = document.getElementById('lineItemsContainer');
+                const newItem = document.createElement('div');
+                newItem.className = 'line-item';
+                newItem.innerHTML = `
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" class="item-description" placeholder="Product or service description">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" class="item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price</label>
+                        <input type="number" class="item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Total</label>
+                        <input type="text" class="item-total" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-danger remove-item" onclick="this.parentElement.parentElement.remove(); QuotationManager.updateGrandTotal();">×</button>
+                    </div>
+                `;
+                container.appendChild(newItem);
+                this.addLineItemEventListeners(newItem);
 
-        // Event listeners
-        document.getElementById('addLineItem').addEventListener('click', addLineItem);
-        document.getElementById('generateQuotation').addEventListener('click', generateQuotation);
-        document.getElementById('taxRate').addEventListener('input', updateGrandTotal);
-        document.getElementById('currency').addEventListener('change', updateGrandTotal);
+                if (window.innerWidth <= 768) {
+                    newItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            },
 
-        // Close theme selector when clicking outside
-        document.addEventListener('click', function(e) {
-            const themeSelector = document.getElementById('themeSelector');
-            const customerPanel = document.getElementById('customerPanel');
-            
-            if (!themeSelector.contains(e.target)) {
-                themeSelector.classList.remove('open');
+            addLineItemEventListeners(item) {
+                const quantity = item.querySelector('.item-quantity');
+                const price = item.querySelector('.item-price');
+                const total = item.querySelector('.item-total');
+
+                const updateTotal = () => {
+                    const qty = parseFloat(quantity.value) || 0;
+                    const unitPrice = parseFloat(price.value) || 0;
+                    const itemTotal = qty * unitPrice;
+                    total.value = this.formatCurrency(itemTotal);
+                    this.updateGrandTotal();
+                };
+
+                quantity.addEventListener('input', updateTotal);
+                price.addEventListener('input', updateTotal);
+            },
+
+            formatCurrency(amount) {
+                const currency = document.getElementById('currency').value;
+                return currency + amount.toFixed(2);
+            },
+
+            updateGrandTotal() {
+                const lineItems = document.querySelectorAll('.line-item');
+                let subtotal = 0;
+
+                lineItems.forEach(item => {
+                    const qty = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                    subtotal += qty * price;
+                });
+
+                const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+                const taxAmount = subtotal * (taxRate / 100);
+                const grandTotal = subtotal + taxAmount;
+
+                document.getElementById('subtotal').textContent = this.formatCurrency(subtotal);
+                document.getElementById('taxAmount').textContent = this.formatCurrency(taxAmount);
+                document.getElementById('grandTotal').textContent = this.formatCurrency(grandTotal);
+            },
+
+            generate() {
+                // Validate required fields
+                const requiredFields = ['companyName', 'customerName', 'quotationNumber'];
+                for (const fieldId of requiredFields) {
+                    if (!document.getElementById(fieldId).value.trim()) {
+                        alert(`Please fill in the ${fieldId.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
+                        return;
+                    }
+                }
+
+                document.getElementById('previewQuotationNumber').textContent = 
+                    'Quotation #' + document.getElementById('quotationNumber').value;
+
+                const companyDetails = `
+                    <strong>${document.getElementById('companyName').value}</strong><br>
+                    ${document.getElementById('companyAddress').value.replace(/\n/g, '<br>')}<br>
+                    Phone: ${document.getElementById('companyPhone').value}<br>
+                    Email: ${document.getElementById('companyEmail').value}
+                `;
+                document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+
+                const customerDetails = `
+                    <strong>${document.getElementById('customerName').value}</strong><br>
+                    ${document.getElementById('customerAddress').value.replace(/\n/g, '<br>')}<br>
+                    Phone: ${document.getElementById('customerPhone').value}<br>
+                    Email: ${document.getElementById('customerEmail').value}
+                `;
+                document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+
+                document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
+                document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
+
+                const lineItemsContainer = document.getElementById('previewLineItems');
+                lineItemsContainer.innerHTML = '';
+                
+                const lineItems = document.querySelectorAll('.line-item');
+                lineItems.forEach(item => {
+                    const description = item.querySelector('.item-description').value;
+                    const quantity = item.querySelector('.item-quantity').value;
+                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                    const total = quantity * price;
+
+                    if (description) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${description}</td>
+                            <td class="text-right">${quantity}</td>
+                            <td class="text-right">${this.formatCurrency(price)}</td>
+                            <td class="text-right">${this.formatCurrency(total)}</td>
+                        `;
+                        lineItemsContainer.appendChild(row);
+                    }
+                });
+
+                document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+                document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+                document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+
+                const notes = document.getElementById('notes').value;
+                if (notes) {
+                    document.getElementById('previewNotes').innerHTML = `
+                        <h4 style="color: var(--text-primary);">Terms & Conditions / Notes:</h4>
+                        <p>${notes.replace(/\n/g, '<br>')}</p>
+                    `;
+                } else {
+                    document.getElementById('previewNotes').innerHTML = '';
+                }
+
+                if (AppState.companyLogo) {
+                    const quotationLogo = document.getElementById('quotationLogo');
+                    quotationLogo.src = AppState.companyLogo;
+                    quotationLogo.classList.add('visible');
+                }
+
+                document.getElementById('quotationPreview').classList.remove('hidden');
+                document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
             }
-            
-            if (!customerPanel.contains(e.target)) {
-                customerPanel.classList.remove('open');
-                document.getElementById('customerRecords').classList.remove('show');
-            }
-        });
+        };
 
-        // Initialize
-        function init() {
+        // Global Functions (for onclick handlers)
+        function toggleThemePanel() { ThemeManager.toggleThemePanel(); }
+        function toggleCustomerPanel() { CustomerManager.togglePanel(); }
+        function saveCurrentCustomer() { CustomerManager.saveCurrentCustomer(); }
+        function toggleEditMode(sectionId) { FormManager.toggleEditMode(sectionId); }
+        function saveSection(sectionId) { FormManager.saveSection(sectionId); }
+        function cancelEdit(sectionId) { FormManager.cancelEdit(sectionId); }
+        function saveAllSections() { FormManager.saveAllSections(); }
+        function triggerLogoUpload() { LogoManager.triggerUpload(); }
+        function handleLogoUpload(event) { LogoManager.handleUpload(event); }
+        function removeLogo(event) { LogoManager.remove(event); }
+        function addLineItem() { QuotationManager.addLineItem(); }
+        function generateQuotation() { QuotationManager.generate(); }
+
+        // Application Initialization
+        function initializeApp() {
             // Set today's date
             document.getElementById('quotationDate').value = new Date().toISOString().split('T')[0];
             
@@ -1926,14 +2344,21 @@
             // Auto-generate quotation number
             document.getElementById('quotationNumber').value = 'Q-' + Date.now().toString().slice(-6);
 
+            // Initialize systems
+            ThemeManager.init();
+            MobileManager.init();
+
+            // Setup event listeners
+            document.getElementById('addLineItem').addEventListener('click', addLineItem);
+            document.getElementById('generateQuotation').addEventListener('click', generateQuotation);
+            document.getElementById('taxRate').addEventListener('input', () => QuotationManager.updateGrandTotal());
+            document.getElementById('currency').addEventListener('change', () => QuotationManager.updateGrandTotal());
+
             // Add event listeners to initial line item
-            addLineItemEventListeners(document.querySelector('.line-item'));
+            QuotationManager.addLineItemEventListeners(document.querySelector('.line-item'));
 
             // Initialize calculations
-            updateGrandTotal();
-
-            // Initialize mobile interface
-            initMobileInterface();
+            QuotationManager.updateGrandTotal();
 
             // Initialize all sections in edit mode
             const sections = ['companySection', 'customerSection', 'quotationSection', 'notesSection'];
@@ -1941,10 +2366,26 @@
                 const section = document.getElementById(sectionId);
                 section.classList.add('edit-mode');
             });
+
+            // Add input enhancement for better UX
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('focus', function() {
+                    if (window.innerWidth <= 768) {
+                        this.parentElement.style.transform = 'scale(1.02)';
+                        this.parentElement.style.transition = 'transform 0.2s ease';
+                    }
+                });
+
+                element.addEventListener('blur', function() {
+                    if (window.innerWidth <= 768) {
+                        this.parentElement.style.transform = 'scale(1)';
+                    }
+                });
+            });
         }
 
         // Start the application
-        init();
+        document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
 </html>
