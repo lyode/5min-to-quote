@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuoteFlow - Mobile Quotation Generator</title>
+    <title>QuoteFlow - Professional Business App</title>
     <style>
         :root {
             /* Light Mode Colors */
@@ -32,6 +32,10 @@
             --warning: #f39c12;
             --danger: #e74c3c;
             --info: #17a2b8;
+            --medicine: #9b59b6;
+            --medicine-light: rgba(155, 89, 182, 0.1);
+            --edit: #f39c12;
+            --edit-light: rgba(243, 156, 18, 0.1);
         }
 
         /* Dark Mode Variables */
@@ -119,6 +123,109 @@
             overflow-x: hidden;
         }
 
+        /* Edit System */
+        .editable {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .editable:hover .edit-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .edit-icon {
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: var(--edit);
+            font-size: 12px;
+            margin-left: 5px;
+            transform: scale(0.8);
+        }
+
+        .edit-icon:hover {
+            opacity: 1;
+            color: var(--theme-primary);
+            transform: scale(1.1);
+        }
+
+        .editing-mode {
+            background: var(--edit-light) !important;
+            border: 2px dashed var(--edit) !important;
+            border-radius: 8px !important;
+            padding: 8px !important;
+        }
+
+        .edit-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-family: inherit;
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+        }
+
+        .edit-input:focus {
+            background: var(--bg-primary);
+            border: 2px solid var(--theme-primary);
+            border-radius: 4px;
+            padding: 4px 8px;
+        }
+
+        .edit-controls {
+            display: none;
+            gap: 5px;
+            margin-top: 8px;
+        }
+
+        .editing-mode .edit-controls {
+            display: flex;
+        }
+
+        .edit-save, .edit-cancel {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-save {
+            background: var(--success);
+            color: white;
+        }
+
+        .edit-cancel {
+            background: var(--danger);
+            color: white;
+        }
+
+        .quick-edit-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: var(--edit);
+            color: white;
+            cursor: pointer;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .quick-edit-btn:hover {
+            background: var(--theme-primary);
+            transform: scale(1.1);
+        }
+
         /* Mobile Header */
         .mobile-header {
             position: fixed;
@@ -190,12 +297,6 @@
             width: 100%;
         }
 
-        .edit-icon {
-            font-size: 12px;
-            color: var(--text-muted);
-            opacity: 0.6;
-        }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -223,16 +324,23 @@
             transform: scale(0.95);
         }
 
-        /* Step Progress */
+        /* Page Switching */
+        .page {
+            display: none;
+            margin-top: 70px;
+            padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Step Progress (for quotation page) */
         .step-progress {
-            position: fixed;
-            top: 70px;
-            left: 0;
-            right: 0;
-            z-index: 999;
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
             padding: 15px 20px;
+            margin: -20px -20px 20px -20px;
         }
 
         .progress-bar {
@@ -270,12 +378,6 @@
             background: var(--theme-light);
             padding: 4px 8px;
             border-radius: 12px;
-        }
-
-        /* Main Content */
-        .main-content {
-            margin-top: 140px;
-            padding: 0 20px 20px;
         }
 
         /* Cards */
@@ -378,6 +480,7 @@
         /* Form Elements */
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .form-label {
@@ -420,6 +523,313 @@
             appearance: none;
         }
 
+        /* Medicine Specific Styles */
+        .medicine-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .medicine-header {
+            background: var(--medicine-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .medicine-info {
+            flex: 1;
+        }
+
+        .medicine-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .medicine-dosage {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .medicine-instructions {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .medicine-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .medicine-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-medicine {
+            background: var(--edit);
+            color: white;
+        }
+
+        .delete-medicine {
+            background: var(--danger);
+            color: white;
+        }
+
+        .medicine-schedule {
+            padding: 15px 20px;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .schedule-note {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .schedule-status {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+
+        .status-indicator.taken {
+            background: var(--success);
+        }
+
+        .status-indicator.missed {
+            background: var(--danger);
+        }
+
+        .status-indicator.pending {
+            background: var(--warning);
+        }
+
+        .take-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .take-btn.taken {
+            background: var(--success);
+            color: white;
+        }
+
+        .take-btn.pending {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .take-btn.missed {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Time Input Grid */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .time-input {
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-input:hover {
+            border-color: var(--theme-primary);
+        }
+
+        .time-input.active {
+            background: var(--medicine);
+            color: white;
+            border-color: var(--medicine);
+        }
+
+        /* Daily Log */
+        .daily-log {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .log-header {
+            background: var(--theme-light);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-date {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .log-summary {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .log-content {
+            padding: 15px 20px;
+        }
+
+        .log-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .log-item:last-child {
+            border-bottom: none;
+        }
+
+        .log-medicine {
+            flex: 1;
+        }
+
+        .log-medicine-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .log-medicine-time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .log-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .log-status.taken {
+            background: rgba(39, 174, 96, 0.2);
+            color: var(--success);
+        }
+
+        .log-status.missed {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--danger);
+        }
+
+        .log-status.pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 20px 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .stat-taken .stat-number { color: var(--success); }
+        .stat-pending .stat-number { color: var(--warning); }
+        .stat-missed .stat-number { color: var(--danger); }
+
         /* Logo Upload */
         .logo-upload {
             border: 2px dashed var(--theme-primary);
@@ -430,6 +840,7 @@
             transition: all 0.3s ease;
             background: var(--theme-light);
             margin-bottom: 20px;
+            position: relative;
         }
 
         .logo-upload:hover {
@@ -529,7 +940,7 @@
 
         .line-item-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
@@ -541,6 +952,15 @@
             background: var(--theme-light);
             padding: 4px 8px;
             border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
         }
 
         .remove-item {
@@ -555,7 +975,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: auto;
         }
 
         .item-grid {
@@ -586,6 +1005,10 @@
             border-radius: 12px;
             padding: 16px;
             font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         /* Totals */
@@ -628,6 +1051,13 @@
             color: rgba(255,255,255,0.7);
         }
 
+        .total-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
         /* Read Mode */
         .read-display {
             display: none;
@@ -648,6 +1078,7 @@
             border-radius: 8px;
             border-left: 4px solid var(--theme-primary);
             margin-bottom: 12px;
+            position: relative;
         }
 
         .read-label {
@@ -663,6 +1094,10 @@
             font-size: 14px;
             color: var(--text-primary);
             line-height: 1.4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Action Buttons */
@@ -689,6 +1124,11 @@
 
         .btn-success {
             background: linear-gradient(135deg, var(--success), #229954);
+            color: white;
+        }
+
+        .btn-medicine {
+            background: linear-gradient(135deg, var(--medicine), #8e44ad);
             color: white;
         }
 
@@ -938,6 +1378,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border-left: 4px solid var(--theme-primary);
+            position: relative;
         }
 
         .customer-record:hover {
@@ -949,12 +1390,20 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .customer-info {
             font-size: 12px;
             color: var(--text-muted);
             margin-bottom: 3px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .customer-actions {
@@ -1000,6 +1449,47 @@
         .overlay.active {
             opacity: 1;
             visibility: visible;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border-radius: 16px;
+            z-index: 1600;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px var(--shadow-heavy);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-content {
+            padding: 20px;
         }
 
         /* Quotation Preview */
@@ -1142,8 +1632,8 @@
                 padding: 12px 15px;
             }
 
-            .main-content {
-                padding: 0 15px 20px;
+            .page {
+                padding: 15px;
             }
 
             .card {
@@ -1162,6 +1652,15 @@
             .color-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .time-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 10px;
+            }
         }
 
         /* Print styles */
@@ -1173,11 +1672,14 @@
             .theme-drawer,
             .customer-drawer,
             .overlay,
-            .card-actions {
+            .card-actions,
+            .edit-icon,
+            .quick-edit-btn,
+            .edit-controls {
                 display: none !important;
             }
 
-            .main-content {
+            .page {
                 margin-top: 0;
                 padding: 0;
             }
@@ -1200,12 +1702,12 @@
     <div class="mobile-header">
         <div class="header-content">
             <div class="app-branding">
-                <div class="app-title" onclick="editAppTitle()">
+                <div class="app-title editable" onclick="editAppTitle()">
                     QuoteFlow
                     <span class="edit-icon">✏️</span>
                 </div>
-                <div class="app-slogan" onclick="editAppSlogan()">
-                    Professional quotes on the go
+                <div class="app-slogan editable" onclick="editAppSlogan()">
+                    Professional business & health app
                     <span class="edit-icon">✏️</span>
                 </div>
             </div>
@@ -1216,23 +1718,26 @@
         </div>
     </div>
 
-    <!-- Step Progress -->
-    <div class="step-progress">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+    <!-- Quotation Page -->
+    <div class="page active" id="quotationPage">
+        <!-- Step Progress -->
+        <div class="step-progress">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="step-info">
+                <div class="step-title editable" onclick="EditSystem.editElement(this, 'text')" id="stepTitle">
+                    Company Details
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <div class="step-counter" id="stepCounter">1 of 5</div>
+            </div>
         </div>
-        <div class="step-info">
-            <div class="step-title" id="stepTitle">Company Details</div>
-            <div class="step-counter" id="stepCounter">1 of 5</div>
-        </div>
-    </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
         <!-- Company Details Card -->
         <div class="card active" id="companyCard" data-step="0">
             <div class="card-header">
-                <div class="card-title" onclick="editCardTitle('companyCard')">
+                <div class="card-title editable" onclick="editCardTitle('companyCard')">
                     <div class="card-icon">🏢</div>
                     <span>Company Details</span>
                     <span class="edit-icon">✏️</span>
@@ -1256,6 +1761,7 @@
                         </div>
                     </div>
                     <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(event)">
+                    <button class="quick-edit-btn" onclick="triggerLogoUpload()" style="position: absolute; top: 10px; right: 10px;">✏️</button>
                 </div>
 
                 <!-- Read Display -->
@@ -1264,43 +1770,72 @@
                         <div class="read-label">Company Logo</div>
                         <div class="read-value">
                             <img id="logoReadPreview" style="max-width: 80px; max-height: 40px; border-radius: 4px;" alt="Company Logo">
+                            <span class="edit-icon" onclick="triggerLogoUpload()">✏️</span>
                         </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Company Name</div>
-                        <div class="read-value" id="read-companyName">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'companyName')" id="read-companyName">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Address</div>
-                        <div class="read-value" id="read-companyAddress">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'companyAddress')" id="read-companyAddress">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Phone</div>
-                        <div class="read-value" id="read-companyPhone">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'companyPhone')" id="read-companyPhone">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Email</div>
-                        <div class="read-value" id="read-companyEmail">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'companyEmail')" id="read-companyEmail">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Form Grid -->
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Company Name</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Company Name
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="text" class="form-input" id="companyName" placeholder="Your Company Name">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('companyName')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Address</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Address
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address"></textarea>
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('companyAddress')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Phone
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('companyPhone')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Email
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('companyEmail')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                 </div>
             </div>
@@ -1309,7 +1844,7 @@
         <!-- Customer Details Card -->
         <div class="card" id="customerCard" data-step="1">
             <div class="card-header">
-                <div class="card-title" onclick="editCardTitle('customerCard')">
+                <div class="card-title editable" onclick="editCardTitle('customerCard')">
                     <div class="card-icon">👤</div>
                     <span>Customer Details</span>
                     <span class="edit-icon">✏️</span>
@@ -1325,39 +1860,67 @@
                 <div class="read-display">
                     <div class="read-item">
                         <div class="read-label">Customer Name</div>
-                        <div class="read-value" id="read-customerName">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'customerName')" id="read-customerName">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Address</div>
-                        <div class="read-value" id="read-customerAddress">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'customerAddress')" id="read-customerAddress">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Phone</div>
-                        <div class="read-value" id="read-customerPhone">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'customerPhone')" id="read-customerPhone">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Email</div>
-                        <div class="read-value" id="read-customerEmail">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'customerEmail')" id="read-customerEmail">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Form Grid -->
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Customer Name</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Customer Name
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="text" class="form-input" id="customerName" placeholder="Customer or company name">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('customerName')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Address</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Address
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address"></textarea>
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('customerAddress')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Phone</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Phone
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('customerPhone')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Email
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('customerEmail')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                 </div>
             </div>
@@ -1366,7 +1929,7 @@
         <!-- Quotation Info Card -->
         <div class="card" id="quotationCard" data-step="2">
             <div class="card-header">
-                <div class="card-title" onclick="editCardTitle('quotationCard')">
+                <div class="card-title editable" onclick="editCardTitle('quotationCard')">
                     <div class="card-icon">📄</div>
                     <span>Quotation Information</span>
                     <span class="edit-icon">✏️</span>
@@ -1382,38 +1945,65 @@
                 <div class="read-display">
                     <div class="read-item">
                         <div class="read-label">Quotation Number</div>
-                        <div class="read-value" id="read-quotationNumber">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'quotationNumber')" id="read-quotationNumber">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Date</div>
-                        <div class="read-value" id="read-quotationDate">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'quotationDate')" id="read-quotationDate">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Valid Until</div>
-                        <div class="read-value" id="read-validUntil">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'validUntil')" id="read-validUntil">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                     <div class="read-item">
                         <div class="read-label">Currency</div>
-                        <div class="read-value" id="read-currency">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'currency')" id="read-currency">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Form Grid -->
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Quotation Number</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Quotation Number
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('quotationNumber')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Date</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Date
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="date" class="form-input" id="quotationDate">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('quotationDate')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Valid Until</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Valid Until
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <input type="date" class="form-input" id="validUntil">
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('validUntil')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Currency</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Currency
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <select class="form-input form-select" id="currency">
                             <option value="$">USD ($)</option>
                             <option value="€">EUR (€)</option>
@@ -1424,6 +2014,7 @@
                             <option value="C$">CAD (C$)</option>
                             <option value="₩">KRW (₩)</option>
                         </select>
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('currency')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                 </div>
             </div>
@@ -1432,7 +2023,7 @@
         <!-- Items Card -->
         <div class="card" id="itemsCard" data-step="3">
             <div class="card-header">
-                <div class="card-title" onclick="editCardTitle('itemsCard')">
+                <div class="card-title editable" onclick="editCardTitle('itemsCard')">
                     <div class="card-icon">📦</div>
                     <span>Products & Services</span>
                     <span class="edit-icon">✏️</span>
@@ -1448,27 +2039,48 @@
                     <div id="lineItemsContainer">
                         <div class="line-item">
                             <div class="line-item-header">
-                                <span class="item-number">Item #1</span>
-                                <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                                <span class="item-number editable" onclick="EditSystem.editElement(this, 'text')">
+                                    Item #1
+                                    <span class="edit-icon">✏️</span>
+                                </span>
+                                <div class="item-actions">
+                                    <button class="quick-edit-btn" onclick="EditSystem.editLineItem(this.closest('.line-item'))">✏️</button>
+                                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                                </div>
                             </div>
                             <div class="item-grid">
                                 <div class="form-group">
-                                    <label class="form-label">Description</label>
+                                    <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                        Description
+                                        <span class="edit-icon">✏️</span>
+                                    </label>
                                     <input type="text" class="form-input item-description" placeholder="Product or service description">
                                 </div>
                                 <div class="item-row">
                                     <div class="form-group">
-                                        <label class="form-label">Quantity</label>
+                                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                            Quantity
+                                            <span class="edit-icon">✏️</span>
+                                        </label>
                                         <input type="number" class="form-input item-quantity" value="1" min="1">
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label">Unit Price</label>
+                                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                            Unit Price
+                                            <span class="edit-icon">✏️</span>
+                                        </label>
                                         <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Total</label>
-                                    <div class="total-display item-total">$0.00</div>
+                                    <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                        Total
+                                        <span class="edit-icon">✏️</span>
+                                    </label>
+                                    <div class="total-display item-total">
+                                        $0.00
+                                        <span class="edit-icon" onclick="EditSystem.editItemTotal(this.parentElement)">✏️</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1481,22 +2093,44 @@
                 <!-- Totals -->
                 <div class="totals-card">
                     <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Subtotal:
+                            <span class="edit-icon">✏️</span>
+                        </span>
+                        <span class="total-value editable" onclick="EditSystem.editTotalValue('subtotal')" id="subtotal">
+                            $0.00
+                            <span class="edit-icon">✏️</span>
+                        </span>
                     </div>
                     <div class="total-row">
-                        <span>Tax Rate:</span>
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Tax Rate:
+                            <span class="edit-icon">✏️</span>
+                        </span>
                         <div>
                             <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
+                            <span class="edit-icon" onclick="EditSystem.focusInput('taxRate')">✏️</span>
                         </div>
                     </div>
                     <div class="total-row">
-                        <span>Tax Amount:</span>
-                        <span id="taxAmount">$0.00</span>
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Tax Amount:
+                            <span class="edit-icon">✏️</span>
+                        </span>
+                        <span class="total-value editable" onclick="EditSystem.editTotalValue('taxAmount')" id="taxAmount">
+                            $0.00
+                            <span class="edit-icon">✏️</span>
+                        </span>
                     </div>
                     <div class="total-row">
-                        <span>Total:</span>
-                        <span id="grandTotal">$0.00</span>
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Total:
+                            <span class="edit-icon">✏️</span>
+                        </span>
+                        <span class="total-value editable" onclick="EditSystem.editTotalValue('grandTotal')" id="grandTotal">
+                            $0.00
+                            <span class="edit-icon">✏️</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1505,7 +2139,7 @@
         <!-- Notes Card -->
         <div class="card" id="notesCard" data-step="4">
             <div class="card-header">
-                <div class="card-title" onclick="editCardTitle('notesCard')">
+                <div class="card-title editable" onclick="editCardTitle('notesCard')">
                     <div class="card-icon">📝</div>
                     <span>Terms & Notes</span>
                     <span class="edit-icon">✏️</span>
@@ -1521,15 +2155,22 @@
                 <div class="read-display">
                     <div class="read-item">
                         <div class="read-label">Terms & Conditions / Notes</div>
-                        <div class="read-value" id="read-notes">Not set</div>
+                        <div class="read-value editable" onclick="EditSystem.editReadValue(this, 'notes')" id="read-notes">
+                            Not set
+                            <span class="edit-icon">✏️</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Form Grid -->
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">Terms & Conditions / Notes</label>
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Terms & Conditions / Notes
+                            <span class="edit-icon">✏️</span>
+                        </label>
                         <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+                        <button class="quick-edit-btn" onclick="EditSystem.focusInput('notes')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
                     </div>
                 </div>
             </div>
@@ -1544,24 +2185,54 @@
         <div id="quotationPreview" class="quotation-preview hidden">
             <div class="quotation-header">
                 <img id="quotationLogo" class="quotation-logo" alt="Company Logo">
-                <h1 class="quotation-title">QUOTATION</h1>
-                <p class="quotation-number" id="previewQuotationNumber"></p>
+                <h1 class="quotation-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    QUOTATION
+                    <span class="edit-icon">✏️</span>
+                </h1>
+                <p class="quotation-number editable" onclick="EditSystem.editElement(this, 'text')" id="previewQuotationNumber">
+                    <span class="edit-icon">✏️</span>
+                </p>
             </div>
             
             <div class="quotation-details">
                 <div class="detail-section">
-                    <h4>From:</h4>
-                    <div class="detail-content" id="previewCompanyDetails"></div>
+                    <h4 class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        From:
+                        <span class="edit-icon">✏️</span>
+                    </h4>
+                    <div class="detail-content editable" onclick="EditSystem.editElement(this, 'html')" id="previewCompanyDetails">
+                        <span class="edit-icon">✏️</span>
+                    </div>
                 </div>
                 <div class="detail-section">
-                    <h4>To:</h4>
-                    <div class="detail-content" id="previewCustomerDetails"></div>
+                    <h4 class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        To:
+                        <span class="edit-icon">✏️</span>
+                    </h4>
+                    <div class="detail-content editable" onclick="EditSystem.editElement(this, 'html')" id="previewCustomerDetails">
+                        <span class="edit-icon">✏️</span>
+                    </div>
                 </div>
                 <div class="detail-section">
-                    <h4>Details:</h4>
+                    <h4 class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        Details:
+                        <span class="edit-icon">✏️</span>
+                    </h4>
                     <div class="detail-content">
-                        <strong>Date:</strong> <span id="previewDate"></span><br>
-                        <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
+                        <strong class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Date:
+                            <span class="edit-icon">✏️</span>
+                        </strong> 
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')" id="previewDate">
+                            <span class="edit-icon">✏️</span>
+                        </span><br>
+                        <strong class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Valid Until:
+                            <span class="edit-icon">✏️</span>
+                        </strong> 
+                        <span class="editable" onclick="EditSystem.editElement(this, 'text')" id="previewValidUntil">
+                            <span class="edit-icon">✏️</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1569,10 +2240,22 @@
             <table class="quotation-table">
                 <thead>
                     <tr>
-                        <th>Description</th>
-                        <th>Qty</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
+                        <th class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Description
+                            <span class="edit-icon">✏️</span>
+                        </th>
+                        <th class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Qty
+                            <span class="edit-icon">✏️</span>
+                        </th>
+                        <th class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Unit Price
+                            <span class="edit-icon">✏️</span>
+                        </th>
+                        <th class="editable" onclick="EditSystem.editElement(this, 'text')">
+                            Total
+                            <span class="edit-icon">✏️</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="previewLineItems">
@@ -1580,9 +2263,33 @@
             </table>
 
             <div class="quotation-totals">
-                <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
-                <div><strong>Tax:</strong> <span id="previewTax"></span></div>
-                <div class="quotation-total"><strong>Total:</strong> <span id="previewTotal"></span></div>
+                <div>
+                    <strong class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        Subtotal:
+                        <span class="edit-icon">✏️</span>
+                    </strong> 
+                    <span class="editable" onclick="EditSystem.editElement(this, 'text')" id="previewSubtotal">
+                        <span class="edit-icon">✏️</span>
+                    </span>
+                </div>
+                <div>
+                    <strong class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        Tax:
+                        <span class="edit-icon">✏️</span>
+                    </strong> 
+                    <span class="editable" onclick="EditSystem.editElement(this, 'text')" id="previewTax">
+                        <span class="edit-icon">✏️</span>
+                    </span>
+                </div>
+                <div class="quotation-total">
+                    <strong class="editable" onclick="EditSystem.editElement(this, 'text')">
+                        Total:
+                        <span class="edit-icon">✏️</span>
+                    </strong> 
+                    <span class="editable" onclick="EditSystem.editElement(this, 'text')" id="previewTotal">
+                        <span class="edit-icon">✏️</span>
+                    </span>
+                </div>
             </div>
 
             <div id="previewNotes" class="quotation-notes"></div>
@@ -1593,31 +2300,105 @@
         </div>
     </div>
 
+    <!-- Medicine Tracker Page -->
+    <div class="page" id="medicinePage">
+        <h2 style="color: var(--text-primary); margin-bottom: 20px; text-align: center;" class="editable" onclick="EditSystem.editElement(this, 'text')">
+            💊 Medicine Tracker
+            <span class="edit-icon">✏️</span>
+        </h2>
+        
+        <!-- Quick Stats -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    <div class="card-icon" style="background: var(--medicine);">📊</div>
+                    <span>Today's Overview</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <button class="quick-edit-btn" onclick="EditSystem.editStatsCard()">✏️</button>
+            </div>
+            <div class="card-content">
+                <div class="stats-grid">
+                    <div class="stat-card stat-taken">
+                        <div class="stat-number editable" onclick="EditSystem.editElement(this, 'number')" id="todayTaken">
+                            0
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <div class="stat-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Taken
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <button class="quick-edit-btn" onclick="EditSystem.editStatCard('taken')" style="position: absolute; top: 5px; right: 5px;">✏️</button>
+                    </div>
+                    <div class="stat-card stat-pending">
+                        <div class="stat-number editable" onclick="EditSystem.editElement(this, 'number')" id="todayPending">
+                            0
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <div class="stat-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Pending
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <button class="quick-edit-btn" onclick="EditSystem.editStatCard('pending')" style="position: absolute; top: 5px; right: 5px;">✏️</button>
+                    </div>
+                    <div class="stat-card stat-missed">
+                        <div class="stat-number editable" onclick="EditSystem.editElement(this, 'number')" id="todayMissed">
+                            0
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <div class="stat-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Missed
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <button class="quick-edit-btn" onclick="EditSystem.editStatCard('missed')" style="position: absolute; top: 5px; right: 5px;">✏️</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Medicine -->
+        <button type="button" class="action-btn btn-medicine" onclick="showAddMedicineModal()">
+            <span>💊</span> Add Medicine
+        </button>
+
+        <!-- Medicine List -->
+        <div id="medicineList"></div>
+
+        <!-- Daily Log -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    <div class="card-icon" style="background: var(--info);">📅</div>
+                    <span>Daily Log</span>
+                    <span class="edit-icon">✏️</span>
+                </div>
+                <button class="quick-edit-btn" onclick="EditSystem.editDailyLog()">✏️</button>
+            </div>
+            <div class="card-content">
+                <div id="dailyLog"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- FAB -->
-    <button class="fab" onclick="addLineItem()" title="Add Item">+</button>
+    <button class="fab" onclick="getCurrentPageFABAction()" title="Quick Action" id="fabBtn">+</button>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div class="nav-container">
-            <button class="nav-item active" data-step="0" onclick="navigateToStep(0)">
-                <div class="nav-icon">🏢</div>
-                <div class="nav-label">Company</div>
-            </button>
-            <button class="nav-item" data-step="1" onclick="navigateToStep(1)">
-                <div class="nav-icon">👤</div>
-                <div class="nav-label">Customer</div>
-            </button>
-            <button class="nav-item" data-step="2" onclick="navigateToStep(2)">
+            <button class="nav-item active" onclick="switchPage('quotation')">
                 <div class="nav-icon">📄</div>
-                <div class="nav-label">Details</div>
+                <div class="nav-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Quotes
+                    <span class="edit-icon">✏️</span>
+                </div>
             </button>
-            <button class="nav-item" data-step="3" onclick="navigateToStep(3)">
-                <div class="nav-icon">📦</div>
-                <div class="nav-label">Items</div>
-            </button>
-            <button class="nav-item" data-step="4" onclick="navigateToStep(4)">
-                <div class="nav-icon">📝</div>
-                <div class="nav-label">Notes</div>
+            <button class="nav-item" onclick="switchPage('medicine')">
+                <div class="nav-icon">💊</div>
+                <div class="nav-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Medicine
+                    <span class="edit-icon">✏️</span>
+                </div>
             </button>
         </div>
     </div>
@@ -1625,12 +2406,18 @@
     <!-- Theme Drawer -->
     <div class="theme-drawer" id="themeDrawer">
         <div class="drawer-header">
-            <div class="drawer-title">Theme Settings</div>
+            <div class="drawer-title editable" onclick="EditSystem.editElement(this, 'text')">
+                Theme Settings
+                <span class="edit-icon">✏️</span>
+            </div>
             <button class="close-drawer" onclick="toggleThemeDrawer()">×</button>
         </div>
         <div class="drawer-content">
             <div class="theme-section">
-                <div class="section-title">Display Mode</div>
+                <div class="section-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    Display Mode
+                    <span class="edit-icon">✏️</span>
+                </div>
                 <div class="mode-toggle">
                     <button class="mode-option active" data-mode="light" onclick="setThemeMode('light')">
                         ☀️ Light
@@ -1642,7 +2429,10 @@
             </div>
 
             <div class="theme-section">
-                <div class="section-title">Color Theme</div>
+                <div class="section-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    Color Theme
+                    <span class="edit-icon">✏️</span>
+                </div>
                 <div class="color-grid">
                     <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')"></button>
                     <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')"></button>
@@ -1661,15 +2451,22 @@
     <!-- Customer Drawer -->
     <div class="customer-drawer" id="customerDrawer">
         <div class="drawer-header">
-            <div class="drawer-title">Customer Records</div>
+            <div class="drawer-title editable" onclick="EditSystem.editElement(this, 'text')">
+                Customer Records
+                <span class="edit-icon">✏️</span>
+            </div>
             <button class="close-drawer" onclick="toggleCustomerDrawer()">×</button>
         </div>
         <div class="drawer-content">
             <!-- Save Current Customer Form -->
             <div class="customer-form">
-                <div class="section-title">Save Current Customer</div>
+                <div class="section-title editable" onclick="EditSystem.editElement(this, 'text')">
+                    Save Current Customer
+                    <span class="edit-icon">✏️</span>
+                </div>
                 <div class="form-group">
                     <input type="text" class="form-input" id="newCustomerName" placeholder="Customer Name">
+                    <button class="quick-edit-btn" onclick="EditSystem.focusInput('newCustomerName')" style="position: absolute; top: 10px; right: 10px;">✏️</button>
                 </div>
                 <button class="action-btn btn-primary" onclick="saveCurrentCustomer()">
                     <span>💾</span> Save Customer
@@ -1681,6 +2478,60 @@
         </div>
     </div>
 
+    <!-- Add Medicine Modal -->
+    <div class="modal" id="addMedicineModal">
+        <div class="modal-header">
+            <div class="modal-title editable" onclick="EditSystem.editElement(this, 'text')">
+                Add New Medicine
+                <span class="edit-icon">✏️</span>
+            </div>
+            <button class="close-drawer" onclick="closeAddMedicineModal()">×</button>
+        </div>
+        <div class="modal-content">
+            <div class="form-group">
+                <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Medicine Name
+                    <span class="edit-icon">✏️</span>
+                </label>
+                <input type="text" class="form-input" id="medicineName" placeholder="e.g., Aspirin">
+                <button class="quick-edit-btn" onclick="EditSystem.focusInput('medicineName')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Dosage
+                    <span class="edit-icon">✏️</span>
+                </label>
+                <input type="text" class="form-input" id="medicineDosage" placeholder="e.g., 500mg">
+                <button class="quick-edit-btn" onclick="EditSystem.focusInput('medicineDosage')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Instructions
+                    <span class="edit-icon">✏️</span>
+                </label>
+                <input type="text" class="form-input" id="medicineInstructions" placeholder="e.g., After meals">
+                <button class="quick-edit-btn" onclick="EditSystem.focusInput('medicineInstructions')" style="position: absolute; top: 30px; right: 10px;">✏️</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                    Daily Times (click to add/remove)
+                    <span class="edit-icon">✏️</span>
+                </label>
+                <div class="time-grid" id="timeSlots">
+                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '06:00')">06:00</button>
+                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '08:00')">08:00</button>
+                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '12:00')">12:00</button>
+                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '18:00')">18:00</button>
+                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '22:00')">22:00</button>
+                    <button type="button" class="time-input" onclick="addCustomTime()">+ Custom</button>
+                </div>
+            </div>
+            <button type="button" class="action-btn btn-medicine" onclick="saveMedicine()">
+                <span>💾</span> Save Medicine
+            </button>
+        </div>
+    </div>
+
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeDrawers()"></div>
 
@@ -1689,17 +2540,22 @@
         const AppState = {
             // Data
             savedCustomers: [],
+            medicines: [],
+            medicineLog: [],
             companyLogo: null,
             sectionBackups: {},
             appTitle: 'QuoteFlow',
-            appSlogan: 'Professional quotes on the go',
+            appSlogan: 'Professional business & health app',
             
             // UI State
             currentTheme: 'light',
             currentColor: 'blue',
+            currentPage: 'quotation',
             currentStep: 0,
             totalSteps: 5,
             lineItemCount: 1,
+            selectedTimes: [],
+            editingElement: null,
             
             // Step titles and card titles
             stepTitles: ['Company Details', 'Customer Details', 'Quotation Info', 'Products & Services', 'Terms & Notes'],
@@ -1709,6 +2565,714 @@
                 quotationCard: 'Quotation Information',
                 itemsCard: 'Products & Services',
                 notesCard: 'Terms & Notes'
+            }
+        };
+
+        // Universal Edit System
+        const EditSystem = {
+            editElement(element, type = 'text') {
+                if (AppState.editingElement) {
+                    this.saveEdit(AppState.editingElement);
+                }
+
+                AppState.editingElement = element;
+                const originalText = element.textContent.replace(/✏️/g, '').trim();
+                
+                element.classList.add('editing-mode');
+                
+                let input;
+                if (type === 'textarea' || originalText.length > 50) {
+                    input = document.createElement('textarea');
+                    input.rows = 3;
+                } else {
+                    input = document.createElement('input');
+                    input.type = type === 'number' ? 'number' : 'text';
+                }
+                
+                input.className = 'edit-input';
+                input.value = originalText;
+                
+                const controls = document.createElement('div');
+                controls.className = 'edit-controls';
+                controls.innerHTML = `
+                    <button class="edit-save" onclick="EditSystem.saveEdit(AppState.editingElement)">Save</button>
+                    <button class="edit-cancel" onclick="EditSystem.cancelEdit(AppState.editingElement, '${originalText}')">Cancel</button>
+                `;
+                
+                element.innerHTML = '';
+                element.appendChild(input);
+                element.appendChild(controls);
+                
+                input.focus();
+                input.select();
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.saveEdit(element);
+                    } else if (e.key === 'Escape') {
+                        this.cancelEdit(element, originalText);
+                    }
+                });
+            },
+
+            saveEdit(element) {
+                if (!element || !element.classList.contains('editing-mode')) return;
+                
+                const input = element.querySelector('.edit-input');
+                if (!input) return;
+                
+                const newValue = input.value.trim();
+                element.classList.remove('editing-mode');
+                element.innerHTML = `${newValue} <span class="edit-icon">✏️</span>`;
+                
+                AppState.editingElement = null;
+                
+                // Trigger any necessary updates
+                this.updateRelatedElements(element, newValue);
+            },
+
+            cancelEdit(element, originalText) {
+                if (!element) return;
+                
+                element.classList.remove('editing-mode');
+                element.innerHTML = `${originalText} <span class="edit-icon">✏️</span>`;
+                
+                AppState.editingElement = null;
+            },
+
+            updateRelatedElements(element, newValue) {
+                // Update related form inputs if editing read values
+                if (element.id && element.id.startsWith('read-')) {
+                    const inputId = element.id.replace('read-', '');
+                    const input = document.getElementById(inputId);
+                    if (input) {
+                        input.value = newValue;
+                    }
+                }
+                
+                // Update calculations if editing totals
+                if (element.id && ['subtotal', 'taxAmount', 'grandTotal'].includes(element.id)) {
+                    QuotationManager.updateGrandTotal();
+                }
+            },
+
+            editReadValue(element, inputId) {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.focus();
+                    input.select();
+                    
+                    // Update read display when input changes
+                    const updateReadDisplay = () => {
+                        const value = input.value || 'Not set';
+                        element.innerHTML = `${value} <span class="edit-icon">✏️</span>`;
+                    };
+                    
+                    input.addEventListener('blur', updateReadDisplay);
+                    input.addEventListener('input', updateReadDisplay);
+                }
+            },
+
+            focusInput(inputId) {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            },
+
+            editLineItem(lineItem) {
+                const inputs = lineItem.querySelectorAll('input');
+                if (inputs.length > 0) {
+                    inputs[0].focus();
+                    inputs[0].select();
+                }
+            },
+
+            editItemTotal(totalElement) {
+                const lineItem = totalElement.closest('.line-item');
+                const priceInput = lineItem.querySelector('.item-price');
+                if (priceInput) {
+                    priceInput.focus();
+                    priceInput.select();
+                }
+            },
+
+            editTotalValue(totalId) {
+                if (totalId === 'subtotal' || totalId === 'taxAmount' || totalId === 'grandTotal') {
+                    // Focus on tax rate input for manual adjustment
+                    const taxInput = document.getElementById('taxRate');
+                    if (taxInput) {
+                        taxInput.focus();
+                        taxInput.select();
+                    }
+                }
+            },
+
+            editStatCard(type) {
+                // For demo purposes, allow manual stat editing
+                const element = document.getElementById(`today${type.charAt(0).toUpperCase() + type.slice(1)}`);
+                if (element) {
+                    this.editElement(element, 'number');
+                }
+            },
+
+            editStatsCard() {
+                // Refresh stats from actual data
+                MedicineManager.loadTodaysOverview();
+            },
+
+            editDailyLog() {
+                // Refresh daily log
+                MedicineManager.updateDailyLog();
+            }
+        };
+
+        // Page Management
+        const PageManager = {
+            switchPage(page) {
+                AppState.currentPage = page;
+                
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                // Show target page
+                document.getElementById(page + 'Page').classList.add('active');
+                
+                // Update navigation
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+                
+                // Update FAB
+                this.updateFAB();
+                
+                // Load page-specific data
+                if (page === 'medicine') {
+                    MedicineManager.loadTodaysOverview();
+                    MedicineManager.updateMedicineList();
+                    MedicineManager.updateDailyLog();
+                }
+            },
+            
+            updateFAB() {
+                const fab = document.getElementById('fabBtn');
+                if (AppState.currentPage === 'quotation') {
+                    fab.innerHTML = '+';
+                    fab.title = 'Add Item';
+                } else if (AppState.currentPage === 'medicine') {
+                    fab.innerHTML = '💊';
+                    fab.title = 'Add Medicine';
+                }
+            }
+        };
+
+        // Medicine Management System
+        const MedicineManager = {
+            addMedicine(name, dosage, instructions, times) {
+                const medicine = {
+                    id: Date.now(),
+                    name: name,
+                    dosage: dosage,
+                    instructions: instructions,
+                    times: times,
+                    createdAt: new Date().toISOString()
+                };
+                
+                AppState.medicines.push(medicine);
+                this.createTodaysSchedule(medicine);
+                this.updateMedicineList();
+                this.loadTodaysOverview();
+            },
+            
+            editMedicine(medicineId) {
+                const medicine = AppState.medicines.find(m => m.id === medicineId);
+                if (medicine) {
+                    // Open edit modal or inline editing
+                    document.getElementById('medicineName').value = medicine.name;
+                    document.getElementById('medicineDosage').value = medicine.dosage;
+                    document.getElementById('medicineInstructions').value = medicine.instructions;
+                    
+                    // Set selected times
+                    AppState.selectedTimes = [...medicine.times];
+                    document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                        const time = btn.textContent;
+                        if (AppState.selectedTimes.includes(time)) {
+                            btn.classList.add('active');
+                            btn.style.background = 'var(--medicine)';
+                            btn.style.color = 'white';
+                        }
+                    });
+                    
+                    showAddMedicineModal();
+                    
+                    // Update save function to edit instead of add
+                    const modal = document.getElementById('addMedicineModal');
+                    const saveBtn = modal.querySelector('.btn-medicine');
+                    saveBtn.onclick = () => {
+                        this.updateMedicine(medicineId);
+                        closeAddMedicineModal();
+                    };
+                }
+            },
+            
+            updateMedicine(medicineId) {
+                const name = document.getElementById('medicineName').value.trim();
+                const dosage = document.getElementById('medicineDosage').value.trim();
+                const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+                
+                if (!name || !dosage || AppState.selectedTimes.length === 0) {
+                    alert('Please fill all required fields');
+                    return;
+                }
+                
+                const medicineIndex = AppState.medicines.findIndex(m => m.id === medicineId);
+                if (medicineIndex >= 0) {
+                    AppState.medicines[medicineIndex] = {
+                        ...AppState.medicines[medicineIndex],
+                        name, dosage, instructions,
+                        times: AppState.selectedTimes
+                    };
+                    
+                    // Update today's schedule
+                    this.updateTodaysSchedule(medicineId);
+                    this.updateMedicineList();
+                    this.loadTodaysOverview();
+                }
+            },
+            
+            createTodaysSchedule(medicine) {
+                const today = new Date().toDateString();
+                medicine.times.forEach(time => {
+                    const logEntry = {
+                        id: Date.now() + Math.random(),
+                        medicineId: medicine.id,
+                        medicineName: medicine.name,
+                        dosage: medicine.dosage,
+                        scheduledTime: time,
+                        date: today,
+                        status: 'pending',
+                        actualTime: null
+                    };
+                    AppState.medicineLog.push(logEntry);
+                });
+            },
+            
+            updateTodaysSchedule(medicineId) {
+                const today = new Date().toDateString();
+                // Remove old schedule for today
+                AppState.medicineLog = AppState.medicineLog.filter(log => 
+                    !(log.medicineId === medicineId && log.date === today)
+                );
+                
+                // Add new schedule
+                const medicine = AppState.medicines.find(m => m.id === medicineId);
+                if (medicine) {
+                    this.createTodaysSchedule(medicine);
+                }
+            },
+            
+            markMedicineTaken(logId) {
+                const logEntry = AppState.medicineLog.find(log => log.id === logId);
+                if (logEntry) {
+                    logEntry.status = 'taken';
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    this.updateMedicineList();
+                    this.loadTodaysOverview();
+                    this.updateDailyLog();
+                }
+            },
+            
+            markMedicineMissed(logId) {
+                const logEntry = AppState.medicineLog.find(log => log.id === logId);
+                if (logEntry) {
+                    logEntry.status = 'missed';
+                    this.updateMedicineList();
+                    this.loadTodaysOverview();
+                    this.updateDailyLog();
+                }
+            },
+            
+            editMedicineStatus(logId) {
+                const logEntry = AppState.medicineLog.find(log => log.id === logId);
+                if (logEntry) {
+                    const statuses = ['pending', 'taken', 'missed'];
+                    const currentIndex = statuses.indexOf(logEntry.status);
+                    const nextIndex = (currentIndex + 1) % statuses.length;
+                    
+                    logEntry.status = statuses[nextIndex];
+                    if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                        logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        });
+                    }
+                    
+                    this.updateMedicineList();
+                    this.loadTodaysOverview();
+                    this.updateDailyLog();
+                }
+            },
+            
+            deleteMedicine(medicineId) {
+                if (confirm('Delete this medicine and all its records?')) {
+                    AppState.medicines = AppState.medicines.filter(m => m.id !== medicineId);
+                    AppState.medicineLog = AppState.medicineLog.filter(log => log.medicineId !== medicineId);
+                    this.updateMedicineList();
+                    this.loadTodaysOverview();
+                    this.updateDailyLog();
+                }
+            },
+            
+            updateMedicineList() {
+                const container = document.getElementById('medicineList');
+                container.innerHTML = '';
+                
+                if (AppState.medicines.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <div style="font-size: 48px; margin-bottom: 15px;">💊</div>
+                            <div>No medicines added yet</div>
+                            <div style="font-size: 12px; margin-top: 5px;">Tap "Add Medicine" to get started</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const today = new Date().toDateString();
+                
+                AppState.medicines.forEach(medicine => {
+                    const medicineCard = document.createElement('div');
+                    medicineCard.className = 'medicine-card';
+                    
+                    const todaysSchedule = AppState.medicineLog.filter(log => 
+                        log.medicineId === medicine.id && log.date === today
+                    );
+                    
+                    let scheduleHTML = '';
+                    todaysSchedule.forEach(log => {
+                        const statusClass = log.status;
+                        
+                        scheduleHTML += `
+                            <div class="schedule-item">
+                                <div>
+                                    <div class="schedule-time editable" onclick="EditSystem.editElement(this, 'text')">
+                                        ${log.scheduledTime}
+                                        <span class="edit-icon">✏️</span>
+                                    </div>
+                                    <div class="schedule-note">${medicine.instructions}</div>
+                                </div>
+                                <div class="schedule-status">
+                                    <div class="status-indicator ${statusClass}"></div>
+                                    ${log.status === 'pending' ? 
+                                        `<button class="take-btn pending" onclick="MedicineManager.markMedicineTaken(${log.id})">Take</button>` :
+                                        log.status === 'taken' ? 
+                                        `<span style="font-size: 12px; color: var(--success);">Taken${log.actualTime ? ` at ${log.actualTime}` : ''}</span>` :
+                                        `<button class="take-btn missed" onclick="MedicineManager.markMedicineTaken(${log.id})">Mark Taken</button>`
+                                    }
+                                    <button class="quick-edit-btn" onclick="MedicineManager.editMedicineStatus(${log.id})" style="margin-left: 5px;">✏️</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    medicineCard.innerHTML = `
+                        <div class="medicine-header">
+                            <div class="medicine-info">
+                                <div class="medicine-name editable" onclick="EditSystem.editElement(this, 'text')">
+                                    ${medicine.name}
+                                    <span class="edit-icon">✏️</span>
+                                </div>
+                                <div class="medicine-dosage editable" onclick="EditSystem.editElement(this, 'text')">
+                                    ${medicine.dosage}
+                                    <span class="edit-icon">✏️</span>
+                                </div>
+                                <div class="medicine-instructions editable" onclick="EditSystem.editElement(this, 'text')">
+                                    ${medicine.instructions}
+                                    <span class="edit-icon">✏️</span>
+                                </div>
+                            </div>
+                            <div class="medicine-actions">
+                                <button class="medicine-btn edit-medicine" onclick="MedicineManager.editMedicine(${medicine.id})">✏️</button>
+                                <button class="medicine-btn delete-medicine" onclick="MedicineManager.deleteMedicine(${medicine.id})">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="medicine-schedule">
+                            ${scheduleHTML}
+                        </div>
+                    `;
+                    
+                    container.appendChild(medicineCard);
+                });
+            },
+            
+            loadTodaysOverview() {
+                const today = new Date().toDateString();
+                const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+                
+                const taken = todaysLog.filter(log => log.status === 'taken').length;
+                const pending = todaysLog.filter(log => log.status === 'pending').length;
+                const missed = todaysLog.filter(log => log.status === 'missed').length;
+                
+                document.getElementById('todayTaken').textContent = taken;
+                document.getElementById('todayPending').textContent = pending;
+                document.getElementById('todayMissed').textContent = missed;
+            },
+            
+            updateDailyLog() {
+                const container = document.getElementById('dailyLog');
+                const today = new Date().toDateString();
+                const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+                
+                if (todaysLog.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No medicine scheduled for today</div>';
+                    return;
+                }
+                
+                const sortedLog = todaysLog.sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime));
+                
+                let logHTML = '';
+                sortedLog.forEach(log => {
+                    const statusClass = log.status;
+                    const statusText = log.status === 'taken' ? 'Taken' : 
+                                     log.status === 'missed' ? 'Missed' : 'Pending';
+                    
+                    logHTML += `
+                        <div class="log-item">
+                            <div class="log-medicine">
+                                <div class="log-medicine-name editable" onclick="EditSystem.editElement(this, 'text')">
+                                    ${log.medicineName} (${log.dosage})
+                                    <span class="edit-icon">✏️</span>
+                                </div>
+                                <div class="log-medicine-time">Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}</div>
+                            </div>
+                            <div class="log-status ${statusClass}" onclick="MedicineManager.editMedicineStatus(${log.id})">
+                                ${statusText}
+                                <span class="edit-icon">✏️</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                container.innerHTML = logHTML;
+            }
+        };
+
+        // Quotation Management
+        const QuotationManager = {
+            updateLineItemTotal(lineItem) {
+                const quantity = parseFloat(lineItem.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(lineItem.querySelector('.item-price').value) || 0;
+                const total = quantity * price;
+                const currency = document.getElementById('currency').value || '$';
+                
+                lineItem.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+                this.updateGrandTotal();
+            },
+            
+            updateGrandTotal() {
+                const currency = document.getElementById('currency').value || '$';
+                let subtotal = 0;
+                
+                document.querySelectorAll('.line-item').forEach(item => {
+                    const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                    subtotal += quantity * price;
+                });
+                
+                const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+                const taxAmount = subtotal * (taxRate / 100);
+                const grandTotal = subtotal + taxAmount;
+                
+                document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+                document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+                document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+            }
+        };
+
+        // Card Management
+        const CardManager = {
+            toggleEditMode(cardId) {
+                const card = document.getElementById(cardId);
+                const isReadMode = card.classList.contains('read-mode');
+                
+                if (isReadMode) {
+                    // Switch to edit mode
+                    card.classList.remove('read-mode');
+                    card.querySelector('.edit-btn').style.display = 'inline-block';
+                    card.querySelector('.save-btn').style.display = 'none';
+                    card.querySelector('.cancel-btn').style.display = 'none';
+                } else {
+                    // Switch to read mode
+                    this.saveFormToReadDisplay(cardId);
+                    card.classList.add('read-mode');
+                    card.querySelector('.edit-btn').style.display = 'none';
+                    card.querySelector('.save-btn').style.display = 'inline-block';
+                    card.querySelector('.cancel-btn').style.display = 'inline-block';
+                }
+            },
+            
+            saveCard(cardId) {
+                this.saveFormToReadDisplay(cardId);
+                const card = document.getElementById(cardId);
+                card.classList.add('read-mode');
+                card.querySelector('.edit-btn').style.display = 'inline-block';
+                card.querySelector('.save-btn').style.display = 'none';
+                card.querySelector('.cancel-btn').style.display = 'none';
+            },
+            
+            cancelEdit(cardId) {
+                const card = document.getElementById(cardId);
+                card.classList.remove('read-mode');
+                card.querySelector('.edit-btn').style.display = 'inline-block';
+                card.querySelector('.save-btn').style.display = 'none';
+                card.querySelector('.cancel-btn').style.display = 'none';
+            },
+            
+            saveFormToReadDisplay(cardId) {
+                const card = document.getElementById(cardId);
+                const inputs = card.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    const readElement = document.getElementById(`read-${input.id}`);
+                    if (readElement) {
+                        const value = input.value || 'Not set';
+                        readElement.innerHTML = `${value} <span class="edit-icon">✏️</span>`;
+                    }
+                });
+            }
+        };
+
+        // Customer Management
+        const CustomerManager = {
+            saveCurrentCustomer() {
+                const name = document.getElementById('newCustomerName').value.trim();
+                if (!name) {
+                    alert('Please enter customer name');
+                    return;
+                }
+                
+                const customer = {
+                    id: Date.now(),
+                    name: name,
+                    customerName: document.getElementById('customerName').value,
+                    customerAddress: document.getElementById('customerAddress').value,
+                    customerPhone: document.getElementById('customerPhone').value,
+                    customerEmail: document.getElementById('customerEmail').value,
+                    createdAt: new Date().toISOString()
+                };
+                
+                AppState.savedCustomers.push(customer);
+                this.updateCustomerList();
+                document.getElementById('newCustomerName').value = '';
+            },
+            
+            loadCustomer(customerId) {
+                const customer = AppState.savedCustomers.find(c => c.id === customerId);
+                if (customer) {
+                    document.getElementById('customerName').value = customer.customerName || '';
+                    document.getElementById('customerAddress').value = customer.customerAddress || '';
+                    document.getElementById('customerPhone').value = customer.customerPhone || '';
+                    document.getElementById('customerEmail').value = customer.customerEmail || '';
+                    
+                    // Update read displays
+                    CardManager.saveFormToReadDisplay('customerCard');
+                    
+                    toggleCustomerDrawer();
+                }
+            },
+            
+            deleteCustomer(customerId) {
+                if (confirm('Delete this customer record?')) {
+                    AppState.savedCustomers = AppState.savedCustomers.filter(c => c.id !== customerId);
+                    this.updateCustomerList();
+                }
+            },
+            
+            updateCustomerList() {
+                const container = document.getElementById('savedCustomers');
+                container.innerHTML = '';
+                
+                if (AppState.savedCustomers.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No saved customers</div>';
+                    return;
+                }
+                
+                AppState.savedCustomers.forEach(customer => {
+                    const customerDiv = document.createElement('div');
+                    customerDiv.className = 'customer-record';
+                    customerDiv.innerHTML = `
+                        <div class="customer-name editable" onclick="EditSystem.editElement(this, 'text')">
+                            ${customer.name}
+                            <span class="edit-icon">✏️</span>
+                        </div>
+                        <div class="customer-info">${customer.customerEmail || 'No email'}</div>
+                        <div class="customer-info">${customer.customerPhone || 'No phone'}</div>
+                        <div class="customer-actions">
+                            <button class="customer-btn load-customer" onclick="CustomerManager.loadCustomer(${customer.id})">Load</button>
+                            <button class="customer-btn delete-customer" onclick="CustomerManager.deleteCustomer(${customer.id})">Delete</button>
+                        </div>
+                    `;
+                    container.appendChild(customerDiv);
+                });
+            }
+        };
+
+        // Logo Management
+        const LogoManager = {
+            triggerLogoUpload() {
+                document.getElementById('logoUploadInput').click();
+            },
+            
+            handleLogoUpload(event) {
+                const file = event.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const logoData = e.target.result;
+                        AppState.companyLogo = logoData;
+                        
+                        // Update preview
+                        const logoPreview = document.getElementById('logoPreview');
+                        logoPreview.src = logoData;
+                        logoPreview.classList.add('visible');
+                        
+                        // Update upload area
+                        const logoUpload = document.getElementById('logoUpload');
+                        logoUpload.classList.add('has-logo');
+                        document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+                        
+                        // Update read preview
+                        const logoReadPreview = document.getElementById('logoReadPreview');
+                        logoReadPreview.src = logoData;
+                        document.getElementById('logoReadItem').style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            },
+            
+            removeLogo(event) {
+                event.stopPropagation();
+                AppState.companyLogo = null;
+                
+                // Reset preview
+                const logoPreview = document.getElementById('logoPreview');
+                logoPreview.src = '';
+                logoPreview.classList.remove('visible');
+                
+                // Reset upload area
+                const logoUpload = document.getElementById('logoUpload');
+                logoUpload.classList.remove('has-logo');
+                document.getElementById('logoRemoveBtn').style.display = 'none';
+                
+                // Hide read preview
+                document.getElementById('logoReadItem').style.display = 'none';
+                
+                // Clear input
+                document.getElementById('logoUploadInput').value = '';
             }
         };
 
@@ -1732,19 +3296,16 @@
             },
 
             updateUI() {
-                // Update mode toggle
                 document.querySelectorAll('.mode-option').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
                 });
 
-                // Update color options
                 document.querySelectorAll('.color-option').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
                 });
             },
 
             setupEventListeners() {
-                // Close drawers when clicking overlay
                 document.getElementById('overlay').addEventListener('click', closeDrawers);
             }
         };
@@ -1757,12 +3318,6 @@
                 document.getElementById('stepTitle').textContent = AppState.stepTitles[AppState.currentStep];
                 document.getElementById('stepCounter').textContent = `${AppState.currentStep + 1} of ${AppState.totalSteps}`;
                 
-                // Update navigation
-                document.querySelectorAll('.nav-item').forEach((nav, index) => {
-                    nav.classList.toggle('active', index === AppState.currentStep);
-                });
-
-                // Update card visibility and active state
                 document.querySelectorAll('.card').forEach((card, index) => {
                     card.classList.toggle('active', index === AppState.currentStep);
                     if (index === AppState.currentStep) {
@@ -1777,621 +3332,297 @@
             }
         };
 
-        // Title Editing System
-        const TitleEditor = {
-            editAppTitle() {
-                const titleElement = document.querySelector('.app-title');
-                const currentText = AppState.appTitle;
-                
-                const input = document.createElement('input');
-                input.className = 'app-title editing';
-                input.value = currentText;
-                input.maxLength = 20;
-                
-                titleElement.parentNode.replaceChild(input, titleElement);
-                input.focus();
-                input.select();
-                
-                const saveTitle = () => {
-                    const newTitle = input.value.trim() || currentText;
-                    AppState.appTitle = newTitle;
-                    
-                    const newTitleElement = document.createElement('div');
-                    newTitleElement.className = 'app-title';
-                    newTitleElement.onclick = () => this.editAppTitle();
-                    newTitleElement.innerHTML = `${newTitle} <span class="edit-icon">✏️</span>`;
-                    
-                    input.parentNode.replaceChild(newTitleElement, input);
-                };
-                
-                input.addEventListener('blur', saveTitle);
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        input.blur();
-                    }
-                });
-            },
+        // Global Functions
+        function switchPage(page) {
+            PageManager.switchPage(page);
+        }
 
-            editAppSlogan() {
-                const sloganElement = document.querySelector('.app-slogan');
-                const currentText = AppState.appSlogan;
-                
-                const input = document.createElement('input');
-                input.className = 'app-slogan editing';
-                input.value = currentText;
-                input.maxLength = 40;
-                
-                sloganElement.parentNode.replaceChild(input, sloganElement);
-                input.focus();
-                input.select();
-                
-                const saveSlogan = () => {
-                    const newSlogan = input.value.trim() || currentText;
-                    AppState.appSlogan = newSlogan;
-                    
-                    const newSloganElement = document.createElement('div');
-                    newSloganElement.className = 'app-slogan';
-                    newSloganElement.onclick = () => this.editAppSlogan();
-                    newSloganElement.innerHTML = `${newSlogan} <span class="edit-icon">✏️</span>`;
-                    
-                    input.parentNode.replaceChild(newSloganElement, input);
-                };
-                
-                input.addEventListener('blur', saveSlogan);
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        input.blur();
-                    }
-                });
-            },
-
-            editCardTitle(cardId) {
-                const titleElement = document.querySelector(`#${cardId} .card-title span`);
-                const currentText = AppState.cardTitles[cardId];
-                
-                const input = document.createElement('input');
-                input.className = 'card-title editing';
-                input.value = currentText;
-                input.maxLength = 30;
-                
-                titleElement.parentNode.replaceChild(input, titleElement);
-                input.focus();
-                input.select();
-                
-                const saveTitle = () => {
-                    const newTitle = input.value.trim() || currentText;
-                    AppState.cardTitles[cardId] = newTitle;
-                    
-                    const newTitleElement = document.createElement('span');
-                    newTitleElement.textContent = newTitle;
-                    
-                    input.parentNode.replaceChild(newTitleElement, input);
-                };
-                
-                input.addEventListener('blur', saveTitle);
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        input.blur();
-                    }
-                });
+        function getCurrentPageFABAction() {
+            if (AppState.currentPage === 'quotation') {
+                addLineItem();
+            } else if (AppState.currentPage === 'medicine') {
+                showAddMedicineModal();
             }
-        };
+        }
 
-        // Form Management
-        const FormManager = {
-            toggleEditMode(cardId) {
-                const card = document.getElementById(cardId);
-                const editBtn = card.querySelector('.edit-btn');
-                const saveBtn = card.querySelector('.save-btn');
-                const cancelBtn = card.querySelector('.cancel-btn');
-
-                // Backup current values
-                this.backupCardData(cardId);
-
-                // Switch to edit mode
-                card.classList.remove('read-mode');
-                editBtn.style.display = 'none';
-                saveBtn.style.display = 'inline-block';
-                cancelBtn.style.display = 'inline-block';
-
-                // Visual feedback
-                card.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    card.style.transform = 'scale(1)';
-                }, 200);
-            },
-
-            saveCard(cardId) {
-                const card = document.getElementById(cardId);
-                const editBtn = card.querySelector('.edit-btn');
-                const saveBtn = card.querySelector('.save-btn');
-                const cancelBtn = card.querySelector('.cancel-btn');
-
-                // Update read displays
-                this.updateReadDisplays(cardId);
-
-                // Switch to read mode
-                card.classList.add('read-mode');
-                editBtn.style.display = 'inline-block';
-                saveBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-
-                // Clear backup
-                delete AppState.sectionBackups[cardId];
-
-                // Visual feedback
-                card.style.transform = 'scale(0.98)';
-                setTimeout(() => {
-                    card.style.transform = 'scale(1)';
-                }, 200);
-
-                // Update calculations if needed
-                if (cardId === 'itemsCard') {
-                    QuotationManager.updateGrandTotal();
-                }
-            },
-
-            cancelEdit(cardId) {
-                const card = document.getElementById(cardId);
-                const editBtn = card.querySelector('.edit-btn');
-                const saveBtn = card.querySelector('.save-btn');
-                const cancelBtn = card.querySelector('.cancel-btn');
-
-                // Restore backed up values
-                this.restoreCardData(cardId);
-
-                // Switch to read mode
-                card.classList.add('read-mode');
-                editBtn.style.display = 'inline-block';
-                saveBtn.style.display = 'none';
-                cancelBtn.style.display = 'none';
-
-                // Visual feedback
-                card.style.transform = 'scale(1.02)';
-                setTimeout(() => {
-                    card.style.transform = 'scale(1)';
-                }, 200);
-            },
-
-            backupCardData(cardId) {
-                const card = document.getElementById(cardId);
-                const inputs = card.querySelectorAll('input, textarea, select');
-                AppState.sectionBackups[cardId] = {};
+        function editAppTitle() {
+            const titleElement = document.querySelector('.app-title');
+            const currentText = AppState.appTitle;
+            
+            const input = document.createElement('input');
+            input.className = 'app-title editing';
+            input.value = currentText;
+            input.maxLength = 20;
+            
+            titleElement.parentNode.replaceChild(input, titleElement);
+            input.focus();
+            input.select();
+            
+            const saveTitle = () => {
+                const newTitle = input.value.trim() || currentText;
+                AppState.appTitle = newTitle;
                 
-                inputs.forEach(input => {
-                    const key = input.id || input.className;
-                    AppState.sectionBackups[cardId][key] = input.value;
-                });
-            },
-
-            restoreCardData(cardId) {
-                if (!AppState.sectionBackups[cardId]) return;
+                const newTitleElement = document.createElement('div');
+                newTitleElement.className = 'app-title editable';
+                newTitleElement.onclick = () => editAppTitle();
+                newTitleElement.innerHTML = `${newTitle} <span class="edit-icon">✏️</span>`;
                 
-                const card = document.getElementById(cardId);
-                const inputs = card.querySelectorAll('input, textarea, select');
+                input.parentNode.replaceChild(newTitleElement, input);
+            };
+            
+            input.addEventListener('blur', saveTitle);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            });
+        }
+
+        function editAppSlogan() {
+            const sloganElement = document.querySelector('.app-slogan');
+            const currentText = AppState.appSlogan;
+            
+            const input = document.createElement('input');
+            input.className = 'app-slogan editing';
+            input.value = currentText;
+            input.maxLength = 40;
+            
+            sloganElement.parentNode.replaceChild(input, sloganElement);
+            input.focus();
+            input.select();
+            
+            const saveSlogan = () => {
+                const newSlogan = input.value.trim() || currentText;
+                AppState.appSlogan = newSlogan;
                 
-                inputs.forEach(input => {
-                    const key = input.id || input.className;
-                    if (AppState.sectionBackups[cardId][key] !== undefined) {
-                        input.value = AppState.sectionBackups[cardId][key];
-                    }
-                });
-
-                if (cardId === 'itemsCard') {
-                    QuotationManager.updateGrandTotal();
-                }
-            },
-
-            updateReadDisplays(cardId) {
-                const displayMaps = {
-                    companyCard: {
-                        'read-companyName': 'companyName',
-                        'read-companyAddress': 'companyAddress',
-                        'read-companyPhone': 'companyPhone',
-                        'read-companyEmail': 'companyEmail'
-                    },
-                    customerCard: {
-                        'read-customerName': 'customerName',
-                        'read-customerAddress': 'customerAddress',
-                        'read-customerPhone': 'customerPhone',
-                        'read-customerEmail': 'customerEmail'
-                    },
-                    quotationCard: {
-                        'read-quotationNumber': 'quotationNumber',
-                        'read-quotationDate': 'quotationDate',
-                        'read-validUntil': 'validUntil',
-                        'read-currency': 'currency'
-                    },
-                    notesCard: {
-                        'read-notes': 'notes'
-                    }
-                };
-
-                const mappings = displayMaps[cardId];
-                if (mappings) {
-                    Object.entries(mappings).forEach(([readId, inputId]) => {
-                        const readElement = document.getElementById(readId);
-                        const inputElement = document.getElementById(inputId);
-                        
-                        if (readElement && inputElement) {
-                            let value = inputElement.value || 'Not set';
-                            
-                            if (inputId === 'currency') {
-                                value = inputElement.selectedOptions[0]?.text || 'Not set';
-                            }
-                            
-                            readElement.textContent = value;
-                        }
-                    });
-                }
-
-                // Handle logo display
-                if (cardId === 'companyCard' && AppState.companyLogo) {
-                    const logoReadItem = document.getElementById('logoReadItem');
-                    const logoReadPreview = document.getElementById('logoReadPreview');
-                    logoReadPreview.src = AppState.companyLogo;
-                    logoReadItem.style.display = 'block';
-                }
-            }
-        };
-
-        // Customer Management
-        const CustomerManager = {
-            saveCurrentCustomer() {
-                const name = document.getElementById('newCustomerName').value.trim();
-                if (!name) {
-                    alert('Please enter a customer name');
-                    return;
-                }
-
-                const customerData = {
-                    id: Date.now(),
-                    name: name,
-                    address: document.getElementById('customerAddress').value,
-                    phone: document.getElementById('customerPhone').value,
-                    email: document.getElementById('customerEmail').value,
-                    createdAt: new Date().toLocaleDateString()
-                };
-
-                const existingIndex = AppState.savedCustomers.findIndex(c => 
-                    c.name.toLowerCase() === name.toLowerCase()
-                );
+                const newSloganElement = document.createElement('div');
+                newSloganElement.className = 'app-slogan editable';
+                newSloganElement.onclick = () => editAppSlogan();
+                newSloganElement.innerHTML = `${newSlogan} <span class="edit-icon">✏️</span>`;
                 
-                if (existingIndex >= 0) {
-                    if (confirm('Customer exists. Update record?')) {
-                        AppState.savedCustomers[existingIndex] = customerData;
-                    }
-                } else {
-                    AppState.savedCustomers.push(customerData);
+                input.parentNode.replaceChild(newSloganElement, input);
+            };
+            
+            input.addEventListener('blur', saveSlogan);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
                 }
+            });
+        }
 
-                document.getElementById('newCustomerName').value = '';
-                this.updateCustomerList();
-                this.showSaveConfirmation();
-            },
-
-            loadCustomer(customerId) {
-                const customer = AppState.savedCustomers.find(c => c.id === customerId);
-                if (customer) {
-                    document.getElementById('customerName').value = customer.name;
-                    document.getElementById('customerAddress').value = customer.address;
-                    document.getElementById('customerPhone').value = customer.phone;
-                    document.getElementById('customerEmail').value = customer.email;
-                    
-                    FormManager.updateReadDisplays('customerCard');
-                    this.showLoadConfirmation();
-                    toggleCustomerDrawer();
-                }
-            },
-
-            deleteCustomer(customerId) {
-                if (confirm('Delete this customer record?')) {
-                    AppState.savedCustomers = AppState.savedCustomers.filter(c => c.id !== customerId);
-                    this.updateCustomerList();
-                }
-            },
-
-            updateCustomerList() {
-                const container = document.getElementById('savedCustomers');
-                container.innerHTML = '';
-
-                if (AppState.savedCustomers.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px 20px;">No saved customers yet</div>';
-                    return;
-                }
-
-                AppState.savedCustomers.forEach(customer => {
-                    const customerDiv = document.createElement('div');
-                    customerDiv.className = 'customer-record';
-                    customerDiv.innerHTML = `
-                        <div class="customer-name">${customer.name}</div>
-                        <div class="customer-info">${customer.address || 'No address'}</div>
-                        <div class="customer-info">${customer.phone || 'No phone'}</div>
-                        <div class="customer-info">${customer.email || 'No email'}</div>
-                        <div class="customer-info">Saved: ${customer.createdAt}</div>
-                        <div class="customer-actions">
-                            <button class="customer-btn load-customer" onclick="CustomerManager.loadCustomer(${customer.id})">Load</button>
-                            <button class="customer-btn delete-customer" onclick="CustomerManager.deleteCustomer(${customer.id})">Delete</button>
-                        </div>
-                    `;
-                    container.appendChild(customerDiv);
-                });
-            },
-
-            showSaveConfirmation() {
-                // Implementation for visual feedback
-            },
-
-            showLoadConfirmation() {
-                // Implementation for visual feedback
-            }
-        };
-
-        // Logo Management
-        const LogoManager = {
-            triggerUpload() {
-                document.getElementById('logoUploadInput').click();
-            },
-
-            handleUpload(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                if (!file.type.startsWith('image/')) {
-                    alert('Please select a valid image file');
-                    return;
-                }
-
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('File size must be less than 5MB');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    AppState.companyLogo = e.target.result;
-                    this.displayLogo(AppState.companyLogo);
-                };
-                reader.readAsDataURL(file);
-            },
-
-            displayLogo(logoData) {
-                const logoUpload = document.getElementById('logoUpload');
-                const logoPreview = document.getElementById('logoPreview');
-                const logoRemoveBtn = document.getElementById('logoRemoveBtn');
-
-                logoPreview.src = logoData;
-                logoPreview.classList.add('visible');
-                logoUpload.classList.add('has-logo');
-                logoRemoveBtn.style.display = 'inline-block';
-
-                // Update read display
-                const logoReadItem = document.getElementById('logoReadItem');
-                const logoReadPreview = document.getElementById('logoReadPreview');
-                logoReadPreview.src = logoData;
-                logoReadItem.style.display = 'block';
-
-                // Update quotation preview
-                const quotationLogo = document.getElementById('quotationLogo');
-                quotationLogo.src = logoData;
-                quotationLogo.classList.add('visible');
-            },
-
-            remove(event) {
-                event.stopPropagation();
+        function editCardTitle(cardId) {
+            const titleElement = document.querySelector(`#${cardId} .card-title span`);
+            const currentText = AppState.cardTitles[cardId];
+            
+            const input = document.createElement('input');
+            input.className = 'card-title editing';
+            input.value = currentText;
+            input.maxLength = 30;
+            
+            titleElement.parentNode.replaceChild(input, titleElement);
+            input.focus();
+            input.select();
+            
+            const saveTitle = () => {
+                const newTitle = input.value.trim() || currentText;
+                AppState.cardTitles[cardId] = newTitle;
                 
-                AppState.companyLogo = null;
+                const newTitleElement = document.createElement('span');
+                newTitleElement.innerHTML = newTitle;
                 
-                const logoUpload = document.getElementById('logoUpload');
-                const logoPreview = document.getElementById('logoPreview');
-                const logoRemoveBtn = document.getElementById('logoRemoveBtn');
-                const logoUploadInput = document.getElementById('logoUploadInput');
+                input.parentNode.replaceChild(newTitleElement, input);
+            };
+            
+            input.addEventListener('blur', saveTitle);
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    input.blur();
+                }
+            });
+        }
 
-                logoPreview.classList.remove('visible');
-                logoUpload.classList.remove('has-logo');
-                logoRemoveBtn.style.display = 'none';
-                logoUploadInput.value = '';
+        function toggleEditMode(cardId) {
+            CardManager.toggleEditMode(cardId);
+        }
 
-                document.getElementById('logoReadItem').style.display = 'none';
-                document.getElementById('quotationLogo').classList.remove('visible');
-            }
-        };
+        function saveCard(cardId) {
+            CardManager.saveCard(cardId);
+        }
 
-        // Quotation Management
-        const QuotationManager = {
-            addLineItem() {
-                AppState.lineItemCount++;
-                const container = document.getElementById('lineItemsContainer');
-                const newItem = document.createElement('div');
-                newItem.className = 'line-item';
-                newItem.innerHTML = `
-                    <div class="line-item-header">
-                        <span class="item-number">Item #${AppState.lineItemCount}</span>
+        function cancelEdit(cardId) {
+            CardManager.cancelEdit(cardId);
+        }
+
+        function addLineItem() {
+            AppState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number editable" onclick="EditSystem.editElement(this, 'text')">
+                        Item #${AppState.lineItemCount}
+                        <span class="edit-icon">✏️</span>
+                    </span>
+                    <div class="item-actions">
+                        <button class="quick-edit-btn" onclick="EditSystem.editLineItem(this.closest('.line-item'))">✏️</button>
                         <button class="remove-item" onclick="removeLineItem(this)">×</button>
                     </div>
-                    <div class="item-grid">
+                </div>
+                <div class="item-grid">
+                    <div class="form-group">
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Description
+                            <span class="edit-icon">✏️</span>
+                        </label>
+                        <input type="text" class="form-input item-description" placeholder="Product or service description">
+                    </div>
+                    <div class="item-row">
                         <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <input type="text" class="form-input item-description" placeholder="Product or service description">
-                        </div>
-                        <div class="item-row">
-                            <div class="form-group">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" class="form-input item-quantity" value="1" min="1">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Unit Price</label>
-                                <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
-                            </div>
+                            <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                Quantity
+                                <span class="edit-icon">✏️</span>
+                            </label>
+                            <input type="number" class="form-input item-quantity" value="1" min="1">
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Total</label>
-                            <div class="total-display item-total">$0.00</div>
+                            <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                                Unit Price
+                                <span class="edit-icon">✏️</span>
+                            </label>
+                            <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
                         </div>
                     </div>
-                `;
-                container.appendChild(newItem);
-                this.addLineItemEventListeners(newItem);
-                
-                // Scroll to new item
-                newItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            },
+                    <div class="form-group">
+                        <label class="form-label editable" onclick="EditSystem.editElement(this, 'text')">
+                            Total
+                            <span class="edit-icon">✏️</span>
+                        </label>
+                        <div class="total-display item-total">
+                            $0.00
+                            <span class="edit-icon" onclick="EditSystem.editItemTotal(this.parentElement)">✏️</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => QuotationManager.updateLineItemTotal(newItem));
+            });
+            
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
+        }
 
-            removeLineItem(button) {
-                if (document.querySelectorAll('.line-item').length > 1) {
-                    button.closest('.line-item').remove();
-                    this.updateGrandTotal();
-                    this.updateItemNumbers();
-                }
-            },
+        function removeLineItem(button) {
+            const lineItem = button.closest('.line-item');
+            lineItem.remove();
+            QuotationManager.updateGrandTotal();
+        }
 
-            updateItemNumbers() {
-                document.querySelectorAll('.line-item').forEach((item, index) => {
-                    const itemNumber = item.querySelector('.item-number');
-                    itemNumber.textContent = `Item #${index + 1}`;
-                });
-            },
-
-            addLineItemEventListeners(item) {
-                const quantity = item.querySelector('.item-quantity');
-                const price = item.querySelector('.item-price');
-                const total = item.querySelector('.item-total');
-
-                const updateTotal = () => {
-                    const qty = parseFloat(quantity.value) || 0;
-                    const unitPrice = parseFloat(price.value) || 0;
-                    const itemTotal = qty * unitPrice;
-                    total.textContent = this.formatCurrency(itemTotal);
-                    this.updateGrandTotal();
-                };
-
-                quantity.addEventListener('input', updateTotal);
-                price.addEventListener('input', updateTotal);
-            },
-
-            formatCurrency(amount) {
-                const currency = document.getElementById('currency').value;
-                return currency + amount.toFixed(2);
-            },
-
-            updateGrandTotal() {
-                const lineItems = document.querySelectorAll('.line-item');
-                let subtotal = 0;
-
-                lineItems.forEach(item => {
-                    const qty = parseFloat(item.querySelector('.item-quantity').value) || 0;
-                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                    subtotal += qty * price;
-                });
-
-                const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-                const taxAmount = subtotal * (taxRate / 100);
-                const grandTotal = subtotal + taxAmount;
-
-                document.getElementById('subtotal').textContent = this.formatCurrency(subtotal);
-                document.getElementById('taxAmount').textContent = this.formatCurrency(taxAmount);
-                document.getElementById('grandTotal').textContent = this.formatCurrency(grandTotal);
-            },
-
-            generate() {
-                // Validate required fields
-                const requiredFields = ['companyName', 'customerName', 'quotationNumber'];
-                for (const fieldId of requiredFields) {
-                    if (!document.getElementById(fieldId).value.trim()) {
-                        alert(`Please fill in the ${fieldId.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
-                        return;
-                    }
-                }
-
-                // Populate preview
-                document.getElementById('previewQuotationNumber').textContent = 
-                    'Quotation #' + document.getElementById('quotationNumber').value;
-
-                const companyDetails = `
-                    <strong>${document.getElementById('companyName').value}</strong><br>
-                    ${document.getElementById('companyAddress').value.replace(/\n/g, '<br>')}<br>
-                    Phone: ${document.getElementById('companyPhone').value}<br>
-                    Email: ${document.getElementById('companyEmail').value}
-                `;
-                document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
-
-                const customerDetails = `
-                    <strong>${document.getElementById('customerName').value}</strong><br>
-                    ${document.getElementById('customerAddress').value.replace(/\n/g, '<br>')}<br>
-                    Phone: ${document.getElementById('customerPhone').value}<br>
-                    Email: ${document.getElementById('customerEmail').value}
-                `;
-                document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
-
-                document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
-                document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
-
-                // Line items
-                const lineItemsContainer = document.getElementById('previewLineItems');
-                lineItemsContainer.innerHTML = '';
-                
-                const lineItems = document.querySelectorAll('.line-item');
-                lineItems.forEach(item => {
-                    const description = item.querySelector('.item-description').value;
-                    const quantity = item.querySelector('.item-quantity').value;
-                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                    const total = quantity * price;
-
-                    if (description) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${description}</td>
-                            <td class="text-right">${quantity}</td>
-                            <td class="text-right">${this.formatCurrency(price)}</td>
-                            <td class="text-right">${this.formatCurrency(total)}</td>
-                        `;
-                        lineItemsContainer.appendChild(row);
-                    }
-                });
-
-                // Totals
-                document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
-                document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
-                document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
-
-                // Notes
-                const notes = document.getElementById('notes').value;
-                if (notes) {
-                    document.getElementById('previewNotes').innerHTML = `
-                        <h4>Terms & Conditions / Notes:</h4>
-                        <p>${notes.replace(/\n/g, '<br>')}</p>
-                    `;
-                } else {
-                    document.getElementById('previewNotes').innerHTML = '';
-                }
-
-                // Logo
-                if (AppState.companyLogo) {
-                    const quotationLogo = document.getElementById('quotationLogo');
-                    quotationLogo.src = AppState.companyLogo;
-                    quotationLogo.classList.add('visible');
-                }
-
-                // Show preview
-                document.getElementById('quotationPreview').classList.remove('hidden');
-                document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
+        function generateQuotation() {
+            const preview = document.getElementById('quotationPreview');
+            
+            // Company logo
+            if (AppState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = AppState.companyLogo;
+                quotationLogo.classList.add('visible');
             }
-        };
+            
+            // Company details
+            const companyDetails = `
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value || ''}<br>
+                ${document.getElementById('companyPhone').value || ''}<br>
+                ${document.getElementById('companyEmail').value || ''}
+            `;
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Customer details
+            const customerDetails = `
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value || ''}<br>
+                ${document.getElementById('customerPhone').value || ''}<br>
+                ${document.getElementById('customerEmail').value || ''}
+            `;
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Quotation info
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+            document.getElementById('previewDate').textContent = 
+                document.getElementById('quotationDate').value || new Date().toISOString().split('T')[0];
+            document.getElementById('previewValidUntil').textContent = 
+                document.getElementById('validUntil').value || '';
+            
+            // Line items
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0.00';
+                const total = item.querySelector('.item-total').textContent;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="editable" onclick="EditSystem.editElement(this, 'text')">${description}<span class="edit-icon">✏️</span></td>
+                    <td class="editable" onclick="EditSystem.editElement(this, 'number')">${quantity}<span class="edit-icon">✏️</span></td>
+                    <td class="text-right editable" onclick="EditSystem.editElement(this, 'number')">${price}<span class="edit-icon">✏️</span></td>
+                    <td class="text-right editable" onclick="EditSystem.editElement(this, 'text')">${total}<span class="edit-icon">✏️</span></td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Notes
+            const notes = document.getElementById('notes').value;
+            if (notes) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <h4 class="editable" onclick="EditSystem.editElement(this, 'text')">Terms & Conditions<span class="edit-icon">✏️</span></h4>
+                    <div class="editable" onclick="EditSystem.editElement(this, 'textarea')">${notes}<span class="edit-icon">✏️</span></div>
+                `;
+            }
+            
+            preview.classList.remove('hidden');
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
 
-        // Global Functions (for onclick handlers)
-        function editAppTitle() { TitleEditor.editAppTitle(); }
-        function editAppSlogan() { TitleEditor.editAppSlogan(); }
-        function editCardTitle(cardId) { TitleEditor.editCardTitle(cardId); }
-        
+        function triggerLogoUpload() {
+            LogoManager.triggerLogoUpload();
+        }
+
+        function handleLogoUpload(event) {
+            LogoManager.handleLogoUpload(event);
+        }
+
+        function removeLogo(event) {
+            LogoManager.removeLogo(event);
+        }
+
         function toggleThemeDrawer() {
             const drawer = document.getElementById('themeDrawer');
             const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
             
-            if (drawer.classList.contains('open')) {
+            if (isOpen) {
                 drawer.classList.remove('open');
                 overlay.classList.remove('active');
             } else {
-                closeDrawers();
+                closeAllDrawers();
                 drawer.classList.add('open');
                 overlay.classList.add('active');
             }
@@ -2400,92 +3631,180 @@
         function toggleCustomerDrawer() {
             const drawer = document.getElementById('customerDrawer');
             const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
             
-            if (drawer.classList.contains('open')) {
+            if (isOpen) {
                 drawer.classList.remove('open');
                 overlay.classList.remove('active');
             } else {
-                closeDrawers();
+                closeAllDrawers();
                 drawer.classList.add('open');
                 overlay.classList.add('active');
                 CustomerManager.updateCustomerList();
             }
         }
 
-        function closeDrawers() {
+        function closeAllDrawers() {
             document.getElementById('themeDrawer').classList.remove('open');
             document.getElementById('customerDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+        }
+
+        function closeDrawers() {
+            closeAllDrawers();
             document.getElementById('overlay').classList.remove('active');
         }
 
-        function setThemeMode(mode) { ThemeManager.setMode(mode); }
-        function setColorTheme(color) { ThemeManager.setColor(color); }
-
-        function navigateToStep(step) { NavigationManager.navigateToStep(step); }
-
-        function toggleEditMode(cardId) { FormManager.toggleEditMode(cardId); }
-        function saveCard(cardId) { FormManager.saveCard(cardId); }
-        function cancelEdit(cardId) { FormManager.cancelEdit(cardId); }
-
-        function saveCurrentCustomer() { CustomerManager.saveCurrentCustomer(); }
-
-        function triggerLogoUpload() { LogoManager.triggerUpload(); }
-        function handleLogoUpload(event) { LogoManager.handleUpload(event); }
-        function removeLogo(event) { LogoManager.remove(event); }
-
-        function addLineItem() { QuotationManager.addLineItem(); }
-        function removeLineItem(button) { QuotationManager.removeLineItem(button); }
-        function generateQuotation() { QuotationManager.generate(); }
-
-        // Application Initialization
-        function initializeApp() {
-            // Set today's date
-            document.getElementById('quotationDate').value = new Date().toISOString().split('T')[0];
-            
-            // Set valid until date (30 days from today)
-            const validUntilDate = new Date();
-            validUntilDate.setDate(validUntilDate.getDate() + 30);
-            document.getElementById('validUntil').value = validUntilDate.toISOString().split('T')[0];
-
-            // Auto-generate quotation number
-            document.getElementById('quotationNumber').value = 'Q-' + Date.now().toString().slice(-6);
-
-            // Initialize systems
-            ThemeManager.init();
-            NavigationManager.updateProgress();
-
-            // Add event listeners
-            document.getElementById('taxRate').addEventListener('input', () => QuotationManager.updateGrandTotal());
-            document.getElementById('currency').addEventListener('change', () => QuotationManager.updateGrandTotal());
-
-            // Add event listeners to initial line item
-            QuotationManager.addLineItemEventListeners(document.querySelector('.line-item'));
-
-            // Initialize calculations
-            QuotationManager.updateGrandTotal();
-
-            // Initialize all cards in edit mode
-            const cards = ['companyCard', 'customerCard', 'quotationCard', 'notesCard'];
-            cards.forEach(cardId => {
-                const card = document.getElementById(cardId);
-                // Don't add read-mode class initially
-            });
-
-            // Touch and gesture support
-            let touchStartY = 0;
-            document.addEventListener('touchstart', (e) => {
-                touchStartY = e.touches[0].clientY;
-            });
-
-            document.addEventListener('touchmove', (e) => {
-                const touchY = e.touches[0].clientY;
-                const deltaY = touchStartY - touchY;
-                
-                // Implement swipe gestures if needed
-            });
+        function setThemeMode(mode) {
+            ThemeManager.setMode(mode);
         }
 
-        // Start the application
+        function setColorTheme(color) {
+            ThemeManager.setColor(color);
+        }
+
+        function saveCurrentCustomer() {
+            CustomerManager.saveCurrentCustomer();
+        }
+
+        function showAddMedicineModal() {
+            AppState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            
+            // Reset time slots
+            document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = '';
+                btn.style.color = '';
+            });
+            
+            // Reset save button to add mode
+            const modal = document.getElementById('addMedicineModal');
+            const saveBtn = modal.querySelector('.btn-medicine');
+            saveBtn.onclick = () => saveMedicine();
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        function toggleTimeSlot(button, time) {
+            if (time === undefined) return;
+            
+            if (AppState.selectedTimes.includes(time)) {
+                AppState.selectedTimes = AppState.selectedTimes.filter(t => t !== time);
+                button.style.background = '';
+                button.style.color = '';
+                button.classList.remove('active');
+            } else {
+                AppState.selectedTimes.push(time);
+                button.style.background = 'var(--medicine)';
+                button.style.color = 'white';
+                button.classList.add('active');
+            }
+        }
+
+        function addCustomTime() {
+            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
+            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                const timeSlots = document.getElementById('timeSlots');
+                const customBtn = timeSlots.querySelector('button:last-child');
+                
+                const newBtn = document.createElement('button');
+                newBtn.type = 'button';
+                newBtn.className = 'time-input';
+                newBtn.textContent = time;
+                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
+                
+                timeSlots.insertBefore(newBtn, customBtn);
+                toggleTimeSlot(newBtn, time);
+            } else if (time) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
+                return;
+            }
+            
+            MedicineManager.addMedicine(name, dosage, instructions, AppState.selectedTimes);
+            closeAddMedicineModal();
+        }
+
+        // Event Listeners Setup
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    QuotationManager.updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    QuotationManager.updateGrandTotal();
+                }
+                
+                // Auto-update read displays
+                if (e.target.matches('input, textarea, select')) {
+                    const readElement = document.getElementById(`read-${e.target.id}`);
+                    if (readElement) {
+                        const value = e.target.value || 'Not set';
+                        readElement.innerHTML = `${value} <span class="edit-icon">✏️</span>`;
+                    }
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureString;
+        }
+
+        // Initialize Application
+        function initializeApp() {
+            ThemeManager.init();
+            NavigationManager.updateProgress();
+            PageManager.updateFAB();
+            setupEventListeners();
+            
+            // Initialize first line item calculations
+            QuotationManager.updateGrandTotal();
+            
+            // Load medicine data if available
+            MedicineManager.loadTodaysOverview();
+            MedicineManager.updateMedicineList();
+            MedicineManager.updateDailyLog();
+            
+            console.log('QuoteFlow initialized successfully!');
+        }
+
+        // Start the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeApp);
     </script>
 </body>
