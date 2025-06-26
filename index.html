@@ -191,12 +191,16 @@
             --base-font-size: 20px;
         }
 
-        /* Universal Reset and Base Styles */
+        /* Universal Reset and Base Styles - FIXED FOR INPUTS */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+        }
+
+        /* DON'T disable user-select on everything - this blocks inputs */
+        body, div, span, button, nav, header {
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
@@ -204,14 +208,17 @@
             -ms-text-size-adjust: none;
         }
 
-        input, textarea, select {
+        /* ALWAYS allow text selection on inputs and their containers */
+        input, textarea, select, 
+        .form-input, .form-textarea, .form-select,
+        .form-group, .card-content {
             -webkit-user-select: text !important;
             user-select: text !important;
-            -webkit-appearance: none;
-            appearance: none;
+            -webkit-appearance: none !important;
+            appearance: none !important;
             pointer-events: auto !important;
-            touch-action: manipulation;
-            -webkit-touch-callout: default;
+            touch-action: manipulation !important;
+            -webkit-touch-callout: default !important;
         }
 
         html {
@@ -386,9 +393,13 @@
             padding: calc(var(--card-padding) * var(--density-factor));
         }
 
-        /* Form Elements */
+        /* Form Elements - COMPLETELY FIXED */
         .form-group {
             margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            position: relative;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            pointer-events: auto !important;
         }
 
         .form-label {
@@ -397,57 +408,66 @@
             font-weight: 600;
             color: var(--text-secondary);
             margin-bottom: calc(var(--gap-small) * var(--density-factor));
+            pointer-events: none;
         }
 
         .form-input {
-            width: 100%;
-            padding: calc(var(--form-padding) * var(--density-factor));
-            border: 2px solid var(--border-color);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            font-size: calc(1rem * var(--scale-factor));
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            width: 100% !important;
+            padding: calc(var(--form-padding) * var(--density-factor)) !important;
+            border: 2px solid var(--border-color) !important;
+            border-radius: calc(var(--border-radius) * var(--scale-factor)) !important;
+            font-size: calc(1rem * var(--scale-factor)) !important;
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
             transition: all 0.3s ease;
-            -webkit-appearance: none;
-            appearance: none;
-            min-height: var(--touch-target-size);
-            position: relative;
-            z-index: 1;
+            -webkit-appearance: none !important;
+            appearance: none !important;
+            min-height: var(--touch-target-size) !important;
+            position: relative !important;
+            z-index: 10 !important;
             pointer-events: auto !important;
             -webkit-user-select: text !important;
             user-select: text !important;
-            touch-action: manipulation;
-            -webkit-touch-callout: default;
-            cursor: text;
+            touch-action: manipulation !important;
+            -webkit-touch-callout: default !important;
+            cursor: text !important;
+            outline: none !important;
+            resize: none;
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--theme-primary);
-            box-shadow: 0 0 0 4px var(--theme-light);
-            background: var(--bg-primary);
-            position: relative;
-            z-index: 10;
-        }
-
-        .form-input:active {
+        .form-input:focus, .form-input:active {
+            outline: none !important;
+            border-color: var(--theme-primary) !important;
+            box-shadow: 0 0 0 4px var(--theme-light) !important;
+            background: var(--bg-primary) !important;
+            position: relative !important;
+            z-index: 100 !important;
             pointer-events: auto !important;
             -webkit-user-select: text !important;
             user-select: text !important;
         }
 
         .form-textarea {
-            min-height: calc(100px * var(--scale-factor));
-            resize: vertical;
-            font-family: inherit;
+            min-height: calc(100px * var(--scale-factor)) !important;
+            resize: vertical !important;
+            font-family: inherit !important;
+            line-height: 1.5 !important;
         }
 
         .form-select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(var(--gap-medium) * var(--density-factor)) center;
-            background-size: calc(20px * var(--scale-factor));
-            padding-right: calc(50px * var(--scale-factor));
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right calc(var(--gap-medium) * var(--density-factor)) center !important;
+            background-size: calc(20px * var(--scale-factor)) !important;
+            padding-right: calc(50px * var(--scale-factor)) !important;
+            cursor: pointer !important;
+        }
+
+        /* Ensure input containers don't block interactions */
+        .card-content, .line-items, .line-item {
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            pointer-events: auto !important;
         }
 
         /* Action Buttons */
@@ -1777,19 +1797,19 @@
 
                 <div class="form-group">
                     <label class="form-label">Company Name</label>
-                    <input type="text" class="form-input" id="companyName" placeholder="Your Company Name">
+                    <input type="text" class="form-input" id="companyName" placeholder="Your Company Name" autocomplete="organization" autocapitalize="words" spellcheck="true">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Address</label>
-                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address"></textarea>
+                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address" autocomplete="address-line1" spellcheck="true"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
+                    <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number" autocomplete="tel">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
+                    <input type="email" class="form-input" id="companyEmail" placeholder="Email address" autocomplete="email">
                 </div>
             </div>
         </div>
@@ -1805,19 +1825,19 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Customer Name</label>
-                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name">
+                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" autocomplete="name" autocapitalize="words" spellcheck="true">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Address</label>
-                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address"></textarea>
+                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address" autocomplete="address-line1" spellcheck="true"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
+                    <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone" autocomplete="tel">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
+                    <input type="email" class="form-input" id="customerEmail" placeholder="Customer email" autocomplete="email">
                 </div>
             </div>
         </div>
@@ -1833,15 +1853,15 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Quotation Number</label>
-                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Date</label>
-                    <input type="date" class="form-input" id="quotationDate">
+                    <input type="date" class="form-input" id="quotationDate" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Valid Until</label>
-                    <input type="date" class="form-input" id="validUntil">
+                    <input type="date" class="form-input" id="validUntil" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Currency</label>
@@ -1933,7 +1953,7 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Terms & Conditions / Notes</label>
-                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4" autocomplete="off" spellcheck="true"></textarea>
                 </div>
             </div>
         </div>
@@ -2795,16 +2815,16 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Description</label>
-                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                    <input type="text" class="form-input item-description" placeholder="Product or service description" autocomplete="off">
                 </div>
                 <div class="item-row">
                     <div class="form-group">
                         <label class="form-label">Quantity</label>
-                        <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
+                        <input type="number" class="form-input item-quantity" value="1" min="1" step="1" autocomplete="off">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Unit Price</label>
-                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" autocomplete="off">
                     </div>
                 </div>
                 <div class="total-display item-total">$0.00</div>
@@ -2812,32 +2832,36 @@
             
             container.appendChild(newItem);
             
-            const quantityInput = newItem.querySelector('.item-quantity');
-            const priceInput = newItem.querySelector('.item-price');
-            const descriptionInput = newItem.querySelector('.item-description');
-            
-            // Enable inputs for the new line item
-            [quantityInput, priceInput, descriptionInput].forEach(input => {
-                input.removeAttribute('readonly');
-                input.removeAttribute('disabled');
-                input.style.pointerEvents = 'auto';
-                input.style.webkitUserSelect = 'text';
-                input.style.userSelect = 'text';
-                input.style.cursor = 'text';
+            // CRITICAL: Force enable all new inputs immediately
+            const newInputs = newItem.querySelectorAll('input');
+            newInputs.forEach(input => {
+                ensureInputEnabled(input);
                 
-                input.addEventListener('input', () => updateLineItemTotal(newItem));
-                input.addEventListener('focus', function() {
-                    this.style.pointerEvents = 'auto';
-                    this.style.webkitUserSelect = 'text';
-                    this.style.userSelect = 'text';
-                });
+                // Add calculation listeners
+                if (input.matches('.item-quantity, .item-price')) {
+                    input.addEventListener('input', () => updateLineItemTotal(newItem), { passive: true });
+                }
             });
             
-            // Focus on description input and ensure it works
+            // Focus on description and test it immediately
+            const descriptionInput = newItem.querySelector('.item-description');
             setTimeout(() => {
+                ensureInputEnabled(descriptionInput);
                 descriptionInput.focus();
                 descriptionInput.click();
-            }, 100);
+                
+                // Test input by trying to set a value
+                console.log('🔧 Testing new input field...');
+                const testValue = descriptionInput.value;
+                descriptionInput.value = 'TEST';
+                if (descriptionInput.value === 'TEST') {
+                    console.log('✅ New input field is working!');
+                    descriptionInput.value = testValue; // Restore original value
+                } else {
+                    console.log('❌ New input field is blocked, forcing enable...');
+                    forceEnableAllInputs();
+                }
+            }, 200);
             
             Storage.saveFormData();
         }
@@ -3565,148 +3589,176 @@
             }
         }
 
-        // Event Listeners Setup
+        // COMPLETELY REWRITTEN Event Listeners Setup - FIXED FOR INPUTS
         function setupEventListeners() {
-            // Enable all inputs and ensure they work properly
-            enableAllInputs();
+            console.log('🔧 Setting up enhanced event listeners for inputs...');
             
-            // Form input listeners for auto-calculation and saving
+            // CRITICAL: Enable all inputs first
+            forceEnableAllInputs();
+            
+            // Form input listeners for auto-calculation (using event delegation)
             document.addEventListener('input', (e) => {
+                // Don't prevent default for any input events
                 if (e.target.matches('.item-quantity, .item-price')) {
                     const lineItem = e.target.closest('.line-item');
-                    updateLineItemTotal(lineItem);
+                    if (lineItem) updateLineItemTotal(lineItem);
                 }
                 
                 if (e.target.id === 'taxRate') {
                     updateGrandTotal();
                 }
 
-                // Auto-save form data
-                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
+                // Auto-save form data (debounced)
+                if (e.target.matches('input, textarea, select')) {
                     clearTimeout(window.autoSaveTimeout);
                     window.autoSaveTimeout = setTimeout(() => {
                         Storage.saveFormData();
-                    }, 1000);
+                    }, 2000); // Longer delay to avoid conflicts
                 }
-            });
+            }, { passive: true, capture: false });
 
-            // Auto-save on blur
-            document.addEventListener('blur', (e) => {
-                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
-                    Storage.saveFormData();
-                }
-            }, true);
-
-            // Focus handling to ensure inputs work
+            // Handle focus events to ensure inputs stay enabled
             document.addEventListener('focusin', (e) => {
                 if (e.target.matches('input, textarea, select')) {
-                    e.target.style.pointerEvents = 'auto';
-                    e.target.style.webkitUserSelect = 'text';
-                    e.target.style.userSelect = 'text';
-                    e.target.removeAttribute('readonly');
-                    e.target.removeAttribute('disabled');
+                    ensureInputEnabled(e.target);
                 }
-            });
+            }, { passive: true });
 
-            // Click handling for inputs
+            // Handle click events for inputs
             document.addEventListener('click', (e) => {
                 if (e.target.matches('input, textarea, select')) {
-                    e.target.focus();
-                    if (e.target.type === 'text' || e.target.tagName === 'TEXTAREA') {
-                        // Set cursor to end of text
-                        setTimeout(() => {
+                    e.stopPropagation(); // Prevent parent handlers
+                    ensureInputEnabled(e.target);
+                    
+                    // Focus and select for text inputs
+                    setTimeout(() => {
+                        e.target.focus();
+                        if (e.target.type === 'text' || e.target.type === 'email' || e.target.type === 'tel' || e.target.tagName === 'TEXTAREA') {
+                            // Move cursor to end
                             const len = e.target.value.length;
-                            if (e.target.setSelectionRange) {
-                                e.target.setSelectionRange(len, len);
-                            } else if (e.target.createTextRange) {
-                                const range = e.target.createTextRange();
-                                range.collapse(true);
-                                range.moveEnd('character', len);
-                                range.moveStart('character', len);
-                                range.select();
-                            }
-                        }, 1);
+                            e.target.setSelectionRange(len, len);
+                        }
+                    }, 10);
+                }
+            }, { capture: true });
+
+            // Enhanced touch support for mobile
+            document.addEventListener('touchstart', (e) => {
+                if (e.target.matches('input, textarea, select')) {
+                    e.stopPropagation();
+                    ensureInputEnabled(e.target);
+                }
+            }, { passive: true, capture: true });
+
+            // Set default dates
+            setDefaultDates();
+
+            // Simplified keyboard shortcuts (avoid conflicts with inputs)
+            document.addEventListener('keydown', (e) => {
+                // Only handle shortcuts when NOT typing in inputs
+                if (!e.target.matches('input, textarea, select')) {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        Storage.saveFormData();
+                        console.log('💾 Data saved manually');
+                    }
+                    
+                    if (e.key === 'Escape') {
+                        closeDrawers();
                     }
                 }
             });
+
+            // Mobile gestures (simplified)
+            let touchStartY = 0;
+            document.addEventListener('touchstart', (e) => {
+                if (!e.target.matches('input, textarea, select')) {
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!e.target.matches('input, textarea, select')) {
+                    const touchY = e.touches[0].clientY;
+                    const diff = touchStartY - touchY;
+                    
+                    if (diff < -150 && window.scrollY === 0) {
+                        location.reload();
+                    }
+                }
+            }, { passive: true });
+
+            updateStorageInfo();
             
-            // Set default dates
+            console.log('✅ Enhanced input event listeners ready!');
+        }
+
+        // CRITICAL: Force enable all inputs and keep them enabled
+        function forceEnableAllInputs() {
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            console.log(`🔧 Force enabling ${allInputs.length} input elements...`);
+            
+            allInputs.forEach((input, index) => {
+                ensureInputEnabled(input);
+                console.log(`✅ Input ${index + 1} enabled:`, input.type || input.tagName);
+            });
+            
+            // Also ensure form containers allow interaction
+            document.querySelectorAll('.form-group, .card-content, .line-items, .line-item').forEach(container => {
+                container.style.pointerEvents = 'auto';
+                container.style.webkitUserSelect = 'text';
+                container.style.userSelect = 'text';
+            });
+            
+            console.log('✅ All inputs and containers force-enabled!');
+        }
+
+        // Ensure individual input is enabled and functional
+        function ensureInputEnabled(input) {
+            if (!input) return;
+            
+            // Remove blocking attributes
+            input.removeAttribute('readonly');
+            input.removeAttribute('disabled');
+            input.setAttribute('contenteditable', 'true');
+            
+            // Force enable CSS properties
+            input.style.pointerEvents = 'auto';
+            input.style.webkitUserSelect = 'text';
+            input.style.userSelect = 'text';
+            input.style.webkitTouchCallout = 'default';
+            input.style.touchAction = 'manipulation';
+            input.style.cursor = 'text';
+            input.style.zIndex = '100';
+            input.style.position = 'relative';
+            
+            // Ensure background is not blocking
+            if (!input.style.background || input.style.background === 'transparent') {
+                input.style.background = 'var(--bg-primary)';
+            }
+        }
+
+        // Set default dates helper
+        function setDefaultDates() {
             const today = new Date().toISOString().split('T')[0];
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + 30);
             const futureString = futureDate.toISOString().split('T')[0];
             
-            if (!document.getElementById('quotationDate').value) {
-                document.getElementById('quotationDate').value = today;
+            const quotationDate = document.getElementById('quotationDate');
+            const validUntil = document.getElementById('validUntil');
+            
+            if (quotationDate && !quotationDate.value) {
+                quotationDate.value = today;
             }
-            if (!document.getElementById('validUntil').value) {
-                document.getElementById('validUntil').value = futureString;
+            if (validUntil && !validUntil.value) {
+                validUntil.value = futureString;
             }
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                // Ctrl/Cmd + S to save
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    Storage.saveFormData();
-                    console.log('💾 Data saved manually');
-                }
-                
-                // Escape to close modals/drawers (but not when typing in inputs)
-                if (e.key === 'Escape' && !e.target.matches('input, textarea, select')) {
-                    closeDrawers();
-                }
-            });
-
-            // Touch gesture support
-            let touchStartY = 0;
-            document.addEventListener('touchstart', (e) => {
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                const touchY = e.touches[0].clientY;
-                const diff = touchStartY - touchY;
-                
-                // Pull to refresh gesture
-                if (diff < -150 && window.scrollY === 0) {
-                    location.reload();
-                }
-            }, { passive: true });
-
-            updateStorageInfo();
         }
 
-        // Function to enable all inputs and make sure they work
+        // Function to enable all inputs and make sure they work - SIMPLIFIED
         function enableAllInputs() {
-            const allInputs = document.querySelectorAll('input, textarea, select');
-            allInputs.forEach(input => {
-                // Remove any attributes that might disable input
-                input.removeAttribute('readonly');
-                input.removeAttribute('disabled');
-                
-                // Ensure proper CSS properties
-                input.style.pointerEvents = 'auto';
-                input.style.webkitUserSelect = 'text';
-                input.style.userSelect = 'text';
-                input.style.webkitTouchCallout = 'default';
-                input.style.touchAction = 'manipulation';
-                input.style.cursor = 'text';
-                
-                // Add input event listeners
-                input.addEventListener('focus', function() {
-                    this.style.pointerEvents = 'auto';
-                    this.style.webkitUserSelect = 'text';
-                    this.style.userSelect = 'text';
-                });
-                
-                input.addEventListener('touchstart', function(e) {
-                    e.stopPropagation();
-                    this.focus();
-                }, { passive: false });
-            });
-            
-            console.log('✅ All inputs enabled for text entry');
+            forceEnableAllInputs();
         }
 
         // Storage Info Update
@@ -3729,76 +3781,144 @@
             }
         }
 
-        // Initialize Application
+        // Initialize Application - ENHANCED FOR INPUT DEBUGGING
         function initializeApp() {
-            console.log('🚀 Initializing QuoteFlow Universal...');
+            console.log('🚀 Initializing QuoteFlow Universal with Enhanced Input Support...');
             
-            // Initialize device detection first
+            // STEP 1: Force enable inputs immediately
+            console.log('🔧 Step 1: Force enabling inputs...');
+            setTimeout(() => forceEnableAllInputs(), 50);
+            
+            // STEP 2: Initialize device detection
+            console.log('🔧 Step 2: Device detection...');
             DeviceManager.init();
             
-            // Load saved data
+            // STEP 3: Load saved data
+            console.log('🔧 Step 3: Loading data...');
             const dataLoaded = Storage.load();
             
-            // Setup event listeners
+            // STEP 4: Setup event listeners
+            console.log('🔧 Step 4: Setting up events...');
             setupEventListeners();
             
-            // Enable all inputs immediately after setup
-            setTimeout(() => {
-                enableAllInputs();
-            }, 100);
+            // STEP 5: Force enable inputs again after everything is loaded
+            console.log('🔧 Step 5: Re-enabling inputs...');
+            setTimeout(() => forceEnableAllInputs(), 100);
             
-            // Update UI components
+            // STEP 6: Update UI components
+            console.log('🔧 Step 6: Updating UI...');
             updateThemeUI();
             updateFAB();
             updateGrandTotal();
             
-            // Load medicine data
+            // STEP 7: Load medicine data
+            console.log('🔧 Step 7: Loading medicine data...');
             loadTodaysOverview();
             updateMedicineList();
             updateDailyLog();
             
-            // Update storage and device info
+            // STEP 8: Update storage and device info
+            console.log('🔧 Step 8: Storage info...');
             updateStorageInfo();
+            
+            // STEP 9: Set up periodic maintenance
+            console.log('🔧 Step 9: Setting up maintenance...');
             
             // Auto-save every 30 seconds
             setInterval(() => {
                 Storage.saveFormData();
             }, 30000);
 
+            // Re-enable inputs every 3 seconds (aggressive fix)
+            setInterval(() => {
+                forceEnableAllInputs();
+            }, 3000);
+
             // Save before page unload
             window.addEventListener('beforeunload', () => {
                 Storage.saveFormData();
             });
 
-            // Save when page becomes hidden (mobile background)
+            // Save when page becomes hidden
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     Storage.saveFormData();
+                } else {
+                    // Re-enable inputs when page becomes visible
+                    setTimeout(() => forceEnableAllInputs(), 100);
                 }
             });
 
-            // Re-enable inputs periodically to ensure they stay enabled
-            setInterval(() => {
-                enableAllInputs();
-            }, 5000);
+            // STEP 10: Final input test and debug
+            console.log('🔧 Step 10: Final input testing...');
+            setTimeout(() => {
+                testAllInputs();
+            }, 500);
 
             // Performance monitoring
             if (performance.mark) {
                 performance.mark('app-initialized');
             }
             
-            // Welcome message
+            // Welcome message with input status
             if (!dataLoaded) {
                 setTimeout(() => {
-                    console.log('🎉 Welcome to QuoteFlow Universal! Optimized for your device:', AppState.deviceInfo.userAgent);
-                    console.log('✅ All input fields are enabled and ready for typing!');
+                    console.log('🎉 Welcome to QuoteFlow Universal!');
+                    console.log('📱 Device:', AppState.deviceInfo.userAgent);
+                    console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
+                    console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
+                    testAllInputs();
                 }, 1000);
             }
             
-            console.log('✅ QuoteFlow Universal initialized successfully!');
-            console.log('📱 Device:', AppState.deviceInfo.userAgent);
-            console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
-            console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
+            console.log('✅ QuoteFlow Universal initialization complete!');
+        }
+
+        // Test all inputs to verify they work
+        function testAllInputs() {
+            console.log('🧪 Testing all input fields...');
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            let workingInputs = 0;
+            let blockedInputs = 0;
+            
+            allInputs.forEach((input, index) => {
+                const originalValue = input.value;
+                const testValue = 'TEST_' + Date.now();
+                
+                try {
+                    input.value = testValue;
+                    if (input.value === testValue) {
+                        workingInputs++;
+                        console.log(`✅ Input ${index + 1} (${input.id || input.className}) - WORKING`);
+                    } else {
+                        blockedInputs++;
+                        console.log(`❌ Input ${index + 1} (${input.id || input.className}) - BLOCKED`);
+                        // Try to fix it
+                        ensureInputEnabled(input);
+                    }
+                    input.value = originalValue; // Restore
+                } catch (error) {
+                    blockedInputs++;
+                    console.log(`❌ Input ${index + 1} (${input.id || input.className}) - ERROR:`, error.message);
+                    ensureInputEnabled(input);
+                }
+            });
+            
+            console.log(`📊 Input Test Results: ${workingInputs} working, ${blockedInputs} blocked out of ${allInputs.length} total`);
+            
+            if (blockedInputs > 0) {
+                console.log('🔧 Attempting to fix blocked inputs...');
+                forceEnableAllInputs();
+                
+                // Test again after fix
+                setTimeout(() => {
+                    console.log('🔁 Re-testing inputs after fix...');
+                    testAllInputs();
+                }, 1000);
+            } else {
+                console.log('🎉 All inputs are working perfectly!');
+                alert('✅ All input fields are now enabled and ready for typing! Try clicking on any field.');
+            }
         }
 
         // Start the application when DOM is loaded
