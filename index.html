@@ -205,10 +205,13 @@
         }
 
         input, textarea, select {
-            -webkit-user-select: text;
-            user-select: text;
+            -webkit-user-select: text !important;
+            user-select: text !important;
             -webkit-appearance: none;
             appearance: none;
+            pointer-events: auto !important;
+            touch-action: manipulation;
+            -webkit-touch-callout: default;
         }
 
         html {
@@ -239,6 +242,16 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             font-size: calc(var(--base-font-size) * var(--scale-factor));
+            /* IMPORTANT: Don't block input interaction */
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Override for inputs specifically */
+        body input, body textarea, body select {
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            pointer-events: auto !important;
         }
 
         /* Hide scrollbars but allow scrolling */
@@ -402,32 +415,66 @@
             border: 2px solid var(--border-color);
             border-radius: calc(var(--border-radius) * var(--scale-factor));
             font-size: calc(1rem * var(--scale-factor));
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
             transition: all 0.3s ease;
-            -webkit-appearance: none;
-            appearance: none;
+            -webkit-appearance: none !important;
+            appearance: none !important;
             min-height: var(--touch-target-size);
+            position: relative;
+            z-index: 100 !important;
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            touch-action: manipulation !important;
+            -webkit-touch-callout: default !important;
+            cursor: text !important;
+            outline: none !important;
+            /* Remove any potential blockers */
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
         }
 
         .form-input:focus {
-            outline: none;
-            border-color: var(--theme-primary);
-            box-shadow: 0 0 0 4px var(--theme-light);
+            outline: none !important;
+            border-color: var(--theme-primary) !important;
+            box-shadow: 0 0 0 4px var(--theme-light) !important;
+            background: var(--bg-primary) !important;
+            position: relative;
+            z-index: 200 !important;
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
         }
 
+        .form-input:active {
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            z-index: 200 !important;
+        }
+
+        /* Ensure textareas work properly */
         .form-textarea {
             min-height: calc(100px * var(--scale-factor));
             resize: vertical;
             font-family: inherit;
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            cursor: text !important;
         }
 
+        /* Ensure select elements work */
         .form-select {
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right calc(var(--gap-medium) * var(--density-factor)) center;
             background-size: calc(20px * var(--scale-factor));
             padding-right: calc(50px * var(--scale-factor));
+            pointer-events: auto !important;
+            cursor: pointer !important;
         }
 
         /* Action Buttons */
@@ -1732,6 +1779,24 @@
 
     <!-- Quotation Page -->
     <div class="page active" id="quotationPage">
+        
+        <!-- DEBUG: Input Test Section -->
+        <div class="card" style="background: linear-gradient(135deg, #ff6b35, #f7931e); color: white; margin-bottom: calc(var(--gap-large) * var(--density-factor));">
+            <div class="card-content">
+                <h3 style="margin-bottom: calc(var(--gap-medium) * var(--density-factor)); font-size: calc(1.125rem * var(--scale-factor));">🔧 Input Field Test</h3>
+                <div class="form-group">
+                    <label class="form-label" style="color: white;">Test Input (tap here to test typing):</label>
+                    <input type="text" class="form-input" id="testInput" placeholder="If you can type here, inputs are working!" style="background: white; color: #333; border: 2px solid white;">
+                </div>
+                <button type="button" class="action-btn" onclick="testInputFunction()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid white; margin: 0;">
+                    <span>🧪</span> Force Enable All Inputs
+                </button>
+                <div id="testStatus" style="margin-top: calc(var(--gap-small) * var(--density-factor)); font-size: calc(0.875rem * var(--scale-factor)); opacity: 0.9;">
+                    Tap the test input above to check if inputs work on your device.
+                </div>
+            </div>
+        </div>
+
         <!-- Company Details -->
         <div class="card">
             <div class="card-header">
@@ -2792,15 +2857,58 @@
             
             container.appendChild(newItem);
             
-            const quantityInput = newItem.querySelector('.item-quantity');
-            const priceInput = newItem.querySelector('.item-price');
-            
-            [quantityInput, priceInput].forEach(input => {
+            // CRITICAL: Force enable all inputs in the new line item
+            const newInputs = newItem.querySelectorAll('input');
+            newInputs.forEach(input => {
+                // Remove blocking attributes
+                input.removeAttribute('readonly');
+                input.removeAttribute('disabled');
+                
+                // Force enable with aggressive CSS
+                input.style.cssText = `
+                    pointer-events: auto !important;
+                    -webkit-user-select: text !important;
+                    user-select: text !important;
+                    -webkit-touch-callout: default !important;
+                    touch-action: manipulation !important;
+                    cursor: text !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    z-index: 999 !important;
+                `;
+                
+                // Add event listeners
                 input.addEventListener('input', () => updateLineItemTotal(newItem));
+                
+                input.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                    console.log('New line item input touched:', this.className);
+                    this.focus();
+                }, { passive: false });
+                
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    console.log('New line item input clicked:', this.className);
+                    this.focus();
+                });
+                
+                input.addEventListener('focus', function() {
+                    console.log('New line item input focused:', this.className);
+                });
+                
+                console.log('✅ New line item input enabled:', input.className);
             });
             
-            newItem.querySelector('.item-description').focus();
+            // Focus on description input
+            const descriptionInput = newItem.querySelector('.item-description');
+            setTimeout(() => {
+                console.log('🎯 Attempting to focus new description input...');
+                descriptionInput.focus();
+                descriptionInput.click();
+            }, 100);
+            
             Storage.saveFormData();
+            console.log('✅ New line item added with enabled inputs');
         }
 
         function removeLineItem(button) {
@@ -3526,10 +3634,183 @@
             }
         }
 
-        // Event Listeners Setup
+        // TEST FUNCTION: Help debug input issues
+        function testInputFunction() {
+            console.log('🧪 Running input test function...');
+            
+            // Force enable all inputs aggressively
+            enableAllInputs();
+            
+            // Test the test input specifically
+            const testInput = document.getElementById('testInput');
+            const testStatus = document.getElementById('testStatus');
+            
+            if (testInput) {
+                // Remove any potential blockers
+                testInput.removeAttribute('readonly');
+                testInput.removeAttribute('disabled');
+                testInput.style.cssText = `
+                    pointer-events: auto !important;
+                    -webkit-user-select: text !important;
+                    user-select: text !important;
+                    cursor: text !important;
+                    background: white !important;
+                    color: #333 !important;
+                    border: 2px solid white !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    z-index: 9999 !important;
+                `;
+                
+                // Add test event listeners
+                testInput.addEventListener('focus', function() {
+                    console.log('🎯 Test input focused!');
+                    testStatus.innerHTML = '✅ Test input focused! Try typing...';
+                    testStatus.style.color = '#90EE90';
+                });
+                
+                testInput.addEventListener('input', function() {
+                    console.log('🎯 Test input working! Value:', this.value);
+                    testStatus.innerHTML = `✅ SUCCESS! Input working. Value: "${this.value}"`;
+                    testStatus.style.color = '#90EE90';
+                });
+                
+                testInput.addEventListener('click', function() {
+                    console.log('🎯 Test input clicked!');
+                });
+                
+                // Force focus
+                testInput.focus();
+                testInput.click();
+                
+                // Update status
+                testStatus.innerHTML = '🔧 All inputs force-enabled. Try typing in the test field above.';
+                testStatus.style.color = '#FFE4B5';
+            }
+            
+            // Also test company name field
+            const companyName = document.getElementById('companyName');
+            if (companyName) {
+                companyName.removeAttribute('readonly');
+                companyName.removeAttribute('disabled');
+                companyName.style.cssText += `
+                    pointer-events: auto !important;
+                    -webkit-user-select: text !important;
+                    user-select: text !important;
+                    cursor: text !important;
+                    z-index: 999 !important;
+                `;
+                
+                companyName.addEventListener('focus', function() {
+                    console.log('🎯 Company Name focused!');
+                });
+                
+                companyName.addEventListener('input', function() {
+                    console.log('🎯 Company Name input working! Value:', this.value);
+                });
+            }
+            
+            console.log('🧪 Test function complete. Check console for click/focus messages when you tap inputs.');
+        }
+        function enableAllInputs() {
+            console.log('🔧 Force enabling all inputs...');
+            
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            
+            allInputs.forEach((input, index) => {
+                // Remove ALL blocking attributes
+                input.removeAttribute('readonly');
+                input.removeAttribute('disabled');
+                input.removeAttribute('tabindex');
+                
+                // Force enable CSS properties with !important equivalent
+                input.style.cssText = `
+                    pointer-events: auto !important;
+                    -webkit-user-select: text !important;
+                    user-select: text !important;
+                    -webkit-touch-callout: default !important;
+                    touch-action: manipulation !important;
+                    cursor: text !important;
+                    opacity: 1 !important;
+                    visibility: visible !important;
+                    position: relative !important;
+                    z-index: 999 !important;
+                `;
+                
+                // Add event listeners for each input
+                input.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                    console.log('Touch detected on input:', this.id || this.className);
+                    this.focus();
+                }, { passive: false });
+                
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    console.log('Click detected on input:', this.id || this.className);
+                    this.focus();
+                });
+                
+                input.addEventListener('focus', function() {
+                    console.log('Focus on input:', this.id || this.className);
+                    this.style.cssText += `
+                        pointer-events: auto !important;
+                        -webkit-user-select: text !important;
+                        user-select: text !important;
+                        z-index: 1000 !important;
+                    `;
+                });
+                
+                // For text inputs, ensure cursor positioning works
+                if (input.type === 'text' || input.type === 'email' || input.type === 'tel' || input.tagName === 'TEXTAREA') {
+                    input.addEventListener('focus', function() {
+                        setTimeout(() => {
+                            if (this.setSelectionRange) {
+                                this.setSelectionRange(this.value.length, this.value.length);
+                            }
+                        }, 10);
+                    });
+                }
+                
+                console.log(`✅ Input ${index + 1} enabled:`, input.id || input.className);
+            });
+            
+            console.log(`✅ Total ${allInputs.length} inputs force-enabled`);
+            
+            // Also remove any overlays that might be blocking
+            document.querySelectorAll('.overlay').forEach(overlay => {
+                if (!overlay.classList.contains('active')) {
+                    overlay.style.display = 'none';
+                }
+            });
+        }
+
+        // Event Listeners Setup - Completely rewritten for input functionality
         function setupEventListeners() {
-            // Form input listeners for auto-calculation and saving
+            console.log('🔧 Setting up event listeners...');
+            
+            // IMMEDIATELY enable all inputs
+            enableAllInputs();
+            
+            // Prevent any interference with input focus
+            document.addEventListener('touchstart', function(e) {
+                if (e.target.matches('input, textarea, select')) {
+                    e.stopPropagation();
+                    console.log('Input touched:', e.target.id || e.target.className);
+                }
+            }, { capture: true, passive: false });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('input, textarea, select')) {
+                    e.stopPropagation();
+                    console.log('Input clicked:', e.target.id || e.target.className);
+                    e.target.focus();
+                }
+            }, { capture: true });
+            
+            // Form calculation listeners
             document.addEventListener('input', (e) => {
+                console.log('Input event detected:', e.target.id || e.target.className, 'Value:', e.target.value);
+                
                 if (e.target.matches('.item-quantity, .item-price')) {
                     const lineItem = e.target.closest('.line-item');
                     updateLineItemTotal(lineItem);
@@ -3551,6 +3832,7 @@
             // Auto-save on blur
             document.addEventListener('blur', (e) => {
                 if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
+                    console.log('Auto-saving due to blur on:', e.target.id);
                     Storage.saveFormData();
                 }
             }, true);
@@ -3561,45 +3843,39 @@
             futureDate.setDate(futureDate.getDate() + 30);
             const futureString = futureDate.toISOString().split('T')[0];
             
-            if (!document.getElementById('quotationDate').value) {
-                document.getElementById('quotationDate').value = today;
-            }
-            if (!document.getElementById('validUntil').value) {
-                document.getElementById('validUntil').value = futureString;
-            }
-
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                // Ctrl/Cmd + S to save
-                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                    e.preventDefault();
-                    Storage.saveFormData();
-                    console.log('💾 Data saved manually');
+            setTimeout(() => {
+                if (!document.getElementById('quotationDate').value) {
+                    document.getElementById('quotationDate').value = today;
                 }
-                
-                // Escape to close modals/drawers
-                if (e.key === 'Escape') {
-                    closeDrawers();
+                if (!document.getElementById('validUntil').value) {
+                    document.getElementById('validUntil').value = futureString;
+                }
+            }, 100);
+
+            // Keyboard shortcuts (but don't interfere with typing)
+            document.addEventListener('keydown', (e) => {
+                // Only handle shortcuts when NOT typing in inputs
+                if (!e.target.matches('input, textarea, select')) {
+                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                        e.preventDefault();
+                        Storage.saveFormData();
+                        console.log('💾 Data saved manually');
+                    }
+                    
+                    if (e.key === 'Escape') {
+                        closeDrawers();
+                    }
                 }
             });
 
-            // Touch gesture support
-            let touchStartY = 0;
-            document.addEventListener('touchstart', (e) => {
-                touchStartY = e.touches[0].clientY;
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                const touchY = e.touches[0].clientY;
-                const diff = touchStartY - touchY;
-                
-                // Pull to refresh gesture
-                if (diff < -150 && window.scrollY === 0) {
-                    location.reload();
-                }
-            }, { passive: true });
+            // Re-enable inputs every few seconds as a safety measure
+            setInterval(() => {
+                enableAllInputs();
+            }, 3000);
 
             updateStorageInfo();
+            
+            console.log('✅ Event listeners setup complete');
         }
 
         // Storage Info Update
@@ -3629,11 +3905,23 @@
             // Initialize device detection first
             DeviceManager.init();
             
+            // CRITICAL: Enable inputs BEFORE anything else
+            console.log('🔧 Force enabling inputs immediately...');
+            setTimeout(() => {
+                enableAllInputs();
+            }, 50);
+            
             // Load saved data
             const dataLoaded = Storage.load();
             
             // Setup event listeners
             setupEventListeners();
+            
+            // Enable inputs again after setup
+            setTimeout(() => {
+                enableAllInputs();
+                console.log('🔧 Second input enable pass complete');
+            }, 200);
             
             // Update UI components
             updateThemeUI();
@@ -3647,6 +3935,40 @@
             
             // Update storage and device info
             updateStorageInfo();
+            
+            // Enable inputs one more time after everything is loaded
+            setTimeout(() => {
+                enableAllInputs();
+                testInputFunction(); // Run the test function to ensure everything works
+                console.log('🔧 Final input enable pass complete');
+                
+                // Test the first input field
+                const firstInput = document.getElementById('companyName');
+                if (firstInput) {
+                    console.log('🧪 Testing first input field...');
+                    console.log('- ID:', firstInput.id);
+                    console.log('- ReadOnly:', firstInput.readOnly);
+                    console.log('- Disabled:', firstInput.disabled);
+                    console.log('- Style pointer-events:', firstInput.style.pointerEvents);
+                    console.log('- Style user-select:', firstInput.style.userSelect);
+                    console.log('- Style cursor:', firstInput.style.cursor);
+                    console.log('- Computed pointer-events:', getComputedStyle(firstInput).pointerEvents);
+                    console.log('- Computed user-select:', getComputedStyle(firstInput).userSelect);
+                    
+                    // Force focus test
+                    firstInput.addEventListener('click', function() {
+                        console.log('🎯 Company Name field clicked!');
+                    });
+                    
+                    firstInput.addEventListener('focus', function() {
+                        console.log('🎯 Company Name field focused!');
+                    });
+                    
+                    firstInput.addEventListener('input', function() {
+                        console.log('🎯 Company Name input detected! Value:', this.value);
+                    });
+                }
+            }, 500);
             
             // Auto-save every 30 seconds
             setInterval(() => {
@@ -3665,22 +3987,33 @@
                 }
             });
 
+            // Re-enable inputs aggressively every 2 seconds
+            setInterval(() => {
+                enableAllInputs();
+            }, 2000);
+
             // Performance monitoring
             if (performance.mark) {
                 performance.mark('app-initialized');
             }
             
-            // Welcome message
-            if (!dataLoaded) {
-                setTimeout(() => {
-                    console.log('🎉 Welcome to QuoteFlow Universal! Optimized for your device:', AppState.deviceInfo.userAgent);
-                }, 1000);
-            }
-            
-            console.log('✅ QuoteFlow Universal initialized successfully!');
-            console.log('📱 Device:', AppState.deviceInfo.userAgent);
-            console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
-            console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
+            // Welcome message with debugging info
+            setTimeout(() => {
+                console.log('🎉 QuoteFlow Universal Ready!');
+                console.log('📱 Device:', AppState.deviceInfo.userAgent);
+                console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
+                console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
+                console.log('');
+                console.log('🔧 INPUT FIELD TEST:');
+                console.log('1. Try tapping the "Company Name" field above');
+                console.log('2. Check the browser console for click/focus/input messages');
+                console.log('3. If the on-screen keyboard appears, inputs are working!');
+                console.log('');
+                console.log('📝 If inputs still don\'t work, check:');
+                console.log('- Browser developer tools → Console for error messages');
+                console.log('- Try a different browser (Chrome, Safari, Firefox)');
+                console.log('- Check if your device has any accessibility settings blocking inputs');
+            }, 1000);
         }
 
         // Start the application when DOM is loaded
