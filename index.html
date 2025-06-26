@@ -4,57 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- Advanced PWA and Mobile Meta Tags -->
+    <!-- PWA and Mobile App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="QuoteFlow">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#3498db">
     <meta name="msapplication-TileColor" content="#3498db">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="apple-mobile-web-app-orientations" content="portrait">
     
-    <!-- Enhanced Mobile Detection -->
+    <!-- Hide Safari UI -->
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="email=no">
     <meta name="format-detection" content="address=no">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="width">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlF1b3RlRmxvdyIsCiAgInNob3J0X25hbWUiOiAiUXVvdGVGbG93IiwKICAiZGVzY3JpcHRpb24iOiAiVW5pdmVyc2FsIEJ1c2luZXNzICYgTWVkaWNpbmUgVHJhY2tlciIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjhmOWZhIiwKICAidGhlbWVfY29sb3IiOiAiIzM0OThkYiIsCiAgIm9yaWVudGF0aW9uIjogInBvcnRyYWl0IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zTnZjbWM5TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXpNakFnTXpJd0lpQjNhV1IwYUQwaU16SXdJaUJvWldsbmFIUTlJak15TUNJK1BHTnBjbU5zWlNCamVEMGlNVFl3SWlCamVUMGlNVFl3SWlCeVBTSTFNQ0krUEM5amFYSmpiR1UrUEhSbGVIUWdlRDBpTVRZd0lpQjVQU0l4T1RVaUlHWnBiR3c5SW1OMGNucGJJSFJsZUhRdFlXNWphRzl5T25CeWNpQnZkblZ5Wkdsc2FXNXdWbGg5VFdsc1pHMUJRbUY4Y1hOM2NuZDNWMjFmVlVwZlJVZz0iLAogICAgICAic2l6ZXMiOiAiMzIweDMyMCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNek52Y21jOU1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0F6TWpBZ016SXdJaUI0UFNJd0lpQjVQU0l3SWlCM2FXUjBhRDBpTXpJd0lpQm9aV2xuYUhROUlqTXlNQ0krUEdOcGNtTnNaU0JqZUQwaU1UWXdJaUJqZVQwaU1UWXdJaUJ5UFNJMU1DSTZjM1J5YjJ0bFBTSmpiWGRiWkhReU1DYUZHZ1pyT25CdmJXOHJhVzVuWVc0M05EWWxjMWdDUzFWVVZGOW1RekE0ZUVZU1MxVlVWRjlqWlJrPSIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0KICBdCn0=">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlF1b3RlRmxvdyIsCiAgInNob3J0X25hbWUiOiAiUXVvdGVGbG93IiwKICAiZGVzY3JpcHRpb24iOiAiQnVzaW5lc3MgJiBNZWRpY2luZSBUcmFja2VyIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGY5ZmEiLAogICJ0aGVtZV9jb2xvciI6ICIjMzQ5OGRiIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCNGJXeHVjejBpYUhSMGNEb3ZMM2QzZHk1M00zTnZjbWM5TWpBd01DOXpkbWNpSUhacFpYZENiM2c5SWpBZ01DQXpNakFnTXpJd0lpQjNhV1IwYUQwaU16SXdJaUJvWldsbmFIUTlJak15TUNJK1BHTnBjbU5zWlNCamVEMGlNVFl3SWlCamVUMGlNVFl3SWlCeVBTSTFNQ0krTzNNZ1ptbHNiRDBpSXpNME9UaGtZaUkrUEM5amFYSmpiR1UrUEhSbGVIUWdlRDBpTVRZd0lpQjVQU0l4T1RVaUlHWnBiR3c5SW1OMGNucGJJSFJsZUhRdFlXNWphRzl5T25CeWNpQnZkblZ5Wkdsc2FXNXdWbGg5VFdsc1pHMUJRbUY4Y1hOM2NuZDNWMjFmVlVwZlJVZz0iLAogICAgICAic2l6ZXMiOiAiMzIweDMyMCIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
     
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMjAgMzIwIiB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCI+PGNpcmNsZSBjeD0iMTYwIiBjeT0iMTYwIiByPSI1MCI+PC9jaXJjbGU+PC9zdmc+">
     
-    <title>QuoteFlow - Universal Mobile App</title>
+    <title>QuoteFlow - Mobile Business App</title>
     <style>
-        /* Device Detection CSS Variables */
         :root {
-            /* Base Screen Variables */
-            --screen-width: 100vw;
-            --screen-height: 100vh;
-            --safe-area-top: env(safe-area-inset-top, 0px);
-            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
-            --safe-area-left: env(safe-area-inset-left, 0px);
-            --safe-area-right: env(safe-area-inset-right, 0px);
-            
-            /* Dynamic Scaling Variables */
-            --base-font-size: 16px;
-            --scale-factor: 1;
-            --density-factor: 1;
-            --touch-target-size: 44px;
-            
-            /* Layout Variables */
-            --header-height: 70px;
-            --bottom-nav-height: 80px;
-            --card-padding: 20px;
-            --form-padding: 18px;
-            --border-radius: 16px;
-            --gap-small: 8px;
-            --gap-medium: 16px;
-            --gap-large: 24px;
-            
             /* Light Mode Colors */
             --bg-primary: #ffffff;
             --bg-secondary: #f8f9fa;
@@ -132,93 +103,22 @@
             --theme-light: rgba(255, 107, 0, 0.1);
         }
 
-        /* Screen Size Adaptations */
-        [data-screen="small"] {
-            --scale-factor: 0.9;
-            --header-height: 60px;
-            --bottom-nav-height: 70px;
-            --card-padding: 16px;
-            --form-padding: 16px;
-            --border-radius: 12px;
-            --base-font-size: 14px;
-        }
-
-        [data-screen="large"] {
-            --scale-factor: 1.1;
-            --header-height: 80px;
-            --bottom-nav-height: 90px;
-            --card-padding: 24px;
-            --form-padding: 20px;
-            --border-radius: 20px;
-            --base-font-size: 18px;
-        }
-
-        [data-screen="xlarge"] {
-            --scale-factor: 1.2;
-            --header-height: 90px;
-            --bottom-nav-height: 100px;
-            --card-padding: 28px;
-            --form-padding: 22px;
-            --border-radius: 24px;
-            --base-font-size: 20px;
-        }
-
-        /* Density Settings */
-        [data-density="compact"] {
-            --density-factor: 0.8;
-            --gap-small: 6px;
-            --gap-medium: 12px;
-            --gap-large: 18px;
-        }
-
-        [data-density="comfortable"] {
-            --density-factor: 1.2;
-            --gap-small: 10px;
-            --gap-medium: 20px;
-            --gap-large: 30px;
-        }
-
-        /* Font Size Settings */
-        [data-font-size="small"] {
-            --base-font-size: 14px;
-        }
-
-        [data-font-size="large"] {
-            --base-font-size: 18px;
-        }
-
-        [data-font-size="xlarge"] {
-            --base-font-size: 20px;
-        }
-
-        /* Universal Reset and Base Styles - FIXED FOR INPUTS */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-        }
-
-        /* DON'T disable user-select on everything - this blocks inputs */
-        body, div, span, button, nav, header {
             -webkit-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
             -webkit-text-size-adjust: none;
-            -ms-text-size-adjust: none;
         }
 
-        /* ALWAYS allow text selection on inputs and their containers */
-        input, textarea, select, 
-        .form-input, .form-textarea, .form-select,
-        .form-group, .card-content {
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            -webkit-appearance: none !important;
-            appearance: none !important;
-            pointer-events: auto !important;
-            touch-action: manipulation !important;
-            -webkit-touch-callout: default !important;
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         html {
@@ -227,11 +127,10 @@
             overflow-x: hidden;
             -webkit-text-size-adjust: 100%;
             -ms-text-size-adjust: 100%;
-            font-size: var(--base-font-size);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-secondary);
             color: var(--text-primary);
             line-height: 1.6;
@@ -243,49 +142,40 @@
             left: 0;
             right: 0;
             bottom: 0;
-            padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
-            padding-left: var(--safe-area-left);
-            padding-right: var(--safe-area-right);
+            padding-bottom: 80px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            font-size: calc(var(--base-font-size) * var(--scale-factor));
         }
 
         /* Hide scrollbars but allow scrolling */
-        body::-webkit-scrollbar, 
-        .page::-webkit-scrollbar,
-        .drawer::-webkit-scrollbar,
-        .modal::-webkit-scrollbar {
+        body::-webkit-scrollbar {
             display: none;
         }
-
-        body {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        
+        .page::-webkit-scrollbar {
+            display: none;
         }
 
         /* Mobile Header */
         .mobile-header {
             position: fixed;
-            top: var(--safe-area-top);
-            left: var(--safe-area-left);
-            right: var(--safe-area-right);
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
             box-shadow: 0 2px 20px var(--shadow-light);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            height: var(--header-height);
         }
 
         .header-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: calc(var(--gap-medium) * var(--density-factor)) calc(var(--card-padding) * var(--density-factor));
-            height: 100%;
-            min-height: var(--header-height);
+            padding: 16px 20px;
+            min-height: 70px;
         }
 
         .app-branding {
@@ -293,29 +183,27 @@
         }
 
         .app-title {
-            font-size: calc(1.375rem * var(--scale-factor));
+            font-size: 22px;
             font-weight: 800;
             color: var(--theme-primary);
             cursor: pointer;
             margin-bottom: 2px;
-            line-height: 1.2;
         }
 
         .app-slogan {
-            font-size: calc(0.6875rem * var(--scale-factor));
+            font-size: 11px;
             color: var(--text-muted);
             cursor: pointer;
-            line-height: 1;
         }
 
         .header-actions {
             display: flex;
-            gap: calc(var(--gap-medium) * var(--density-factor));
+            gap: 12px;
         }
 
         .header-btn {
-            width: var(--touch-target-size);
-            height: var(--touch-target-size);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: none;
             background: var(--theme-light);
@@ -325,7 +213,7 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -339,9 +227,9 @@
         /* Page Layout */
         .page {
             display: none;
-            margin-top: calc(var(--header-height) + var(--safe-area-top));
-            padding: calc(var(--gap-medium) * var(--density-factor));
-            height: calc(100vh - var(--header-height) - var(--bottom-nav-height) - var(--safe-area-top) - var(--safe-area-bottom) - calc(var(--gap-medium) * 2));
+            margin-top: 70px;
+            padding: 16px;
+            height: calc(100vh - 150px);
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
@@ -354,138 +242,108 @@
         /* Cards */
         .card {
             background: var(--bg-card);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
+            border-radius: 20px;
             box-shadow: 0 4px 20px var(--shadow-light);
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            margin-bottom: 20px;
             overflow: hidden;
             border: 1px solid var(--border-color);
-            animation: slideUp 0.4s ease;
         }
 
         .card-header {
-            padding: calc(var(--card-padding) * var(--density-factor));
+            padding: 20px;
             border-bottom: 1px solid var(--border-color);
             background: var(--theme-light);
         }
 
         .card-title {
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: calc(var(--gap-medium) * var(--density-factor));
+            gap: 12px;
         }
 
         .card-icon {
-            width: calc(28px * var(--scale-factor));
-            height: calc(28px * var(--scale-factor));
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: var(--theme-primary);
             color: white;
-            border-radius: calc(8px * var(--scale-factor));
-            font-size: calc(0.875rem * var(--scale-factor));
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         .card-content {
-            padding: calc(var(--card-padding) * var(--density-factor));
+            padding: 20px;
         }
 
-        /* Form Elements - COMPLETELY FIXED */
+        /* Form Elements */
         .form-group {
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
-            position: relative;
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            pointer-events: auto !important;
+            margin-bottom: 24px;
         }
 
         .form-label {
             display: block;
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: calc(var(--gap-small) * var(--density-factor));
-            pointer-events: none;
+            margin-bottom: 8px;
         }
 
         .form-input {
-            width: 100% !important;
-            padding: calc(var(--form-padding) * var(--density-factor)) !important;
-            border: 2px solid var(--border-color) !important;
-            border-radius: calc(var(--border-radius) * var(--scale-factor)) !important;
-            font-size: calc(1rem * var(--scale-factor)) !important;
-            background: var(--bg-primary) !important;
-            color: var(--text-primary) !important;
+            width: 100%;
+            padding: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             transition: all 0.3s ease;
-            -webkit-appearance: none !important;
-            appearance: none !important;
-            min-height: var(--touch-target-size) !important;
-            position: relative !important;
-            z-index: 10 !important;
-            pointer-events: auto !important;
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            touch-action: manipulation !important;
-            -webkit-touch-callout: default !important;
-            cursor: text !important;
-            outline: none !important;
-            resize: none;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
-        .form-input:focus, .form-input:active {
-            outline: none !important;
-            border-color: var(--theme-primary) !important;
-            box-shadow: 0 0 0 4px var(--theme-light) !important;
-            background: var(--bg-primary) !important;
-            position: relative !important;
-            z-index: 100 !important;
-            pointer-events: auto !important;
-            -webkit-user-select: text !important;
-            user-select: text !important;
+        .form-input:focus {
+            outline: none;
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 4px var(--theme-light);
         }
 
         .form-textarea {
-            min-height: calc(100px * var(--scale-factor)) !important;
-            resize: vertical !important;
-            font-family: inherit !important;
-            line-height: 1.5 !important;
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
         }
 
         .form-select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
-            background-repeat: no-repeat !important;
-            background-position: right calc(var(--gap-medium) * var(--density-factor)) center !important;
-            background-size: calc(20px * var(--scale-factor)) !important;
-            padding-right: calc(50px * var(--scale-factor)) !important;
-            cursor: pointer !important;
-        }
-
-        /* Ensure input containers don't block interactions */
-        .card-content, .line-items, .line-item {
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            pointer-events: auto !important;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            padding-right: 50px;
+            -webkit-appearance: none;
+            appearance: none;
         }
 
         /* Action Buttons */
         .action-btn {
             width: 100%;
-            padding: calc(var(--card-padding) * var(--density-factor));
+            padding: 20px;
             border: none;
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            font-size: calc(1.125rem * var(--scale-factor));
+            border-radius: 16px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: calc(var(--gap-medium) * var(--density-factor));
-            margin: calc(var(--gap-medium) * var(--density-factor)) 0;
-            min-height: calc(60px * var(--scale-factor));
+            gap: 12px;
+            margin: 16px 0;
+            min-height: 60px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -512,16 +370,16 @@
         /* Line Items */
         .line-items {
             background: var(--bg-secondary);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            padding: calc(var(--card-padding) * var(--density-factor));
+            border-radius: 16px;
+            padding: 20px;
             border: 1px solid var(--border-color);
         }
 
         .line-item {
             background: var(--bg-card);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            padding: calc(var(--card-padding) * var(--density-factor));
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
             border: 1px solid var(--border-color);
             position: relative;
         }
@@ -532,35 +390,35 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: calc(4px * var(--scale-factor));
+            width: 4px;
             background: var(--theme-gradient);
-            border-radius: 0 calc(4px * var(--scale-factor)) calc(4px * var(--scale-factor)) 0;
+            border-radius: 0 4px 4px 0;
         }
 
         .line-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            margin-bottom: 16px;
         }
 
         .item-number {
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-muted);
             background: var(--theme-light);
-            padding: calc(6px * var(--scale-factor)) calc(12px * var(--scale-factor));
-            border-radius: calc(12px * var(--scale-factor));
+            padding: 6px 12px;
+            border-radius: 12px;
         }
 
         .remove-item {
-            width: calc(36px * var(--scale-factor));
-            height: calc(36px * var(--scale-factor));
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             border: none;
             background: var(--danger);
             color: white;
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -572,7 +430,7 @@
         .item-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: calc(var(--gap-medium) * var(--density-factor));
+            gap: 16px;
         }
 
         .total-display {
@@ -581,19 +439,19 @@
             color: var(--theme-primary);
             font-weight: 700;
             text-align: center;
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            padding: calc(var(--form-padding) * var(--density-factor));
-            font-size: calc(1.125rem * var(--scale-factor));
-            margin-top: calc(var(--gap-small) * var(--density-factor));
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 18px;
+            margin-top: 8px;
         }
 
         /* Totals Card */
         .totals-card {
             background: var(--theme-gradient);
             color: white;
-            border-radius: calc(var(--border-radius) * var(--scale-factor) * 1.25);
-            padding: calc(var(--gap-large) * var(--density-factor));
-            margin: calc(var(--gap-large) * var(--density-factor)) 0;
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
             box-shadow: 0 8px 30px var(--shadow-medium);
         }
 
@@ -601,27 +459,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
-            font-size: calc(1rem * var(--scale-factor));
+            margin-bottom: 16px;
+            font-size: 16px;
         }
 
         .total-row:last-child {
             margin-bottom: 0;
             border-top: 2px solid rgba(255,255,255,0.3);
-            padding-top: calc(var(--gap-medium) * var(--density-factor));
-            font-size: calc(1.25rem * var(--scale-factor));
+            padding-top: 16px;
+            font-size: 20px;
             font-weight: 700;
         }
 
         .tax-input {
-            width: calc(80px * var(--scale-factor));
+            width: 80px;
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
             text-align: center;
-            border-radius: calc(8px * var(--scale-factor));
-            padding: calc(8px * var(--scale-factor));
-            font-size: calc(1rem * var(--scale-factor));
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 16px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -629,15 +487,15 @@
         /* Medicine Cards */
         .medicine-card {
             background: var(--bg-card);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
+            border-radius: 16px;
             border: 1px solid var(--border-color);
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            margin-bottom: 16px;
             overflow: hidden;
         }
 
         .medicine-header {
             background: var(--medicine-light);
-            padding: calc(var(--card-padding) * var(--density-factor));
+            padding: 20px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -649,38 +507,38 @@
         }
 
         .medicine-name {
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: calc(4px * var(--scale-factor));
+            margin-bottom: 4px;
         }
 
         .medicine-dosage {
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: calc(2px * var(--scale-factor));
+            margin-bottom: 2px;
         }
 
         .medicine-instructions {
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             color: var(--text-secondary);
         }
 
         .medicine-actions {
             display: flex;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
         }
 
         .medicine-btn {
-            width: calc(40px * var(--scale-factor));
-            height: calc(40px * var(--scale-factor));
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: calc(1rem * var(--scale-factor));
+            font-size: 16px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -701,14 +559,14 @@
         }
 
         .medicine-schedule {
-            padding: calc(var(--card-padding) * var(--density-factor));
+            padding: 20px;
         }
 
         .schedule-item {
             background: var(--bg-secondary);
-            border-radius: calc(12px * var(--scale-factor));
-            padding: calc(var(--gap-medium) * var(--density-factor));
-            margin-bottom: calc(12px * var(--scale-factor));
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
         }
 
@@ -720,31 +578,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: calc(12px * var(--scale-factor));
+            margin-bottom: 12px;
         }
 
         .schedule-time {
             font-weight: 700;
             color: var(--text-primary);
-            font-size: calc(1rem * var(--scale-factor));
+            font-size: 16px;
         }
 
         .schedule-note {
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: calc(var(--gap-small) * var(--density-factor));
+            margin-bottom: 8px;
         }
 
         .schedule-status {
             display: flex;
-            gap: calc(12px * var(--scale-factor));
+            gap: 12px;
             align-items: center;
-            margin-bottom: calc(12px * var(--scale-factor));
+            margin-bottom: 12px;
         }
 
         .status-indicator {
-            width: calc(16px * var(--scale-factor));
-            height: calc(16px * var(--scale-factor));
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--border-color);
         }
@@ -754,16 +612,15 @@
         .status-indicator.pending { background: var(--warning); }
 
         .take-btn {
-            padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor));
+            padding: 8px 16px;
             border: none;
-            border-radius: calc(20px * var(--scale-factor));
-            font-size: calc(0.75rem * var(--scale-factor));
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            min-width: calc(70px * var(--scale-factor));
+            min-width: 70px;
             -webkit-appearance: none;
             appearance: none;
-            min-height: calc(32px * var(--scale-factor));
         }
 
         .take-btn.taken { background: var(--success); color: white; }
@@ -772,16 +629,16 @@
 
         .remark-section {
             background: var(--remark-light);
-            border-radius: calc(8px * var(--scale-factor));
-            padding: calc(12px * var(--scale-factor));
-            margin-top: calc(var(--gap-small) * var(--density-factor));
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
         }
 
         .remark-label {
-            font-size: calc(0.6875rem * var(--scale-factor));
+            font-size: 11px;
             font-weight: 600;
             color: var(--remark);
-            margin-bottom: calc(6px * var(--scale-factor));
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -789,13 +646,13 @@
         .remark-input {
             width: 100%;
             border: 1px solid var(--border-color);
-            border-radius: calc(8px * var(--scale-factor));
-            padding: calc(8px * var(--scale-factor)) calc(12px * var(--scale-factor));
-            font-size: calc(0.875rem * var(--scale-factor));
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
             background: var(--bg-primary);
             color: var(--text-primary);
             resize: none;
-            min-height: calc(60px * var(--scale-factor));
+            min-height: 60px;
             -webkit-appearance: none;
             appearance: none;
         }
@@ -806,17 +663,14 @@
         }
 
         .remark-display {
-            font-size: calc(0.8125rem * var(--scale-factor));
+            font-size: 13px;
             color: var(--text-secondary);
             line-height: 1.4;
             font-style: italic;
             cursor: pointer;
-            padding: calc(8px * var(--scale-factor));
-            border-radius: calc(6px * var(--scale-factor));
+            padding: 8px;
+            border-radius: 6px;
             transition: background 0.3s ease;
-            min-height: var(--touch-target-size);
-            display: flex;
-            align-items: center;
         }
 
         .remark-display:hover {
@@ -832,26 +686,26 @@
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: calc(var(--gap-medium) * var(--density-factor));
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .stat-card {
             background: var(--bg-card);
-            padding: calc(var(--card-padding) * var(--density-factor)) calc(var(--gap-medium) * var(--density-factor));
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
+            padding: 20px 16px;
+            border-radius: 16px;
             border: 1px solid var(--border-color);
             text-align: center;
         }
 
         .stat-number {
-            font-size: calc(1.75rem * var(--scale-factor));
+            font-size: 28px;
             font-weight: 800;
-            margin-bottom: calc(4px * var(--scale-factor));
+            margin-bottom: 4px;
         }
 
         .stat-label {
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 600;
         }
@@ -864,15 +718,15 @@
         .time-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: calc(12px * var(--scale-factor));
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .time-input {
-            padding: calc(16px * var(--scale-factor)) calc(12px * var(--scale-factor));
+            padding: 16px 12px;
             border: 2px solid var(--border-color);
-            border-radius: calc(12px * var(--scale-factor));
-            font-size: calc(0.875rem * var(--scale-factor));
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 600;
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -881,7 +735,6 @@
             transition: all 0.3s ease;
             -webkit-appearance: none;
             appearance: none;
-            min-height: var(--touch-target-size);
         }
 
         .time-input:active {
@@ -897,14 +750,13 @@
         /* Logo Upload */
         .logo-upload {
             border: 2px dashed var(--theme-primary);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            padding: calc(40px * var(--scale-factor)) calc(var(--card-padding) * var(--density-factor));
+            border-radius: 16px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
             background: var(--theme-light);
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            margin-bottom: 20px;
             position: relative;
-            min-height: calc(120px * var(--scale-factor));
         }
 
         .logo-upload:active {
@@ -913,10 +765,10 @@
         }
 
         .logo-preview {
-            max-width: calc(120px * var(--scale-factor));
-            max-height: calc(60px * var(--scale-factor));
-            border-radius: calc(8px * var(--scale-factor));
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            max-width: 120px;
+            max-height: 60px;
+            border-radius: 8px;
+            margin-bottom: 16px;
             display: none;
         }
 
@@ -925,34 +777,32 @@
         }
 
         .logo-icon {
-            font-size: calc(2.5rem * var(--scale-factor));
-            margin-bottom: calc(12px * var(--scale-factor));
+            font-size: 40px;
+            margin-bottom: 12px;
             color: var(--theme-primary);
         }
 
         .logo-text {
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             color: var(--text-muted);
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            margin-bottom: 16px;
         }
 
         .logo-actions {
             display: flex;
-            gap: calc(12px * var(--scale-factor));
+            gap: 12px;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
         .logo-btn {
-            padding: calc(12px * var(--scale-factor)) calc(var(--card-padding) * var(--density-factor));
+            padding: 12px 20px;
             border: none;
-            border-radius: calc(20px * var(--scale-factor));
+            border-radius: 20px;
             font-weight: 600;
             cursor: pointer;
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             -webkit-appearance: none;
             appearance: none;
-            min-height: calc(36px * var(--scale-factor));
         }
 
         .upload-btn {
@@ -968,9 +818,9 @@
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
-            bottom: var(--safe-area-bottom);
-            left: var(--safe-area-left);
-            right: var(--safe-area-right);
+            bottom: 0;
+            left: 0;
+            right: 0;
             background: var(--bg-card);
             border-top: 1px solid var(--border-color);
             z-index: 1000;
@@ -979,7 +829,7 @@
 
         .nav-container {
             display: flex;
-            height: var(--bottom-nav-height);
+            height: 80px;
         }
 
         .nav-item {
@@ -988,7 +838,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: calc(4px * var(--scale-factor));
+            gap: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             border: none;
@@ -996,7 +846,6 @@
             color: var(--text-muted);
             -webkit-appearance: none;
             appearance: none;
-            min-height: var(--touch-target-size);
         }
 
         .nav-item.active {
@@ -1005,26 +854,26 @@
         }
 
         .nav-icon {
-            font-size: calc(1.5rem * var(--scale-factor));
+            font-size: 24px;
         }
 
         .nav-label {
-            font-size: calc(0.625rem * var(--scale-factor));
+            font-size: 10px;
             font-weight: 600;
         }
 
         /* Floating Action Button */
         .fab {
             position: fixed;
-            bottom: calc(var(--bottom-nav-height) + var(--gap-large) + var(--safe-area-bottom));
-            right: calc(var(--gap-large) + var(--safe-area-right));
-            width: calc(64px * var(--scale-factor));
-            height: calc(64px * var(--scale-factor));
+            bottom: 100px;
+            right: 20px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: var(--theme-gradient);
             color: white;
             border: none;
-            font-size: calc(1.75rem * var(--scale-factor));
+            font-size: 28px;
             cursor: pointer;
             box-shadow: 0 8px 30px var(--shadow-medium);
             z-index: 999;
@@ -1056,24 +905,23 @@
         }
 
         .drawer-header {
-            padding: calc(var(--card-padding) * var(--density-factor));
-            padding-top: calc(var(--card-padding) * var(--density-factor) + var(--safe-area-top));
+            padding: 20px;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-height: calc(var(--header-height) + var(--safe-area-top));
+            min-height: 70px;
         }
 
         .drawer-title {
-            font-size: calc(1.25rem * var(--scale-factor));
+            font-size: 20px;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .close-drawer {
-            width: var(--touch-target-size);
-            height: var(--touch-target-size);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: none;
             background: var(--bg-secondary);
@@ -1082,60 +930,52 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: calc(1.25rem * var(--scale-factor));
+            font-size: 20px;
             -webkit-appearance: none;
             appearance: none;
         }
 
         .drawer-content {
-            padding: calc(var(--card-padding) * var(--density-factor));
-            padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+            padding: 20px;
         }
 
         /* Theme Section */
         .theme-section {
-            margin-bottom: calc(32px * var(--scale-factor) * var(--density-factor));
+            margin-bottom: 32px;
         }
 
         .section-title {
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             font-weight: 600;
             color: var(--text-secondary);
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            margin-bottom: 16px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .mode-toggle, .size-toggle, .density-toggle {
+        .mode-toggle {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
             background: var(--bg-secondary);
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
-            padding: calc(4px * var(--scale-factor));
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            border-radius: 16px;
+            padding: 4px;
         }
 
-        .triple-toggle {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-
-        .mode-option, .size-option, .density-option {
-            padding: calc(var(--gap-medium) * var(--density-factor));
+        .mode-option {
+            padding: 16px;
             border: none;
-            border-radius: calc(12px * var(--scale-factor));
+            border-radius: 12px;
             cursor: pointer;
-            font-size: calc(1rem * var(--scale-factor));
+            font-size: 16px;
             font-weight: 600;
             background: transparent;
             color: var(--text-secondary);
             -webkit-appearance: none;
             appearance: none;
-            min-height: var(--touch-target-size);
-            transition: all 0.3s ease;
         }
 
-        .mode-option.active, .size-option.active, .density-option.active {
+        .mode-option.active {
             background: var(--theme-gradient);
             color: white;
         }
@@ -1143,20 +983,19 @@
         .color-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: calc(var(--gap-medium) * var(--density-factor));
+            gap: 16px;
         }
 
         .color-option {
             aspect-ratio: 1;
             border: none;
-            border-radius: calc(var(--border-radius) * var(--scale-factor));
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             border: 3px solid transparent;
             -webkit-appearance: none;
             appearance: none;
-            min-height: calc(60px * var(--scale-factor));
         }
 
         .color-option.active {
@@ -1172,7 +1011,7 @@
             transform: translate(-50%, -50%);
             color: white;
             font-weight: bold;
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -1209,16 +1048,15 @@
         }
 
         .modal-content {
-            padding: calc(var(--card-padding) * var(--density-factor));
-            padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+            padding: 20px;
         }
 
         /* Quotation Preview */
         .quotation-preview {
             background: var(--bg-card);
-            border-radius: calc(var(--border-radius) * var(--scale-factor) * 1.25);
-            padding: calc(var(--gap-large) * var(--density-factor));
-            margin: calc(var(--gap-large) * var(--density-factor)) 0;
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
             box-shadow: 0 8px 30px var(--shadow-medium);
             border: 1px solid var(--border-color);
         }
@@ -1226,14 +1064,14 @@
         .quotation-header {
             text-align: center;
             border-bottom: 3px solid var(--theme-primary);
-            padding-bottom: calc(var(--gap-large) * var(--density-factor));
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            padding-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .quotation-logo {
-            max-width: calc(100px * var(--scale-factor));
-            max-height: calc(50px * var(--scale-factor));
-            margin-bottom: calc(var(--gap-medium) * var(--density-factor));
+            max-width: 100px;
+            max-height: 50px;
+            margin-bottom: 16px;
             display: none;
         }
 
@@ -1242,49 +1080,49 @@
         }
 
         .quotation-title {
-            font-size: calc(1.5rem * var(--scale-factor));
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: calc(var(--gap-small) * var(--density-factor));
+            margin-bottom: 8px;
         }
 
         .quotation-number {
             color: var(--text-muted);
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
         }
 
         .quotation-details {
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            margin-bottom: 24px;
         }
 
         .detail-section {
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
+            margin-bottom: 20px;
         }
 
         .detail-section h4 {
             color: var(--text-primary);
-            margin-bottom: calc(var(--gap-small) * var(--density-factor));
-            font-size: calc(0.875rem * var(--scale-factor));
+            margin-bottom: 8px;
+            font-size: 14px;
             font-weight: 600;
         }
 
         .detail-content {
             color: var(--text-secondary);
-            font-size: calc(0.8125rem * var(--scale-factor));
+            font-size: 13px;
             line-height: 1.6;
         }
 
         .quotation-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: calc(var(--gap-large) * var(--density-factor));
-            font-size: calc(0.75rem * var(--scale-factor));
+            margin-bottom: 20px;
+            font-size: 12px;
         }
 
         .quotation-table th,
         .quotation-table td {
             border: 1px solid var(--border-color);
-            padding: calc(12px * var(--scale-factor)) calc(8px * var(--scale-factor));
+            padding: 12px 8px;
             text-align: left;
         }
 
@@ -1300,29 +1138,29 @@
 
         .quotation-totals {
             text-align: right;
-            margin-top: calc(var(--gap-large) * var(--density-factor));
+            margin-top: 20px;
             color: var(--text-primary);
         }
 
         .quotation-totals > div {
-            margin-bottom: calc(var(--gap-small) * var(--density-factor));
+            margin-bottom: 8px;
         }
 
         .quotation-total {
-            font-size: calc(1.125rem * var(--scale-factor));
+            font-size: 18px;
             font-weight: 700;
             color: var(--theme-primary);
             border-top: 2px solid var(--border-color);
-            padding-top: calc(12px * var(--scale-factor));
-            margin-top: calc(12px * var(--scale-factor));
+            padding-top: 12px;
+            margin-top: 12px;
         }
 
         /* Daily Log */
         .log-item {
             background: var(--bg-secondary);
-            border-radius: calc(12px * var(--scale-factor));
-            padding: calc(var(--gap-medium) * var(--density-factor));
-            margin-bottom: calc(12px * var(--scale-factor));
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
             border: 1px solid var(--border-color);
             position: relative;
         }
@@ -1335,7 +1173,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: calc(12px * var(--scale-factor));
+            margin-bottom: 12px;
         }
 
         .log-medicine {
@@ -1345,38 +1183,35 @@
         .log-medicine-name {
             font-weight: 600;
             color: var(--text-primary);
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
         }
 
         .log-medicine-time {
-            font-size: calc(0.75rem * var(--scale-factor));
+            font-size: 12px;
             color: var(--text-muted);
-            margin-top: calc(2px * var(--scale-factor));
+            margin-top: 2px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
         }
 
         .log-actions {
             display: flex;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
             align-items: center;
         }
 
         .log-status {
-            font-size: calc(0.75rem * var(--scale-factor));
-            padding: calc(6px * var(--scale-factor)) calc(12px * var(--scale-factor));
-            border-radius: calc(16px * var(--scale-factor));
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 16px;
             font-weight: 600;
             cursor: pointer;
-            min-height: calc(28px * var(--scale-factor));
-            display: flex;
-            align-items: center;
         }
 
         .log-status.taken {
@@ -1395,15 +1230,15 @@
         }
 
         .log-btn {
-            width: calc(32px * var(--scale-factor));
-            height: calc(32px * var(--scale-factor));
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: calc(0.875rem * var(--scale-factor));
+            font-size: 14px;
             transition: all 0.3s ease;
             -webkit-appearance: none;
             appearance: none;
@@ -1425,8 +1260,8 @@
         }
 
         .log-remark {
-            margin-top: calc(var(--gap-small) * var(--density-factor));
-            padding-top: calc(var(--gap-small) * var(--density-factor));
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px solid var(--border-color);
         }
 
@@ -1438,10 +1273,10 @@
 
         .log-edit-form {
             display: none;
-            margin-top: calc(12px * var(--scale-factor));
-            padding: calc(12px * var(--scale-factor));
+            margin-top: 12px;
+            padding: 12px;
             background: var(--bg-primary);
-            border-radius: calc(8px * var(--scale-factor));
+            border-radius: 8px;
             border: 1px solid var(--border-color);
         }
 
@@ -1452,42 +1287,40 @@
         .log-edit-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: calc(12px * var(--scale-factor));
-            margin-bottom: calc(12px * var(--scale-factor));
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
         .log-edit-actions {
             display: flex;
-            gap: calc(var(--gap-small) * var(--density-factor));
+            gap: 8px;
             justify-content: flex-end;
         }
 
         .log-save-btn {
-            padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor));
+            padding: 8px 16px;
             border: none;
-            border-radius: calc(20px * var(--scale-factor));
-            font-size: calc(0.75rem * var(--scale-factor));
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             background: var(--success);
             color: white;
             -webkit-appearance: none;
             appearance: none;
-            min-height: calc(32px * var(--scale-factor));
         }
 
         .log-cancel-btn {
-            padding: calc(8px * var(--scale-factor)) calc(16px * var(--scale-factor));
+            padding: 8px 16px;
             border: none;
-            border-radius: calc(20px * var(--scale-factor));
-            font-size: calc(0.75rem * var(--scale-factor));
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             background: var(--danger);
             color: white;
             -webkit-appearance: none;
             appearance: none;
-            min-height: calc(32px * var(--scale-factor));
         }
 
         /* Utilities */
@@ -1502,13 +1335,17 @@
         /* Animations */
         @keyframes slideUp {
             from {
-                transform: translateY(calc(30px * var(--scale-factor)));
+                transform: translateY(30px);
                 opacity: 0;
             }
             to {
                 transform: translateY(0);
                 opacity: 1;
             }
+        }
+
+        .card {
+            animation: slideUp 0.4s ease;
         }
 
         /* Overlay */
@@ -1530,159 +1367,26 @@
             visibility: visible;
         }
 
-        /* Device-Specific Responsive Breakpoints */
-        
-        /* Small phones (iPhone SE, small Android) */
-        @media (max-width: 375px) and (max-height: 667px) {
-            :root {
-                --scale-factor: 0.85;
-                --base-font-size: 14px;
-                --header-height: 60px;
-                --bottom-nav-height: 70px;
-                --card-padding: 14px;
-                --form-padding: 14px;
-                --touch-target-size: 40px;
-            }
-            
-            .item-row {
-                grid-template-columns: 1fr;
-                gap: calc(var(--gap-small) * var(--density-factor));
-            }
-            
-            .time-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: calc(var(--gap-small) * var(--density-factor));
-            }
-        }
-
-        /* Standard phones (iPhone 12, 13, 14) */
-        @media (min-width: 376px) and (max-width: 428px) {
-            :root {
-                --scale-factor: 1;
-                --base-font-size: 16px;
-            }
-        }
-
-        /* Large phones (iPhone 14 Plus, Pro Max) */
-        @media (min-width: 429px) and (max-width: 480px) {
-            :root {
-                --scale-factor: 1.1;
-                --base-font-size: 17px;
-                --header-height: 80px;
-                --bottom-nav-height: 90px;
-            }
-        }
-
-        /* Extra large phones (iPhone 16 Pro Max, large Android) */
-        @media (min-width: 481px) {
-            :root {
-                --scale-factor: 1.2;
-                --base-font-size: 18px;
-                --header-height: 85px;
-                --bottom-nav-height: 95px;
-                --card-padding: 24px;
-                --form-padding: 20px;
-                --border-radius: 20px;
-            }
-        }
-
-        /* Landscape orientation adjustments */
-        @media (orientation: landscape) and (max-height: 500px) {
-            :root {
-                --header-height: 50px;
-                --bottom-nav-height: 60px;
-                --card-padding: 12px;
-                --gap-large: 16px;
-                --density-factor: 0.8;
-            }
-            
-            .page {
-                height: calc(100vh - var(--header-height) - var(--bottom-nav-height) - var(--safe-area-top) - var(--safe-area-bottom));
-            }
-        }
-
-        /* High DPI displays */
-        @media (-webkit-min-device-pixel-ratio: 3), (min-resolution: 3dppx) {
-            body {
-                -webkit-font-smoothing: subpixel-antialiased;
-            }
-        }
-
-        /* Print styles for quotations */
-        @media print {
-            body {
-                position: static;
-                height: auto;
-                padding: 0;
-                background: white;
-                font-size: 12pt;
-            }
-            
-            .page:not(.active) {
-                display: none;
-            }
-            
-            .mobile-header,
-            .bottom-nav,
-            .fab,
-            .action-btn {
-                display: none !important;
-            }
-            
-            .quotation-preview {
-                box-shadow: none;
-                border: 1px solid #000;
-                margin: 0;
-                padding: 20px;
-                font-size: 10pt;
-            }
-            
-            .card {
-                display: none;
-            }
-            
-            .quotation-preview {
-                display: block !important;
-            }
-        }
-
-        /* Advanced Safe Area Support */
+        /* Safe Area for newer phones */
         @supports (padding: max(0px)) {
-            body {
-                padding-top: max(0px, env(safe-area-inset-top));
-                padding-bottom: max(var(--bottom-nav-height), calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)));
-                padding-left: max(0px, env(safe-area-inset-left));
-                padding-right: max(0px, env(safe-area-inset-right));
-            }
-            
             .mobile-header {
-                top: max(0px, env(safe-area-inset-top));
-                left: max(0px, env(safe-area-inset-left));
-                right: max(0px, env(safe-area-inset-right));
+                padding-top: max(16px, env(safe-area-inset-top));
             }
             
             .bottom-nav {
-                bottom: max(0px, env(safe-area-inset-bottom));
-                left: max(0px, env(safe-area-inset-left));
-                right: max(0px, env(safe-area-inset-right));
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
             }
             
-            .fab {
-                bottom: max(calc(var(--bottom-nav-height) + var(--gap-large)), calc(var(--bottom-nav-height) + var(--gap-large) + env(safe-area-inset-bottom)));
-                right: max(var(--gap-large), calc(var(--gap-large) + env(safe-area-inset-right)));
+            body {
+                padding-bottom: max(80px, calc(80px + env(safe-area-inset-bottom)));
             }
             
             .page {
-                margin-top: max(var(--header-height), calc(var(--header-height) + env(safe-area-inset-top)));
-                height: calc(100vh - max(var(--header-height), calc(var(--header-height) + env(safe-area-inset-top))) - max(var(--bottom-nav-height), calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))) - calc(var(--gap-medium) * 2));
+                height: calc(100vh - max(150px, calc(150px + env(safe-area-inset-bottom))));
             }
         }
 
-        /* Legacy iPhone X/11/12/13/14 support */
+        /* iPhone notch support */
         @supports (padding: constant(safe-area-inset-top)) {
             .mobile-header {
                 padding-top: calc(16px + constant(safe-area-inset-top));
@@ -1693,76 +1397,1317 @@
             }
         }
 
-        /* Screen reader support */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
+        /* Prevent iOS bounce */
+        body {
+            position: fixed;
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
         }
 
-        /* Focus management for accessibility */
-        .form-input:focus,
-        .action-btn:focus,
-        .nav-item:focus,
-        .header-btn:focus {
-            outline: 2px solid var(--theme-primary);
-            outline-offset: 2px;
+        .page {
+            position: relative;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+        /* Hide iOS bars when in fullscreen */
+        @media screen and (orientation: portrait) {
+            @supports (-webkit-touch-callout: none) {
+                .mobile-header {
+                    padding-top: calc(16px + env(safe-area-inset-top, 20px));
+                }
             }
-        }
-
-        /* High contrast support */
-        @media (prefers-contrast: high) {
-            :root {
-                --border-color: #000000;
-                --shadow-light: rgba(0,0,0,0.3);
-                --shadow-medium: rgba(0,0,0,0.5);
-            }
-        }
-
-        /* Device Info Display */
-        .device-info {
-            font-size: calc(0.75rem * var(--scale-factor));
-            color: var(--text-muted);
-            padding: calc(8px * var(--scale-factor));
-            background: var(--bg-secondary);
-            border-radius: calc(6px * var(--scale-factor));
-            margin-top: calc(var(--gap-small) * var(--density-factor));
-        }
-
-        .device-metric {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: calc(4px * var(--scale-factor));
-        }
-
-        .device-metric:last-child {
-            margin-bottom: 0;
         }
     </style>
 </head>
-<body data-theme="light" data-color="blue" data-screen="medium" data-density="normal" data-font-size="medium">
+        :root {
+            /* Light Mode Colors */
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #2c3e50;
+            --text-secondary: #34495e;
+            --text-muted: #7f8c8d;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0,0,0,0.1);
+            --shadow-medium: rgba(0,0,0,0.15);
+            --overlay: rgba(0,0,0,0.5);
+            
+            /* Theme Colors - Default Blue */
+            --theme-primary: #3498db;
+            --theme-secondary: #2980b9;
+            --theme-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            --theme-light: rgba(52, 152, 219, 0.1);
+            
+            /* Status Colors */
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --medicine: #9b59b6;
+            --medicine-light: rgba(155, 89, 182, 0.1);
+            --edit: #f39c12;
+            --edit-light: rgba(243, 156, 18, 0.1);
+            --info: #17a2b8;
+            --remark: #6c757d;
+            --remark-light: rgba(108, 117, 125, 0.1);
+        }
+
+        /* Dark Mode Variables */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #ecf0f1;
+            --text-muted: #bdc3c7;
+            --border-color: #34495e;
+            --shadow-light: rgba(0,0,0,0.3);
+            --shadow-medium: rgba(0,0,0,0.4);
+            --overlay: rgba(0,0,0,0.7);
+        }
+
+        /* Theme Color Variations */
+        [data-color="purple"] {
+            --theme-primary: #8e44ad;
+            --theme-secondary: #9b59b6;
+            --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --theme-light: rgba(142, 68, 173, 0.1);
+        }
+        [data-color="cyan"] {
+            --theme-primary: #00d2d3;
+            --theme-secondary: #01a3a4;
+            --theme-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%);
+            --theme-light: rgba(0, 210, 211, 0.1);
+        }
+        [data-color="pink"] {
+            --theme-primary: #ff006e;
+            --theme-secondary: #8338ec;
+            --theme-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+            --theme-light: rgba(255, 0, 110, 0.1);
+        }
+        [data-color="green"] {
+            --theme-primary: #00cc44;
+            --theme-secondary: #00ff88;
+            --theme-gradient: linear-gradient(135deg, #00ff88 0%, #00cc44 100%);
+            --theme-light: rgba(0, 204, 68, 0.1);
+        }
+        [data-color="orange"] {
+            --theme-primary: #ff6b00;
+            --theme-secondary: #ff3300;
+            --theme-gradient: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%);
+            --theme-light: rgba(255, 107, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 20px var(--shadow-light);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            min-height: 70px;
+        }
+
+        .app-branding {
+            flex: 1;
+        }
+
+        .app-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--theme-primary);
+            cursor: pointer;
+            margin-bottom: 2px;
+        }
+
+        .app-slogan {
+            font-size: 11px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--theme-light);
+            color: var(--theme-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .header-btn:active {
+            background: var(--theme-primary);
+            color: white;
+            transform: scale(0.9);
+        }
+
+        /* Page Layout */
+        .page {
+            display: none;
+            margin-top: 70px;
+            padding: 16px;
+            min-height: calc(100vh - 150px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px var(--shadow-light);
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--theme-light);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--theme-primary);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 16px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--theme-primary);
+            box-shadow: 0 0 0 4px var(--theme-light);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            padding-right: 50px;
+            appearance: none;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            width: 100%;
+            padding: 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 16px 0;
+            min-height: 60px;
+        }
+
+        .btn-primary {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #229954);
+            color: white;
+        }
+
+        .btn-medicine {
+            background: linear-gradient(135deg, var(--medicine), #8e44ad);
+            color: white;
+        }
+
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Line Items */
+        .line-items {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .line-item {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .line-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--theme-gradient);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .line-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .item-number {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: var(--theme-light);
+            padding: 6px 12px;
+            border-radius: 12px;
+        }
+
+        .remove-item {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--danger);
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .total-display {
+            background: var(--theme-light);
+            border: 2px solid var(--theme-primary);
+            color: var(--theme-primary);
+            font-weight: 700;
+            text-align: center;
+            border-radius: 16px;
+            padding: 18px;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        /* Totals Card */
+        .totals-card {
+            background: var(--theme-gradient);
+            color: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .total-row:last-child {
+            margin-bottom: 0;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            padding-top: 16px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .tax-input {
+            width: 80px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        /* Medicine Cards */
+        .medicine-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .medicine-header {
+            background: var(--medicine-light);
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .medicine-info {
+            flex: 1;
+        }
+
+        .medicine-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .medicine-dosage {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .medicine-instructions {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .medicine-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .medicine-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .duplicate-medicine {
+            background: var(--info);
+            color: white;
+        }
+
+        .edit-medicine {
+            background: var(--edit);
+            color: white;
+        }
+
+        .delete-medicine {
+            background: var(--danger);
+            color: white;
+        }
+
+        .medicine-schedule {
+            padding: 20px;
+        }
+
+        .schedule-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .schedule-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .schedule-time {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .schedule-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .schedule-status {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--border-color);
+        }
+
+        .status-indicator.taken { background: var(--success); }
+        .status-indicator.missed { background: var(--danger); }
+        .status-indicator.pending { background: var(--warning); }
+
+        .take-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 70px;
+        }
+
+        .take-btn.taken { background: var(--success); color: white; }
+        .take-btn.pending { background: var(--theme-primary); color: white; }
+        .take-btn.missed { background: var(--danger); color: white; }
+
+        .remark-section {
+            background: var(--remark-light);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .remark-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--remark);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .remark-input {
+            width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            resize: none;
+            min-height: 60px;
+        }
+
+        .remark-input:focus {
+            outline: none;
+            border-color: var(--remark);
+        }
+
+        .remark-display {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            font-style: italic;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        .remark-display:hover {
+            background: var(--remark-light);
+        }
+
+        .remark-display.empty {
+            color: var(--text-muted);
+            font-style: normal;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 20px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-taken .stat-number { color: var(--success); }
+        .stat-pending .stat-number { color: var(--warning); }
+        .stat-missed .stat-number { color: var(--danger); }
+
+        /* Time Selection Grid */
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .time-input {
+            padding: 16px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-input:active {
+            border-color: var(--theme-primary);
+        }
+
+        .time-input.active {
+            background: var(--medicine);
+            color: white;
+            border-color: var(--medicine);
+        }
+
+        /* Logo Upload */
+        .logo-upload {
+            border: 2px dashed var(--theme-primary);
+            border-radius: 16px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--theme-light);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .logo-upload:active {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .logo-preview {
+            max-width: 120px;
+            max-height: 60px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .logo-preview.visible {
+            display: block;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            color: var(--theme-primary);
+        }
+
+        .logo-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .logo-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .logo-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .upload-btn {
+            background: var(--theme-primary);
+            color: white;
+        }
+
+        .remove-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 -4px 20px var(--shadow-light);
+        }
+
+        .nav-container {
+            display: flex;
+            height: 80px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+        }
+
+        .nav-item.active {
+            color: var(--theme-primary);
+            background: var(--theme-light);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--theme-gradient);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .fab:active {
+            transform: scale(0.9);
+        }
+
+        /* Drawer */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-card);
+            z-index: 1500;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 70px;
+        }
+
+        .drawer-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .close-drawer {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .drawer-content {
+            padding: 20px;
+        }
+
+        /* Theme Section */
+        .theme-section {
+            margin-bottom: 32px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 4px;
+        }
+
+        .mode-option {
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .mode-option.active {
+            background: var(--theme-gradient);
+            color: white;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .color-option {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            border: 3px solid transparent;
+        }
+
+        .color-option.active {
+            border-color: var(--text-primary);
+            transform: scale(1.1);
+        }
+
+        .color-option::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .color-option.active::after {
+            opacity: 1;
+        }
+
+        /* Color Definitions */
+        .color-blue { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .color-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .color-cyan { background: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%); }
+        .color-pink { background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%); }
+        .color-green { background: linear-gradient(135deg, #00ff88 0%, #00cc44 100%); }
+        .color-orange { background: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%); }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-card);
+            z-index: 1600;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            transform: translateY(0);
+        }
+
+        .modal-content {
+            padding: 20px;
+        }
+
+        /* Quotation Preview */
+        .quotation-preview {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            border: 1px solid var(--border-color);
+        }
+
+        .quotation-header {
+            text-align: center;
+            border-bottom: 3px solid var(--theme-primary);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+        }
+
+        .quotation-logo {
+            max-width: 100px;
+            max-height: 50px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .quotation-logo.visible {
+            display: block;
+        }
+
+        .quotation-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .quotation-number {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .quotation-details {
+            margin-bottom: 24px;
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .detail-content {
+            color: var(--text-secondary);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .quotation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .quotation-table th,
+        .quotation-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 8px;
+            text-align: left;
+        }
+
+        .quotation-table th {
+            background: var(--bg-secondary);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .quotation-table .text-right {
+            text-align: right;
+        }
+
+        .quotation-totals {
+            text-align: right;
+            margin-top: 20px;
+            color: var(--text-primary);
+        }
+
+        .quotation-totals > div {
+            margin-bottom: 8px;
+        }
+
+        .quotation-total {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--theme-primary);
+            border-top: 2px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        /* Daily Log */
+        .log-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .log-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .log-medicine {
+            flex: 1;
+        }
+
+        .log-medicine-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-medicine-time {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .log-status {
+            font-size: 12px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .log-status.taken {
+            background: rgba(39, 174, 96, 0.2);
+            color: var(--success);
+        }
+
+        .log-status.missed {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--danger);
+        }
+
+        .log-status.pending {
+            background: rgba(243, 156, 18, 0.2);
+            color: var(--warning);
+        }
+
+        .log-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .duplicate-log {
+            background: var(--info);
+            color: white;
+        }
+
+        .edit-log {
+            background: var(--edit);
+            color: white;
+        }
+
+        .delete-log {
+            background: var(--danger);
+            color: white;
+        }
+
+        .log-remark {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Edit Mode for Log Items */
+        .log-item.editing {
+            background: var(--edit-light);
+            border: 2px solid var(--edit);
+        }
+
+        .log-edit-form {
+            display: none;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .log-item.editing .log-edit-form {
+            display: block;
+        }
+
+        .log-edit-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .log-edit-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .log-save-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--success);
+            color: white;
+        }
+
+        .log-cancel-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .card {
+            animation: slideUp 0.4s ease;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Safe Area for newer phones */
+        @supports (padding: max(0px)) {
+            .mobile-header {
+                padding-top: max(16px, env(safe-area-inset-top));
+            }
+            
+            .bottom-nav {
+                padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body data-theme="light" data-color="blue">
     <!-- Mobile Header -->
     <div class="mobile-header">
         <div class="header-content">
             <div class="app-branding">
                 <div class="app-title" onclick="editTitle('app-title')">QuoteFlow</div>
-                <div class="app-slogan" onclick="editTitle('app-slogan')">Universal Business & Medicine Tracker</div>
+                <div class="app-slogan" onclick="editTitle('app-slogan')">Business & Medicine Tracker</div>
             </div>
             <div class="header-actions">
                 <button class="header-btn" onclick="toggleDrawer()" aria-label="Settings">⚙️</button>
@@ -1797,19 +2742,19 @@
 
                 <div class="form-group">
                     <label class="form-label">Company Name</label>
-                    <input type="text" class="form-input" id="companyName" placeholder="Your Company Name" autocomplete="organization" autocapitalize="words" spellcheck="true">
+                    <input type="text" class="form-input" id="companyName" placeholder="Your Company Name">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Address</label>
-                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address" autocomplete="address-line1" spellcheck="true"></textarea>
+                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number" autocomplete="tel">
+                    <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="companyEmail" placeholder="Email address" autocomplete="email">
+                    <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
                 </div>
             </div>
         </div>
@@ -1825,19 +2770,19 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Customer Name</label>
-                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" autocomplete="name" autocapitalize="words" spellcheck="true">
+                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Address</label>
-                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address" autocomplete="address-line1" spellcheck="true"></textarea>
+                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone" autocomplete="tel">
+                    <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="customerEmail" placeholder="Customer email" autocomplete="email">
+                    <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
                 </div>
             </div>
         </div>
@@ -1853,15 +2798,15 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Quotation Number</label>
-                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001" autocomplete="off">
+                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Date</label>
-                    <input type="date" class="form-input" id="quotationDate" autocomplete="off">
+                    <input type="date" class="form-input" id="quotationDate">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Valid Until</label>
-                    <input type="date" class="form-input" id="validUntil" autocomplete="off">
+                    <input type="date" class="form-input" id="validUntil">
                 </div>
                 <div class="form-group">
                     <label class="form-label">Currency</label>
@@ -1872,9 +2817,6 @@
                         <option value="¥">JPY (¥)</option>
                         <option value="RM">MYR (RM)</option>
                         <option value="₹">INR (₹)</option>
-                        <option value="S$">SGD (S$)</option>
-                        <option value="A$">AUD (A$)</option>
-                        <option value="C$">CAD (C$)</option>
                     </select>
                 </div>
             </div>
@@ -1894,7 +2836,7 @@
                         <div class="line-item">
                             <div class="line-item-header">
                                 <span class="item-number">Item #1</span>
-                                <button class="remove-item" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
+                                <button class="remove-item" onclick="removeLineItem(this)">×</button>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Description</label>
@@ -1903,7 +2845,7 @@
                             <div class="item-row">
                                 <div class="form-group">
                                     <label class="form-label">Quantity</label>
-                                    <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
+                                    <input type="number" class="form-input item-quantity" value="1" min="1">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Unit Price</label>
@@ -1927,7 +2869,7 @@
                     <div class="total-row">
                         <span>Tax Rate:</span>
                         <div>
-                            <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0" aria-label="Tax rate percentage">%
+                            <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
                         </div>
                     </div>
                     <div class="total-row">
@@ -1953,7 +2895,7 @@
             <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Terms & Conditions / Notes</label>
-                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4" autocomplete="off" spellcheck="true"></textarea>
+                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
                 </div>
             </div>
         </div>
@@ -2017,7 +2959,7 @@
 
     <!-- Medicine Page -->
     <div class="page" id="medicinePage">
-        <h2 class="text-center" style="margin-bottom: calc(var(--gap-large) * var(--density-factor)); font-size: calc(1.5rem * var(--scale-factor)); font-weight: 800;">💊 Medicine Tracker</h2>
+        <h2 class="text-center" style="margin-bottom: 24px; font-size: 24px; font-weight: 800;">💊 Medicine Tracker</h2>
         
         <!-- Stats -->
         <div class="card">
@@ -2063,7 +3005,7 @@
             </div>
             <div class="card-content">
                 <!-- Add Manual Entry Button -->
-                <button type="button" class="action-btn btn-primary" onclick="showAddManualEntryModal()" style="margin-bottom: calc(var(--gap-large) * var(--density-factor));">
+                <button type="button" class="action-btn btn-primary" onclick="showAddManualEntryModal()" style="margin-bottom: 20px;">
                     <span>➕</span> Add Manual Entry
                 </button>
                 
@@ -2073,16 +3015,16 @@
     </div>
 
     <!-- FAB -->
-    <button class="fab" onclick="fabAction()" id="fabBtn" aria-label="Add new item">+</button>
+    <button class="fab" onclick="fabAction()" id="fabBtn">+</button>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
         <div class="nav-container">
-            <button class="nav-item active" onclick="switchPage('quotation')" aria-label="Quotations">
+            <button class="nav-item active" onclick="switchPage('quotation')">
                 <div class="nav-icon">📄</div>
                 <div class="nav-label">Quotes</div>
             </button>
-            <button class="nav-item" onclick="switchPage('medicine')" aria-label="Medicine Tracker">
+            <button class="nav-item" onclick="switchPage('medicine')">
                 <div class="nav-icon">💊</div>
                 <div class="nav-label">Medicine</div>
             </button>
@@ -2093,7 +3035,7 @@
     <div class="drawer" id="settingsDrawer">
         <div class="drawer-header">
             <div class="drawer-title">Settings</div>
-            <button class="close-drawer" onclick="toggleDrawer()" aria-label="Close settings">×</button>
+            <button class="close-drawer" onclick="toggleDrawer()">×</button>
         </div>
         <div class="drawer-content">
             <div class="theme-section">
@@ -2105,82 +3047,24 @@
             </div>
 
             <div class="theme-section">
-                <div class="section-title">Screen Size</div>
-                <div class="size-toggle triple-toggle">
-                    <button class="size-option" data-size="small" onclick="setScreenSize('small')">📱 Small</button>
-                    <button class="size-option active" data-size="medium" onclick="setScreenSize('medium')">📱 Medium</button>
-                    <button class="size-option" data-size="large" onclick="setScreenSize('large')">📱 Large</button>
-                </div>
-            </div>
-
-            <div class="theme-section">
-                <div class="section-title">Font Size</div>
-                <div class="size-toggle triple-toggle">
-                    <button class="size-option" data-font="small" onclick="setFontSize('small')">🔤 Small</button>
-                    <button class="size-option active" data-font="medium" onclick="setFontSize('medium')">🔤 Medium</button>
-                    <button class="size-option" data-font="large" onclick="setFontSize('large')">🔤 Large</button>
-                </div>
-            </div>
-
-            <div class="theme-section">
-                <div class="section-title">Layout Density</div>
-                <div class="density-toggle triple-toggle">
-                    <button class="density-option" data-density="compact" onclick="setDensity('compact')">📝 Compact</button>
-                    <button class="density-option active" data-density="normal" onclick="setDensity('normal')">📝 Normal</button>
-                    <button class="density-option" data-density="comfortable" onclick="setDensity('comfortable')">📝 Comfortable</button>
-                </div>
-            </div>
-
-            <div class="theme-section">
                 <div class="section-title">Color Theme</div>
                 <div class="color-grid">
-                    <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')" aria-label="Blue theme"></button>
-                    <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')" aria-label="Purple theme"></button>
-                    <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')" aria-label="Cyan theme"></button>
-                    <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')" aria-label="Pink theme"></button>
-                    <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')" aria-label="Green theme"></button>
-                    <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')" aria-label="Orange theme"></button>
-                </div>
-            </div>
-
-            <!-- Device Information Section -->
-            <div class="theme-section">
-                <div class="section-title">Device Information</div>
-                <div class="device-info" id="deviceInfo">
-                    <div class="device-metric">
-                        <span>Screen Size:</span>
-                        <span id="screenSize">Detecting...</span>
-                    </div>
-                    <div class="device-metric">
-                        <span>Viewport:</span>
-                        <span id="viewportSize">Calculating...</span>
-                    </div>
-                    <div class="device-metric">
-                        <span>Device Ratio:</span>
-                        <span id="deviceRatio">Calculating...</span>
-                    </div>
-                    <div class="device-metric">
-                        <span>Safe Areas:</span>
-                        <span id="safeAreas">Detecting...</span>
-                    </div>
-                    <div class="device-metric">
-                        <span>User Agent:</span>
-                        <span id="userAgent">Detecting...</span>
-                    </div>
-                    <div class="device-metric">
-                        <span>Orientation:</span>
-                        <span id="orientation">Detecting...</span>
-                    </div>
+                    <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')"></button>
+                    <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')"></button>
+                    <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')"></button>
+                    <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')"></button>
+                    <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')"></button>
+                    <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')"></button>
                 </div>
             </div>
 
             <!-- Data Management Section -->
             <div class="theme-section">
                 <div class="section-title">Data Management</div>
-                <button class="action-btn btn-primary" onclick="Storage.exportData()" style="margin-bottom: calc(12px * var(--scale-factor));">
+                <button class="action-btn btn-primary" onclick="Storage.exportData()" style="margin-bottom: 12px;">
                     <span>📤</span> Export Backup
                 </button>
-                <button class="action-btn btn-primary" onclick="document.getElementById('importInput').click()" style="margin-bottom: calc(12px * var(--scale-factor));">
+                <button class="action-btn btn-primary" onclick="document.getElementById('importInput').click()" style="margin-bottom: 12px;">
                     <span>📥</span> Import Backup
                 </button>
                 <button class="action-btn" onclick="Storage.clearAllData()" style="background: linear-gradient(135deg, var(--danger), #c0392b); color: white;">
@@ -2189,22 +3073,21 @@
                 <input type="file" id="importInput" accept=".json" style="display: none;" onchange="Storage.importData(event)">
                 
                 <!-- Storage Info -->
-                <div style="margin-top: calc(var(--gap-medium) * var(--density-factor)); padding: calc(12px * var(--scale-factor)); background: var(--bg-secondary); border-radius: calc(8px * var(--scale-factor)); font-size: calc(0.75rem * var(--scale-factor)); color: var(--text-muted);">
+                <div style="margin-top: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
                     <div><strong>📊 Storage Status:</strong></div>
                     <div id="storageInfo">Calculating...</div>
-                    <div style="margin-top: calc(var(--gap-small) * var(--density-factor));"><strong>📱 Auto-save:</strong> Enabled</div>
+                    <div style="margin-top: 8px;"><strong>📱 Auto-save:</strong> Enabled</div>
                 </div>
             </div>
 
             <!-- App Info Section -->
             <div class="theme-section">
                 <div class="section-title">About</div>
-                <div style="padding: calc(12px * var(--scale-factor)); background: var(--bg-secondary); border-radius: calc(8px * var(--scale-factor)); font-size: calc(0.75rem * var(--scale-factor)); color: var(--text-muted);">
-                    <div><strong>QuoteFlow Universal</strong></div>
-                    <div>Version 2.0 - Universal Compatibility</div>
+                <div style="padding: 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
+                    <div><strong>QuoteFlow Mobile</strong></div>
+                    <div>Version 1.0</div>
                     <div>Business & Medicine Tracker</div>
-                    <div style="margin-top: calc(var(--gap-small) * var(--density-factor));">Optimized for all devices from iPhone SE to iPhone 16 Pro Max</div>
-                    <div>All data stored locally on your device</div>
+                    <div style="margin-top: 8px;">All data stored locally on your device</div>
                 </div>
             </div>
         </div>
@@ -2214,7 +3097,7 @@
     <div class="modal" id="addMedicineModal">
         <div class="drawer-header">
             <div class="drawer-title" id="modalTitle">Add Medicine</div>
-            <button class="close-drawer" onclick="closeAddMedicineModal()" aria-label="Close modal">×</button>
+            <button class="close-drawer" onclick="closeAddMedicineModal()">×</button>
         </div>
         <div class="modal-content">
             <div class="form-group">
@@ -2250,7 +3133,7 @@
     <div class="modal" id="addManualEntryModal">
         <div class="drawer-header">
             <div class="drawer-title">Add Manual Medicine Entry</div>
-            <button class="close-drawer" onclick="closeAddManualEntryModal()" aria-label="Close modal">×</button>
+            <button class="close-drawer" onclick="closeAddManualEntryModal()">×</button>
         </div>
         <div class="modal-content">
             <div class="form-group">
@@ -2298,10 +3181,6 @@
             lineItemCount: 1,
             selectedTimes: [],
             editingMedicineId: null,
-            screenSize: 'medium',
-            fontSize: 'medium',
-            density: 'normal',
-            deviceInfo: {},
             formData: {
                 company: {},
                 customer: {},
@@ -2310,192 +3189,20 @@
             }
         };
 
-        // Device Detection and Screen Management
-        const DeviceManager = {
-            init() {
-                this.detectDevice();
-                this.updateDeviceInfo();
-                this.setupViewportListeners();
-                this.adaptToDevice();
-            },
-
-            detectDevice() {
-                const width = window.innerWidth;
-                const height = window.innerHeight;
-                const ratio = window.devicePixelRatio;
-                const userAgent = navigator.userAgent;
-
-                // Auto-detect screen size based on dimensions
-                let detectedSize = 'medium';
-                if (width <= 375) {
-                    detectedSize = 'small';
-                } else if (width >= 428) {
-                    detectedSize = 'large';
-                } else if (width >= 481) {
-                    detectedSize = 'xlarge';
-                }
-
-                // Store device information
-                AppState.deviceInfo = {
-                    width,
-                    height,
-                    ratio,
-                    userAgent: this.getDeviceName(userAgent),
-                    orientation: width > height ? 'landscape' : 'portrait',
-                    detectedSize,
-                    safeAreaSupport: this.checkSafeAreaSupport()
-                };
-
-                // Apply detected size if not manually set
-                if (!localStorage.getItem('quoteflow_screen_size')) {
-                    this.setScreenSize(detectedSize);
-                }
-            },
-
-            getDeviceName(userAgent) {
-                if (/iPhone/.test(userAgent)) {
-                    if (/iPhone16/.test(userAgent)) return 'iPhone 16 Series';
-                    if (/iPhone15/.test(userAgent)) return 'iPhone 15 Series';
-                    if (/iPhone14/.test(userAgent)) return 'iPhone 14 Series';
-                    if (/iPhone13/.test(userAgent)) return 'iPhone 13 Series';
-                    if (/iPhone12/.test(userAgent)) return 'iPhone 12 Series';
-                    return 'iPhone';
-                }
-                if (/iPad/.test(userAgent)) return 'iPad';
-                if (/Android/.test(userAgent)) {
-                    if (/Samsung/.test(userAgent)) return 'Samsung Android';
-                    if (/Pixel/.test(userAgent)) return 'Google Pixel';
-                    return 'Android Device';
-                }
-                return 'Unknown Device';
-            },
-
-            checkSafeAreaSupport() {
-                const testElement = document.createElement('div');
-                testElement.style.paddingTop = 'env(safe-area-inset-top)';
-                return testElement.style.paddingTop !== '';
-            },
-
-            setupViewportListeners() {
-                window.addEventListener('resize', () => {
-                    this.detectDevice();
-                    this.updateDeviceInfo();
-                });
-
-                window.addEventListener('orientationchange', () => {
-                    setTimeout(() => {
-                        this.detectDevice();
-                        this.updateDeviceInfo();
-                        this.adaptToDevice();
-                    }, 100);
-                });
-            },
-
-            adaptToDevice() {
-                const { width, height, detectedSize } = AppState.deviceInfo;
-                
-                // Auto-adapt based on screen size
-                document.body.setAttribute('data-screen', AppState.screenSize || detectedSize);
-                
-                // Special handling for very small screens
-                if (width <= 320) {
-                    this.enableCompactMode();
-                }
-                
-                // Special handling for large screens
-                if (width >= 480) {
-                    this.enableComfortableMode();
-                }
-
-                // Landscape specific adjustments
-                if (height < 500 && width > height) {
-                    document.body.classList.add('landscape-mode');
-                } else {
-                    document.body.classList.remove('landscape-mode');
-                }
-            },
-
-            enableCompactMode() {
-                document.body.setAttribute('data-density', 'compact');
-                AppState.density = 'compact';
-            },
-
-            enableComfortableMode() {
-                if (AppState.density === 'normal') {
-                    document.body.setAttribute('data-density', 'comfortable');
-                    AppState.density = 'comfortable';
-                }
-            },
-
-            setScreenSize(size) {
-                AppState.screenSize = size;
-                document.body.setAttribute('data-screen', size);
-                this.updateSizeUI();
-                Storage.save();
-            },
-
-            setFontSize(size) {
-                AppState.fontSize = size;
-                document.body.setAttribute('data-font-size', size);
-                this.updateFontUI();
-                Storage.save();
-            },
-
-            setDensity(density) {
-                AppState.density = density;
-                document.body.setAttribute('data-density', density);
-                this.updateDensityUI();
-                Storage.save();
-            },
-
-            updateSizeUI() {
-                document.querySelectorAll('.size-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.size === AppState.screenSize);
-                });
-            },
-
-            updateFontUI() {
-                document.querySelectorAll('[data-font]').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.font === AppState.fontSize);
-                });
-            },
-
-            updateDensityUI() {
-                document.querySelectorAll('.density-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.density === AppState.density);
-                });
-            },
-
-            updateDeviceInfo() {
-                const info = AppState.deviceInfo;
-                const safeAreaTop = getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top');
-                
-                document.getElementById('screenSize').textContent = `${info.width} × ${info.height}`;
-                document.getElementById('viewportSize').textContent = `${window.innerWidth} × ${window.innerHeight}`;
-                document.getElementById('deviceRatio').textContent = `${info.ratio}x`;
-                document.getElementById('safeAreas').textContent = safeAreaTop !== '0px' ? 'Detected' : 'None';
-                document.getElementById('userAgent').textContent = info.userAgent;
-                document.getElementById('orientation').textContent = info.orientation;
-            }
-        };
-
-        // Enhanced Local Storage Management
+        // Local Storage Management
         const Storage = {
             save() {
                 try {
+                    // Save all app state data
                     const dataToSave = {
                         medicines: AppState.medicines,
                         medicineLog: AppState.medicineLog,
                         companyLogo: AppState.companyLogo,
                         currentTheme: AppState.currentTheme,
                         currentColor: AppState.currentColor,
-                        screenSize: AppState.screenSize,
-                        fontSize: AppState.fontSize,
-                        density: AppState.density,
                         lineItemCount: AppState.lineItemCount,
                         formData: AppState.formData,
-                        deviceInfo: AppState.deviceInfo,
-                        version: '2.0'
+                        version: '1.0' // For future compatibility
                     };
                     
                     localStorage.setItem('quoteflow_data', JSON.stringify(dataToSave));
@@ -2511,28 +3218,27 @@
                     if (savedData) {
                         const data = JSON.parse(savedData);
                         
+                        // Load medicines and logs
                         AppState.medicines = data.medicines || [];
                         AppState.medicineLog = data.medicineLog || [];
                         
+                        // Load company logo
                         if (data.companyLogo) {
                             AppState.companyLogo = data.companyLogo;
                             this.restoreCompanyLogo();
                         }
                         
+                        // Load theme preferences
                         AppState.currentTheme = data.currentTheme || 'light';
                         AppState.currentColor = data.currentColor || 'blue';
-                        AppState.screenSize = data.screenSize || 'medium';
-                        AppState.fontSize = data.fontSize || 'medium';
-                        AppState.density = data.density || 'normal';
+                        
+                        // Load form data
                         AppState.formData = data.formData || { company: {}, customer: {}, quotation: {}, notes: '' };
                         AppState.lineItemCount = data.lineItemCount || 1;
                         
-                        // Apply loaded settings
+                        // Apply loaded theme
                         document.body.setAttribute('data-theme', AppState.currentTheme);
                         document.body.setAttribute('data-color', AppState.currentColor);
-                        document.body.setAttribute('data-screen', AppState.screenSize);
-                        document.body.setAttribute('data-font-size', AppState.fontSize);
-                        document.body.setAttribute('data-density', AppState.density);
                         
                         this.restoreFormData();
                         
@@ -2555,18 +3261,21 @@
             },
 
             restoreFormData() {
+                // Restore company details
                 const company = AppState.formData.company;
                 if (company.name) document.getElementById('companyName').value = company.name;
                 if (company.address) document.getElementById('companyAddress').value = company.address;
                 if (company.phone) document.getElementById('companyPhone').value = company.phone;
                 if (company.email) document.getElementById('companyEmail').value = company.email;
 
+                // Restore customer details
                 const customer = AppState.formData.customer;
                 if (customer.name) document.getElementById('customerName').value = customer.name;
                 if (customer.address) document.getElementById('customerAddress').value = customer.address;
                 if (customer.phone) document.getElementById('customerPhone').value = customer.phone;
                 if (customer.email) document.getElementById('customerEmail').value = customer.email;
 
+                // Restore quotation details
                 const quotation = AppState.formData.quotation;
                 if (quotation.number) document.getElementById('quotationNumber').value = quotation.number;
                 if (quotation.date) document.getElementById('quotationDate').value = quotation.date;
@@ -2574,10 +3283,12 @@
                 if (quotation.currency) document.getElementById('currency').value = quotation.currency;
                 if (quotation.taxRate) document.getElementById('taxRate').value = quotation.taxRate;
 
+                // Restore notes
                 if (AppState.formData.notes) {
                     document.getElementById('notes').value = AppState.formData.notes;
                 }
 
+                // Restore line items if any
                 if (AppState.formData.lineItems && AppState.formData.lineItems.length > 0) {
                     this.restoreLineItems();
                 }
@@ -2585,16 +3296,19 @@
 
             restoreLineItems() {
                 const container = document.getElementById('lineItemsContainer');
+                container.innerHTML = ''; // Clear existing
                 
                 AppState.formData.lineItems.forEach((item, index) => {
                     if (index === 0) {
-                        const firstItem = container.querySelector('.line-item');
+                        // Update first item
+                        const firstItem = document.querySelector('.line-item');
                         if (firstItem) {
                             firstItem.querySelector('.item-description').value = item.description || '';
                             firstItem.querySelector('.item-quantity').value = item.quantity || 1;
                             firstItem.querySelector('.item-price').value = item.price || 0;
                         }
                     } else {
+                        // Add additional items
                         addLineItem();
                         const newItem = container.lastElementChild;
                         newItem.querySelector('.item-description').value = item.description || '';
@@ -2603,12 +3317,14 @@
                     }
                 });
                 
+                // Update totals
                 setTimeout(() => {
                     updateGrandTotal();
                 }, 100);
             },
 
             saveFormData() {
+                // Save company details
                 AppState.formData.company = {
                     name: document.getElementById('companyName').value,
                     address: document.getElementById('companyAddress').value,
@@ -2616,6 +3332,7 @@
                     email: document.getElementById('companyEmail').value
                 };
 
+                // Save customer details  
                 AppState.formData.customer = {
                     name: document.getElementById('customerName').value,
                     address: document.getElementById('customerAddress').value,
@@ -2623,6 +3340,7 @@
                     email: document.getElementById('customerEmail').value
                 };
 
+                // Save quotation details
                 AppState.formData.quotation = {
                     number: document.getElementById('quotationNumber').value,
                     date: document.getElementById('quotationDate').value,
@@ -2631,8 +3349,10 @@
                     taxRate: document.getElementById('taxRate').value
                 };
 
+                // Save notes
                 AppState.formData.notes = document.getElementById('notes').value;
 
+                // Save line items
                 AppState.formData.lineItems = [];
                 document.querySelectorAll('.line-item').forEach(item => {
                     AppState.formData.lineItems.push({
@@ -2642,13 +3362,13 @@
                     });
                 });
 
-                this.save();
+                this.save(); // Save to localStorage
             },
 
             clearAllData() {
                 if (confirm('⚠️ This will delete ALL data including medicines, quotations, and settings. Are you sure?')) {
                     localStorage.removeItem('quoteflow_data');
-                    location.reload();
+                    location.reload(); // Reload to reset app state
                 }
             },
 
@@ -2658,16 +3378,8 @@
                         medicines: AppState.medicines,
                         medicineLog: AppState.medicineLog,
                         formData: AppState.formData,
-                        settings: {
-                            theme: AppState.currentTheme,
-                            color: AppState.currentColor,
-                            screenSize: AppState.screenSize,
-                            fontSize: AppState.fontSize,
-                            density: AppState.density
-                        },
-                        deviceInfo: AppState.deviceInfo,
                         exportDate: new Date().toISOString(),
-                        version: '2.0'
+                        version: '1.0'
                     };
                     
                     const dataStr = JSON.stringify(dataToExport, null, 2);
@@ -2675,7 +3387,7 @@
                     
                     const link = document.createElement('a');
                     link.href = URL.createObjectURL(dataBlob);
-                    link.download = `quoteflow_universal_backup_${new Date().toISOString().split('T')[0]}.json`;
+                    link.download = `quoteflow_backup_${new Date().toISOString().split('T')[0]}.json`;
                     link.click();
                     
                     console.log('✅ Data exported successfully');
@@ -2698,17 +3410,8 @@
                                 AppState.medicineLog = importedData.medicineLog || [];
                                 AppState.formData = importedData.formData || { company: {}, customer: {}, quotation: {}, notes: '' };
                                 
-                                // Import settings if available
-                                if (importedData.settings) {
-                                    AppState.currentTheme = importedData.settings.theme || 'light';
-                                    AppState.currentColor = importedData.settings.color || 'blue';
-                                    AppState.screenSize = importedData.settings.screenSize || 'medium';
-                                    AppState.fontSize = importedData.settings.fontSize || 'medium';
-                                    AppState.density = importedData.settings.density || 'normal';
-                                }
-                                
                                 this.save();
-                                location.reload();
+                                location.reload(); // Reload to apply changes
                             }
                         } catch (error) {
                             console.error('❌ Error importing data:', error);
@@ -2720,33 +3423,25 @@
             }
         };
 
-        // Global Settings Functions (called from HTML)
-        function setScreenSize(size) {
-            DeviceManager.setScreenSize(size);
-        }
-
-        function setFontSize(size) {
-            DeviceManager.setFontSize(size);
-        }
-
-        function setDensity(density) {
-            DeviceManager.setDensity(density);
-        }
-
         // Page Management
         function switchPage(page) {
             AppState.currentPage = page;
             
+            // Save form data before switching
             Storage.saveFormData();
             
+            // Hide all pages
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(page + 'Page').classList.add('active');
             
+            // Update navigation
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
             
+            // Update FAB
             updateFAB();
             
+            // Load page data
             if (page === 'medicine') {
                 loadTodaysOverview();
                 updateMedicineList();
@@ -2758,10 +3453,8 @@
             const fab = document.getElementById('fabBtn');
             if (AppState.currentPage === 'quotation') {
                 fab.innerHTML = '+';
-                fab.setAttribute('aria-label', 'Add line item');
             } else {
                 fab.innerHTML = '💊';
-                fab.setAttribute('aria-label', 'Add medicine');
             }
         }
 
@@ -2811,20 +3504,20 @@
             newItem.innerHTML = `
                 <div class="line-item-header">
                     <span class="item-number">Item #${AppState.lineItemCount}</span>
-                    <button class="remove-item" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
+                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Description</label>
-                    <input type="text" class="form-input item-description" placeholder="Product or service description" autocomplete="off">
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
                 </div>
                 <div class="item-row">
                     <div class="form-group">
                         <label class="form-label">Quantity</label>
-                        <input type="number" class="form-input item-quantity" value="1" min="1" step="1" autocomplete="off">
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Unit Price</label>
-                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" autocomplete="off">
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
                     </div>
                 </div>
                 <div class="total-display item-total">$0.00</div>
@@ -2832,37 +3525,18 @@
             
             container.appendChild(newItem);
             
-            // CRITICAL: Force enable all new inputs immediately
-            const newInputs = newItem.querySelectorAll('input');
-            newInputs.forEach(input => {
-                ensureInputEnabled(input);
-                
-                // Add calculation listeners
-                if (input.matches('.item-quantity, .item-price')) {
-                    input.addEventListener('input', () => updateLineItemTotal(newItem), { passive: true });
-                }
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => updateLineItemTotal(newItem));
             });
             
-            // Focus on description and test it immediately
-            const descriptionInput = newItem.querySelector('.item-description');
-            setTimeout(() => {
-                ensureInputEnabled(descriptionInput);
-                descriptionInput.focus();
-                descriptionInput.click();
-                
-                // Test input by trying to set a value
-                console.log('🔧 Testing new input field...');
-                const testValue = descriptionInput.value;
-                descriptionInput.value = 'TEST';
-                if (descriptionInput.value === 'TEST') {
-                    console.log('✅ New input field is working!');
-                    descriptionInput.value = testValue; // Restore original value
-                } else {
-                    console.log('❌ New input field is blocked, forcing enable...');
-                    forceEnableAllInputs();
-                }
-            }, 200);
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
             
+            // Save updated form data
             Storage.saveFormData();
         }
 
@@ -2870,18 +3544,22 @@
             const lineItem = button.closest('.line-item');
             lineItem.remove();
             updateGrandTotal();
+            
+            // Save updated form data
             Storage.saveFormData();
         }
 
         function generateQuotation() {
             const preview = document.getElementById('quotationPreview');
             
+            // Company logo
             if (AppState.companyLogo) {
                 const quotationLogo = document.getElementById('quotationLogo');
                 quotationLogo.src = AppState.companyLogo;
                 quotationLogo.classList.add('visible');
             }
             
+            // Company details
             const companyDetails = `
                 <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
                 ${document.getElementById('companyAddress').value || ''}<br>
@@ -2890,6 +3568,7 @@
             `;
             document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
             
+            // Customer details
             const customerDetails = `
                 <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
                 ${document.getElementById('customerAddress').value || ''}<br>
@@ -2898,6 +3577,7 @@
             `;
             document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
             
+            // Quotation info
             document.getElementById('previewQuotationNumber').textContent = 
                 document.getElementById('quotationNumber').value || 'Q-001';
             document.getElementById('previewDate').textContent = 
@@ -2905,6 +3585,7 @@
             document.getElementById('previewValidUntil').textContent = 
                 document.getElementById('validUntil').value || '';
             
+            // Line items
             const lineItemsBody = document.getElementById('previewLineItems');
             lineItemsBody.innerHTML = '';
             
@@ -2924,15 +3605,17 @@
                 lineItemsBody.appendChild(row);
             });
             
+            // Totals
             document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
             document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
             document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
             
+            // Notes
             const notes = document.getElementById('notes').value;
             if (notes) {
                 document.getElementById('previewNotes').innerHTML = `
-                    <div style="margin-top: calc(var(--gap-large) * var(--density-factor));">
-                        <h4 style="margin-bottom: calc(12px * var(--scale-factor));">Terms & Conditions</h4>
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
                         <div style="line-height: 1.6;">${notes}</div>
                     </div>
                 `;
@@ -2960,7 +3643,7 @@
                     logoPreview.classList.add('visible');
                     
                     document.getElementById('logoRemoveBtn').style.display = 'inline-block';
-                    Storage.save();
+                    Storage.save(); // Save to localStorage
                 };
                 reader.readAsDataURL(file);
             }
@@ -2976,10 +3659,10 @@
             
             document.getElementById('logoRemoveBtn').style.display = 'none';
             document.getElementById('logoUploadInput').value = '';
-            Storage.save();
+            Storage.save(); // Save to localStorage
         }
 
-        // Medicine Management (simplified for brevity - same as before)
+        // Medicine Management
         function addMedicine(name, dosage, instructions, times) {
             const medicine = {
                 id: Date.now(),
@@ -2994,34 +3677,18 @@
             createTodaysSchedule(medicine);
             updateMedicineList();
             loadTodaysOverview();
-            Storage.save();
-        }
-
-        function createTodaysSchedule(medicine) {
-            const today = new Date().toDateString();
-            medicine.times.forEach(time => {
-                const logEntry = {
-                    id: Date.now() + Math.random(),
-                    medicineId: medicine.id,
-                    medicineName: medicine.name,
-                    dosage: medicine.dosage,
-                    scheduledTime: time,
-                    date: today,
-                    status: 'pending',
-                    actualTime: null,
-                    remark: ''
-                };
-                AppState.medicineLog.push(logEntry);
-            });
+            Storage.save(); // Save to localStorage
         }
 
         function duplicateMedicine(medicineId) {
             const medicine = AppState.medicines.find(m => m.id === medicineId);
             if (medicine) {
+                // Pre-fill form with existing data
                 document.getElementById('medicineName').value = medicine.name + ' (Copy)';
                 document.getElementById('medicineDosage').value = medicine.dosage;
                 document.getElementById('medicineInstructions').value = medicine.instructions;
                 
+                // Set selected times from original medicine
                 AppState.selectedTimes = [...medicine.times];
                 document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
                     const time = btn.textContent;
@@ -3032,10 +3699,12 @@
                     }
                 });
                 
+                // Change modal title
                 document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
                 document.getElementById('saveMedicineBtn').innerHTML = '<span>📋</span> Duplicate Medicine';
                 
-                AppState.editingMedicineId = null;
+                AppState.editingMedicineId = null; // This is a duplication, not an edit
+                
                 showAddMedicineModal();
             }
         }
@@ -3043,10 +3712,12 @@
         function editMedicine(medicineId) {
             const medicine = AppState.medicines.find(m => m.id === medicineId);
             if (medicine) {
+                // Pre-fill form with existing data
                 document.getElementById('medicineName').value = medicine.name;
                 document.getElementById('medicineDosage').value = medicine.dosage;
                 document.getElementById('medicineInstructions').value = medicine.instructions;
                 
+                // Set selected times
                 AppState.selectedTimes = [...medicine.times];
                 document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
                     const time = btn.textContent;
@@ -3057,10 +3728,12 @@
                     }
                 });
                 
+                // Change modal title
                 document.getElementById('modalTitle').textContent = 'Edit Medicine';
                 document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Update Medicine';
                 
                 AppState.editingMedicineId = medicineId;
+                
                 showAddMedicineModal();
             }
         }
@@ -3083,19 +3756,40 @@
                     times: AppState.selectedTimes
                 };
                 
+                // Update today's schedule
                 updateTodaysSchedule(medicineId);
                 updateMedicineList();
                 loadTodaysOverview();
-                Storage.save();
+                Storage.save(); // Save to localStorage
             }
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            medicine.times.forEach(time => {
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: time,
+                    date: today,
+                    status: 'pending',
+                    actualTime: null,
+                    remark: ''
+                };
+                AppState.medicineLog.push(logEntry);
+            });
         }
 
         function updateTodaysSchedule(medicineId) {
             const today = new Date().toDateString();
+            // Remove old schedule for today
             AppState.medicineLog = AppState.medicineLog.filter(log => 
                 !(log.medicineId === medicineId && log.date === today)
             );
             
+            // Add new schedule
             const medicine = AppState.medicines.find(m => m.id === medicineId);
             if (medicine) {
                 createTodaysSchedule(medicine);
@@ -3113,7 +3807,7 @@
                 updateMedicineList();
                 loadTodaysOverview();
                 updateDailyLog();
-                Storage.save();
+                Storage.save(); // Save to localStorage
             }
         }
 
@@ -3135,7 +3829,7 @@
                 updateMedicineList();
                 loadTodaysOverview();
                 updateDailyLog();
-                Storage.save();
+                Storage.save(); // Save to localStorage
             }
         }
 
@@ -3145,26 +3839,30 @@
                 logEntry.remark = remark;
                 updateMedicineList();
                 updateDailyLog();
-                Storage.save();
+                Storage.save(); // Save to localStorage
             }
         }
 
         function editRemark(element, logId) {
             const currentRemark = AppState.medicineLog.find(log => log.id === logId)?.remark || '';
             
+            // Create textarea for editing
             const textarea = document.createElement('textarea');
             textarea.className = 'remark-input';
             textarea.value = currentRemark;
             textarea.placeholder = 'Add your feedback or effects...';
             
+            // Replace display with input
             element.style.display = 'none';
             element.parentNode.appendChild(textarea);
             textarea.focus();
             
+            // Save on blur or Enter
             const saveRemark = () => {
                 const newRemark = textarea.value.trim();
                 updateRemark(logId, newRemark);
                 
+                // Update display
                 if (newRemark) {
                     element.textContent = newRemark;
                     element.classList.remove('empty');
@@ -3173,8 +3871,9 @@
                     element.classList.add('empty');
                 }
                 
+                // Remove textarea and show display
                 textarea.remove();
-                element.style.display = 'flex';
+                element.style.display = 'block';
             };
             
             textarea.addEventListener('blur', saveRemark);
@@ -3193,7 +3892,143 @@
                 updateMedicineList();
                 loadTodaysOverview();
                 updateDailyLog();
+                Storage.save(); // Save to localStorage
+            }
+        }
+
+        // Daily Medicine Log Management
+        function duplicateLogEntry(logId) {
+            const originalLog = AppState.medicineLog.find(log => log.id === logId);
+            if (originalLog) {
+                const newTime = prompt('Enter new time (HH:MM format):', originalLog.scheduledTime);
+                if (newTime && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(newTime)) {
+                    const duplicatedLog = {
+                        id: Date.now() + Math.random(),
+                        medicineId: originalLog.medicineId,
+                        medicineName: originalLog.medicineName,
+                        dosage: originalLog.dosage,
+                        scheduledTime: newTime,
+                        date: originalLog.date,
+                        status: 'pending',
+                        actualTime: null,
+                        remark: originalLog.remark // Copy the remark
+                    };
+                    
+                    AppState.medicineLog.push(duplicatedLog);
+                    updateMedicineList();
+                    loadTodaysOverview();
+                    updateDailyLog();
+                    Storage.save();
+                    
+                    console.log('✅ Medicine log duplicated with new time');
+                } else if (newTime) {
+                    alert('Please enter time in HH:MM format (e.g., 14:30)');
+                }
+            }
+        }
+
+        function editLogEntry(logId) {
+            const logElement = document.querySelector(`[data-log-id="${logId}"]`);
+            if (logElement) {
+                logElement.classList.add('editing');
+                
+                const log = AppState.medicineLog.find(l => l.id === logId);
+                if (log) {
+                    // Pre-fill edit form
+                    const editForm = logElement.querySelector('.log-edit-form');
+                    editForm.querySelector('.edit-time').value = log.scheduledTime;
+                    editForm.querySelector('.edit-status').value = log.status;
+                    editForm.querySelector('.edit-remark').value = log.remark || '';
+                }
+            }
+        }
+
+        function saveLogEntry(logId) {
+            const logElement = document.querySelector(`[data-log-id="${logId}"]`);
+            const editForm = logElement.querySelector('.log-edit-form');
+            
+            const newTime = editForm.querySelector('.edit-time').value;
+            const newStatus = editForm.querySelector('.edit-status').value;
+            const newRemark = editForm.querySelector('.edit-remark').value;
+            
+            // Validate time format
+            if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(newTime)) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+                return;
+            }
+            
+            const log = AppState.medicineLog.find(l => l.id === logId);
+            if (log) {
+                log.scheduledTime = newTime;
+                log.status = newStatus;
+                log.remark = newRemark;
+                
+                // Set actual time if marked as taken
+                if (newStatus === 'taken' && !log.actualTime) {
+                    log.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                logElement.classList.remove('editing');
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
                 Storage.save();
+                
+                console.log('✅ Medicine log updated');
+            }
+        }
+
+        function cancelLogEdit(logId) {
+            const logElement = document.querySelector(`[data-log-id="${logId}"]`);
+            if (logElement) {
+                logElement.classList.remove('editing');
+            }
+        }
+
+        function deleteLogEntry(logId) {
+            if (confirm('Delete this medicine log entry?')) {
+                AppState.medicineLog = AppState.medicineLog.filter(log => log.id !== logId);
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+                Storage.save();
+                
+                console.log('✅ Medicine log deleted');
+            }
+        }
+
+        function editLogTime(element, logId) {
+            const currentTime = AppState.medicineLog.find(log => log.id === logId)?.scheduledTime || '';
+            const newTime = prompt('Enter new time (HH:MM format):', currentTime);
+            
+            if (newTime && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(newTime)) {
+                const log = AppState.medicineLog.find(l => l.id === logId);
+                if (log) {
+                    log.scheduledTime = newTime;
+                    updateMedicineList();
+                    updateDailyLog();
+                    Storage.save();
+                }
+            } else if (newTime) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function editLogMedicineName(element, logId) {
+            const currentName = AppState.medicineLog.find(log => log.id === logId)?.medicineName || '';
+            const newName = prompt('Enter medicine name:', currentName);
+            
+            if (newName && newName.trim()) {
+                const log = AppState.medicineLog.find(l => l.id === logId);
+                if (log) {
+                    log.medicineName = newName.trim();
+                    updateMedicineList();
+                    updateDailyLog();
+                    Storage.save();
+                }
             }
         }
 
@@ -3203,10 +4038,10 @@
             
             if (AppState.medicines.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: calc(40px * var(--scale-factor)); color: var(--text-muted);">
-                        <div style="font-size: calc(3rem * var(--scale-factor)); margin-bottom: calc(var(--gap-medium) * var(--density-factor));">💊</div>
-                        <div style="font-size: calc(1rem * var(--scale-factor)); margin-bottom: calc(var(--gap-small) * var(--density-factor));">No medicines added yet</div>
-                        <div style="font-size: calc(0.875rem * var(--scale-factor));">Tap "Add Medicine" to get started</div>
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                        <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
                     </div>
                 `;
                 return;
@@ -3237,7 +4072,7 @@
                                     ${log.status === 'pending' ? 
                                         `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
                                         log.status === 'taken' ? 
-                                        `<span style="font-size: calc(0.75rem * var(--scale-factor)); color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
                                         `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
                                     }
                                 </div>
@@ -3259,9 +4094,9 @@
                             <div class="medicine-instructions">${medicine.instructions}</div>
                         </div>
                         <div class="medicine-actions">
-                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate" aria-label="Duplicate medicine">📋</button>
-                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit" aria-label="Edit medicine">✏️</button>
-                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete" aria-label="Delete medicine">🗑️</button>
+                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate">📋</button>
+                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit">✏️</button>
+                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
                         </div>
                     </div>
                     <div class="medicine-schedule">
@@ -3272,6 +4107,7 @@
                 container.appendChild(medicineCard);
             });
 
+            // Add manual entries section if any exist
             const manualEntries = AppState.medicineLog.filter(log => 
                 log.medicineId.toString().startsWith('manual_') && log.date === today
             );
@@ -3279,7 +4115,7 @@
             if (manualEntries.length > 0) {
                 const manualCard = document.createElement('div');
                 manualCard.className = 'medicine-card';
-                manualCard.style.borderLeft = 'calc(4px * var(--scale-factor)) solid var(--warning)';
+                manualCard.style.borderLeft = '4px solid var(--warning)';
                 
                 let manualHTML = '';
                 manualEntries.forEach(log => {
@@ -3296,7 +4132,7 @@
                                     ${log.status === 'pending' ? 
                                         `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
                                         log.status === 'taken' ? 
-                                        `<span style="font-size: calc(0.75rem * var(--scale-factor)); color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
                                         `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
                                     }
                                 </div>
@@ -3347,10 +4183,10 @@
             
             if (todaysLog.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; color: var(--text-muted); padding: calc(var(--gap-large) * var(--density-factor));">
-                        <div style="font-size: calc(1.5rem * var(--scale-factor)); margin-bottom: calc(var(--gap-small) * var(--density-factor));">📅</div>
+                    <div style="text-align: center; color: var(--text-muted); padding: 20px;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">📅</div>
                         <div>No medicine scheduled for today</div>
-                        <div style="font-size: calc(0.75rem * var(--scale-factor)); margin-top: calc(4px * var(--scale-factor));">Add medicines to see daily schedule</div>
+                        <div style="font-size: 12px; margin-top: 4px;">Add medicines to see daily schedule</div>
                     </div>
                 `;
                 return;
@@ -3370,17 +4206,48 @@
                     <div class="log-item" data-log-id="${log.id}">
                         <div class="log-header">
                             <div class="log-medicine">
-                                <div class="log-medicine-name">
+                                <div class="log-medicine-name" onclick="editLogMedicineName(this, ${log.id})">
                                     ${log.medicineName} (${log.dosage})
+                                    <span class="edit-icon">✏️</span>
                                 </div>
-                                <div class="log-medicine-time">
+                                <div class="log-medicine-time" onclick="editLogTime(this, ${log.id})">
                                     Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}
+                                    <span class="edit-icon">✏️</span>
                                 </div>
                             </div>
                             <div class="log-actions">
+                                <button class="log-btn duplicate-log" onclick="duplicateLogEntry(${log.id})" title="Duplicate">📋</button>
+                                <button class="log-btn edit-log" onclick="editLogEntry(${log.id})" title="Edit">✏️</button>
+                                <button class="log-btn delete-log" onclick="deleteLogEntry(${log.id})" title="Delete">🗑️</button>
                                 <div class="log-status ${statusClass}" onclick="editMedicineStatus(${log.id})">
                                     ${statusText}
                                 </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Form (hidden by default) -->
+                        <div class="log-edit-form">
+                            <div class="log-edit-row">
+                                <div class="form-group">
+                                    <label class="form-label">Time</label>
+                                    <input type="time" class="form-input edit-time" value="${log.scheduledTime}">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-input form-select edit-status">
+                                        <option value="pending" ${log.status === 'pending' ? 'selected' : ''}>Pending</option>
+                                        <option value="taken" ${log.status === 'taken' ? 'selected' : ''}>Taken</option>
+                                        <option value="missed" ${log.status === 'missed' ? 'selected' : ''}>Missed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Feedback / Remark</label>
+                                <textarea class="form-input edit-remark" rows="2" placeholder="Enter feedback or effects...">${log.remark || ''}</textarea>
+                            </div>
+                            <div class="log-edit-actions">
+                                <button class="log-save-btn" onclick="saveLogEntry(${log.id})">Save</button>
+                                <button class="log-cancel-btn" onclick="cancelLogEdit(${log.id})">Cancel</button>
                             </div>
                         </div>
                         
@@ -3402,10 +4269,12 @@
             document.getElementById('medicineDosage').value = '';
             document.getElementById('medicineInstructions').value = '';
             
+            // Reset modal title
             document.getElementById('modalTitle').textContent = 'Add Medicine';
             document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Save Medicine';
             AppState.editingMedicineId = null;
             
+            // Reset time slots
             document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -3421,6 +4290,7 @@
         }
 
         function showAddManualEntryModal() {
+            // Reset form
             document.getElementById('manualMedicineName').value = '';
             document.getElementById('manualMedicineDosage').value = '';
             document.getElementById('manualMedicineTime').value = new Date().toTimeString().slice(0, 5);
@@ -3443,14 +4313,25 @@
             const status = document.getElementById('manualMedicineStatus').value;
             const remark = document.getElementById('manualMedicineRemark').value.trim();
             
-            if (!name || !dosage || !time) {
-                alert('Please fill all required fields');
+            if (!name) {
+                alert('Please enter medicine name');
                 return;
             }
             
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (!time) {
+                alert('Please select time');
+                return;
+            }
+            
+            // Create manual log entry
             const manualLog = {
                 id: Date.now() + Math.random(),
-                medicineId: 'manual_' + Date.now(),
+                medicineId: 'manual_' + Date.now(), // Special ID for manual entries
                 medicineName: name,
                 dosage: dosage,
                 scheduledTime: time,
@@ -3470,6 +4351,7 @@
             Storage.save();
             
             closeAddManualEntryModal();
+            
             console.log('✅ Manual medicine entry added');
         }
 
@@ -3507,14 +4389,26 @@
             const dosage = document.getElementById('medicineDosage').value.trim();
             const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
             
-            if (!name || !dosage || AppState.selectedTimes.length === 0) {
-                alert('Please fill all required fields and select at least one time');
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
                 return;
             }
             
             if (AppState.editingMedicineId) {
+                // Update existing medicine
                 updateMedicine(AppState.editingMedicineId);
             } else {
+                // Add new medicine
                 addMedicine(name, dosage, instructions, AppState.selectedTimes);
             }
             
@@ -3526,14 +4420,14 @@
             AppState.currentTheme = mode;
             document.body.setAttribute('data-theme', mode);
             updateThemeUI();
-            Storage.save();
+            Storage.save(); // Save to localStorage
         }
 
         function setColorTheme(color) {
             AppState.currentColor = color;
             document.body.setAttribute('data-color', color);
             updateThemeUI();
-            Storage.save();
+            Storage.save(); // Save to localStorage
         }
 
         function updateThemeUI() {
@@ -3544,10 +4438,6 @@
             document.querySelectorAll('.color-option').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
             });
-
-            DeviceManager.updateSizeUI();
-            DeviceManager.updateFontUI();
-            DeviceManager.updateDensityUI();
         }
 
         // Drawer Management
@@ -3562,10 +4452,8 @@
             } else {
                 drawer.classList.add('open');
                 overlay.classList.add('active');
-                setTimeout(() => {
-                    updateStorageInfo();
-                    DeviceManager.updateDeviceInfo();
-                }, 100);
+                // Update storage info when drawer opens
+                setTimeout(updateStorageInfo, 100);
             }
         }
 
@@ -3578,187 +4466,62 @@
 
         // Title Editing
         function editTitle(type) {
-            const newTitle = prompt(`Enter new ${type.replace('-', ' ')}:`);
+            // Simple title editing - you can enhance this
+            const newTitle = prompt(`Enter new ${type}:`);
             if (newTitle) {
                 if (type === 'app-title') {
                     document.querySelector('.app-title').textContent = newTitle;
                 } else {
                     document.querySelector('.app-slogan').textContent = newTitle;
                 }
-                Storage.save();
             }
         }
 
-        // COMPLETELY REWRITTEN Event Listeners Setup - FIXED FOR INPUTS
+        // Event Listeners
         function setupEventListeners() {
-            console.log('🔧 Setting up enhanced event listeners for inputs...');
-            
-            // CRITICAL: Enable all inputs first
-            forceEnableAllInputs();
-            
-            // Form input listeners for auto-calculation (using event delegation)
+            // Form inputs for automatic calculation and saving
             document.addEventListener('input', (e) => {
-                // Don't prevent default for any input events
                 if (e.target.matches('.item-quantity, .item-price')) {
                     const lineItem = e.target.closest('.line-item');
-                    if (lineItem) updateLineItemTotal(lineItem);
+                    updateLineItemTotal(lineItem);
                 }
                 
                 if (e.target.id === 'taxRate') {
                     updateGrandTotal();
                 }
 
-                // Auto-save form data (debounced)
-                if (e.target.matches('input, textarea, select')) {
+                // Auto-save form data for persistent storage
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
                     clearTimeout(window.autoSaveTimeout);
                     window.autoSaveTimeout = setTimeout(() => {
                         Storage.saveFormData();
-                    }, 2000); // Longer delay to avoid conflicts
+                    }, 1000); // Auto-save after 1 second of inactivity
                 }
-            }, { passive: true, capture: false });
+            });
 
-            // Handle focus events to ensure inputs stay enabled
-            document.addEventListener('focusin', (e) => {
-                if (e.target.matches('input, textarea, select')) {
-                    ensureInputEnabled(e.target);
+            // Auto-save when leaving input fields
+            document.addEventListener('blur', (e) => {
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
+                    Storage.saveFormData();
                 }
-            }, { passive: true });
-
-            // Handle click events for inputs
-            document.addEventListener('click', (e) => {
-                if (e.target.matches('input, textarea, select')) {
-                    e.stopPropagation(); // Prevent parent handlers
-                    ensureInputEnabled(e.target);
-                    
-                    // Focus and select for text inputs
-                    setTimeout(() => {
-                        e.target.focus();
-                        if (e.target.type === 'text' || e.target.type === 'email' || e.target.type === 'tel' || e.target.tagName === 'TEXTAREA') {
-                            // Move cursor to end
-                            const len = e.target.value.length;
-                            e.target.setSelectionRange(len, len);
-                        }
-                    }, 10);
-                }
-            }, { capture: true });
-
-            // Enhanced touch support for mobile
-            document.addEventListener('touchstart', (e) => {
-                if (e.target.matches('input, textarea, select')) {
-                    e.stopPropagation();
-                    ensureInputEnabled(e.target);
-                }
-            }, { passive: true, capture: true });
-
+            }, true);
+            
             // Set default dates
-            setDefaultDates();
-
-            // Simplified keyboard shortcuts (avoid conflicts with inputs)
-            document.addEventListener('keydown', (e) => {
-                // Only handle shortcuts when NOT typing in inputs
-                if (!e.target.matches('input, textarea, select')) {
-                    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-                        e.preventDefault();
-                        Storage.saveFormData();
-                        console.log('💾 Data saved manually');
-                    }
-                    
-                    if (e.key === 'Escape') {
-                        closeDrawers();
-                    }
-                }
-            });
-
-            // Mobile gestures (simplified)
-            let touchStartY = 0;
-            document.addEventListener('touchstart', (e) => {
-                if (!e.target.matches('input, textarea, select')) {
-                    touchStartY = e.touches[0].clientY;
-                }
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                if (!e.target.matches('input, textarea, select')) {
-                    const touchY = e.touches[0].clientY;
-                    const diff = touchStartY - touchY;
-                    
-                    if (diff < -150 && window.scrollY === 0) {
-                        location.reload();
-                    }
-                }
-            }, { passive: true });
-
-            updateStorageInfo();
-            
-            console.log('✅ Enhanced input event listeners ready!');
-        }
-
-        // CRITICAL: Force enable all inputs and keep them enabled
-        function forceEnableAllInputs() {
-            const allInputs = document.querySelectorAll('input, textarea, select');
-            console.log(`🔧 Force enabling ${allInputs.length} input elements...`);
-            
-            allInputs.forEach((input, index) => {
-                ensureInputEnabled(input);
-                console.log(`✅ Input ${index + 1} enabled:`, input.type || input.tagName);
-            });
-            
-            // Also ensure form containers allow interaction
-            document.querySelectorAll('.form-group, .card-content, .line-items, .line-item').forEach(container => {
-                container.style.pointerEvents = 'auto';
-                container.style.webkitUserSelect = 'text';
-                container.style.userSelect = 'text';
-            });
-            
-            console.log('✅ All inputs and containers force-enabled!');
-        }
-
-        // Ensure individual input is enabled and functional
-        function ensureInputEnabled(input) {
-            if (!input) return;
-            
-            // Remove blocking attributes
-            input.removeAttribute('readonly');
-            input.removeAttribute('disabled');
-            input.setAttribute('contenteditable', 'true');
-            
-            // Force enable CSS properties
-            input.style.pointerEvents = 'auto';
-            input.style.webkitUserSelect = 'text';
-            input.style.userSelect = 'text';
-            input.style.webkitTouchCallout = 'default';
-            input.style.touchAction = 'manipulation';
-            input.style.cursor = 'text';
-            input.style.zIndex = '100';
-            input.style.position = 'relative';
-            
-            // Ensure background is not blocking
-            if (!input.style.background || input.style.background === 'transparent') {
-                input.style.background = 'var(--bg-primary)';
-            }
-        }
-
-        // Set default dates helper
-        function setDefaultDates() {
             const today = new Date().toISOString().split('T')[0];
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + 30);
             const futureString = futureDate.toISOString().split('T')[0];
             
-            const quotationDate = document.getElementById('quotationDate');
-            const validUntil = document.getElementById('validUntil');
-            
-            if (quotationDate && !quotationDate.value) {
-                quotationDate.value = today;
+            // Only set default dates if not loaded from storage
+            if (!document.getElementById('quotationDate').value) {
+                document.getElementById('quotationDate').value = today;
             }
-            if (validUntil && !validUntil.value) {
-                validUntil.value = futureString;
+            if (!document.getElementById('validUntil').value) {
+                document.getElementById('validUntil').value = futureString;
             }
-        }
 
-        // Function to enable all inputs and make sure they work - SIMPLIFIED
-        function enableAllInputs() {
-            forceEnableAllInputs();
+            // Update storage info
+            updateStorageInfo();
         }
 
         // Storage Info Update
@@ -3781,177 +4544,56 @@
             }
         }
 
-        // Initialize Application - ENHANCED FOR INPUT DEBUGGING
+        // Initialize App
         function initializeApp() {
-            console.log('🚀 Initializing QuoteFlow Universal with Enhanced Input Support...');
-            
-            // STEP 1: Force enable inputs immediately
-            console.log('🔧 Step 1: Force enabling inputs...');
-            setTimeout(() => forceEnableAllInputs(), 50);
-            
-            // STEP 2: Initialize device detection
-            console.log('🔧 Step 2: Device detection...');
-            DeviceManager.init();
-            
-            // STEP 3: Load saved data
-            console.log('🔧 Step 3: Loading data...');
+            // Load data first
             const dataLoaded = Storage.load();
             
-            // STEP 4: Setup event listeners
-            console.log('🔧 Step 4: Setting up events...');
+            // Setup event listeners
             setupEventListeners();
             
-            // STEP 5: Force enable inputs again after everything is loaded
-            console.log('🔧 Step 5: Re-enabling inputs...');
-            setTimeout(() => forceEnableAllInputs(), 100);
-            
-            // STEP 6: Update UI components
-            console.log('🔧 Step 6: Updating UI...');
+            // Update UI components
             updateThemeUI();
             updateFAB();
             updateGrandTotal();
             
-            // STEP 7: Load medicine data
-            console.log('🔧 Step 7: Loading medicine data...');
+            // Load medicine data
             loadTodaysOverview();
             updateMedicineList();
             updateDailyLog();
             
-            // STEP 8: Update storage and device info
-            console.log('🔧 Step 8: Storage info...');
+            // Update storage info
             updateStorageInfo();
             
-            // STEP 9: Set up periodic maintenance
-            console.log('🔧 Step 9: Setting up maintenance...');
-            
-            // Auto-save every 30 seconds
+            // Auto-save every 30 seconds for safety
             setInterval(() => {
                 Storage.saveFormData();
             }, 30000);
 
-            // Re-enable inputs every 3 seconds (aggressive fix)
-            setInterval(() => {
-                forceEnableAllInputs();
-            }, 3000);
-
-            // Save before page unload
+            // Save data before page unload
             window.addEventListener('beforeunload', () => {
                 Storage.saveFormData();
             });
 
-            // Save when page becomes hidden
+            // Save data when page becomes hidden (mobile)
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     Storage.saveFormData();
-                } else {
-                    // Re-enable inputs when page becomes visible
-                    setTimeout(() => forceEnableAllInputs(), 100);
                 }
             });
-
-            // STEP 10: Final input test and debug
-            console.log('🔧 Step 10: Final input testing...');
-            setTimeout(() => {
-                testAllInputs();
-            }, 500);
-
-            // Performance monitoring
-            if (performance.mark) {
-                performance.mark('app-initialized');
-            }
             
-            // Welcome message with input status
+            // Show welcome message for new users
             if (!dataLoaded) {
                 setTimeout(() => {
-                    console.log('🎉 Welcome to QuoteFlow Universal!');
-                    console.log('📱 Device:', AppState.deviceInfo.userAgent);
-                    console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
-                    console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
-                    testAllInputs();
+                    console.log('🎉 Welcome to QuoteFlow! Your data will be saved automatically.');
                 }, 1000);
             }
             
-            console.log('✅ QuoteFlow Universal initialization complete!');
+            console.log('✅ QuoteFlow Mobile with Persistent Local Storage initialized!');
         }
 
-        // Test all inputs to verify they work
-        function testAllInputs() {
-            console.log('🧪 Testing all input fields...');
-            const allInputs = document.querySelectorAll('input, textarea, select');
-            let workingInputs = 0;
-            let blockedInputs = 0;
-            
-            allInputs.forEach((input, index) => {
-                const originalValue = input.value;
-                const testValue = 'TEST_' + Date.now();
-                
-                try {
-                    input.value = testValue;
-                    if (input.value === testValue) {
-                        workingInputs++;
-                        console.log(`✅ Input ${index + 1} (${input.id || input.className}) - WORKING`);
-                    } else {
-                        blockedInputs++;
-                        console.log(`❌ Input ${index + 1} (${input.id || input.className}) - BLOCKED`);
-                        // Try to fix it
-                        ensureInputEnabled(input);
-                    }
-                    input.value = originalValue; // Restore
-                } catch (error) {
-                    blockedInputs++;
-                    console.log(`❌ Input ${index + 1} (${input.id || input.className}) - ERROR:`, error.message);
-                    ensureInputEnabled(input);
-                }
-            });
-            
-            console.log(`📊 Input Test Results: ${workingInputs} working, ${blockedInputs} blocked out of ${allInputs.length} total`);
-            
-            if (blockedInputs > 0) {
-                console.log('🔧 Attempting to fix blocked inputs...');
-                forceEnableAllInputs();
-                
-                // Test again after fix
-                setTimeout(() => {
-                    console.log('🔁 Re-testing inputs after fix...');
-                    testAllInputs();
-                }, 1000);
-            } else {
-                console.log('🎉 All inputs are working perfectly!');
-                alert('✅ All input fields are now enabled and ready for typing! Try clicking on any field.');
-            }
-        }
-
-        // Start the application when DOM is loaded
+        // Start app when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeApp);
-
-        // PWA installation support
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            console.log('💡 PWA installation available');
-        });
-
-        // Service Worker registration for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('📱 Service Worker registered');
-                    })
-                    .catch(error => {
-                        console.log('❌ Service Worker registration failed');
-                    });
-            });
-        }
-
-        // Performance optimization
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => {
-                // Non-critical initializations
-                console.log('⚡ Performance optimizations applied');
-            });
-        }
     </script>
 </body>
 </html>
