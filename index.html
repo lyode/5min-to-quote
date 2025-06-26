@@ -205,10 +205,13 @@
         }
 
         input, textarea, select {
-            -webkit-user-select: text;
-            user-select: text;
+            -webkit-user-select: text !important;
+            user-select: text !important;
             -webkit-appearance: none;
             appearance: none;
+            pointer-events: auto !important;
+            touch-action: manipulation;
+            -webkit-touch-callout: default;
         }
 
         html {
@@ -408,12 +411,29 @@
             -webkit-appearance: none;
             appearance: none;
             min-height: var(--touch-target-size);
+            position: relative;
+            z-index: 1;
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            touch-action: manipulation;
+            -webkit-touch-callout: default;
+            cursor: text;
         }
 
         .form-input:focus {
             outline: none;
             border-color: var(--theme-primary);
             box-shadow: 0 0 0 4px var(--theme-light);
+            background: var(--bg-primary);
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-input:active {
+            pointer-events: auto !important;
+            -webkit-user-select: text !important;
+            user-select: text !important;
         }
 
         .form-textarea {
@@ -2794,12 +2814,31 @@
             
             const quantityInput = newItem.querySelector('.item-quantity');
             const priceInput = newItem.querySelector('.item-price');
+            const descriptionInput = newItem.querySelector('.item-description');
             
-            [quantityInput, priceInput].forEach(input => {
+            // Enable inputs for the new line item
+            [quantityInput, priceInput, descriptionInput].forEach(input => {
+                input.removeAttribute('readonly');
+                input.removeAttribute('disabled');
+                input.style.pointerEvents = 'auto';
+                input.style.webkitUserSelect = 'text';
+                input.style.userSelect = 'text';
+                input.style.cursor = 'text';
+                
                 input.addEventListener('input', () => updateLineItemTotal(newItem));
+                input.addEventListener('focus', function() {
+                    this.style.pointerEvents = 'auto';
+                    this.style.webkitUserSelect = 'text';
+                    this.style.userSelect = 'text';
+                });
             });
             
-            newItem.querySelector('.item-description').focus();
+            // Focus on description input and ensure it works
+            setTimeout(() => {
+                descriptionInput.focus();
+                descriptionInput.click();
+            }, 100);
+            
             Storage.saveFormData();
         }
 
@@ -3284,7 +3323,7 @@
             
             if (todaysLog.length === 0) {
                 container.innerHTML = `
-                    <div style="text-align: center; color: var(--text-muted); padding: calc(var(--card-padding) * var(--density-factor));">
+                    <div style="text-align: center; color: var(--text-muted); padding: calc(var(--gap-large) * var(--density-factor));">
                         <div style="font-size: calc(1.5rem * var(--scale-factor)); margin-bottom: calc(var(--gap-small) * var(--density-factor));">📅</div>
                         <div>No medicine scheduled for today</div>
                         <div style="font-size: calc(0.75rem * var(--scale-factor)); margin-top: calc(4px * var(--scale-factor));">Add medicines to see daily schedule</div>
@@ -3482,7 +3521,6 @@
                 btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
             });
 
-            // Update device manager UI as well
             DeviceManager.updateSizeUI();
             DeviceManager.updateFontUI();
             DeviceManager.updateDensityUI();
@@ -3516,7 +3554,7 @@
 
         // Title Editing
         function editTitle(type) {
-            const newTitle = prompt(`Enter new ${type}:`);
+            const newTitle = prompt(`Enter new ${type.replace('-', ' ')}:`);
             if (newTitle) {
                 if (type === 'app-title') {
                     document.querySelector('.app-title').textContent = newTitle;
@@ -3527,8 +3565,12 @@
             }
         }
 
-        // Event Listeners
+        // Event Listeners Setup
         function setupEventListeners() {
+            // Enable all inputs and ensure they work properly
+            enableAllInputs();
+            
+            // Form input listeners for auto-calculation and saving
             document.addEventListener('input', (e) => {
                 if (e.target.matches('.item-quantity, .item-price')) {
                     const lineItem = e.target.closest('.line-item');
@@ -3539,6 +3581,7 @@
                     updateGrandTotal();
                 }
 
+                // Auto-save form data
                 if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
                     clearTimeout(window.autoSaveTimeout);
                     window.autoSaveTimeout = setTimeout(() => {
@@ -3547,11 +3590,45 @@
                 }
             });
 
+            // Auto-save on blur
             document.addEventListener('blur', (e) => {
                 if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #taxRate, #notes, .item-description, .item-quantity, .item-price')) {
                     Storage.saveFormData();
                 }
             }, true);
+
+            // Focus handling to ensure inputs work
+            document.addEventListener('focusin', (e) => {
+                if (e.target.matches('input, textarea, select')) {
+                    e.target.style.pointerEvents = 'auto';
+                    e.target.style.webkitUserSelect = 'text';
+                    e.target.style.userSelect = 'text';
+                    e.target.removeAttribute('readonly');
+                    e.target.removeAttribute('disabled');
+                }
+            });
+
+            // Click handling for inputs
+            document.addEventListener('click', (e) => {
+                if (e.target.matches('input, textarea, select')) {
+                    e.target.focus();
+                    if (e.target.type === 'text' || e.target.tagName === 'TEXTAREA') {
+                        // Set cursor to end of text
+                        setTimeout(() => {
+                            const len = e.target.value.length;
+                            if (e.target.setSelectionRange) {
+                                e.target.setSelectionRange(len, len);
+                            } else if (e.target.createTextRange) {
+                                const range = e.target.createTextRange();
+                                range.collapse(true);
+                                range.moveEnd('character', len);
+                                range.moveStart('character', len);
+                                range.select();
+                            }
+                        }, 1);
+                    }
+                }
+            });
             
             // Set default dates
             const today = new Date().toISOString().split('T')[0];
@@ -3566,37 +3643,70 @@
                 document.getElementById('validUntil').value = futureString;
             }
 
-            // Keyboard navigation support
+            // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
+                // Ctrl/Cmd + S to save
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    Storage.saveFormData();
+                    console.log('💾 Data saved manually');
+                }
+                
+                // Escape to close modals/drawers (but not when typing in inputs)
+                if (e.key === 'Escape' && !e.target.matches('input, textarea, select')) {
                     closeDrawers();
                 }
             });
 
-            // Touch gesture support for drawer
-            let touchStartX = 0;
+            // Touch gesture support
+            let touchStartY = 0;
             document.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-            });
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
 
-            document.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const drawer = document.getElementById('settingsDrawer');
+            document.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                const diff = touchStartY - touchY;
                 
-                // Swipe from right edge to open drawer
-                if (touchStartX > window.innerWidth - 50 && touchEndX < touchStartX - 100) {
-                    if (!drawer.classList.contains('open')) {
-                        toggleDrawer();
-                    }
+                // Pull to refresh gesture
+                if (diff < -150 && window.scrollY === 0) {
+                    location.reload();
                 }
-                
-                // Swipe to close drawer
-                if (drawer.classList.contains('open') && touchStartX < touchEndX - 100) {
-                    toggleDrawer();
-                }
-            });
+            }, { passive: true });
 
             updateStorageInfo();
+        }
+
+        // Function to enable all inputs and make sure they work
+        function enableAllInputs() {
+            const allInputs = document.querySelectorAll('input, textarea, select');
+            allInputs.forEach(input => {
+                // Remove any attributes that might disable input
+                input.removeAttribute('readonly');
+                input.removeAttribute('disabled');
+                
+                // Ensure proper CSS properties
+                input.style.pointerEvents = 'auto';
+                input.style.webkitUserSelect = 'text';
+                input.style.userSelect = 'text';
+                input.style.webkitTouchCallout = 'default';
+                input.style.touchAction = 'manipulation';
+                input.style.cursor = 'text';
+                
+                // Add input event listeners
+                input.addEventListener('focus', function() {
+                    this.style.pointerEvents = 'auto';
+                    this.style.webkitUserSelect = 'text';
+                    this.style.userSelect = 'text';
+                });
+                
+                input.addEventListener('touchstart', function(e) {
+                    e.stopPropagation();
+                    this.focus();
+                }, { passive: false });
+            });
+            
+            console.log('✅ All inputs enabled for text entry');
         }
 
         // Storage Info Update
@@ -3619,7 +3729,7 @@
             }
         }
 
-        // Initialize App
+        // Initialize Application
         function initializeApp() {
             console.log('🚀 Initializing QuoteFlow Universal...');
             
@@ -3631,6 +3741,11 @@
             
             // Setup event listeners
             setupEventListeners();
+            
+            // Enable all inputs immediately after setup
+            setTimeout(() => {
+                enableAllInputs();
+            }, 100);
             
             // Update UI components
             updateThemeUI();
@@ -3645,57 +3760,78 @@
             // Update storage and device info
             updateStorageInfo();
             
-            // Auto-save every 30 seconds for safety
+            // Auto-save every 30 seconds
             setInterval(() => {
                 Storage.saveFormData();
             }, 30000);
 
-            // Save data before page unload
+            // Save before page unload
             window.addEventListener('beforeunload', () => {
                 Storage.saveFormData();
             });
 
-            // Save data when page becomes hidden (mobile)
+            // Save when page becomes hidden (mobile background)
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) {
                     Storage.saveFormData();
                 }
             });
 
-            // Show welcome message for new users
+            // Re-enable inputs periodically to ensure they stay enabled
+            setInterval(() => {
+                enableAllInputs();
+            }, 5000);
+
+            // Performance monitoring
+            if (performance.mark) {
+                performance.mark('app-initialized');
+            }
+            
+            // Welcome message
             if (!dataLoaded) {
                 setTimeout(() => {
-                    console.log('🎉 Welcome to QuoteFlow Universal! Optimized for your device.');
-                    console.log(`📱 Detected: ${AppState.deviceInfo.userAgent} (${AppState.deviceInfo.width}×${AppState.deviceInfo.height})`);
+                    console.log('🎉 Welcome to QuoteFlow Universal! Optimized for your device:', AppState.deviceInfo.userAgent);
+                    console.log('✅ All input fields are enabled and ready for typing!');
                 }, 1000);
-            } else {
-                console.log(`📱 Device: ${AppState.deviceInfo.userAgent} (${AppState.deviceInfo.width}×${AppState.deviceInfo.height})`);
-                console.log(`⚙️ Settings: ${AppState.currentTheme} theme, ${AppState.screenSize} size, ${AppState.density} density`);
             }
             
             console.log('✅ QuoteFlow Universal initialized successfully!');
+            console.log('📱 Device:', AppState.deviceInfo.userAgent);
+            console.log('📐 Screen:', `${AppState.deviceInfo.width}×${AppState.deviceInfo.height} @${AppState.deviceInfo.ratio}x`);
+            console.log('🎨 Settings:', `Theme: ${AppState.currentTheme}, Color: ${AppState.currentColor}, Size: ${AppState.screenSize}`);
         }
 
-        // Start app when DOM is loaded
+        // Start the application when DOM is loaded
         document.addEventListener('DOMContentLoaded', initializeApp);
 
-        // PWA Installation Support
+        // PWA installation support
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            console.log('💡 App can be installed as PWA');
+            console.log('💡 PWA installation available');
         });
 
-        // Service Worker Registration (optional)
+        // Service Worker registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                console.log('🔧 Service Worker support detected');
-                // Register service worker here if needed
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('📱 Service Worker registered');
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker registration failed');
+                    });
             });
         }
 
-        console.log('📱 QuoteFlow Universal Script Loaded');
+        // Performance optimization
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                // Non-critical initializations
+                console.log('⚡ Performance optimizations applied');
+            });
+        }
     </script>
 </body>
 </html>
