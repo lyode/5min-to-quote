@@ -3332,4 +3332,293 @@
         function editTitle(type) {
             const currentTitle = type === 'app-title' ? 
                 document.querySelector('.app-title').textContent :
-                document.querySelector('.app-slogan').text
+                document.querySelector('.app-slogan').textContent;
+                
+            const newTitle = prompt(`Enter new ${type === 'app-title' ? 'App Name' : 'App Slogan'}:`, currentTitle);
+            if (newTitle && newTitle.trim()) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle.trim();
+                    AppState.settings.appTitle = newTitle.trim();
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle.trim();
+                    AppState.settings.appSlogan = newTitle.trim();
+                }
+                
+                // Save to localStorage
+                if (AppState.settings.autoSave) {
+                    StorageManager.saveAppState();
+                }
+                
+                showNotification(`${type === 'app-title' ? 'App name' : 'App slogan'} updated`, 'success');
+            }
+        }
+
+        // Daily Medicine Schedule Creator
+        function createDailyMedicineSchedules() {
+            const today = new Date();
+            
+            AppState.medicines.forEach(medicine => {
+                if (medicine.isActive !== false) {
+                    createMedicineSchedule(medicine, today);
+                }
+            });
+            
+            // Create schedules for next 7 days
+            for (let i = 1; i <= 7; i++) {
+                const futureDate = new Date(today);
+                futureDate.setDate(futureDate.getDate() + i);
+                
+                AppState.medicines.forEach(medicine => {
+                    if (medicine.isActive !== false) {
+                        createMedicineSchedule(medicine, futureDate);
+                    }
+                });
+            }
+        }
+
+        // Auto-cleanup old logs
+        function cleanupOldLogs() {
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - (AppState.settings.historyDays || 30));
+            
+            const originalCount = AppState.medicineLog.length;
+            AppState.medicineLog = AppState.medicineLog.filter(log => {
+                const logDate = new Date(log.date);
+                return logDate >= cutoffDate;
+            });
+            
+            const removedCount = originalCount - AppState.medicineLog.length;
+            if (removedCount > 0) {
+                console.log(`Cleaned up ${removedCount} old medicine logs`);
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+                
+                // Auto-save form data
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #notes, #taxRate')) {
+                    clearTimeout(window.autoSaveTimeout);
+                    window.autoSaveTimeout = setTimeout(saveFormData, 1000); // Save after 1 second of inactivity
+                }
+            });
+            
+            // Auto-save on form blur
+            document.addEventListener('blur', (e) => {
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #notes, #taxRate')) {
+                    saveFormData();
+                }
+            }, true);
+            
+            // Handle visibility change (app coming back from background)
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) {
+                    // App is visible again, refresh data
+                    loadTodaysOverview();
+                    updateMedicineList();
+                    updateDailyLog();
+                }
+            });
+            
+            // Set default dates if not loaded from storage
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            if (!document.getElementById('quotationDate').value) {
+                document.getElementById('quotationDate').value = today;
+            }
+            if (!document.getElementById('validUntil').value) {
+                document.getElementById('validUntil').value = futureString;
+            }
+        }
+
+        // Medicine Notifications (simplified for demo)
+        function checkMedicineReminders() {
+            if (!AppState.settings.medicineNotifications) return;
+            
+            const now = new Date();
+            const currentTime = now.toTimeString().slice(0, 5); // HH:MM format
+            const today = now.toDateString();
+            
+            const reminderTime = AppState.settings.defaultReminder || 15;
+            
+            AppState.medicineLog.forEach(log => {
+                if (log.date === today && log.status === 'pending') {
+                    const scheduledTime = new Date(`${today} ${log.scheduledTime}`);
+                    const reminderDateTime = new Date(scheduledTime.getTime() - (reminderTime * 60000));
+                    
+                    if (now >= reminderDateTime && now < scheduledTime) {
+                        // Show reminder notification
+                        showNotification(`⏰ ${log.medicineName} (${log.dosage}) in ${reminderTime} minutes`, 'info');
+                    }
+                }
+            });
+        }
+
+        // Data Migration (for future versions)
+        function migrateData() {
+            // Check if we need to migrate old data format
+            const oldMedicines = StorageManager.load('medicines', null);
+            if (oldMedicines && !StorageManager.load(StorageManager.keys.medicines, null)) {
+                console.log('Migrating old data format...');
+                AppState.medicines = oldMedicines;
+                StorageManager.saveAppState();
+                localStorage.removeItem('medicines');
+                showNotification('Data migrated to new format', 'success');
+            }
+        }
+
+        // Initialize App
+        function initializeApp() {
+            try {
+                // Load data from localStorage
+                const appInfo = StorageManager.loadAppState();
+                
+                // Set app title and slogan
+                document.querySelector('.app-title').textContent = appInfo.title || AppState.settings.appTitle;
+                document.querySelector('.app-slogan').textContent = appInfo.slogan || AppState.settings.appSlogan;
+                
+                // Apply theme settings
+                document.body.setAttribute('data-theme', AppState.currentTheme);
+                document.body.setAttribute('data-color', AppState.currentColor);
+                
+                // Load form data
+                loadFormData();
+                loadSettings();
+                
+                // Set up event listeners
+                setupEventListeners();
+                updateThemeUI();
+                updateFAB();
+                updateGrandTotal();
+                
+                // Switch to saved page or default
+                switchPage(AppState.currentPage);
+                
+                // Load medicine data
+                loadTodaysOverview();
+                updateMedicineList();
+                updateDailyLog();
+                updateMedicineHistory();
+                
+                // Create daily medicine schedules
+                createDailyMedicineSchedules();
+                
+                // Clean up old logs
+                cleanupOldLogs();
+                
+                // Migrate old data if needed
+                migrateData();
+                
+                // Calculate initial data usage
+                calculateDataUsage();
+                
+                console.log('QuoteFlow Enhanced initialized successfully!');
+                console.log('Loaded medicines:', AppState.medicines.length);
+                console.log('Loaded logs:', AppState.medicineLog.length);
+                console.log('Loaded quotations:', AppState.quotationHistory.length);
+                
+                showNotification('Welcome to QuoteFlow Enhanced!', 'success');
+                
+                // Set up periodic reminders check (every minute)
+                if (AppState.settings.medicineNotifications) {
+                    setInterval(checkMedicineReminders, 60000);
+                }
+                
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                showNotification('Failed to initialize app. Some features may not work properly.', 'error');
+            }
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + S to save
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                StorageManager.saveAppState();
+                showNotification('Data saved manually', 'success');
+            }
+            
+            // Ctrl/Cmd + N to add new item/medicine
+            if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                e.preventDefault();
+                if (AppState.currentPage === 'quotation') {
+                    addLineItem();
+                } else {
+                    showAddMedicineModal();
+                }
+            }
+            
+            // Escape to close modals
+            if (e.key === 'Escape') {
+                closeDrawers();
+            }
+        });
+
+        // Service Worker Registration (for offline support)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Note: You would need to create a service worker file for this to work
+                // navigator.serviceWorker.register('/sw.js')
+                //     .then(registration => console.log('SW registered'))
+                //     .catch(registrationError => console.log('SW registration failed'));
+            });
+        }
+
+        // Export functions to global scope for onclick handlers
+        window.switchPage = switchPage;
+        window.toggleDrawer = toggleDrawer;
+        window.closeDrawers = closeDrawers;
+        window.editTitle = editTitle;
+        window.triggerLogoUpload = triggerLogoUpload;
+        window.handleLogoUpload = handleLogoUpload;
+        window.removeLogo = removeLogo;
+        window.addLineItem = addLineItem;
+        window.removeLineItem = removeLineItem;
+        window.updateLineItemTotal = updateLineItemTotal;
+        window.updateGrandTotal = updateGrandTotal;
+        window.generateQuotation = generateQuotation;
+        window.showAddMedicineModal = showAddMedicineModal;
+        window.closeAddMedicineModal = closeAddMedicineModal;
+        window.toggleTimeSlot = toggleTimeSlot;
+        window.addCustomTime = addCustomTime;
+        window.saveMedicine = saveMedicine;
+        window.duplicateMedicine = duplicateMedicine;
+        window.editMedicine = editMedicine;
+        window.deleteMedicine = deleteMedicine;
+        window.markMedicineTaken = markMedicineTaken;
+        window.editMedicineStatus = editMedicineStatus;
+        window.editRemark = editRemark;
+        window.setThemeMode = setThemeMode;
+        window.setColorTheme = setColorTheme;
+        window.toggleSetting = toggleSetting;
+        window.updateSettings = updateSettings;
+        window.calculateDataUsage = calculateDataUsage;
+        window.fabAction = fabAction;
+        window.StorageManager = StorageManager;
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+        
+        // Handle page unload to save data
+        window.addEventListener('beforeunload', () => {
+            if (AppState.settings.autoSave) {
+                StorageManager.saveAppState();
+            }
+        });
+    </script>
+</body>
+</html>
