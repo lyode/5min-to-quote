@@ -1540,6 +1540,29 @@
                     <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')"></button>
                 </div>
             </div>
+
+            <div class="theme-section">
+                <div class="section-title">Data Management</div>
+                <button class="action-btn btn-primary" onclick="StorageManager.exportData()" style="margin: 8px 0;">
+                    <span>📤</span> Export Backup
+                </button>
+                <input type="file" id="importFileInput" accept=".json" style="display: none;" onchange="StorageManager.importData(event)">
+                <button class="action-btn btn-primary" onclick="document.getElementById('importFileInput').click()" style="margin: 8px 0;">
+                    <span>📥</span> Import Backup
+                </button>
+                <button class="action-btn" onclick="StorageManager.clearAllData()" style="margin: 8px 0; background: var(--danger); color: white;">
+                    <span>🗑️</span> Clear All Data
+                </button>
+            </div>
+
+            <div class="theme-section">
+                <div class="section-title">App Info</div>
+                <div style="background: var(--bg-secondary); padding: 16px; border-radius: 12px; font-size: 12px; color: var(--text-muted); text-align: center;">
+                    <div style="margin-bottom: 8px;"><strong>QuoteFlow Mobile</strong></div>
+                    <div>Business & Medicine Tracker</div>
+                    <div style="margin-top: 8px;">Data stored locally in your browser</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1593,7 +1616,3669 @@
             currentPage: 'quotation',
             lineItemCount: 1,
             selectedTimes: [],
-            editingMedicineId: null
+            editingMedicineId: null,
+            companyData: {
+                name: '',
+                address: '',
+                phone: '',
+                email: ''
+            },
+            customerData: {
+                name: '',
+                address: '',
+                phone: '',
+                email: ''
+            },
+            quotationData: {
+                number: '',
+                date: '',
+                validUntil: '',
+                currency: '
+
+        // Page Management
+        function switchPage(page) {
+            AppState.currentPage = page;
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page + 'Page').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            
+            // Update FAB
+            updateFAB();
+            
+            // Load page data
+            if (page === 'medicine') {
+                loadTodaysOverview();
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function updateFAB() {
+            const fab = document.getElementById('fabBtn');
+            if (AppState.currentPage === 'quotation') {
+                fab.innerHTML = '+';
+            } else {
+                fab.innerHTML = '💊';
+            }
+        }
+
+        function fabAction() {
+            if (AppState.currentPage === 'quotation') {
+                addLineItem();
+            } else {
+                showAddMedicineModal();
+            }
+        }
+
+        // Quotation Management
+        function updateLineItemTotal(lineItem) {
+            const quantity = parseFloat(lineItem.querySelector('.item-quantity').value) || 0;
+            const price = parseFloat(lineItem.querySelector('.item-price').value) || 0;
+            const total = quantity * price;
+            const currency = document.getElementById('currency').value || '$';
+            
+            lineItem.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            const currency = document.getElementById('currency').value || '$';
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                subtotal += quantity * price;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+        }
+
+        function addLineItem() {
+            AppState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${AppState.lineItemCount}</span>
+                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                </div>
+                <div class="item-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
+            
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => updateLineItemTotal(newItem));
+            });
+            
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
+        }
+
+        function removeLineItem(button) {
+            const lineItem = button.closest('.line-item');
+            lineItem.remove();
+            updateGrandTotal();
+        }
+
+        function generateQuotation() {
+            const preview = document.getElementById('quotationPreview');
+            
+            // Company logo
+            if (AppState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = AppState.companyLogo;
+                quotationLogo.classList.add('visible');
+            }
+            
+            // Company details
+            const companyDetails = `
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value || ''}<br>
+                ${document.getElementById('companyPhone').value || ''}<br>
+                ${document.getElementById('companyEmail').value || ''}
+            `;
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Customer details
+            const customerDetails = `
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value || ''}<br>
+                ${document.getElementById('customerPhone').value || ''}<br>
+                ${document.getElementById('customerEmail').value || ''}
+            `;
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Quotation info
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+            document.getElementById('previewDate').textContent = 
+                document.getElementById('quotationDate').value || new Date().toISOString().split('T')[0];
+            document.getElementById('previewValidUntil').textContent = 
+                document.getElementById('validUntil').value || '';
+            
+            // Line items
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0.00';
+                const total = item.querySelector('.item-total').textContent;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${quantity}</td>
+                    <td class="text-right">${price}</td>
+                    <td class="text-right">${total}</td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Notes
+            const notes = document.getElementById('notes').value;
+            if (notes) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
+                        <div style="line-height: 1.6;">${notes}</div>
+                    </div>
+                `;
+            }
+            
+            preview.classList.remove('hidden');
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Logo Management
+        function triggerLogoUpload() {
+            document.getElementById('logoUploadInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const logoData = e.target.result;
+                    AppState.companyLogo = logoData;
+                    
+                    const logoPreview = document.getElementById('logoPreview');
+                    logoPreview.src = logoData;
+                    logoPreview.classList.add('visible');
+                    
+                    document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+                    
+                    // Save to localStorage
+                    StorageManager.saveAppState();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo(event) {
+            event.stopPropagation();
+            AppState.companyLogo = null;
+            
+            const logoPreview = document.getElementById('logoPreview');
+            logoPreview.src = '';
+            logoPreview.classList.remove('visible');
+            
+            document.getElementById('logoRemoveBtn').style.display = 'none';
+            document.getElementById('logoUploadInput').value = '';
+            
+            // Save to localStorage
+            StorageManager.saveAppState();
+        }
+
+        // Medicine Management
+        function addMedicine(name, dosage, instructions, times) {
+            const medicine = {
+                id: Date.now(),
+                name: name,
+                dosage: dosage,
+                instructions: instructions,
+                times: times,
+                createdAt: new Date().toISOString()
+            };
+            
+            AppState.medicines.push(medicine);
+            createTodaysSchedule(medicine);
+            updateMedicineList();
+            loadTodaysOverview();
+            
+            // Save to localStorage
+            StorageManager.saveAppState();
+        }
+
+        function duplicateMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name + ' (Copy)';
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times from original medicine
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>📋</span> Duplicate Medicine';
+                
+                AppState.editingMedicineId = null; // This is a duplication, not an edit
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function editMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name;
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Edit Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Update Medicine';
+                
+                AppState.editingMedicineId = medicineId;
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function updateMedicine(medicineId) {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name || !dosage || AppState.selectedTimes.length === 0) {
+                alert('Please fill all required fields and select at least one time');
+                return;
+            }
+            
+            const medicineIndex = AppState.medicines.findIndex(m => m.id === medicineId);
+            if (medicineIndex >= 0) {
+                AppState.medicines[medicineIndex] = {
+                    ...AppState.medicines[medicineIndex],
+                    name, dosage, instructions,
+                    times: AppState.selectedTimes
+                };
+                
+                // Update today's schedule
+                updateTodaysSchedule(medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            medicine.times.forEach(time => {
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: time,
+                    date: today,
+                    status: 'pending',
+                    actualTime: null,
+                    remark: ''
+                };
+                AppState.medicineLog.push(logEntry);
+            });
+        }
+
+        function updateTodaysSchedule(medicineId) {
+            const today = new Date().toDateString();
+            // Remove old schedule for today
+            AppState.medicineLog = AppState.medicineLog.filter(log => 
+                !(log.medicineId === medicineId && log.date === today)
+            );
+            
+            // Add new schedule
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                createTodaysSchedule(medicine);
+            }
+        }
+
+        function markMedicineTaken(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.status = 'taken';
+                logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        function editMedicineStatus(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                const statuses = ['pending', 'taken', 'missed'];
+                const currentIndex = statuses.indexOf(logEntry.status);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                
+                logEntry.status = statuses[nextIndex];
+                if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        function updateRemark(logId, remark) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.remark = remark;
+                updateMedicineList();
+                updateDailyLog();
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        function editRemark(element, logId) {
+            const currentRemark = AppState.medicineLog.find(log => log.id === logId)?.remark || '';
+            
+            // Create textarea for editing
+            const textarea = document.createElement('textarea');
+            textarea.className = 'remark-input';
+            textarea.value = currentRemark;
+            textarea.placeholder = 'Add your feedback or effects...';
+            
+            // Replace display with input
+            element.style.display = 'none';
+            element.parentNode.appendChild(textarea);
+            textarea.focus();
+            
+            // Save on blur or Enter
+            const saveRemark = () => {
+                const newRemark = textarea.value.trim();
+                updateRemark(logId, newRemark);
+                
+                // Update display
+                if (newRemark) {
+                    element.textContent = newRemark;
+                    element.classList.remove('empty');
+                } else {
+                    element.textContent = 'Tap to add feedback...';
+                    element.classList.add('empty');
+                }
+                
+                // Remove textarea and show display
+                textarea.remove();
+                element.style.display = 'block';
+            };
+            
+            textarea.addEventListener('blur', saveRemark);
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    saveRemark();
+                }
+            });
+        }
+
+        function deleteMedicine(medicineId) {
+            if (confirm('Delete this medicine and all its records?')) {
+                AppState.medicines = AppState.medicines.filter(m => m.id !== medicineId);
+                AppState.medicineLog = AppState.medicineLog.filter(log => log.medicineId !== medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        function updateMedicineList() {
+            const container = document.getElementById('medicineList');
+            container.innerHTML = '';
+            
+            if (AppState.medicines.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                        <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const today = new Date().toDateString();
+            
+            AppState.medicines.forEach(medicine => {
+                const medicineCard = document.createElement('div');
+                medicineCard.className = 'medicine-card';
+                
+                const todaysSchedule = AppState.medicineLog.filter(log => 
+                    log.medicineId === medicine.id && log.date === today
+                );
+                
+                let scheduleHTML = '';
+                todaysSchedule.forEach(log => {
+                    const statusClass = log.status;
+                    const remarkText = log.remark || 'Tap to add feedback...';
+                    const remarkClass = log.remark ? '' : 'empty';
+                    
+                    scheduleHTML += `
+                        <div class="schedule-item">
+                            <div class="schedule-header">
+                                <div class="schedule-time">${log.scheduledTime}</div>
+                                <div class="schedule-status">
+                                    <div class="status-indicator ${statusClass}"></div>
+                                    ${log.status === 'pending' ? 
+                                        `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
+                                        log.status === 'taken' ? 
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
+                                    }
+                                </div>
+                            </div>
+                            <div class="schedule-note">${medicine.instructions}</div>
+                            <div class="remark-section">
+                                <div class="remark-label">Feedback / Effects</div>
+                                <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                medicineCard.innerHTML = `
+                    <div class="medicine-header">
+                        <div class="medicine-info">
+                            <div class="medicine-name">${medicine.name}</div>
+                            <div class="medicine-dosage">${medicine.dosage}</div>
+                            <div class="medicine-instructions">${medicine.instructions}</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate">📋</button>
+                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit">✏️</button>
+                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="medicine-schedule">
+                        ${scheduleHTML}
+                    </div>
+                `;
+                
+                container.appendChild(medicineCard);
+            });
+        }
+
+        function loadTodaysOverview() {
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            const taken = todaysLog.filter(log => log.status === 'taken').length;
+            const pending = todaysLog.filter(log => log.status === 'pending').length;
+            const missed = todaysLog.filter(log => log.status === 'missed').length;
+            
+            document.getElementById('todayTaken').textContent = taken;
+            document.getElementById('todayPending').textContent = pending;
+            document.getElementById('todayMissed').textContent = missed;
+        }
+
+        function updateDailyLog() {
+            const container = document.getElementById('dailyLog');
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            if (todaysLog.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No medicine scheduled for today</div>';
+                return;
+            }
+            
+            const sortedLog = todaysLog.sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime));
+            
+            let logHTML = '';
+            sortedLog.forEach(log => {
+                const statusClass = log.status;
+                const statusText = log.status === 'taken' ? 'Taken' : 
+                                 log.status === 'missed' ? 'Missed' : 'Pending';
+                const remarkText = log.remark || 'No feedback yet';
+                const remarkClass = log.remark ? '' : 'empty';
+                
+                logHTML += `
+                    <div class="log-item">
+                        <div class="log-header">
+                            <div class="log-medicine">
+                                <div class="log-medicine-name">${log.medicineName} (${log.dosage})</div>
+                                <div class="log-medicine-time">Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}</div>
+                            </div>
+                            <div class="log-status ${statusClass}" onclick="editMedicineStatus(${log.id})">
+                                ${statusText}
+                            </div>
+                        </div>
+                        <div class="log-remark">
+                            <div class="remark-label">Feedback</div>
+                            <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = logHTML;
+        }
+
+        // Modal Management
+        function showAddMedicineModal() {
+            AppState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            
+            // Reset modal title
+            document.getElementById('modalTitle').textContent = 'Add Medicine';
+            document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Save Medicine';
+            AppState.editingMedicineId = null;
+            
+            // Reset time slots
+            document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            AppState.editingMedicineId = null;
+        }
+
+        function toggleTimeSlot(button, time) {
+            if (AppState.selectedTimes.includes(time)) {
+                AppState.selectedTimes = AppState.selectedTimes.filter(t => t !== time);
+                button.classList.remove('active');
+            } else {
+                AppState.selectedTimes.push(time);
+                button.classList.add('active');
+            }
+        }
+
+        function addCustomTime() {
+            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
+            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                const timeSlots = document.getElementById('timeSlots');
+                const customBtn = timeSlots.querySelector('button:last-child');
+                
+                const newBtn = document.createElement('button');
+                newBtn.type = 'button';
+                newBtn.className = 'time-input';
+                newBtn.textContent = time;
+                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
+                
+                timeSlots.insertBefore(newBtn, customBtn);
+                toggleTimeSlot(newBtn, time);
+            } else if (time) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
+                return;
+            }
+            
+            if (AppState.editingMedicineId) {
+                // Update existing medicine
+                updateMedicine(AppState.editingMedicineId);
+            } else {
+                // Add new medicine
+                addMedicine(name, dosage, instructions, AppState.selectedTimes);
+            }
+            
+            closeAddMedicineModal();
+        }
+
+        // Theme Management
+        function setThemeMode(mode) {
+            AppState.currentTheme = mode;
+            document.body.setAttribute('data-theme', mode);
+            updateThemeUI();
+            
+            // Save to localStorage
+            StorageManager.saveAppState();
+        }
+
+        function setColorTheme(color) {
+            AppState.currentColor = color;
+            document.body.setAttribute('data-color', color);
+            updateThemeUI();
+            
+            // Save to localStorage
+            StorageManager.saveAppState();
+        }
+
+        function updateThemeUI() {
+            document.querySelectorAll('.mode-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
+            });
+
+            document.querySelectorAll('.color-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
+            });
+        }
+
+        // Form Auto-Save Functions
+        function saveFormData() {
+            // Save company data
+            AppState.companyData = {
+                name: document.getElementById('companyName').value,
+                address: document.getElementById('companyAddress').value,
+                phone: document.getElementById('companyPhone').value,
+                email: document.getElementById('companyEmail').value
+            };
+            
+            // Save customer data
+            AppState.customerData = {
+                name: document.getElementById('customerName').value,
+                address: document.getElementById('customerAddress').value,
+                phone: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail').value
+            };
+            
+            // Save quotation data
+            AppState.quotationData = {
+                number: document.getElementById('quotationNumber').value,
+                date: document.getElementById('quotationDate').value,
+                validUntil: document.getElementById('validUntil').value,
+                currency: document.getElementById('currency').value,
+                notes: document.getElementById('notes').value,
+                taxRate: parseFloat(document.getElementById('taxRate').value) || 0
+            };
+            
+            // Save to localStorage
+            StorageManager.saveAppState();
+        }
+
+        function loadFormData() {
+            // Load company data
+            document.getElementById('companyName').value = AppState.companyData.name || '';
+            document.getElementById('companyAddress').value = AppState.companyData.address || '';
+            document.getElementById('companyPhone').value = AppState.companyData.phone || '';
+            document.getElementById('companyEmail').value = AppState.companyData.email || '';
+            
+            // Load customer data
+            document.getElementById('customerName').value = AppState.customerData.name || '';
+            document.getElementById('customerAddress').value = AppState.customerData.address || '';
+            document.getElementById('customerPhone').value = AppState.customerData.phone || '';
+            document.getElementById('customerEmail').value = AppState.customerData.email || '';
+            
+            // Load quotation data
+            document.getElementById('quotationNumber').value = AppState.quotationData.number || '';
+            document.getElementById('quotationDate').value = AppState.quotationData.date || '';
+            document.getElementById('validUntil').value = AppState.quotationData.validUntil || '';
+            document.getElementById('currency').value = AppState.quotationData.currency || '
+
+        // Drawer Management
+        function toggleDrawer() {
+            const drawer = document.getElementById('settingsDrawer');
+            const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Title Editing
+        function editTitle(type) {
+            const currentTitle = type === 'app-title' ? 
+                document.querySelector('.app-title').textContent :
+                document.querySelector('.app-slogan').textContent;
+                
+            const newTitle = prompt(`Enter new ${type}:`, currentTitle);
+            if (newTitle && newTitle.trim()) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle.trim();
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle.trim();
+                }
+                
+                // Save to localStorage
+                StorageManager.saveAppState();
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+                
+                // Auto-save form data
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #notes, #taxRate')) {
+                    clearTimeout(window.autoSaveTimeout);
+                    window.autoSaveTimeout = setTimeout(saveFormData, 1000); // Save after 1 second of inactivity
+                }
+            });
+            
+            // Auto-save on form blur
+            document.addEventListener('blur', (e) => {
+                if (e.target.matches('#companyName, #companyAddress, #companyPhone, #companyEmail, #customerName, #customerAddress, #customerPhone, #customerEmail, #quotationNumber, #quotationDate, #validUntil, #currency, #notes, #taxRate')) {
+                    saveFormData();
+                }
+            }, true);
+            
+            // Set default dates if not loaded from storage
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            if (!document.getElementById('quotationDate').value) {
+                document.getElementById('quotationDate').value = today;
+            }
+            if (!document.getElementById('validUntil').value) {
+                document.getElementById('validUntil').value = futureString;
+            }
+        }
+
+        // Initialize App
+        function initializeApp() {
+            // Load data from localStorage
+            const appInfo = StorageManager.loadAppState();
+            
+            // Set app title and slogan
+            document.querySelector('.app-title').textContent = appInfo.title;
+            document.querySelector('.app-slogan').textContent = appInfo.slogan;
+            
+            // Apply theme settings
+            document.body.setAttribute('data-theme', AppState.currentTheme);
+            document.body.setAttribute('data-color', AppState.currentColor);
+            
+            // Load form data
+            loadFormData();
+            
+            // Set up event listeners
+            setupEventListeners();
+            updateThemeUI();
+            updateFAB();
+            updateGrandTotal();
+            
+            // Switch to saved page or default
+            switchPage(AppState.currentPage);
+            
+            // Load medicine data
+            loadTodaysOverview();
+            updateMedicineList();
+            updateDailyLog();
+            
+            console.log('QuoteFlow Mobile with Local Storage initialized!');
+            console.log('Loaded medicines:', AppState.medicines.length);
+            console.log('Loaded logs:', AppState.medicineLog.length);
+        }
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>,
+                notes: '',
+                taxRate: 0
+            }
+        };
+
+        // Local Storage Manager
+        const StorageManager = {
+            keys: {
+                medicines: 'quoteflow_medicines',
+                medicineLog: 'quoteflow_medicine_log',
+                companyLogo: 'quoteflow_company_logo',
+                companyData: 'quoteflow_company_data',
+                customerData: 'quoteflow_customer_data',
+                quotationData: 'quoteflow_quotation_data',
+                settings: 'quoteflow_settings',
+                appInfo: 'quoteflow_app_info'
+            },
+
+            save(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                } catch (error) {
+                    console.warn('Failed to save to localStorage:', error);
+                }
+            },
+
+            load(key, defaultValue = null) {
+                try {
+                    const item = localStorage.getItem(key);
+                    return item ? JSON.parse(item) : defaultValue;
+                } catch (error) {
+                    console.warn('Failed to load from localStorage:', error);
+                    return defaultValue;
+                }
+            },
+
+            remove(key) {
+                try {
+                    localStorage.removeItem(key);
+                } catch (error) {
+                    console.warn('Failed to remove from localStorage:', error);
+                }
+            },
+
+            saveAppState() {
+                this.save(this.keys.medicines, AppState.medicines);
+                this.save(this.keys.medicineLog, AppState.medicineLog);
+                this.save(this.keys.companyLogo, AppState.companyLogo);
+                this.save(this.keys.companyData, AppState.companyData);
+                this.save(this.keys.customerData, AppState.customerData);
+                this.save(this.keys.quotationData, AppState.quotationData);
+                this.save(this.keys.settings, {
+                    theme: AppState.currentTheme,
+                    color: AppState.currentColor,
+                    currentPage: AppState.currentPage
+                });
+                this.save(this.keys.appInfo, {
+                    title: document.querySelector('.app-title').textContent,
+                    slogan: document.querySelector('.app-slogan').textContent
+                });
+            },
+
+            loadAppState() {
+                // Load medicines and logs
+                AppState.medicines = this.load(this.keys.medicines, []);
+                AppState.medicineLog = this.load(this.keys.medicineLog, []);
+                
+                // Load company data
+                AppState.companyLogo = this.load(this.keys.companyLogo, null);
+                AppState.companyData = this.load(this.keys.companyData, {
+                    name: '', address: '', phone: '', email: ''
+                });
+                
+                // Load customer data
+                AppState.customerData = this.load(this.keys.customerData, {
+                    name: '', address: '', phone: '', email: ''
+                });
+                
+                // Load quotation data
+                AppState.quotationData = this.load(this.keys.quotationData, {
+                    number: '', date: '', validUntil: '', currency: '
+
+        // Page Management
+        function switchPage(page) {
+            AppState.currentPage = page;
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page + 'Page').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            
+            // Update FAB
+            updateFAB();
+            
+            // Load page data
+            if (page === 'medicine') {
+                loadTodaysOverview();
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function updateFAB() {
+            const fab = document.getElementById('fabBtn');
+            if (AppState.currentPage === 'quotation') {
+                fab.innerHTML = '+';
+            } else {
+                fab.innerHTML = '💊';
+            }
+        }
+
+        function fabAction() {
+            if (AppState.currentPage === 'quotation') {
+                addLineItem();
+            } else {
+                showAddMedicineModal();
+            }
+        }
+
+        // Quotation Management
+        function updateLineItemTotal(lineItem) {
+            const quantity = parseFloat(lineItem.querySelector('.item-quantity').value) || 0;
+            const price = parseFloat(lineItem.querySelector('.item-price').value) || 0;
+            const total = quantity * price;
+            const currency = document.getElementById('currency').value || '$';
+            
+            lineItem.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            const currency = document.getElementById('currency').value || '$';
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                subtotal += quantity * price;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+        }
+
+        function addLineItem() {
+            AppState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${AppState.lineItemCount}</span>
+                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                </div>
+                <div class="item-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
+            
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => updateLineItemTotal(newItem));
+            });
+            
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
+        }
+
+        function removeLineItem(button) {
+            const lineItem = button.closest('.line-item');
+            lineItem.remove();
+            updateGrandTotal();
+        }
+
+        function generateQuotation() {
+            const preview = document.getElementById('quotationPreview');
+            
+            // Company logo
+            if (AppState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = AppState.companyLogo;
+                quotationLogo.classList.add('visible');
+            }
+            
+            // Company details
+            const companyDetails = `
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value || ''}<br>
+                ${document.getElementById('companyPhone').value || ''}<br>
+                ${document.getElementById('companyEmail').value || ''}
+            `;
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Customer details
+            const customerDetails = `
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value || ''}<br>
+                ${document.getElementById('customerPhone').value || ''}<br>
+                ${document.getElementById('customerEmail').value || ''}
+            `;
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Quotation info
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+            document.getElementById('previewDate').textContent = 
+                document.getElementById('quotationDate').value || new Date().toISOString().split('T')[0];
+            document.getElementById('previewValidUntil').textContent = 
+                document.getElementById('validUntil').value || '';
+            
+            // Line items
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0.00';
+                const total = item.querySelector('.item-total').textContent;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${quantity}</td>
+                    <td class="text-right">${price}</td>
+                    <td class="text-right">${total}</td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Notes
+            const notes = document.getElementById('notes').value;
+            if (notes) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
+                        <div style="line-height: 1.6;">${notes}</div>
+                    </div>
+                `;
+            }
+            
+            preview.classList.remove('hidden');
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Logo Management
+        function triggerLogoUpload() {
+            document.getElementById('logoUploadInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const logoData = e.target.result;
+                    AppState.companyLogo = logoData;
+                    
+                    const logoPreview = document.getElementById('logoPreview');
+                    logoPreview.src = logoData;
+                    logoPreview.classList.add('visible');
+                    
+                    document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo(event) {
+            event.stopPropagation();
+            AppState.companyLogo = null;
+            
+            const logoPreview = document.getElementById('logoPreview');
+            logoPreview.src = '';
+            logoPreview.classList.remove('visible');
+            
+            document.getElementById('logoRemoveBtn').style.display = 'none';
+            document.getElementById('logoUploadInput').value = '';
+        }
+
+        // Medicine Management
+        function addMedicine(name, dosage, instructions, times) {
+            const medicine = {
+                id: Date.now(),
+                name: name,
+                dosage: dosage,
+                instructions: instructions,
+                times: times,
+                createdAt: new Date().toISOString()
+            };
+            
+            AppState.medicines.push(medicine);
+            createTodaysSchedule(medicine);
+            updateMedicineList();
+            loadTodaysOverview();
+        }
+
+        function duplicateMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name + ' (Copy)';
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times from original medicine
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>📋</span> Duplicate Medicine';
+                
+                AppState.editingMedicineId = null; // This is a duplication, not an edit
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function editMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name;
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Edit Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Update Medicine';
+                
+                AppState.editingMedicineId = medicineId;
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function updateMedicine(medicineId) {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name || !dosage || AppState.selectedTimes.length === 0) {
+                alert('Please fill all required fields and select at least one time');
+                return;
+            }
+            
+            const medicineIndex = AppState.medicines.findIndex(m => m.id === medicineId);
+            if (medicineIndex >= 0) {
+                AppState.medicines[medicineIndex] = {
+                    ...AppState.medicines[medicineIndex],
+                    name, dosage, instructions,
+                    times: AppState.selectedTimes
+                };
+                
+                // Update today's schedule
+                updateTodaysSchedule(medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+            }
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            medicine.times.forEach(time => {
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: time,
+                    date: today,
+                    status: 'pending',
+                    actualTime: null,
+                    remark: ''
+                };
+                AppState.medicineLog.push(logEntry);
+            });
+        }
+
+        function updateTodaysSchedule(medicineId) {
+            const today = new Date().toDateString();
+            // Remove old schedule for today
+            AppState.medicineLog = AppState.medicineLog.filter(log => 
+                !(log.medicineId === medicineId && log.date === today)
+            );
+            
+            // Add new schedule
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                createTodaysSchedule(medicine);
+            }
+        }
+
+        function markMedicineTaken(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.status = 'taken';
+                logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function editMedicineStatus(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                const statuses = ['pending', 'taken', 'missed'];
+                const currentIndex = statuses.indexOf(logEntry.status);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                
+                logEntry.status = statuses[nextIndex];
+                if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateRemark(logId, remark) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.remark = remark;
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function editRemark(element, logId) {
+            const currentRemark = AppState.medicineLog.find(log => log.id === logId)?.remark || '';
+            
+            // Create textarea for editing
+            const textarea = document.createElement('textarea');
+            textarea.className = 'remark-input';
+            textarea.value = currentRemark;
+            textarea.placeholder = 'Add your feedback or effects...';
+            
+            // Replace display with input
+            element.style.display = 'none';
+            element.parentNode.appendChild(textarea);
+            textarea.focus();
+            
+            // Save on blur or Enter
+            const saveRemark = () => {
+                const newRemark = textarea.value.trim();
+                updateRemark(logId, newRemark);
+                
+                // Update display
+                if (newRemark) {
+                    element.textContent = newRemark;
+                    element.classList.remove('empty');
+                } else {
+                    element.textContent = 'Tap to add feedback...';
+                    element.classList.add('empty');
+                }
+                
+                // Remove textarea and show display
+                textarea.remove();
+                element.style.display = 'block';
+            };
+            
+            textarea.addEventListener('blur', saveRemark);
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    saveRemark();
+                }
+            });
+        }
+
+        function deleteMedicine(medicineId) {
+            if (confirm('Delete this medicine and all its records?')) {
+                AppState.medicines = AppState.medicines.filter(m => m.id !== medicineId);
+                AppState.medicineLog = AppState.medicineLog.filter(log => log.medicineId !== medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateMedicineList() {
+            const container = document.getElementById('medicineList');
+            container.innerHTML = '';
+            
+            if (AppState.medicines.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                        <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const today = new Date().toDateString();
+            
+            AppState.medicines.forEach(medicine => {
+                const medicineCard = document.createElement('div');
+                medicineCard.className = 'medicine-card';
+                
+                const todaysSchedule = AppState.medicineLog.filter(log => 
+                    log.medicineId === medicine.id && log.date === today
+                );
+                
+                let scheduleHTML = '';
+                todaysSchedule.forEach(log => {
+                    const statusClass = log.status;
+                    const remarkText = log.remark || 'Tap to add feedback...';
+                    const remarkClass = log.remark ? '' : 'empty';
+                    
+                    scheduleHTML += `
+                        <div class="schedule-item">
+                            <div class="schedule-header">
+                                <div class="schedule-time">${log.scheduledTime}</div>
+                                <div class="schedule-status">
+                                    <div class="status-indicator ${statusClass}"></div>
+                                    ${log.status === 'pending' ? 
+                                        `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
+                                        log.status === 'taken' ? 
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
+                                    }
+                                </div>
+                            </div>
+                            <div class="schedule-note">${medicine.instructions}</div>
+                            <div class="remark-section">
+                                <div class="remark-label">Feedback / Effects</div>
+                                <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                medicineCard.innerHTML = `
+                    <div class="medicine-header">
+                        <div class="medicine-info">
+                            <div class="medicine-name">${medicine.name}</div>
+                            <div class="medicine-dosage">${medicine.dosage}</div>
+                            <div class="medicine-instructions">${medicine.instructions}</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate">📋</button>
+                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit">✏️</button>
+                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="medicine-schedule">
+                        ${scheduleHTML}
+                    </div>
+                `;
+                
+                container.appendChild(medicineCard);
+            });
+        }
+
+        function loadTodaysOverview() {
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            const taken = todaysLog.filter(log => log.status === 'taken').length;
+            const pending = todaysLog.filter(log => log.status === 'pending').length;
+            const missed = todaysLog.filter(log => log.status === 'missed').length;
+            
+            document.getElementById('todayTaken').textContent = taken;
+            document.getElementById('todayPending').textContent = pending;
+            document.getElementById('todayMissed').textContent = missed;
+        }
+
+        function updateDailyLog() {
+            const container = document.getElementById('dailyLog');
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            if (todaysLog.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No medicine scheduled for today</div>';
+                return;
+            }
+            
+            const sortedLog = todaysLog.sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime));
+            
+            let logHTML = '';
+            sortedLog.forEach(log => {
+                const statusClass = log.status;
+                const statusText = log.status === 'taken' ? 'Taken' : 
+                                 log.status === 'missed' ? 'Missed' : 'Pending';
+                const remarkText = log.remark || 'No feedback yet';
+                const remarkClass = log.remark ? '' : 'empty';
+                
+                logHTML += `
+                    <div class="log-item">
+                        <div class="log-header">
+                            <div class="log-medicine">
+                                <div class="log-medicine-name">${log.medicineName} (${log.dosage})</div>
+                                <div class="log-medicine-time">Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}</div>
+                            </div>
+                            <div class="log-status ${statusClass}" onclick="editMedicineStatus(${log.id})">
+                                ${statusText}
+                            </div>
+                        </div>
+                        <div class="log-remark">
+                            <div class="remark-label">Feedback</div>
+                            <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = logHTML;
+        }
+
+        // Modal Management
+        function showAddMedicineModal() {
+            AppState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            
+            // Reset modal title
+            document.getElementById('modalTitle').textContent = 'Add Medicine';
+            document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Save Medicine';
+            AppState.editingMedicineId = null;
+            
+            // Reset time slots
+            document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            AppState.editingMedicineId = null;
+        }
+
+        function toggleTimeSlot(button, time) {
+            if (AppState.selectedTimes.includes(time)) {
+                AppState.selectedTimes = AppState.selectedTimes.filter(t => t !== time);
+                button.classList.remove('active');
+            } else {
+                AppState.selectedTimes.push(time);
+                button.classList.add('active');
+            }
+        }
+
+        function addCustomTime() {
+            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
+            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                const timeSlots = document.getElementById('timeSlots');
+                const customBtn = timeSlots.querySelector('button:last-child');
+                
+                const newBtn = document.createElement('button');
+                newBtn.type = 'button';
+                newBtn.className = 'time-input';
+                newBtn.textContent = time;
+                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
+                
+                timeSlots.insertBefore(newBtn, customBtn);
+                toggleTimeSlot(newBtn, time);
+            } else if (time) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
+                return;
+            }
+            
+            if (AppState.editingMedicineId) {
+                // Update existing medicine
+                updateMedicine(AppState.editingMedicineId);
+            } else {
+                // Add new medicine
+                addMedicine(name, dosage, instructions, AppState.selectedTimes);
+            }
+            
+            closeAddMedicineModal();
+        }
+
+        // Theme Management
+        function setThemeMode(mode) {
+            AppState.currentTheme = mode;
+            document.body.setAttribute('data-theme', mode);
+            updateThemeUI();
+        }
+
+        function setColorTheme(color) {
+            AppState.currentColor = color;
+            document.body.setAttribute('data-color', color);
+            updateThemeUI();
+        }
+
+        function updateThemeUI() {
+            document.querySelectorAll('.mode-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
+            });
+
+            document.querySelectorAll('.color-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
+            });
+        }
+
+        // Drawer Management
+        function toggleDrawer() {
+            const drawer = document.getElementById('settingsDrawer');
+            const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Title Editing
+        function editTitle(type) {
+            // Simple title editing - you can enhance this
+            const newTitle = prompt(`Enter new ${type}:`);
+            if (newTitle) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle;
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle;
+                }
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureString;
+        }
+
+        // Initialize App
+        function initializeApp() {
+            setupEventListeners();
+            updateThemeUI();
+            updateFAB();
+            updateGrandTotal();
+            loadTodaysOverview();
+            updateMedicineList();
+            updateDailyLog();
+            
+            console.log('QuoteFlow Mobile with Medicine Duplication & Remarks initialized!');
+        }
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>, notes: '', taxRate: 0
+                });
+                
+                // Load settings
+                const settings = this.load(this.keys.settings, {
+                    theme: 'light', color: 'blue', currentPage: 'quotation'
+                });
+                AppState.currentTheme = settings.theme;
+                AppState.currentColor = settings.color;
+                AppState.currentPage = settings.currentPage;
+                
+                // Load app info
+                const appInfo = this.load(this.keys.appInfo, {
+                    title: 'QuoteFlow',
+                    slogan: 'Business & Medicine Tracker'
+                });
+                
+                return appInfo;
+            },
+
+            clearAllData() {
+                if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                    Object.values(this.keys).forEach(key => this.remove(key));
+                    location.reload();
+                }
+            },
+
+            exportData() {
+                const data = {
+                    medicines: AppState.medicines,
+                    medicineLog: AppState.medicineLog,
+                    companyData: AppState.companyData,
+                    customerData: AppState.customerData,
+                    quotationData: AppState.quotationData,
+                    settings: {
+                        theme: AppState.currentTheme,
+                        color: AppState.currentColor
+                    },
+                    exportDate: new Date().toISOString()
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                    type: 'application/json'
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `quoteflow-backup-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+
+            importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        
+                        if (confirm('This will replace all current data. Continue?')) {
+                            // Restore data
+                            AppState.medicines = data.medicines || [];
+                            AppState.medicineLog = data.medicineLog || [];
+                            AppState.companyData = data.companyData || {};
+                            AppState.customerData = data.customerData || {};
+                            AppState.quotationData = data.quotationData || {};
+                            
+                            if (data.settings) {
+                                AppState.currentTheme = data.settings.theme || 'light';
+                                AppState.currentColor = data.settings.color || 'blue';
+                            }
+                            
+                            // Save to localStorage
+                            this.saveAppState();
+                            
+                            // Refresh the app
+                            location.reload();
+                        }
+                    } catch (error) {
+                        alert('Invalid backup file format');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+
+        // Page Management
+        function switchPage(page) {
+            AppState.currentPage = page;
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page + 'Page').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            
+            // Update FAB
+            updateFAB();
+            
+            // Load page data
+            if (page === 'medicine') {
+                loadTodaysOverview();
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function updateFAB() {
+            const fab = document.getElementById('fabBtn');
+            if (AppState.currentPage === 'quotation') {
+                fab.innerHTML = '+';
+            } else {
+                fab.innerHTML = '💊';
+            }
+        }
+
+        function fabAction() {
+            if (AppState.currentPage === 'quotation') {
+                addLineItem();
+            } else {
+                showAddMedicineModal();
+            }
+        }
+
+        // Quotation Management
+        function updateLineItemTotal(lineItem) {
+            const quantity = parseFloat(lineItem.querySelector('.item-quantity').value) || 0;
+            const price = parseFloat(lineItem.querySelector('.item-price').value) || 0;
+            const total = quantity * price;
+            const currency = document.getElementById('currency').value || '$';
+            
+            lineItem.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            const currency = document.getElementById('currency').value || '$';
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                subtotal += quantity * price;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+        }
+
+        function addLineItem() {
+            AppState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${AppState.lineItemCount}</span>
+                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                </div>
+                <div class="item-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
+            
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => updateLineItemTotal(newItem));
+            });
+            
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
+        }
+
+        function removeLineItem(button) {
+            const lineItem = button.closest('.line-item');
+            lineItem.remove();
+            updateGrandTotal();
+        }
+
+        function generateQuotation() {
+            const preview = document.getElementById('quotationPreview');
+            
+            // Company logo
+            if (AppState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = AppState.companyLogo;
+                quotationLogo.classList.add('visible');
+            }
+            
+            // Company details
+            const companyDetails = `
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value || ''}<br>
+                ${document.getElementById('companyPhone').value || ''}<br>
+                ${document.getElementById('companyEmail').value || ''}
+            `;
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Customer details
+            const customerDetails = `
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value || ''}<br>
+                ${document.getElementById('customerPhone').value || ''}<br>
+                ${document.getElementById('customerEmail').value || ''}
+            `;
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Quotation info
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+            document.getElementById('previewDate').textContent = 
+                document.getElementById('quotationDate').value || new Date().toISOString().split('T')[0];
+            document.getElementById('previewValidUntil').textContent = 
+                document.getElementById('validUntil').value || '';
+            
+            // Line items
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0.00';
+                const total = item.querySelector('.item-total').textContent;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${quantity}</td>
+                    <td class="text-right">${price}</td>
+                    <td class="text-right">${total}</td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Notes
+            const notes = document.getElementById('notes').value;
+            if (notes) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
+                        <div style="line-height: 1.6;">${notes}</div>
+                    </div>
+                `;
+            }
+            
+            preview.classList.remove('hidden');
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Logo Management
+        function triggerLogoUpload() {
+            document.getElementById('logoUploadInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const logoData = e.target.result;
+                    AppState.companyLogo = logoData;
+                    
+                    const logoPreview = document.getElementById('logoPreview');
+                    logoPreview.src = logoData;
+                    logoPreview.classList.add('visible');
+                    
+                    document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo(event) {
+            event.stopPropagation();
+            AppState.companyLogo = null;
+            
+            const logoPreview = document.getElementById('logoPreview');
+            logoPreview.src = '';
+            logoPreview.classList.remove('visible');
+            
+            document.getElementById('logoRemoveBtn').style.display = 'none';
+            document.getElementById('logoUploadInput').value = '';
+        }
+
+        // Medicine Management
+        function addMedicine(name, dosage, instructions, times) {
+            const medicine = {
+                id: Date.now(),
+                name: name,
+                dosage: dosage,
+                instructions: instructions,
+                times: times,
+                createdAt: new Date().toISOString()
+            };
+            
+            AppState.medicines.push(medicine);
+            createTodaysSchedule(medicine);
+            updateMedicineList();
+            loadTodaysOverview();
+        }
+
+        function duplicateMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name + ' (Copy)';
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times from original medicine
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>📋</span> Duplicate Medicine';
+                
+                AppState.editingMedicineId = null; // This is a duplication, not an edit
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function editMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name;
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Edit Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Update Medicine';
+                
+                AppState.editingMedicineId = medicineId;
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function updateMedicine(medicineId) {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name || !dosage || AppState.selectedTimes.length === 0) {
+                alert('Please fill all required fields and select at least one time');
+                return;
+            }
+            
+            const medicineIndex = AppState.medicines.findIndex(m => m.id === medicineId);
+            if (medicineIndex >= 0) {
+                AppState.medicines[medicineIndex] = {
+                    ...AppState.medicines[medicineIndex],
+                    name, dosage, instructions,
+                    times: AppState.selectedTimes
+                };
+                
+                // Update today's schedule
+                updateTodaysSchedule(medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+            }
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            medicine.times.forEach(time => {
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: time,
+                    date: today,
+                    status: 'pending',
+                    actualTime: null,
+                    remark: ''
+                };
+                AppState.medicineLog.push(logEntry);
+            });
+        }
+
+        function updateTodaysSchedule(medicineId) {
+            const today = new Date().toDateString();
+            // Remove old schedule for today
+            AppState.medicineLog = AppState.medicineLog.filter(log => 
+                !(log.medicineId === medicineId && log.date === today)
+            );
+            
+            // Add new schedule
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                createTodaysSchedule(medicine);
+            }
+        }
+
+        function markMedicineTaken(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.status = 'taken';
+                logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function editMedicineStatus(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                const statuses = ['pending', 'taken', 'missed'];
+                const currentIndex = statuses.indexOf(logEntry.status);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                
+                logEntry.status = statuses[nextIndex];
+                if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateRemark(logId, remark) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.remark = remark;
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function editRemark(element, logId) {
+            const currentRemark = AppState.medicineLog.find(log => log.id === logId)?.remark || '';
+            
+            // Create textarea for editing
+            const textarea = document.createElement('textarea');
+            textarea.className = 'remark-input';
+            textarea.value = currentRemark;
+            textarea.placeholder = 'Add your feedback or effects...';
+            
+            // Replace display with input
+            element.style.display = 'none';
+            element.parentNode.appendChild(textarea);
+            textarea.focus();
+            
+            // Save on blur or Enter
+            const saveRemark = () => {
+                const newRemark = textarea.value.trim();
+                updateRemark(logId, newRemark);
+                
+                // Update display
+                if (newRemark) {
+                    element.textContent = newRemark;
+                    element.classList.remove('empty');
+                } else {
+                    element.textContent = 'Tap to add feedback...';
+                    element.classList.add('empty');
+                }
+                
+                // Remove textarea and show display
+                textarea.remove();
+                element.style.display = 'block';
+            };
+            
+            textarea.addEventListener('blur', saveRemark);
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    saveRemark();
+                }
+            });
+        }
+
+        function deleteMedicine(medicineId) {
+            if (confirm('Delete this medicine and all its records?')) {
+                AppState.medicines = AppState.medicines.filter(m => m.id !== medicineId);
+                AppState.medicineLog = AppState.medicineLog.filter(log => log.medicineId !== medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateMedicineList() {
+            const container = document.getElementById('medicineList');
+            container.innerHTML = '';
+            
+            if (AppState.medicines.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                        <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const today = new Date().toDateString();
+            
+            AppState.medicines.forEach(medicine => {
+                const medicineCard = document.createElement('div');
+                medicineCard.className = 'medicine-card';
+                
+                const todaysSchedule = AppState.medicineLog.filter(log => 
+                    log.medicineId === medicine.id && log.date === today
+                );
+                
+                let scheduleHTML = '';
+                todaysSchedule.forEach(log => {
+                    const statusClass = log.status;
+                    const remarkText = log.remark || 'Tap to add feedback...';
+                    const remarkClass = log.remark ? '' : 'empty';
+                    
+                    scheduleHTML += `
+                        <div class="schedule-item">
+                            <div class="schedule-header">
+                                <div class="schedule-time">${log.scheduledTime}</div>
+                                <div class="schedule-status">
+                                    <div class="status-indicator ${statusClass}"></div>
+                                    ${log.status === 'pending' ? 
+                                        `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
+                                        log.status === 'taken' ? 
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
+                                    }
+                                </div>
+                            </div>
+                            <div class="schedule-note">${medicine.instructions}</div>
+                            <div class="remark-section">
+                                <div class="remark-label">Feedback / Effects</div>
+                                <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                medicineCard.innerHTML = `
+                    <div class="medicine-header">
+                        <div class="medicine-info">
+                            <div class="medicine-name">${medicine.name}</div>
+                            <div class="medicine-dosage">${medicine.dosage}</div>
+                            <div class="medicine-instructions">${medicine.instructions}</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate">📋</button>
+                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit">✏️</button>
+                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="medicine-schedule">
+                        ${scheduleHTML}
+                    </div>
+                `;
+                
+                container.appendChild(medicineCard);
+            });
+        }
+
+        function loadTodaysOverview() {
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            const taken = todaysLog.filter(log => log.status === 'taken').length;
+            const pending = todaysLog.filter(log => log.status === 'pending').length;
+            const missed = todaysLog.filter(log => log.status === 'missed').length;
+            
+            document.getElementById('todayTaken').textContent = taken;
+            document.getElementById('todayPending').textContent = pending;
+            document.getElementById('todayMissed').textContent = missed;
+        }
+
+        function updateDailyLog() {
+            const container = document.getElementById('dailyLog');
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            if (todaysLog.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No medicine scheduled for today</div>';
+                return;
+            }
+            
+            const sortedLog = todaysLog.sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime));
+            
+            let logHTML = '';
+            sortedLog.forEach(log => {
+                const statusClass = log.status;
+                const statusText = log.status === 'taken' ? 'Taken' : 
+                                 log.status === 'missed' ? 'Missed' : 'Pending';
+                const remarkText = log.remark || 'No feedback yet';
+                const remarkClass = log.remark ? '' : 'empty';
+                
+                logHTML += `
+                    <div class="log-item">
+                        <div class="log-header">
+                            <div class="log-medicine">
+                                <div class="log-medicine-name">${log.medicineName} (${log.dosage})</div>
+                                <div class="log-medicine-time">Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}</div>
+                            </div>
+                            <div class="log-status ${statusClass}" onclick="editMedicineStatus(${log.id})">
+                                ${statusText}
+                            </div>
+                        </div>
+                        <div class="log-remark">
+                            <div class="remark-label">Feedback</div>
+                            <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = logHTML;
+        }
+
+        // Modal Management
+        function showAddMedicineModal() {
+            AppState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            
+            // Reset modal title
+            document.getElementById('modalTitle').textContent = 'Add Medicine';
+            document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Save Medicine';
+            AppState.editingMedicineId = null;
+            
+            // Reset time slots
+            document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            AppState.editingMedicineId = null;
+        }
+
+        function toggleTimeSlot(button, time) {
+            if (AppState.selectedTimes.includes(time)) {
+                AppState.selectedTimes = AppState.selectedTimes.filter(t => t !== time);
+                button.classList.remove('active');
+            } else {
+                AppState.selectedTimes.push(time);
+                button.classList.add('active');
+            }
+        }
+
+        function addCustomTime() {
+            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
+            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                const timeSlots = document.getElementById('timeSlots');
+                const customBtn = timeSlots.querySelector('button:last-child');
+                
+                const newBtn = document.createElement('button');
+                newBtn.type = 'button';
+                newBtn.className = 'time-input';
+                newBtn.textContent = time;
+                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
+                
+                timeSlots.insertBefore(newBtn, customBtn);
+                toggleTimeSlot(newBtn, time);
+            } else if (time) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
+                return;
+            }
+            
+            if (AppState.editingMedicineId) {
+                // Update existing medicine
+                updateMedicine(AppState.editingMedicineId);
+            } else {
+                // Add new medicine
+                addMedicine(name, dosage, instructions, AppState.selectedTimes);
+            }
+            
+            closeAddMedicineModal();
+        }
+
+        // Theme Management
+        function setThemeMode(mode) {
+            AppState.currentTheme = mode;
+            document.body.setAttribute('data-theme', mode);
+            updateThemeUI();
+        }
+
+        function setColorTheme(color) {
+            AppState.currentColor = color;
+            document.body.setAttribute('data-color', color);
+            updateThemeUI();
+        }
+
+        function updateThemeUI() {
+            document.querySelectorAll('.mode-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
+            });
+
+            document.querySelectorAll('.color-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
+            });
+        }
+
+        // Drawer Management
+        function toggleDrawer() {
+            const drawer = document.getElementById('settingsDrawer');
+            const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Title Editing
+        function editTitle(type) {
+            // Simple title editing - you can enhance this
+            const newTitle = prompt(`Enter new ${type}:`);
+            if (newTitle) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle;
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle;
+                }
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureString;
+        }
+
+        // Initialize App
+        function initializeApp() {
+            setupEventListeners();
+            updateThemeUI();
+            updateFAB();
+            updateGrandTotal();
+            loadTodaysOverview();
+            updateMedicineList();
+            updateDailyLog();
+            
+            console.log('QuoteFlow Mobile with Medicine Duplication & Remarks initialized!');
+        }
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>;
+            document.getElementById('notes').value = AppState.quotationData.notes || '';
+            document.getElementById('taxRate').value = AppState.quotationData.taxRate || 0;
+            
+            // Load company logo
+            if (AppState.companyLogo) {
+                const logoPreview = document.getElementById('logoPreview');
+                logoPreview.src = AppState.companyLogo;
+                logoPreview.classList.add('visible');
+                document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+            }
+        }
+
+        // Drawer Management
+        function toggleDrawer() {
+            const drawer = document.getElementById('settingsDrawer');
+            const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Title Editing
+        function editTitle(type) {
+            // Simple title editing - you can enhance this
+            const newTitle = prompt(`Enter new ${type}:`);
+            if (newTitle) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle;
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle;
+                }
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureString;
+        }
+
+        // Initialize App
+        function initializeApp() {
+            setupEventListeners();
+            updateThemeUI();
+            updateFAB();
+            updateGrandTotal();
+            loadTodaysOverview();
+            updateMedicineList();
+            updateDailyLog();
+            
+            console.log('QuoteFlow Mobile with Medicine Duplication & Remarks initialized!');
+        }
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>,
+                notes: '',
+                taxRate: 0
+            }
+        };
+
+        // Local Storage Manager
+        const StorageManager = {
+            keys: {
+                medicines: 'quoteflow_medicines',
+                medicineLog: 'quoteflow_medicine_log',
+                companyLogo: 'quoteflow_company_logo',
+                companyData: 'quoteflow_company_data',
+                customerData: 'quoteflow_customer_data',
+                quotationData: 'quoteflow_quotation_data',
+                settings: 'quoteflow_settings',
+                appInfo: 'quoteflow_app_info'
+            },
+
+            save(key, data) {
+                try {
+                    localStorage.setItem(key, JSON.stringify(data));
+                } catch (error) {
+                    console.warn('Failed to save to localStorage:', error);
+                }
+            },
+
+            load(key, defaultValue = null) {
+                try {
+                    const item = localStorage.getItem(key);
+                    return item ? JSON.parse(item) : defaultValue;
+                } catch (error) {
+                    console.warn('Failed to load from localStorage:', error);
+                    return defaultValue;
+                }
+            },
+
+            remove(key) {
+                try {
+                    localStorage.removeItem(key);
+                } catch (error) {
+                    console.warn('Failed to remove from localStorage:', error);
+                }
+            },
+
+            saveAppState() {
+                this.save(this.keys.medicines, AppState.medicines);
+                this.save(this.keys.medicineLog, AppState.medicineLog);
+                this.save(this.keys.companyLogo, AppState.companyLogo);
+                this.save(this.keys.companyData, AppState.companyData);
+                this.save(this.keys.customerData, AppState.customerData);
+                this.save(this.keys.quotationData, AppState.quotationData);
+                this.save(this.keys.settings, {
+                    theme: AppState.currentTheme,
+                    color: AppState.currentColor,
+                    currentPage: AppState.currentPage
+                });
+                this.save(this.keys.appInfo, {
+                    title: document.querySelector('.app-title').textContent,
+                    slogan: document.querySelector('.app-slogan').textContent
+                });
+            },
+
+            loadAppState() {
+                // Load medicines and logs
+                AppState.medicines = this.load(this.keys.medicines, []);
+                AppState.medicineLog = this.load(this.keys.medicineLog, []);
+                
+                // Load company data
+                AppState.companyLogo = this.load(this.keys.companyLogo, null);
+                AppState.companyData = this.load(this.keys.companyData, {
+                    name: '', address: '', phone: '', email: ''
+                });
+                
+                // Load customer data
+                AppState.customerData = this.load(this.keys.customerData, {
+                    name: '', address: '', phone: '', email: ''
+                });
+                
+                // Load quotation data
+                AppState.quotationData = this.load(this.keys.quotationData, {
+                    number: '', date: '', validUntil: '', currency: '
+
+        // Page Management
+        function switchPage(page) {
+            AppState.currentPage = page;
+            
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(page + 'Page').classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            
+            // Update FAB
+            updateFAB();
+            
+            // Load page data
+            if (page === 'medicine') {
+                loadTodaysOverview();
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function updateFAB() {
+            const fab = document.getElementById('fabBtn');
+            if (AppState.currentPage === 'quotation') {
+                fab.innerHTML = '+';
+            } else {
+                fab.innerHTML = '💊';
+            }
+        }
+
+        function fabAction() {
+            if (AppState.currentPage === 'quotation') {
+                addLineItem();
+            } else {
+                showAddMedicineModal();
+            }
+        }
+
+        // Quotation Management
+        function updateLineItemTotal(lineItem) {
+            const quantity = parseFloat(lineItem.querySelector('.item-quantity').value) || 0;
+            const price = parseFloat(lineItem.querySelector('.item-price').value) || 0;
+            const total = quantity * price;
+            const currency = document.getElementById('currency').value || '$';
+            
+            lineItem.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            const currency = document.getElementById('currency').value || '$';
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                subtotal += quantity * price;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+        }
+
+        function addLineItem() {
+            AppState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${AppState.lineItemCount}</span>
+                    <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                </div>
+                <div class="item-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
+            
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const quantityInput = newItem.querySelector('.item-quantity');
+            const priceInput = newItem.querySelector('.item-price');
+            
+            [quantityInput, priceInput].forEach(input => {
+                input.addEventListener('input', () => updateLineItemTotal(newItem));
+            });
+            
+            // Focus on description
+            newItem.querySelector('.item-description').focus();
+        }
+
+        function removeLineItem(button) {
+            const lineItem = button.closest('.line-item');
+            lineItem.remove();
+            updateGrandTotal();
+        }
+
+        function generateQuotation() {
+            const preview = document.getElementById('quotationPreview');
+            
+            // Company logo
+            if (AppState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = AppState.companyLogo;
+                quotationLogo.classList.add('visible');
+            }
+            
+            // Company details
+            const companyDetails = `
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value || ''}<br>
+                ${document.getElementById('companyPhone').value || ''}<br>
+                ${document.getElementById('companyEmail').value || ''}
+            `;
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Customer details
+            const customerDetails = `
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value || ''}<br>
+                ${document.getElementById('customerPhone').value || ''}<br>
+                ${document.getElementById('customerEmail').value || ''}
+            `;
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Quotation info
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+            document.getElementById('previewDate').textContent = 
+                document.getElementById('quotationDate').value || new Date().toISOString().split('T')[0];
+            document.getElementById('previewValidUntil').textContent = 
+                document.getElementById('validUntil').value || '';
+            
+            // Line items
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0.00';
+                const total = item.querySelector('.item-total').textContent;
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${description}</td>
+                    <td>${quantity}</td>
+                    <td class="text-right">${price}</td>
+                    <td class="text-right">${total}</td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Notes
+            const notes = document.getElementById('notes').value;
+            if (notes) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <div style="margin-top: 24px;">
+                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
+                        <div style="line-height: 1.6;">${notes}</div>
+                    </div>
+                `;
+            }
+            
+            preview.classList.remove('hidden');
+            preview.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Logo Management
+        function triggerLogoUpload() {
+            document.getElementById('logoUploadInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const logoData = e.target.result;
+                    AppState.companyLogo = logoData;
+                    
+                    const logoPreview = document.getElementById('logoPreview');
+                    logoPreview.src = logoData;
+                    logoPreview.classList.add('visible');
+                    
+                    document.getElementById('logoRemoveBtn').style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeLogo(event) {
+            event.stopPropagation();
+            AppState.companyLogo = null;
+            
+            const logoPreview = document.getElementById('logoPreview');
+            logoPreview.src = '';
+            logoPreview.classList.remove('visible');
+            
+            document.getElementById('logoRemoveBtn').style.display = 'none';
+            document.getElementById('logoUploadInput').value = '';
+        }
+
+        // Medicine Management
+        function addMedicine(name, dosage, instructions, times) {
+            const medicine = {
+                id: Date.now(),
+                name: name,
+                dosage: dosage,
+                instructions: instructions,
+                times: times,
+                createdAt: new Date().toISOString()
+            };
+            
+            AppState.medicines.push(medicine);
+            createTodaysSchedule(medicine);
+            updateMedicineList();
+            loadTodaysOverview();
+        }
+
+        function duplicateMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name + ' (Copy)';
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times from original medicine
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>📋</span> Duplicate Medicine';
+                
+                AppState.editingMedicineId = null; // This is a duplication, not an edit
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function editMedicine(medicineId) {
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                // Pre-fill form with existing data
+                document.getElementById('medicineName').value = medicine.name;
+                document.getElementById('medicineDosage').value = medicine.dosage;
+                document.getElementById('medicineInstructions').value = medicine.instructions;
+                
+                // Set selected times
+                AppState.selectedTimes = [...medicine.times];
+                document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                    const time = btn.textContent;
+                    if (AppState.selectedTimes.includes(time)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Change modal title
+                document.getElementById('modalTitle').textContent = 'Edit Medicine';
+                document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Update Medicine';
+                
+                AppState.editingMedicineId = medicineId;
+                
+                showAddMedicineModal();
+            }
+        }
+
+        function updateMedicine(medicineId) {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name || !dosage || AppState.selectedTimes.length === 0) {
+                alert('Please fill all required fields and select at least one time');
+                return;
+            }
+            
+            const medicineIndex = AppState.medicines.findIndex(m => m.id === medicineId);
+            if (medicineIndex >= 0) {
+                AppState.medicines[medicineIndex] = {
+                    ...AppState.medicines[medicineIndex],
+                    name, dosage, instructions,
+                    times: AppState.selectedTimes
+                };
+                
+                // Update today's schedule
+                updateTodaysSchedule(medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+            }
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            medicine.times.forEach(time => {
+                const logEntry = {
+                    id: Date.now() + Math.random(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: time,
+                    date: today,
+                    status: 'pending',
+                    actualTime: null,
+                    remark: ''
+                };
+                AppState.medicineLog.push(logEntry);
+            });
+        }
+
+        function updateTodaysSchedule(medicineId) {
+            const today = new Date().toDateString();
+            // Remove old schedule for today
+            AppState.medicineLog = AppState.medicineLog.filter(log => 
+                !(log.medicineId === medicineId && log.date === today)
+            );
+            
+            // Add new schedule
+            const medicine = AppState.medicines.find(m => m.id === medicineId);
+            if (medicine) {
+                createTodaysSchedule(medicine);
+            }
+        }
+
+        function markMedicineTaken(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.status = 'taken';
+                logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function editMedicineStatus(logId) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                const statuses = ['pending', 'taken', 'missed'];
+                const currentIndex = statuses.indexOf(logEntry.status);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                
+                logEntry.status = statuses[nextIndex];
+                if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateRemark(logId, remark) {
+            const logEntry = AppState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.remark = remark;
+                updateMedicineList();
+                updateDailyLog();
+            }
+        }
+
+        function editRemark(element, logId) {
+            const currentRemark = AppState.medicineLog.find(log => log.id === logId)?.remark || '';
+            
+            // Create textarea for editing
+            const textarea = document.createElement('textarea');
+            textarea.className = 'remark-input';
+            textarea.value = currentRemark;
+            textarea.placeholder = 'Add your feedback or effects...';
+            
+            // Replace display with input
+            element.style.display = 'none';
+            element.parentNode.appendChild(textarea);
+            textarea.focus();
+            
+            // Save on blur or Enter
+            const saveRemark = () => {
+                const newRemark = textarea.value.trim();
+                updateRemark(logId, newRemark);
+                
+                // Update display
+                if (newRemark) {
+                    element.textContent = newRemark;
+                    element.classList.remove('empty');
+                } else {
+                    element.textContent = 'Tap to add feedback...';
+                    element.classList.add('empty');
+                }
+                
+                // Remove textarea and show display
+                textarea.remove();
+                element.style.display = 'block';
+            };
+            
+            textarea.addEventListener('blur', saveRemark);
+            textarea.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    saveRemark();
+                }
+            });
+        }
+
+        function deleteMedicine(medicineId) {
+            if (confirm('Delete this medicine and all its records?')) {
+                AppState.medicines = AppState.medicines.filter(m => m.id !== medicineId);
+                AppState.medicineLog = AppState.medicineLog.filter(log => log.medicineId !== medicineId);
+                updateMedicineList();
+                loadTodaysOverview();
+                updateDailyLog();
+            }
+        }
+
+        function updateMedicineList() {
+            const container = document.getElementById('medicineList');
+            container.innerHTML = '';
+            
+            if (AppState.medicines.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                        <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                        <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const today = new Date().toDateString();
+            
+            AppState.medicines.forEach(medicine => {
+                const medicineCard = document.createElement('div');
+                medicineCard.className = 'medicine-card';
+                
+                const todaysSchedule = AppState.medicineLog.filter(log => 
+                    log.medicineId === medicine.id && log.date === today
+                );
+                
+                let scheduleHTML = '';
+                todaysSchedule.forEach(log => {
+                    const statusClass = log.status;
+                    const remarkText = log.remark || 'Tap to add feedback...';
+                    const remarkClass = log.remark ? '' : 'empty';
+                    
+                    scheduleHTML += `
+                        <div class="schedule-item">
+                            <div class="schedule-header">
+                                <div class="schedule-time">${log.scheduledTime}</div>
+                                <div class="schedule-status">
+                                    <div class="status-indicator ${statusClass}"></div>
+                                    ${log.status === 'pending' ? 
+                                        `<button class="take-btn pending" onclick="markMedicineTaken(${log.id})">Take</button>` :
+                                        log.status === 'taken' ? 
+                                        `<span style="font-size: 12px; color: var(--success);">✓ ${log.actualTime || 'Taken'}</span>` :
+                                        `<button class="take-btn missed" onclick="markMedicineTaken(${log.id})">Mark Taken</button>`
+                                    }
+                                </div>
+                            </div>
+                            <div class="schedule-note">${medicine.instructions}</div>
+                            <div class="remark-section">
+                                <div class="remark-label">Feedback / Effects</div>
+                                <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                medicineCard.innerHTML = `
+                    <div class="medicine-header">
+                        <div class="medicine-info">
+                            <div class="medicine-name">${medicine.name}</div>
+                            <div class="medicine-dosage">${medicine.dosage}</div>
+                            <div class="medicine-instructions">${medicine.instructions}</div>
+                        </div>
+                        <div class="medicine-actions">
+                            <button class="medicine-btn duplicate-medicine" onclick="duplicateMedicine(${medicine.id})" title="Duplicate">📋</button>
+                            <button class="medicine-btn edit-medicine" onclick="editMedicine(${medicine.id})" title="Edit">✏️</button>
+                            <button class="medicine-btn delete-medicine" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="medicine-schedule">
+                        ${scheduleHTML}
+                    </div>
+                `;
+                
+                container.appendChild(medicineCard);
+            });
+        }
+
+        function loadTodaysOverview() {
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            const taken = todaysLog.filter(log => log.status === 'taken').length;
+            const pending = todaysLog.filter(log => log.status === 'pending').length;
+            const missed = todaysLog.filter(log => log.status === 'missed').length;
+            
+            document.getElementById('todayTaken').textContent = taken;
+            document.getElementById('todayPending').textContent = pending;
+            document.getElementById('todayMissed').textContent = missed;
+        }
+
+        function updateDailyLog() {
+            const container = document.getElementById('dailyLog');
+            const today = new Date().toDateString();
+            const todaysLog = AppState.medicineLog.filter(log => log.date === today);
+            
+            if (todaysLog.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No medicine scheduled for today</div>';
+                return;
+            }
+            
+            const sortedLog = todaysLog.sort((a, b) => a.scheduledTime.localeCompare(b.scheduledTime));
+            
+            let logHTML = '';
+            sortedLog.forEach(log => {
+                const statusClass = log.status;
+                const statusText = log.status === 'taken' ? 'Taken' : 
+                                 log.status === 'missed' ? 'Missed' : 'Pending';
+                const remarkText = log.remark || 'No feedback yet';
+                const remarkClass = log.remark ? '' : 'empty';
+                
+                logHTML += `
+                    <div class="log-item">
+                        <div class="log-header">
+                            <div class="log-medicine">
+                                <div class="log-medicine-name">${log.medicineName} (${log.dosage})</div>
+                                <div class="log-medicine-time">Scheduled: ${log.scheduledTime}${log.actualTime ? ` | Taken: ${log.actualTime}` : ''}</div>
+                            </div>
+                            <div class="log-status ${statusClass}" onclick="editMedicineStatus(${log.id})">
+                                ${statusText}
+                            </div>
+                        </div>
+                        <div class="log-remark">
+                            <div class="remark-label">Feedback</div>
+                            <div class="remark-display ${remarkClass}" onclick="editRemark(this, ${log.id})">${remarkText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = logHTML;
+        }
+
+        // Modal Management
+        function showAddMedicineModal() {
+            AppState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            
+            // Reset modal title
+            document.getElementById('modalTitle').textContent = 'Add Medicine';
+            document.getElementById('saveMedicineBtn').innerHTML = '<span>💾</span> Save Medicine';
+            AppState.editingMedicineId = null;
+            
+            // Reset time slots
+            document.querySelectorAll('#timeSlots .time-input').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+            document.getElementById('overlay').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+            AppState.editingMedicineId = null;
+        }
+
+        function toggleTimeSlot(button, time) {
+            if (AppState.selectedTimes.includes(time)) {
+                AppState.selectedTimes = AppState.selectedTimes.filter(t => t !== time);
+                button.classList.remove('active');
+            } else {
+                AppState.selectedTimes.push(time);
+                button.classList.add('active');
+            }
+        }
+
+        function addCustomTime() {
+            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
+            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
+                const timeSlots = document.getElementById('timeSlots');
+                const customBtn = timeSlots.querySelector('button:last-child');
+                
+                const newBtn = document.createElement('button');
+                newBtn.type = 'button';
+                newBtn.className = 'time-input';
+                newBtn.textContent = time;
+                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
+                
+                timeSlots.insertBefore(newBtn, customBtn);
+                toggleTimeSlot(newBtn, time);
+            } else if (time) {
+                alert('Please enter time in HH:MM format (e.g., 14:30)');
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
+            
+            if (!name) {
+                alert('Please enter medicine name');
+                return;
+            }
+            
+            if (!dosage) {
+                alert('Please enter dosage');
+                return;
+            }
+            
+            if (AppState.selectedTimes.length === 0) {
+                alert('Please select at least one time');
+                return;
+            }
+            
+            if (AppState.editingMedicineId) {
+                // Update existing medicine
+                updateMedicine(AppState.editingMedicineId);
+            } else {
+                // Add new medicine
+                addMedicine(name, dosage, instructions, AppState.selectedTimes);
+            }
+            
+            closeAddMedicineModal();
+        }
+
+        // Theme Management
+        function setThemeMode(mode) {
+            AppState.currentTheme = mode;
+            document.body.setAttribute('data-theme', mode);
+            updateThemeUI();
+        }
+
+        function setColorTheme(color) {
+            AppState.currentColor = color;
+            document.body.setAttribute('data-color', color);
+            updateThemeUI();
+        }
+
+        function updateThemeUI() {
+            document.querySelectorAll('.mode-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
+            });
+
+            document.querySelectorAll('.color-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
+            });
+        }
+
+        // Drawer Management
+        function toggleDrawer() {
+            const drawer = document.getElementById('settingsDrawer');
+            const overlay = document.getElementById('overlay');
+            const isOpen = drawer.classList.contains('open');
+            
+            if (isOpen) {
+                drawer.classList.remove('open');
+                overlay.classList.remove('active');
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDrawers() {
+            document.getElementById('settingsDrawer').classList.remove('open');
+            document.getElementById('addMedicineModal').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
+        // Title Editing
+        function editTitle(type) {
+            // Simple title editing - you can enhance this
+            const newTitle = prompt(`Enter new ${type}:`);
+            if (newTitle) {
+                if (type === 'app-title') {
+                    document.querySelector('.app-title').textContent = newTitle;
+                } else {
+                    document.querySelector('.app-slogan').textContent = newTitle;
+                }
+            }
+        }
+
+        // Event Listeners
+        function setupEventListeners() {
+            // Form inputs for automatic calculation
+            document.addEventListener('input', (e) => {
+                if (e.target.matches('.item-quantity, .item-price')) {
+                    const lineItem = e.target.closest('.line-item');
+                    updateLineItemTotal(lineItem);
+                }
+                
+                if (e.target.id === 'taxRate') {
+                    updateGrandTotal();
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
+            const futureString = futureDate.toISOString().split('T')[0];
+            
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureString;
+        }
+
+        // Initialize App
+        function initializeApp() {
+            setupEventListeners();
+            updateThemeUI();
+            updateFAB();
+            updateGrandTotal();
+            loadTodaysOverview();
+            updateMedicineList();
+            updateDailyLog();
+            
+            console.log('QuoteFlow Mobile with Medicine Duplication & Remarks initialized!');
+        }
+
+        // Start app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>, notes: '', taxRate: 0
+                });
+                
+                // Load settings
+                const settings = this.load(this.keys.settings, {
+                    theme: 'light', color: 'blue', currentPage: 'quotation'
+                });
+                AppState.currentTheme = settings.theme;
+                AppState.currentColor = settings.color;
+                AppState.currentPage = settings.currentPage;
+                
+                // Load app info
+                const appInfo = this.load(this.keys.appInfo, {
+                    title: 'QuoteFlow',
+                    slogan: 'Business & Medicine Tracker'
+                });
+                
+                return appInfo;
+            },
+
+            clearAllData() {
+                if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                    Object.values(this.keys).forEach(key => this.remove(key));
+                    location.reload();
+                }
+            },
+
+            exportData() {
+                const data = {
+                    medicines: AppState.medicines,
+                    medicineLog: AppState.medicineLog,
+                    companyData: AppState.companyData,
+                    customerData: AppState.customerData,
+                    quotationData: AppState.quotationData,
+                    settings: {
+                        theme: AppState.currentTheme,
+                        color: AppState.currentColor
+                    },
+                    exportDate: new Date().toISOString()
+                };
+                
+                const blob = new Blob([JSON.stringify(data, null, 2)], {
+                    type: 'application/json'
+                });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `quoteflow-backup-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+
+            importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        
+                        if (confirm('This will replace all current data. Continue?')) {
+                            // Restore data
+                            AppState.medicines = data.medicines || [];
+                            AppState.medicineLog = data.medicineLog || [];
+                            AppState.companyData = data.companyData || {};
+                            AppState.customerData = data.customerData || {};
+                            AppState.quotationData = data.quotationData || {};
+                            
+                            if (data.settings) {
+                                AppState.currentTheme = data.settings.theme || 'light';
+                                AppState.currentColor = data.settings.color || 'blue';
+                            }
+                            
+                            // Save to localStorage
+                            this.saveAppState();
+                            
+                            // Refresh the app
+                            location.reload();
+                        }
+                    } catch (error) {
+                        alert('Invalid backup file format');
+                    }
+                };
+                reader.readAsText(file);
+            }
         };
 
         // Page Management
