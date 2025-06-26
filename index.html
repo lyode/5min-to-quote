@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>QuoteFlow - Mobile Business App</title>
+    
+    <!-- PDF Generation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root {
             /* Light Mode Colors */
@@ -286,6 +291,21 @@
             gap: 12px;
             margin: 16px 0;
             min-height: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .action-btn:hover::before {
+            opacity: 1;
         }
 
         .btn-primary {
@@ -303,8 +323,36 @@
             color: white;
         }
 
+        .btn-pdf {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-share {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
         .action-btn:active {
             transform: scale(0.98);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Button Groups */
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .btn-group .action-btn {
+            margin: 0;
         }
 
         /* Line Items */
@@ -1069,6 +1117,127 @@
             margin-top: 12px;
         }
 
+        /* PDF Viewer */
+        .pdf-viewer {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 8px 30px var(--shadow-medium);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .pdf-preview {
+            max-width: 100%;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px var(--shadow-light);
+        }
+
+        .pdf-download-link {
+            display: inline-block;
+            margin: 16px 0;
+            padding: 12px 24px;
+            background: var(--theme-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .pdf-download-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-medium);
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Share Menu */
+        .share-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1700;
+            box-shadow: 0 -4px 20px var(--shadow-medium);
+        }
+
+        .share-menu.active {
+            transform: translateY(0);
+        }
+
+        .share-menu-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .share-menu-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .share-menu-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .share-options {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .share-option {
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--bg-primary);
+        }
+
+        .share-option:active {
+            transform: scale(0.95);
+            border-color: var(--theme-primary);
+            background: var(--theme-light);
+        }
+
+        .share-option-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .share-option-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
         /* Daily Log */
         .log-item {
             background: var(--bg-secondary);
@@ -1213,6 +1382,115 @@
             visibility: visible;
         }
 
+        /* PDF Template Styles */
+        .pdf-template {
+            background: white;
+            color: #333;
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .pdf-template .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+        }
+
+        .pdf-template .logo {
+            max-width: 120px;
+            max-height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-template .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .pdf-template .details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .pdf-template .detail-block {
+            width: 45%;
+        }
+
+        .pdf-template .detail-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .pdf-template .detail-content {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .pdf-template table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+        }
+
+        .pdf-template th,
+        .pdf-template td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .pdf-template th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .pdf-template .text-right {
+            text-align: right;
+        }
+
+        .pdf-template .totals {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .pdf-template .total-row {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .pdf-template .grand-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #3498db;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .pdf-template .notes {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .pdf-template .notes-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
         /* Safe Area for newer phones */
         @supports (padding: max(0px)) {
             .mobile-header {
@@ -1221,6 +1499,26 @@
             
             .bottom-nav {
                 padding-bottom: max(0px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .btn-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .quotation-details {
+                flex-direction: column;
+            }
+            
+            .detail-block {
+                width: 100% !important;
+                margin-bottom: 20px;
             }
         }
     </style>
@@ -1478,9 +1776,39 @@
 
             <div id="previewNotes"></div>
 
-            <button type="button" class="action-btn btn-primary" onclick="window.print()">
-                <span>🖨️</span> Print / Save as PDF
-            </button>
+            <!-- Enhanced PDF Actions -->
+            <div class="btn-group">
+                <button type="button" class="action-btn btn-pdf" onclick="generatePDF()" id="pdfBtn">
+                    <span>📄</span> Create PDF
+                </button>
+                <button type="button" class="action-btn btn-share" onclick="shareQuotation()" id="shareBtn" disabled>
+                    <span>📤</span> Share
+                </button>
+            </div>
+        </div>
+
+        <!-- PDF Viewer -->
+        <div id="pdfViewer" class="pdf-viewer hidden">
+            <h3 style="margin-bottom: 16px; color: var(--text-primary);">📄 PDF Generated Successfully!</h3>
+            <div id="pdfContainer"></div>
+            
+            <div class="btn-group">
+                <button type="button" class="action-btn btn-primary" onclick="downloadPDF()">
+                    <span>💾</span> Download
+                </button>
+                <button type="button" class="action-btn btn-share" onclick="showShareMenu()">
+                    <span>📤</span> Share
+                </button>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="action-btn" onclick="viewPDFFullscreen()" style="background: var(--warning); color: white;">
+                    <span>🔍</span> View Full
+                </button>
+                <button type="button" class="action-btn" onclick="printPDF()" style="background: var(--info); color: white;">
+                    <span>🖨️</span> Print
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1607,9 +1935,10 @@
                 <div class="section-title">About</div>
                 <div style="padding: 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
                     <div><strong>QuoteFlow Mobile</strong></div>
-                    <div>Version 2.0 - Enhanced Persistence</div>
+                    <div>Version 3.0 - PDF Generation</div>
                     <div>Business & Medicine Tracker</div>
-                    <div style="margin-top: 8px;">✅ All data persists after refresh</div>
+                    <div style="margin-top: 8px;">✅ PDF generation enabled</div>
+                    <div>📤 Mobile sharing support</div>
                     <div>💾 Automatic saving enabled</div>
                 </div>
             </div>
@@ -1652,11 +1981,91 @@
         </div>
     </div>
 
+    <!-- Share Menu -->
+    <div class="share-menu" id="shareMenu">
+        <div class="share-menu-header">
+            <div class="share-menu-title">Share Quotation</div>
+            <div class="share-menu-subtitle">Choose how to share your quotation PDF</div>
+        </div>
+        <div class="share-options">
+            <div class="share-option" onclick="shareViaEmail()">
+                <div class="share-option-icon">📧</div>
+                <div class="share-option-label">Email</div>
+            </div>
+            <div class="share-option" onclick="shareViaMessaging()">
+                <div class="share-option-icon">💬</div>
+                <div class="share-option-label">Message</div>
+            </div>
+            <div class="share-option" onclick="shareViaWhatsApp()">
+                <div class="share-option-icon">📱</div>
+                <div class="share-option-label">WhatsApp</div>
+            </div>
+            <div class="share-option" onclick="shareViaSystemShare()">
+                <div class="share-option-icon">📤</div>
+                <div class="share-option-label">More Apps</div>
+            </div>
+        </div>
+        <button class="action-btn" onclick="closeShareMenu()" style="margin: 16px 20px; background: var(--border-color); color: var(--text-primary);">
+            Cancel
+        </button>
+    </div>
+
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="closeDrawers()"></div>
 
+    <!-- Hidden PDF Template -->
+    <div id="pdfTemplate" class="pdf-template" style="display: none;">
+        <div class="header">
+            <img id="pdfLogo" class="logo" alt="Company Logo" style="display: none;">
+            <div class="title">QUOTATION</div>
+            <div id="pdfQuotationNumber" style="color: #7f8c8d; font-size: 16px;"></div>
+        </div>
+        
+        <div class="details">
+            <div class="detail-block">
+                <div class="detail-title">From:</div>
+                <div class="detail-content" id="pdfCompanyDetails"></div>
+            </div>
+            <div class="detail-block">
+                <div class="detail-title">To:</div>
+                <div class="detail-content" id="pdfCustomerDetails"></div>
+            </div>
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+            <div class="detail-title">Quotation Details:</div>
+            <div class="detail-content">
+                <strong>Date:</strong> <span id="pdfDate"></span><br>
+                <strong>Valid Until:</strong> <span id="pdfValidUntil"></span>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th style="width: 80px;">Qty</th>
+                    <th style="width: 100px;">Unit Price</th>
+                    <th style="width: 100px;">Total</th>
+                </tr>
+            </thead>
+            <tbody id="pdfLineItems"></tbody>
+        </table>
+
+        <div class="totals">
+            <div class="total-row"><strong>Subtotal:</strong> <span id="pdfSubtotal"></span></div>
+            <div class="total-row"><strong>Tax:</strong> <span id="pdfTax"></span></div>
+            <div class="grand-total"><strong>Total:</strong> <span id="pdfTotal"></span></div>
+        </div>
+
+        <div class="notes" id="pdfNotesSection" style="display: none;">
+            <div class="notes-title">Terms & Conditions</div>
+            <div id="pdfNotes"></div>
+        </div>
+    </div>
+
     <script>
-        // Enhanced Application State with Real-time Persistence
+        // Enhanced Application State with PDF Support
         const AppState = {
             medicines: [],
             medicineLog: [],
@@ -1677,24 +2086,345 @@
                 lineItems: []
             },
             lastSaved: null,
-            autoSaveEnabled: true
+            autoSaveEnabled: true,
+            // PDF specific state
+            currentPDFBlob: null,
+            currentPDFUrl: null,
+            pdfFileName: null
         };
 
-        // Enhanced Storage Management with Real-time Persistence
+        // Enhanced PDF Generation Manager
+        const PDFManager = {
+            // Generate PDF from quotation data
+            async generatePDF() {
+                try {
+                    this.showLoadingState();
+                    
+                    // Prepare PDF content
+                    this.preparePDFContent();
+                    
+                    // Generate PDF using jsPDF with html2canvas
+                    const pdf = await this.createPDFDocument();
+                    
+                    // Store PDF data
+                    AppState.currentPDFBlob = pdf.output('blob');
+                    AppState.currentPDFUrl = URL.createObjectURL(AppState.currentPDFBlob);
+                    AppState.pdfFileName = this.generateFileName();
+                    
+                    // Show PDF viewer
+                    this.showPDFViewer();
+                    
+                    // Enable share button
+                    document.getElementById('shareBtn').disabled = false;
+                    
+                    Storage.showStatus('PDF generated successfully!', 'success');
+                    
+                } catch (error) {
+                    console.error('PDF generation failed:', error);
+                    Storage.showStatus('Failed to generate PDF', 'error');
+                } finally {
+                    this.hideLoadingState();
+                }
+            },
+
+            showLoadingState() {
+                const pdfBtn = document.getElementById('pdfBtn');
+                pdfBtn.disabled = true;
+                pdfBtn.innerHTML = '<div class="loading-spinner"></div> Creating PDF...';
+            },
+
+            hideLoadingState() {
+                const pdfBtn = document.getElementById('pdfBtn');
+                pdfBtn.disabled = false;
+                pdfBtn.innerHTML = '<span>📄</span> Create PDF';
+            },
+
+            preparePDFContent() {
+                // Populate hidden PDF template with current data
+                const template = document.getElementById('pdfTemplate');
+                
+                // Company logo
+                if (AppState.companyLogo) {
+                    const pdfLogo = document.getElementById('pdfLogo');
+                    pdfLogo.src = AppState.companyLogo;
+                    pdfLogo.style.display = 'block';
+                }
+                
+                // Quotation info
+                document.getElementById('pdfQuotationNumber').textContent = 
+                    AppState.formData.quotation.number || 'Q-001';
+                document.getElementById('pdfDate').textContent = 
+                    AppState.formData.quotation.date || new Date().toISOString().split('T')[0];
+                document.getElementById('pdfValidUntil').textContent = 
+                    AppState.formData.quotation.validUntil || '';
+                
+                // Company details
+                const company = AppState.formData.company;
+                document.getElementById('pdfCompanyDetails').innerHTML = `
+                    <strong>${company.name || 'Company Name'}</strong><br>
+                    ${company.address || ''}<br>
+                    ${company.phone || ''}<br>
+                    ${company.email || ''}
+                `;
+                
+                // Customer details
+                const customer = AppState.formData.customer;
+                document.getElementById('pdfCustomerDetails').innerHTML = `
+                    <strong>${customer.name || 'Customer Name'}</strong><br>
+                    ${customer.address || ''}<br>
+                    ${customer.phone || ''}<br>
+                    ${customer.email || ''}
+                `;
+                
+                // Line items
+                const lineItemsBody = document.getElementById('pdfLineItems');
+                lineItemsBody.innerHTML = '';
+                
+                AppState.formData.lineItems.forEach(item => {
+                    const row = document.createElement('tr');
+                    const total = (parseFloat(item.quantity) || 0) * (parseFloat(item.price) || 0);
+                    const currency = AppState.formData.quotation.currency || '$';
+                    
+                    row.innerHTML = `
+                        <td>${item.description || 'Item'}</td>
+                        <td style="text-align: center;">${item.quantity || '1'}</td>
+                        <td class="text-right">${currency}${parseFloat(item.price || 0).toFixed(2)}</td>
+                        <td class="text-right">${currency}${total.toFixed(2)}</td>
+                    `;
+                    lineItemsBody.appendChild(row);
+                });
+                
+                // Totals
+                document.getElementById('pdfSubtotal').textContent = document.getElementById('subtotal').textContent;
+                document.getElementById('pdfTax').textContent = document.getElementById('taxAmount').textContent;
+                document.getElementById('pdfTotal').textContent = document.getElementById('grandTotal').textContent;
+                
+                // Notes
+                if (AppState.formData.notes) {
+                    document.getElementById('pdfNotes').textContent = AppState.formData.notes;
+                    document.getElementById('pdfNotesSection').style.display = 'block';
+                } else {
+                    document.getElementById('pdfNotesSection').style.display = 'none';
+                }
+            },
+
+            async createPDFDocument() {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // Get the PDF template element
+                const template = document.getElementById('pdfTemplate');
+                template.style.display = 'block';
+                
+                // Use html2canvas to convert HTML to image
+                const canvas = await html2canvas(template, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    width: 800,
+                    height: template.scrollHeight
+                });
+                
+                // Hide template again
+                template.style.display = 'none';
+                
+                // Calculate dimensions for PDF
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 295; // A4 height in mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                // Add image to PDF
+                const imgData = canvas.toDataURL('image/png');
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Add more pages if needed
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                return pdf;
+            },
+
+            showPDFViewer() {
+                const viewer = document.getElementById('pdfViewer');
+                const container = document.getElementById('pdfContainer');
+                
+                // Create PDF preview
+                container.innerHTML = `
+                    <div style="text-align: center; margin: 20px 0;">
+                        <iframe src="${AppState.currentPDFUrl}" 
+                                style="width: 100%; height: 400px; border: 1px solid var(--border-color); border-radius: 12px;"
+                                title="PDF Preview">
+                        </iframe>
+                    </div>
+                    <div style="margin: 16px 0; padding: 12px; background: var(--theme-light); border-radius: 8px; text-align: center;">
+                        <strong>📄 ${AppState.pdfFileName}</strong><br>
+                        <small style="color: var(--text-muted);">Ready to download or share</small>
+                    </div>
+                `;
+                
+                viewer.classList.remove('hidden');
+                viewer.scrollIntoView({ behavior: 'smooth' });
+            },
+
+            generateFileName() {
+                const quotationNumber = AppState.formData.quotation.number || 'Quote';
+                const customerName = AppState.formData.customer.name || 'Customer';
+                const date = new Date().toISOString().split('T')[0];
+                
+                return `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${date}.pdf`;
+            },
+
+            downloadPDF() {
+                if (!AppState.currentPDFBlob) {
+                    Storage.showStatus('No PDF to download', 'error');
+                    return;
+                }
+                
+                const link = document.createElement('a');
+                link.href = AppState.currentPDFUrl;
+                link.download = AppState.pdfFileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                Storage.showStatus('PDF downloaded successfully!', 'success');
+            },
+
+            viewFullscreen() {
+                if (AppState.currentPDFUrl) {
+                    window.open(AppState.currentPDFUrl, '_blank');
+                }
+            },
+
+            printPDF() {
+                if (AppState.currentPDFUrl) {
+                    const printWindow = window.open(AppState.currentPDFUrl, '_blank');
+                    printWindow.onload = () => {
+                        printWindow.print();
+                    };
+                }
+            }
+        };
+
+        // Enhanced Sharing Manager
+        const ShareManager = {
+            showShareMenu() {
+                if (!AppState.currentPDFBlob) {
+                    Storage.showStatus('Generate PDF first before sharing', 'error');
+                    return;
+                }
+                
+                document.getElementById('shareMenu').classList.add('active');
+                document.getElementById('overlay').classList.add('active');
+            },
+
+            closeShareMenu() {
+                document.getElementById('shareMenu').classList.remove('active');
+                document.getElementById('overlay').classList.remove('active');
+            },
+
+            async shareViaSystemShare() {
+                try {
+                    if (navigator.share && AppState.currentPDFBlob) {
+                        const file = new File([AppState.currentPDFBlob], AppState.pdfFileName, {
+                            type: 'application/pdf'
+                        });
+                        
+                        await navigator.share({
+                            title: 'Quotation PDF',
+                            text: `Quotation ${AppState.formData.quotation.number || 'Q-001'}`,
+                            files: [file]
+                        });
+                        
+                        this.closeShareMenu();
+                        Storage.showStatus('Shared successfully!', 'success');
+                    } else {
+                        this.fallbackShare();
+                    }
+                } catch (error) {
+                    console.error('Share failed:', error);
+                    this.fallbackShare();
+                }
+            },
+
+            shareViaEmail() {
+                const subject = encodeURIComponent(`Quotation ${AppState.formData.quotation.number || 'Q-001'}`);
+                const body = encodeURIComponent(`Please find attached the quotation for ${AppState.formData.customer.name || 'your review'}.`);
+                
+                if (this.isMobile()) {
+                    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+                } else {
+                    // For desktop, provide download link
+                    this.fallbackShare();
+                }
+                
+                this.closeShareMenu();
+                Storage.showStatus('Opening email app...', 'info');
+            },
+
+            shareViaMessaging() {
+                const text = encodeURIComponent(`Quotation ${AppState.formData.quotation.number || 'Q-001'} ready for review`);
+                
+                if (this.isMobile()) {
+                    window.open(`sms:?body=${text}`, '_blank');
+                } else {
+                    this.fallbackShare();
+                }
+                
+                this.closeShareMenu();
+                Storage.showStatus('Opening messaging app...', 'info');
+            },
+
+            shareViaWhatsApp() {
+                const text = encodeURIComponent(`Quotation ${AppState.formData.quotation.number || 'Q-001'} - ${AppState.currentPDFUrl}`);
+                window.open(`https://wa.me/?text=${text}`, '_blank');
+                
+                this.closeShareMenu();
+                Storage.showStatus('Opening WhatsApp...', 'info');
+            },
+
+            fallbackShare() {
+                // Copy PDF URL to clipboard
+                if (AppState.currentPDFUrl) {
+                    navigator.clipboard.writeText(AppState.currentPDFUrl).then(() => {
+                        Storage.showStatus('PDF link copied to clipboard!', 'info');
+                    }).catch(() => {
+                        // If clipboard fails, just download
+                        PDFManager.downloadPDF();
+                    });
+                }
+            },
+
+            isMobile() {
+                return /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+        };
+
+        // Enhanced Storage Management (previous code continues...)
         const Storage = {
-            storageKey: 'quoteflow_enhanced_data_v2',
+            storageKey: 'quoteflow_enhanced_data_v3',
             
-            // Save all data to localStorage
             save() {
                 try {
-                    // Collect all current form data
                     this.collectFormData();
                     
                     const dataToSave = {
                         ...AppState,
                         lastSaved: new Date().toISOString(),
-                        version: '2.0'
+                        version: '3.0'
                     };
+                    
+                    // Don't save PDF blob in localStorage (too large)
+                    delete dataToSave.currentPDFBlob;
+                    delete dataToSave.currentPDFUrl;
                     
                     localStorage.setItem(this.storageKey, JSON.stringify(dataToSave));
                     console.log('💾 Data saved successfully at', new Date().toLocaleTimeString());
@@ -1706,9 +2436,7 @@
                 }
             },
 
-            // Collect current form data into AppState
             collectFormData() {
-                // Company data
                 AppState.formData.company = {
                     name: this.getElementValue('companyName'),
                     address: this.getElementValue('companyAddress'),
@@ -1716,7 +2444,6 @@
                     email: this.getElementValue('companyEmail')
                 };
 
-                // Customer data
                 AppState.formData.customer = {
                     name: this.getElementValue('customerName'),
                     address: this.getElementValue('customerAddress'),
@@ -1724,7 +2451,6 @@
                     email: this.getElementValue('customerEmail')
                 };
 
-                // Quotation data
                 AppState.formData.quotation = {
                     number: this.getElementValue('quotationNumber'),
                     date: this.getElementValue('quotationDate'),
@@ -1733,10 +2459,8 @@
                     taxRate: this.getElementValue('taxRate')
                 };
 
-                // Notes
                 AppState.formData.notes = this.getElementValue('notes');
 
-                // Line items
                 AppState.formData.lineItems = [];
                 document.querySelectorAll('.line-item').forEach(item => {
                     AppState.formData.lineItems.push({
@@ -1752,7 +2476,6 @@
                 return element ? element.value : '';
             },
 
-            // Load data from localStorage
             load() {
                 try {
                     const savedData = localStorage.getItem(this.storageKey);
@@ -1765,22 +2488,12 @@
                     const data = JSON.parse(savedData);
                     console.log('📂 Loading saved data from', data.lastSaved || 'unknown time');
 
-                    // Restore app state
                     Object.assign(AppState, data);
 
-                    // Apply theme
                     this.applyTheme();
-
-                    // Restore form data
                     this.restoreFormData();
-
-                    // Restore line items
                     this.restoreLineItems();
-
-                    // Restore company logo
                     this.restoreCompanyLogo();
-
-                    // Update displays
                     this.updateAllDisplays();
 
                     console.log('✅ Data loaded successfully');
@@ -1821,21 +2534,18 @@
             },
 
             restoreFormData() {
-                // Company data
                 const company = AppState.formData.company || {};
                 this.setElementValue('companyName', company.name);
                 this.setElementValue('companyAddress', company.address);
                 this.setElementValue('companyPhone', company.phone);
                 this.setElementValue('companyEmail', company.email);
 
-                // Customer data
                 const customer = AppState.formData.customer || {};
                 this.setElementValue('customerName', customer.name);
                 this.setElementValue('customerAddress', customer.address);
                 this.setElementValue('customerPhone', customer.phone);
                 this.setElementValue('customerEmail', customer.email);
 
-                // Quotation data
                 const quotation = AppState.formData.quotation || {};
                 this.setElementValue('quotationNumber', quotation.number);
                 this.setElementValue('quotationDate', quotation.date);
@@ -1843,10 +2553,8 @@
                 this.setElementValue('currency', quotation.currency);
                 this.setElementValue('taxRate', quotation.taxRate);
 
-                // Notes
                 this.setElementValue('notes', AppState.formData.notes);
 
-                // App title and slogan
                 if (AppState.appTitle) {
                     document.querySelector('.app-title').textContent = AppState.appTitle;
                 }
@@ -1877,7 +2585,6 @@
 
                 AppState.lineItemCount = lineItems.length;
                 
-                // Update calculations
                 setTimeout(() => {
                     this.updateAllCalculations();
                 }, 100);
@@ -1908,7 +2615,6 @@
                     <div class="total-display item-total">$0.00</div>
                 `;
 
-                // Add event listeners for auto-calculation and auto-save
                 const quantityInput = newItem.querySelector('.item-quantity');
                 const priceInput = newItem.querySelector('.item-price');
                 const descriptionInput = newItem.querySelector('.item-description');
@@ -1939,15 +2645,10 @@
             },
 
             updateAllDisplays() {
-                // Update medicine displays
                 updateMedicineList();
                 loadTodaysOverview();
                 updateDailyLog();
-
-                // Update calculations
                 this.updateAllCalculations();
-
-                // Update storage info
                 setTimeout(() => {
                     this.updateStorageInfo();
                 }, 100);
@@ -2029,31 +2730,31 @@
                 }
             },
 
-            // Debounced save to prevent excessive saving
             debouncedSave: (() => {
                 let timeout;
                 return () => {
                     clearTimeout(timeout);
                     timeout = setTimeout(() => {
                         Storage.save();
-                    }, 1000); // Save after 1 second of inactivity
+                    }, 1000);
                 };
             })(),
 
-            // Immediate save for critical actions
             immediateSave() {
                 return this.save();
             },
 
-            // Export data
             exportData() {
                 try {
-                    this.save(); // Save current state first
+                    this.save();
                     const dataToExport = {
                         ...AppState,
                         exportDate: new Date().toISOString(),
-                        version: '2.0'
+                        version: '3.0'
                     };
+                    
+                    delete dataToExport.currentPDFBlob;
+                    delete dataToExport.currentPDFUrl;
                     
                     const dataStr = JSON.stringify(dataToExport, null, 2);
                     const dataBlob = new Blob([dataStr], {type: 'application/json'});
@@ -2072,7 +2773,6 @@
                 }
             },
 
-            // Import data
             importData(event) {
                 const file = event.target.files[0];
                 if (!file) return;
@@ -2083,10 +2783,8 @@
                         const importedData = JSON.parse(e.target.result);
                         
                         if (confirm('This will replace all current data. Continue?')) {
-                            // Merge imported data with current state
                             Object.assign(AppState, importedData);
                             
-                            // Save and reload
                             this.save();
                             this.showStatus('Data imported successfully! Reloading...', 'success');
                             setTimeout(() => {
@@ -2100,11 +2798,9 @@
                 };
                 reader.readAsText(file);
                 
-                // Reset file input
                 event.target.value = '';
             },
 
-            // Clear all data
             clearAllData() {
                 const confirmMessage = `⚠️ WARNING: This will permanently delete ALL data:
 
@@ -2124,7 +2820,6 @@ This action cannot be undone. Are you absolutely sure?`;
                 }
             },
 
-            // Show status message
             showStatus(message, type = 'success') {
                 const statusEl = document.getElementById('statusMessage');
                 if (!statusEl) return;
@@ -2138,23 +2833,20 @@ This action cannot be undone. Are you absolutely sure?`;
             }
         };
 
-        // Page Management
+        // Global function implementations (previous implementations continue...)
+        
         function switchPage(page) {
             AppState.currentPage = page;
             Storage.immediateSave();
             
-            // Hide all pages
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(page + 'Page').classList.add('active');
             
-            // Update navigation
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
             document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
             
-            // Update FAB
             updateFAB();
             
-            // Load page-specific data
             if (page === 'medicine') {
                 loadTodaysOverview();
                 updateMedicineList();
@@ -2177,14 +2869,12 @@ This action cannot be undone. Are you absolutely sure?`;
             }
         }
 
-        // Line Item Management
         function addLineItem() {
             AppState.lineItemCount++;
             const container = document.getElementById('lineItemsContainer');
             const newItem = Storage.createLineItem(AppState.lineItemCount);
             container.appendChild(newItem);
             
-            // Focus on description
             newItem.querySelector('.item-description').focus();
             
             Storage.debouncedSave();
@@ -2204,7 +2894,6 @@ This action cannot be undone. Are you absolutely sure?`;
             Storage.showStatus('Item removed', 'info');
         }
 
-        // Logo Management
         function triggerLogoUpload() {
             document.getElementById('logoUploadInput').click();
         }
@@ -2212,7 +2901,6 @@ This action cannot be undone. Are you absolutely sure?`;
         function handleLogoUpload(event) {
             const file = event.target.files[0];
             if (file && file.type.startsWith('image/')) {
-                // Check file size (max 2MB)
                 if (file.size > 2 * 1024 * 1024) {
                     Storage.showStatus('Image too large! Please choose a file under 2MB.', 'error');
                     return;
@@ -2263,20 +2951,17 @@ This action cannot be undone. Are you absolutely sure?`;
             Storage.showStatus('Logo removed', 'info');
         }
 
-        // Quotation Generation
         function generateQuotation() {
-            Storage.immediateSave(); // Save current state
+            Storage.immediateSave();
             
             const preview = document.getElementById('quotationPreview');
             
-            // Populate preview with current data
             if (AppState.companyLogo) {
                 const quotationLogo = document.getElementById('quotationLogo');
                 quotationLogo.src = AppState.companyLogo;
                 quotationLogo.classList.add('visible');
             }
             
-            // Company details
             const companyData = AppState.formData.company;
             const companyDetails = `
                 <strong>${companyData.name || 'Company Name'}</strong><br>
@@ -2286,7 +2971,6 @@ This action cannot be undone. Are you absolutely sure?`;
             `;
             document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
             
-            // Customer details
             const customerData = AppState.formData.customer;
             const customerDetails = `
                 <strong>${customerData.name || 'Customer Name'}</strong><br>
@@ -2296,7 +2980,6 @@ This action cannot be undone. Are you absolutely sure?`;
             `;
             document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
             
-            // Quotation info
             const quotationData = AppState.formData.quotation;
             document.getElementById('previewQuotationNumber').textContent = 
                 quotationData.number || 'Q-001';
@@ -2305,7 +2988,6 @@ This action cannot be undone. Are you absolutely sure?`;
             document.getElementById('previewValidUntil').textContent = 
                 quotationData.validUntil || '';
             
-            // Line items
             const lineItemsBody = document.getElementById('previewLineItems');
             lineItemsBody.innerHTML = '';
             
@@ -2323,12 +3005,10 @@ This action cannot be undone. Are you absolutely sure?`;
                 lineItemsBody.appendChild(row);
             });
             
-            // Totals
             document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
             document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
             document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
             
-            // Notes
             const notes = AppState.formData.notes;
             if (notes) {
                 document.getElementById('previewNotes').innerHTML = `
@@ -2337,6 +3017,8 @@ This action cannot be undone. Are you absolutely sure?`;
                         <div style="line-height: 1.6;">${notes}</div>
                     </div>
                 `;
+            } else {
+                document.getElementById('previewNotes').innerHTML = '';
             }
             
             preview.classList.remove('hidden');
@@ -2345,7 +3027,56 @@ This action cannot be undone. Are you absolutely sure?`;
             Storage.showStatus('Quotation generated successfully!', 'success');
         }
 
-        // Medicine Management Functions
+        // PDF and Share Functions
+        function generatePDF() {
+            PDFManager.generatePDF();
+        }
+
+        function downloadPDF() {
+            PDFManager.downloadPDF();
+        }
+
+        function viewPDFFullscreen() {
+            PDFManager.viewFullscreen();
+        }
+
+        function printPDF() {
+            PDFManager.printPDF();
+        }
+
+        function shareQuotation() {
+            if (AppState.currentPDFBlob) {
+                ShareManager.showShareMenu();
+            } else {
+                Storage.showStatus('Generate PDF first before sharing', 'error');
+            }
+        }
+
+        function showShareMenu() {
+            ShareManager.showShareMenu();
+        }
+
+        function closeShareMenu() {
+            ShareManager.closeShareMenu();
+        }
+
+        function shareViaEmail() {
+            ShareManager.shareViaEmail();
+        }
+
+        function shareViaMessaging() {
+            ShareManager.shareViaMessaging();
+        }
+
+        function shareViaWhatsApp() {
+            ShareManager.shareViaWhatsApp();
+        }
+
+        function shareViaSystemShare() {
+            ShareManager.shareViaSystemShare();
+        }
+
+        // Medicine Functions (keeping previous implementations)
         function addMedicine(name, dosage, instructions, times) {
             const medicine = {
                 id: Date.now(),
@@ -2661,7 +3392,6 @@ This action cannot be undone. Are you absolutely sure?`;
             container.innerHTML = logHTML;
         }
 
-        // Modal Management
         function showAddMedicineModal() {
             AppState.selectedTimes = [];
             document.getElementById('medicineName').value = '';
@@ -2694,234 +3424,3 @@ This action cannot be undone. Are you absolutely sure?`;
                 AppState.selectedTimes.push(time);
                 button.classList.add('active');
             }
-        }
-
-        function addCustomTime() {
-            const time = prompt('Enter time (HH:MM format, e.g., 14:30):');
-            if (time && /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time)) {
-                const timeSlots = document.getElementById('timeSlots');
-                const customBtn = timeSlots.querySelector('button:last-child');
-                
-                const newBtn = document.createElement('button');
-                newBtn.type = 'button';
-                newBtn.className = 'time-input';
-                newBtn.textContent = time;
-                newBtn.onclick = () => toggleTimeSlot(newBtn, time);
-                
-                timeSlots.insertBefore(newBtn, customBtn);
-                toggleTimeSlot(newBtn, time);
-            } else if (time) {
-                Storage.showStatus('Please enter time in HH:MM format (e.g., 14:30)', 'error');
-            }
-        }
-
-        function saveMedicine() {
-            const name = document.getElementById('medicineName').value.trim();
-            const dosage = document.getElementById('medicineDosage').value.trim();
-            const instructions = document.getElementById('medicineInstructions').value.trim() || 'As needed';
-            
-            if (!name) {
-                Storage.showStatus('Please enter medicine name', 'error');
-                return;
-            }
-            
-            if (!dosage) {
-                Storage.showStatus('Please enter dosage', 'error');
-                return;
-            }
-            
-            if (AppState.selectedTimes.length === 0) {
-                Storage.showStatus('Please select at least one time', 'error');
-                return;
-            }
-            
-            if (AppState.editingMedicineId) {
-                // Update existing medicine
-                const medicineIndex = AppState.medicines.findIndex(m => m.id === AppState.editingMedicineId);
-                if (medicineIndex >= 0) {
-                    AppState.medicines[medicineIndex] = {
-                        ...AppState.medicines[medicineIndex],
-                        name, dosage, instructions,
-                        times: AppState.selectedTimes
-                    };
-                    
-                    // Update today's schedule
-                    const today = new Date().toDateString();
-                    AppState.medicineLog = AppState.medicineLog.filter(log => 
-                        !(log.medicineId === AppState.editingMedicineId && log.date === today)
-                    );
-                    createTodaysSchedule(AppState.medicines[medicineIndex]);
-                    
-                    Storage.showStatus('Medicine updated successfully!', 'success');
-                }
-            } else {
-                // Add new medicine
-                addMedicine(name, dosage, instructions, AppState.selectedTimes);
-                Storage.showStatus('Medicine added successfully!', 'success');
-            }
-            
-            updateMedicineList();
-            loadTodaysOverview();
-            closeAddMedicineModal();
-        }
-
-        // Theme Management
-        function setThemeMode(mode) {
-            AppState.currentTheme = mode;
-            document.body.setAttribute('data-theme', mode);
-            Storage.updateThemeUI();
-            Storage.immediateSave();
-            Storage.showStatus(`Switched to ${mode} mode`, 'success');
-        }
-
-        function setColorTheme(color) {
-            AppState.currentColor = color;
-            document.body.setAttribute('data-color', color);
-            Storage.updateThemeUI();
-            Storage.immediateSave();
-            Storage.showStatus('Color theme updated', 'success');
-        }
-
-        // Drawer Management
-        function toggleDrawer() {
-            const drawer = document.getElementById('settingsDrawer');
-            const overlay = document.getElementById('overlay');
-            const isOpen = drawer.classList.contains('open');
-            
-            if (isOpen) {
-                drawer.classList.remove('open');
-                overlay.classList.remove('active');
-            } else {
-                drawer.classList.add('open');
-                overlay.classList.add('active');
-                Storage.updateStorageInfo();
-            }
-        }
-
-        function closeDrawers() {
-            document.getElementById('settingsDrawer').classList.remove('open');
-            document.getElementById('addMedicineModal').classList.remove('active');
-            document.getElementById('overlay').classList.remove('active');
-        }
-
-        // Title Editing
-        function editTitle(type) {
-            const currentText = type === 'app-title' ? AppState.appTitle : AppState.appSlogan;
-            const newTitle = prompt(`Enter new ${type.replace('-', ' ')}:`, currentText);
-            
-            if (newTitle && newTitle.trim()) {
-                if (type === 'app-title') {
-                    AppState.appTitle = newTitle.trim();
-                    document.querySelector('.app-title').textContent = AppState.appTitle;
-                } else {
-                    AppState.appSlogan = newTitle.trim();
-                    document.querySelector('.app-slogan').textContent = AppState.appSlogan;
-                }
-                Storage.immediateSave();
-                Storage.showStatus('Title updated', 'success');
-            }
-        }
-
-        // Event Listeners Setup
-        function setupEventListeners() {
-            // Form inputs for automatic calculation and saving
-            document.addEventListener('input', (e) => {
-                if (e.target.matches('.item-quantity, .item-price')) {
-                    const lineItem = e.target.closest('.line-item');
-                    if (lineItem) Storage.updateLineItemTotal(lineItem);
-                }
-                
-                if (e.target.id === 'taxRate') {
-                    Storage.updateGrandTotal();
-                }
-
-                if (e.target.id === 'currency') {
-                    Storage.updateGrandTotal();
-                }
-
-                // Auto-save for form fields
-                if (e.target.matches('input, textarea, select')) {
-                    Storage.debouncedSave();
-                }
-            });
-
-            // Auto-save on blur for immediate saving of completed fields
-            document.addEventListener('blur', (e) => {
-                if (e.target.matches('input, textarea, select')) {
-                    Storage.debouncedSave();
-                }
-            }, true);
-
-            // Handle page visibility changes (mobile app switching)
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    Storage.immediateSave();
-                    console.log('💾 Auto-saved on page hide');
-                }
-            });
-
-            // Save before page unload
-            window.addEventListener('beforeunload', () => {
-                Storage.immediateSave();
-            });
-
-            // Periodic auto-save every 30 seconds
-            setInterval(() => {
-                if (AppState.autoSaveEnabled) {
-                    Storage.save();
-                }
-            }, 30000);
-
-            console.log('✅ Event listeners setup complete');
-        }
-
-        // Application Initialization
-        function initializeApp() {
-            console.log('🚀 Initializing QuoteFlow with Enhanced Persistence...');
-            
-            // Load saved data first
-            const dataLoaded = Storage.load();
-            
-            // Setup event listeners
-            setupEventListeners();
-            
-            // Set default values if no data was loaded
-            if (!dataLoaded) {
-                Storage.setDefaultValues();
-            }
-            
-            // Initialize current page
-            if (AppState.currentPage) {
-                switchPage(AppState.currentPage);
-            }
-            
-            // Update all displays
-            updateFAB();
-            loadTodaysOverview();
-            updateMedicineList();
-            updateDailyLog();
-            Storage.updateStorageInfo();
-            
-            // Show welcome message
-            setTimeout(() => {
-                if (dataLoaded) {
-                    Storage.showStatus('Welcome back! All data restored.', 'success');
-                } else {
-                    Storage.showStatus('Welcome to QuoteFlow! Auto-save enabled.', 'info');
-                }
-            }, 1000);
-            
-            console.log('✅ QuoteFlow initialized with enhanced persistence!');
-            console.log('💾 Auto-save active - all changes are saved automatically');
-            console.log('🔄 Data persists after refresh, close, or reload');
-        }
-
-        // Start the application
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
-    </script>
-</body>
-</html>
