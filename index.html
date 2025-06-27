@@ -2,985 +2,569 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>QuoteFlow - Enhanced Business & Medicine Tracker</title>
-    <meta name="description" content="Professional quotation generator and advanced medicine tracker with repeating schedules. Create PDF quotes, manage prescriptions with multiple daily doses.">
-    <meta name="keywords" content="quotation generator, invoice maker, medicine tracker, prescription manager, repeating doses, business app">
-    <meta name="author" content="QuoteFlow Enhanced">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:title" content="QuoteFlow - Enhanced Medicine & Business Tracker">
-    <meta property="og:description" content="Professional quotation generator and advanced medicine tracker with repeating schedules.">
-    <meta property="og:image" content="">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="">
-    <meta property="twitter:title" content="QuoteFlow - Enhanced Medicine & Business Tracker">
-    <meta property="twitter:description" content="Professional quotation generator and advanced medicine tracker with repeating schedules.">
-    <meta property="twitter:image" content="">
-
-    <!-- PWA Meta Tags -->
-    <meta name="theme-color" content="#3498db">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="QuoteFlow Enhanced">
-    <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteFlow Complete - Business & Health Manager</title>
     
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlF1b3RlRmxvdyAtIEVuaGFuY2VkIEJ1c2luZXNzICYgTWVkaWNpbmUgVHJhY2tlciIsCiAgInNob3J0X25hbWUiOiAiUXVvdGVGbG93IiwKICAiZGVzY3JpcHRpb24iOiAiUHJvZmVzc2lvbmFsIHF1b3RhdGlvbiBnZW5lcmF0b3IgYW5kIGFkdmFuY2VkIG1lZGljaW5lIHRyYWNrZXIiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2ZmZmZmZiIsCiAgInRoZW1lX2NvbG9yIjogIiMzNDk4ZGIiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48dGV4dCB5PScuOWVtJyBmb250LXNpemU9JzkwJz7wn5OEPHN2Zz4iLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiLAogICAgICAicHVycG9zZSI6ICJtYXNrYWJsZSBhbnkiCiAgICB9CiAgXQp9">
-    
     <style>
-        :root {
-            /* Light Mode Colors */
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-card: #ffffff;
-            --text-primary: #2c3e50;
-            --text-secondary: #34495e;
-            --text-muted: #7f8c8d;
-            --border-color: #e0e0e0;
-            --shadow-light: rgba(0,0,0,0.1);
-            --shadow-medium: rgba(0,0,0,0.15);
-            --overlay: rgba(0,0,0,0.5);
-            
-            /* Theme Colors - Default Blue */
-            --theme-primary: #3498db;
-            --theme-secondary: #2980b9;
-            --theme-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            --theme-light: rgba(52, 152, 219, 0.1);
-            
-            /* Status Colors */
-            --success: #27ae60;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --medicine: #9b59b6;
-            --medicine-light: rgba(155, 89, 182, 0.1);
-            --edit: #f39c12;
-            --edit-light: rgba(243, 156, 18, 0.1);
-            --info: #17a2b8;
-            --remark: #6c757d;
-            --remark-light: rgba(108, 117, 125, 0.1);
-            --repeat: #28a745;
-            --repeat-light: rgba(40, 167, 69, 0.1);
-        }
-
-        /* Dark Mode Variables */
-        [data-theme="dark"] {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-card: #16213e;
-            --text-primary: #ffffff;
-            --text-secondary: #ecf0f1;
-            --text-muted: #bdc3c7;
-            --border-color: #34495e;
-            --shadow-light: rgba(0,0,0,0.3);
-            --shadow-medium: rgba(0,0,0,0.4);
-            --overlay: rgba(0,0,0,0.7);
-        }
-
-        /* Theme Color Variations */
-        [data-color="purple"] {
-            --theme-primary: #8e44ad;
-            --theme-secondary: #9b59b6;
-            --theme-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --theme-light: rgba(142, 68, 173, 0.1);
-        }
-        [data-color="cyan"] {
-            --theme-primary: #00d2d3;
-            --theme-secondary: #01a3a4;
-            --theme-gradient: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%);
-            --theme-light: rgba(0, 210, 211, 0.1);
-        }
-        [data-color="pink"] {
-            --theme-primary: #ff006e;
-            --theme-secondary: #8338ec;
-            --theme-gradient: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
-            --theme-light: rgba(255, 0, 110, 0.1);
-        }
-        [data-color="green"] {
-            --theme-primary: #00cc44;
-            --theme-secondary: #00ff88;
-            --theme-gradient: linear-gradient(135deg, #00ff88 0%, #00cc44 100%);
-            --theme-light: rgba(0, 204, 68, 0.1);
-        }
-        [data-color="orange"] {
-            --theme-primary: #ff6b00;
-            --theme-secondary: #ff3300;
-            --theme-gradient: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%);
-            --theme-light: rgba(255, 107, 0, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        input, textarea {
-            -webkit-user-select: text;
-            user-select: text;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
+            background: #f8f9fa;
+            color: #2c3e50;
             line-height: 1.6;
-            height: 100vh;
-            overflow-x: hidden;
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        /* Mobile Header */
-        .mobile-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 20px var(--shadow-light);
-            backdrop-filter: blur(10px);
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            min-height: 70px;
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 20px;
         }
 
-        .app-branding {
-            flex: 1;
-        }
-
-        .app-title {
-            font-size: 22px;
+        .header h1 {
+            font-size: 28px;
             font-weight: 800;
-            color: var(--theme-primary);
-            cursor: pointer;
-            margin-bottom: 2px;
+            margin-bottom: 8px;
         }
 
-        .app-slogan {
-            font-size: 11px;
-            color: var(--text-muted);
-            cursor: pointer;
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
         }
 
-        .header-actions {
+        /* Page Navigation */
+        .page-nav {
             display: flex;
-            gap: 12px;
+            background: white;
+            border-radius: 16px;
+            padding: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .header-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
+        .page-nav-btn {
+            flex: 1;
+            padding: 16px;
             border: none;
-            background: var(--theme-light);
-            color: var(--theme-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 18px;
+            background: transparent;
+            color: #7f8c8d;
         }
 
-        .header-btn:active {
-            background: var(--theme-primary);
+        .page-nav-btn.active {
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            transform: scale(0.9);
         }
 
-        /* Page Layout */
+        /* Pages */
         .page {
             display: none;
-            margin-top: 70px;
-            padding: 16px;
-            min-height: calc(100vh - 150px);
         }
 
         .page.active {
             display: block;
         }
 
-        /* Cards */
         .card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px var(--shadow-light);
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
             margin-bottom: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            animation: slideUp 0.4s ease;
-        }
-
-        .card-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--theme-light);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
         }
 
         .card-title {
             font-size: 18px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: #2c3e50;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .card-icon {
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--theme-primary);
-            color: white;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .card-content {
-            padding: 20px;
-        }
-
-        /* Form Elements */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .form-label {
             display: block;
             font-size: 14px;
             font-weight: 600;
-            color: var(--text-secondary);
+            color: #34495e;
             margin-bottom: 8px;
         }
 
         .form-input {
             width: 100%;
-            padding: 18px;
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
+            transition: border-color 0.3s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: var(--theme-primary);
-            box-shadow: 0 0 0 4px var(--theme-light);
+            border-color: #3498db;
         }
 
         .form-textarea {
-            min-height: 100px;
+            min-height: 90px;
             resize: vertical;
             font-family: inherit;
         }
 
-        .form-select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 20px;
-            padding-right: 50px;
-            appearance: none;
-        }
-
-        /* Enhanced Form Row for Medicine Settings */
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
 
-        .form-row-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-
-        /* Action Buttons */
-        .action-btn {
-            width: 100%;
-            padding: 20px;
+        .btn {
+            padding: 14px 20px;
             border: none;
-            border-radius: 16px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin: 16px 0;
-            min-height: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .action-btn:hover::before {
-            opacity: 1;
+            gap: 8px;
         }
 
         .btn-primary {
-            background: var(--theme-gradient);
-            color: white;
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #229954);
-            color: white;
-        }
-
-        .btn-medicine {
-            background: linear-gradient(135deg, var(--medicine), #8e44ad);
-            color: white;
-        }
-
-        .btn-pdf {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .btn-share {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
         }
 
-        .btn-repeat {
-            background: linear-gradient(135deg, var(--repeat), #1e7e34);
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
             color: white;
         }
 
-        .action-btn:active {
-            transform: scale(0.98);
+        .btn-medicine {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
         }
 
-        .action-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
         }
 
-        /* Button Groups */
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 16px 0;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .btn-group .action-btn {
-            margin: 0;
+        .btn:active {
+            transform: translateY(0);
         }
 
-        .btn-group-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin: 16px 0;
-        }
-
-        .btn-group-3 .action-btn {
-            margin: 0;
-            font-size: 14px;
-            padding: 12px 8px;
-            min-height: 48px;
-        }
-
-        /* Line Items */
+        /* Quotation Specific Styles */
         .line-items {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 18px;
         }
 
         .line-item {
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        .line-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: var(--theme-gradient);
-            border-radius: 0 4px 4px 0;
+            background: white;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 14px;
+            border: 1px solid #e0e0e0;
         }
 
         .line-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .item-number {
             font-size: 12px;
             font-weight: 600;
-            color: var(--text-muted);
-            background: var(--theme-light);
-            padding: 6px 12px;
-            border-radius: 12px;
+            color: #7f8c8d;
+            background: #ecf0f1;
+            padding: 4px 10px;
+            border-radius: 16px;
         }
 
-        .remove-item {
-            width: 36px;
-            height: 36px;
+        .remove-btn {
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             border: none;
-            background: var(--danger);
+            background: #e74c3c;
             color: white;
-            font-size: 18px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .item-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            font-size: 14px;
         }
 
         .total-display {
-            background: var(--theme-light);
-            border: 2px solid var(--theme-primary);
-            color: var(--theme-primary);
-            font-weight: 700;
+            background: #3498db;
+            color: white;
             text-align: center;
-            border-radius: 16px;
-            padding: 18px;
-            font-size: 18px;
-            margin-top: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-top: 10px;
         }
 
-        /* Totals Card */
         .totals-card {
-            background: var(--theme-gradient);
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
-            border-radius: 20px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 8px 30px var(--shadow-medium);
+            border-radius: 14px;
+            padding: 20px;
+            margin: 18px 0;
         }
 
         .total-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
-            font-size: 16px;
+            margin-bottom: 10px;
+            font-size: 15px;
         }
 
         .total-row:last-child {
-            margin-bottom: 0;
             border-top: 2px solid rgba(255,255,255,0.3);
-            padding-top: 16px;
-            font-size: 20px;
+            padding-top: 10px;
+            font-size: 18px;
             font-weight: 700;
+            margin-top: 10px;
         }
 
         .tax-input {
-            width: 80px;
+            width: 70px;
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
             color: white;
             text-align: center;
-            border-radius: 8px;
-            padding: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            padding: 6px;
         }
 
-        .tax-input::placeholder {
-            color: rgba(255,255,255,0.7);
+        .preview {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 1px solid #e0e0e0;
+            display: none;
         }
 
-        /* Enhanced Medicine Cards */
-        .medicine-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 16px;
-            overflow: hidden;
-            position: relative;
+        .preview.active {
+            display: block;
         }
 
-        .medicine-card.repeating::before {
-            content: '🔁';
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 20px;
-            z-index: 10;
-            background: var(--repeat);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
+        .preview-header {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 18px;
+            margin-bottom: 25px;
         }
 
-        .medicine-header {
-            background: var(--medicine-light);
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+        .preview-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin-bottom: 8px;
         }
 
-        .medicine-info {
-            flex: 1;
-            padding-right: 16px;
+        .preview-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
-        .medicine-name {
+        .detail-section h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .detail-content {
+            color: #34495e;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        .preview-table th,
+        .preview-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .preview-table th {
+            background: #f8f9fa;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .preview-totals {
+            text-align: right;
+            margin-top: 18px;
+        }
+
+        .preview-totals > div {
+            margin-bottom: 6px;
+        }
+
+        .grand-total {
             font-size: 18px;
             font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 4px;
+            color: #3498db;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 10px;
         }
 
-        .medicine-dosage {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-
-        .medicine-instructions {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .medicine-schedule-info {
-            font-size: 11px;
-            color: var(--text-muted);
-            background: var(--bg-secondary);
-            padding: 4px 8px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-
-        .medicine-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .medicine-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .medicine-btn:active {
-            transform: scale(0.9);
-        }
-
-        .duplicate-medicine {
-            background: var(--info);
-            color: white;
-        }
-
-        .edit-medicine {
-            background: var(--edit);
-            color: white;
-        }
-
-        .delete-medicine {
-            background: var(--danger);
-            color: white;
-        }
-
-        .repeat-medicine {
-            background: var(--repeat);
-            color: white;
-        }
-
-        .medicine-schedule {
-            padding: 20px;
-        }
-
-        /* Enhanced Schedule Items */
-        .schedule-item {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
-
-        .schedule-item.repeated {
-            border-left: 4px solid var(--repeat);
-        }
-
-        .schedule-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .schedule-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .schedule-time {
-            font-weight: 700;
-            color: var(--text-primary);
-            font-size: 16px;
-        }
-
-        .schedule-note {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-        }
-
-        .schedule-status {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .status-indicator {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--border-color);
-        }
-
-        .status-indicator.taken { background: var(--success); }
-        .status-indicator.missed { background: var(--danger); }
-        .status-indicator.pending { background: var(--warning); }
-
-        .take-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            min-width: 70px;
-            transition: all 0.3s ease;
-        }
-
-        .take-btn:active {
-            transform: scale(0.95);
-        }
-
-        .take-btn.taken { background: var(--success); color: white; }
-        .take-btn.pending { background: var(--theme-primary); color: white; }
-        .take-btn.missed { background: var(--danger); color: white; }
-        .take-btn.repeat { background: var(--repeat); color: white; }
-
-        /* Enhanced Dose Counter */
-        .dose-counter {
-            background: var(--repeat-light);
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin-top: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--repeat);
-        }
-
-        .dose-progress {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--repeat);
-        }
-
-        .dose-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .dose-btn {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: none;
-            background: var(--repeat);
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .dose-btn:active {
-            transform: scale(0.9);
-        }
-
-        .dose-btn:disabled {
-            background: var(--border-color);
-            cursor: not-allowed;
-        }
-
-        .remark-section {
-            background: var(--remark-light);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 8px;
-        }
-
-        .remark-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--remark);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .remark-display {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-            font-style: italic;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: background 0.3s ease;
-        }
-
-        .remark-display:hover {
-            background: var(--remark-light);
-        }
-
-        .remark-display.empty {
-            color: var(--text-muted);
-            font-style: normal;
-        }
-
-        /* Enhanced Stats Grid */
+        /* Medicine Tracker Styles */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            background: var(--bg-card);
+            background: white;
             padding: 16px 12px;
-            border-radius: 16px;
-            border: 1px solid var(--border-color);
+            border-radius: 12px;
             text-align: center;
+            border: 1px solid #e0e0e0;
         }
 
         .stat-number {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             margin-bottom: 4px;
         }
 
         .stat-label {
-            font-size: 10px;
-            color: var(--text-muted);
+            font-size: 11px;
+            color: #7f8c8d;
             font-weight: 600;
         }
 
-        .stat-taken .stat-number { color: var(--success); }
-        .stat-pending .stat-number { color: var(--warning); }
-        .stat-missed .stat-number { color: var(--danger); }
-        .stat-repeat .stat-number { color: var(--repeat); }
+        .stat-taken .stat-number { color: #27ae60; }
+        .stat-pending .stat-number { color: #f39c12; }
+        .stat-missed .stat-number { color: #e74c3c; }
+        .stat-total .stat-number { color: #3498db; }
 
-        /* Enhanced Time Selection Grid */
+        .medicine-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .medicine-header {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .medicine-info h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .medicine-info p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .medicine-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .medicine-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .medicine-schedule {
+            padding: 18px;
+        }
+
+        .schedule-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .schedule-time {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .schedule-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-taken {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-missed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .take-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+        }
+
         .time-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .time-input {
-            padding: 16px 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .time-input:active {
-            border-color: var(--theme-primary);
-        }
-
-        .time-input.active {
-            background: var(--medicine);
-            color: white;
-            border-color: var(--medicine);
-        }
-
-        /* Enhanced Dosage Settings */
-        .dosage-settings {
-            background: var(--repeat-light);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border: 1px solid var(--repeat);
-        }
-
-        .dosage-header {
-            display: flex;
-            align-items: center;
             gap: 8px;
             margin-bottom: 16px;
         }
 
-        .dosage-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--repeat);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .dosage-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--repeat);
-        }
-
-        /* Logo Upload */
-        .logo-upload {
-            border: 2px dashed var(--theme-primary);
-            border-radius: 16px;
-            padding: 40px 20px;
+        .time-slot {
+            padding: 10px 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
-            background: var(--theme-light);
-            margin-bottom: 20px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .logo-upload:active {
-            background: var(--theme-primary);
-            color: white;
-        }
-
-        .logo-preview {
-            max-width: 120px;
-            max-height: 60px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            display: none;
-        }
-
-        .logo-preview.visible {
-            display: block;
-        }
-
-        .logo-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
-            color: var(--theme-primary);
-        }
-
-        .logo-text {
             font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-        }
-
-        .logo-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .logo-btn {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 20px;
             font-weight: 600;
-            cursor: pointer;
-            font-size: 12px;
+            background: white;
             transition: all 0.3s ease;
         }
 
-        .logo-btn:active {
-            transform: scale(0.95);
+        .time-slot.active {
+            background: #9b59b6;
+            color: white;
+            border-color: #9b59b6;
         }
 
-        .upload-btn {
-            background: var(--theme-primary);
-            color: white;
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        .remove-btn {
-            background: var(--danger);
-            color: white;
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #e0e0e0;
+            cursor: pointer;
+            font-size: 16px;
         }
 
         /* Bottom Navigation */
@@ -989,15 +573,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            z-index: 1000;
-            box-shadow: 0 -4px 20px var(--shadow-light);
-        }
-
-        .nav-container {
+            background: white;
+            border-top: 1px solid #e0e0e0;
             display: flex;
-            height: 80px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
         .nav-item {
@@ -1006,25 +585,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            padding: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
             border: none;
             background: none;
-            color: var(--text-muted);
+            color: #7f8c8d;
+            transition: all 0.3s ease;
         }
 
         .nav-item.active {
-            color: var(--theme-primary);
-            background: var(--theme-light);
-        }
-
-        .nav-item:active {
-            transform: scale(0.95);
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
         }
 
         .nav-icon {
-            font-size: 24px;
+            font-size: 20px;
+            margin-bottom: 4px;
         }
 
         .nav-label {
@@ -1035,842 +611,27 @@
         /* Floating Action Button */
         .fab {
             position: fixed;
-            bottom: 100px;
+            bottom: 90px;
             right: 20px;
-            width: 64px;
-            height: 64px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: var(--theme-gradient);
+            background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
             border: none;
-            font-size: 28px;
+            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 8px 30px var(--shadow-medium);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 999;
-            transition: all 0.3s ease;
-        }
-
-        .fab:active {
-            transform: scale(0.9);
-        }
-
-        /* Drawer */
-        .drawer {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg-card);
-            z-index: 1500;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .drawer.open {
-            right: 0;
-        }
-
-        .drawer-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 70px;
-        }
-
-        .drawer-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .close-drawer {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: none;
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .close-drawer:active {
-            transform: scale(0.9);
-        }
-
-        .drawer-content {
-            padding: 20px;
-        }
-
-        /* Theme Section */
-        .theme-section {
-            margin-bottom: 32px;
-        }
-
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .mode-toggle {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 4px;
-        }
-
-        .mode-option {
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            background: transparent;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
-
-        .mode-option:active {
-            transform: scale(0.95);
-        }
-
-        .mode-option.active {
-            background: var(--theme-gradient);
-            color: white;
-        }
-
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .color-option {
-            aspect-ratio: 1;
-            border: none;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            border: 3px solid transparent;
-        }
-
-        .color-option:active {
-            transform: scale(0.9);
-        }
-
-        .color-option.active {
-            border-color: var(--text-primary);
-            transform: scale(1.1);
-        }
-
-        .color-option::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .color-option.active::after {
-            opacity: 1;
-        }
-
-        /* Color Definitions */
-        .color-blue { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
-        .color-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .color-cyan { background: linear-gradient(135deg, #00f5ff 0%, #0066ff 100%); }
-        .color-pink { background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%); }
-        .color-green { background: linear-gradient(135deg, #00ff88 0%, #00cc44 100%); }
-        .color-orange { background: linear-gradient(135deg, #ff6b00 0%, #ff3300 100%); }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-card);
-            z-index: 1600;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .modal.active {
-            transform: translateY(0);
-        }
-
-        .modal-content {
-            padding: 20px;
-        }
-
-        /* Quotation Preview */
-        .quotation-preview {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 8px 30px var(--shadow-medium);
-            border: 1px solid var(--border-color);
-        }
-
-        .quotation-header {
-            text-align: center;
-            border-bottom: 3px solid var(--theme-primary);
-            padding-bottom: 20px;
-            margin-bottom: 24px;
-        }
-
-        .quotation-logo {
-            max-width: 100px;
-            max-height: 50px;
-            margin-bottom: 16px;
-            display: none;
-        }
-
-        .quotation-logo.visible {
-            display: block;
-        }
-
-        .quotation-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .quotation-number {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .quotation-details {
-            margin-bottom: 24px;
-        }
-
-        .detail-section {
-            margin-bottom: 20px;
-        }
-
-        .detail-section h4 {
-            color: var(--text-primary);
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .detail-content {
-            color: var(--text-secondary);
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
-        .quotation-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 12px;
-        }
-
-        .quotation-table th,
-        .quotation-table td {
-            border: 1px solid var(--border-color);
-            padding: 12px 8px;
-            text-align: left;
-        }
-
-        .quotation-table th {
-            background: var(--bg-secondary);
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .quotation-table .text-right {
-            text-align: right;
-        }
-
-        .quotation-totals {
-            text-align: right;
-            margin-top: 20px;
-            color: var(--text-primary);
-        }
-
-        .quotation-totals > div {
-            margin-bottom: 8px;
-        }
-
-        .quotation-total {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--theme-primary);
-            border-top: 2px solid var(--border-color);
-            padding-top: 12px;
-            margin-top: 12px;
-        }
-
-        /* PDF Viewer */
-        .pdf-viewer {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 24px;
-            margin: 20px 0;
-            box-shadow: 0 8px 30px var(--shadow-medium);
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
-
-        .pdf-preview {
-            max-width: 100%;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            margin: 20px 0;
-            box-shadow: 0 4px 12px var(--shadow-light);
-        }
-
-        /* Loading Spinner */
-        .loading-spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Share Menu */
-        .share-menu {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--bg-card);
-            border-radius: 20px 20px 0 0;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            z-index: 1700;
-            box-shadow: 0 -4px 20px var(--shadow-medium);
-        }
-
-        .share-menu.active {
-            transform: translateY(0);
-        }
-
-        .share-menu-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .share-menu-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 8px;
-        }
-
-        .share-menu-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-
-        .share-options {
-            padding: 20px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .share-option {
-            padding: 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: var(--bg-primary);
-        }
-
-        .share-option:active {
-            transform: scale(0.95);
-            border-color: var(--theme-primary);
-            background: var(--theme-light);
-        }
-
-        .share-option-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .share-option-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* Daily Log */
-        .log-item {
-            background: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        .log-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .log-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .log-medicine {
-            flex: 1;
-        }
-
-        .log-medicine-name {
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-
-        .log-medicine-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .log-status {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .log-status:active {
-            transform: scale(0.95);
-        }
-
-        .log-status.taken {
-            background: rgba(39, 174, 96, 0.2);
-            color: var(--success);
-        }
-
-        .log-status.missed {
-            background: rgba(231, 76, 60, 0.2);
-            color: var(--danger);
-        }
-
-        .log-status.pending {
-            background: rgba(243, 156, 18, 0.2);
-            color: var(--warning);
-        }
-
-        .log-remark {
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        /* Status message */
-        .status-message {
-            position: fixed;
-            top: 90px;
-            left: 20px;
-            right: 20px;
-            padding: 16px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            z-index: 2000;
-            transform: translateY(-100px);
-            opacity: 0;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .status-message.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .status-message.success {
-            background: var(--success);
-            color: white;
-        }
-
-        .status-message.error {
-            background: var(--danger);
-            color: white;
-        }
-
-        .status-message.info {
-            background: var(--info);
-            color: white;
-        }
-
-        /* Medicine Schedule Item Action Bar */
-        .schedule-item-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .schedule-item-btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            text-align: center;
-        }
-
-        .schedule-item-btn:active {
-            transform: scale(0.95);
-        }
-
-        .schedule-item-btn.edit {
-            background: var(--edit-light);
-            color: var(--edit);
-        }
-
-        .schedule-item-btn.duplicate {
-            background: var(--info);
-            color: white;
-        }
-
-        .schedule-item-btn.delete {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* Daily Log Item Actions */
-        .log-item-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-
-        .log-item-btn {
-            padding: 6px 10px;
-            border: none;
-            border-radius: 16px;
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .log-item-btn:active {
-            transform: scale(0.95);
-        }
-
-        .log-item-btn.edit {
-            background: var(--edit-light);
-            color: var(--edit);
-        }
-
-        .log-item-btn.duplicate {
-            background: var(--info);
-            color: white;
-        }
-
-        /* Utilities */
-        .hidden {
-            display: none !important;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        /* Animations */
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        /* Overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--overlay);
-            z-index: 1400;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* PDF Template Styles */
-        .pdf-template {
-            background: white;
-            color: #333;
-            font-family: Arial, sans-serif;
-            line-height: 1.4;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
-        }
-
-        .pdf-template .header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 20px;
-        }
-
-        .pdf-template .logo {
-            max-width: 120px;
-            max-height: 60px;
-            margin-bottom: 20px;
-        }
-
-        .pdf-template .title {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-
-        .pdf-template .details {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-
-        .pdf-template .detail-block {
-            width: 45%;
-        }
-
-        .pdf-template .detail-title {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .pdf-template .detail-content {
-            color: #555;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .pdf-template table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-        }
-
-        .pdf-template th,
-        .pdf-template td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .pdf-template th {
-            background: #f8f9fa;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-
-        .pdf-template .text-right {
-            text-align: right;
-        }
-
-        .pdf-template .totals {
-            text-align: right;
-            margin-top: 20px;
-        }
-
-        .pdf-template .total-row {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .pdf-template .grand-total {
-            font-size: 20px;
-            font-weight: bold;
-            color: #3498db;
-            border-top: 2px solid #ddd;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-
-        .pdf-template .notes {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .pdf-template .notes-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        /* Welcome Screen */
-        .welcome-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--theme-gradient);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-        }
-
-        .welcome-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .welcome-logo {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-
-        .welcome-title {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .welcome-subtitle {
-            font-size: 16px;
-            opacity: 0.9;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .welcome-features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 300px;
-            margin-bottom: 40px;
-        }
-
-        .welcome-feature {
-            text-align: center;
-            opacity: 0.9;
-        }
-
-        .welcome-feature-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .welcome-feature-text {
-            font-size: 12px;
-        }
-
-        .welcome-btn {
-            padding: 16px 32px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .welcome-btn:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        /* Safe Area for newer phones */
-        @supports (padding: max(0px)) {
-            .mobile-header {
-                padding-top: max(16px, env(safe-area-inset-top));
-            }
-            
-            .bottom-nav {
-                padding-bottom: max(0px, env(safe-area-inset-bottom));
-            }
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .btn-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .item-row {
-                grid-template-columns: 1fr;
-            }
-            
             .form-row {
                 grid-template-columns: 1fr;
             }
             
-            .form-row-3 {
+            .preview-details {
                 grid-template-columns: 1fr;
             }
             
@@ -1878,110 +639,55 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             
-            .quotation-details {
-                flex-direction: column;
-            }
-            
-            .detail-block {
-                width: 100% !important;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* Performance optimizations */
-        .card, .medicine-card, .log-item {
-            will-change: transform;
-        }
-
-        /* Print styles */
-        @media print {
-            .mobile-header, .bottom-nav, .fab, .drawer, .overlay {
-                display: none !important;
-            }
-            
-            .page {
-                margin-top: 0;
-                padding: 0;
-            }
-            
-            .quotation-preview {
-                box-shadow: none;
-                border: 1px solid #ccc;
+            .container {
+                padding: 15px;
             }
         }
     </style>
 </head>
 
-<body data-theme="light" data-color="blue">
-    <!-- Welcome Screen -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <div class="welcome-logo">📄</div>
-        <div class="welcome-title">QuoteFlow Enhanced</div>
-        <div class="welcome-subtitle">Advanced Business & Medicine Management</div>
-        
-        <div class="welcome-features">
-            <div class="welcome-feature">
-                <div class="welcome-feature-icon">📄</div>
-                <div class="welcome-feature-text">Professional Quotations</div>
-            </div>
-            <div class="welcome-feature">
-                <div class="welcome-feature-icon">💊</div>
-                <div class="welcome-feature-text">Repeating Medicine Schedules</div>
-            </div>
-            <div class="welcome-feature">
-                <div class="welcome-feature-icon">🔁</div>
-                <div class="welcome-feature-text">Multiple Daily Doses</div>
-            </div>
-            <div class="welcome-feature">
-                <div class="welcome-feature-icon">📱</div>
-                <div class="welcome-feature-text">Smart Mobile App</div>
-            </div>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 QuoteFlow Complete</h1>
+            <p>Professional Business & Health Management</p>
         </div>
-        
-        <button class="welcome-btn" onclick="hideWelcomeScreen()">Get Started</button>
-    </div>
 
-    <!-- Status Message -->
-    <div class="status-message" id="statusMessage"></div>
-
-    <!-- Mobile Header -->
-    <div class="mobile-header">
-        <div class="header-content">
-            <div class="app-branding">
-                <div class="app-title" onclick="editTitle('app-title')">QuoteFlow Enhanced</div>
-                <div class="app-slogan" onclick="editTitle('app-slogan')">Advanced Business & Medicine Tracker</div>
-            </div>
-            <div class="header-actions">
-                <button class="header-btn" onclick="toggleDrawer()" aria-label="Settings">⚙️</button>
-            </div>
+        <!-- Page Navigation -->
+        <div class="page-nav">
+            <button class="page-nav-btn active" onclick="switchPage('quotation')">
+                📄 Quotations
+            </button>
+            <button class="page-nav-btn" onclick="switchPage('medicine')">
+                💊 Medicine Tracker
+            </button>
         </div>
-    </div>
 
-    <!-- Quotation Page -->
-    <div class="page active" id="quotationPage">
-        <!-- Company Details -->
-        <div class="card">
-            <div class="card-header">
+        <!-- QUOTATION PAGE -->
+        <div class="page active" id="quotationPage">
+            <!-- Company Details -->
+            <div class="card">
                 <div class="card-title">
-                    <div class="card-icon">🏢</div>
-                    <span>Company Details</span>
+                    🏢 Company Details
                 </div>
-            </div>
-            <div class="card-content">
-                <!-- Logo Upload -->
-                <div class="logo-upload" onclick="triggerLogoUpload()">
-                    <img id="logoPreview" class="logo-preview" alt="Company Logo">
-                    <div id="logoUploadContent">
-                        <div class="logo-icon">🏢</div>
-                        <div class="logo-text">Tap to add company logo</div>
-                        <div class="logo-actions">
-                            <button type="button" class="logo-btn upload-btn">Choose Logo</button>
-                            <button type="button" class="logo-btn remove-btn" id="logoRemoveBtn" style="display: none;" onclick="removeLogo(event)">Remove</button>
+                
+                <!-- Logo Upload Section -->
+                <div class="form-group">
+                    <label class="form-label">Company Logo</label>
+                    <div class="logo-upload" onclick="triggerLogoUpload()">
+                        <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
+                        <div id="logoUploadContent">
+                            <div class="logo-icon">🏢</div>
+                            <div class="logo-text">Tap to add company logo</div>
+                            <div class="logo-actions">
+                                <button type="button" class="btn btn-primary" style="margin: 8px;">Choose Logo</button>
+                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="removeLogo(event)">Remove</button>
+                            </div>
                         </div>
+                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(event)">
                     </div>
-                    <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(event)">
                 </div>
-
+                
                 <div class="form-group">
                     <label class="form-label">Company Name</label>
                     <input type="text" class="form-input" id="companyName" placeholder="Your Company Name">
@@ -1990,26 +696,23 @@
                     <label class="form-label">Address</label>
                     <textarea class="form-input form-textarea" id="companyAddress" placeholder="Your company address"></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="companyPhone" placeholder="Phone number">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="companyEmail" placeholder="Email address">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Customer Details -->
-        <div class="card">
-            <div class="card-header">
+            <!-- Customer Details -->
+            <div class="card">
                 <div class="card-title">
-                    <div class="card-icon">👤</div>
-                    <span>Customer Details</span>
+                    👤 Customer Details
                 </div>
-            </div>
-            <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Customer Name</label>
                     <input type="text" class="form-input" id="customerName" placeholder="Customer or company name">
@@ -2018,73 +721,68 @@
                     <label class="form-label">Address</label>
                     <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer address"></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Phone</label>
-                    <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input type="tel" class="form-input" id="customerPhone" placeholder="Customer phone">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="customerEmail" placeholder="Customer email">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Quotation Info -->
-        <div class="card">
-            <div class="card-header">
+            <!-- Quotation Info -->
+            <div class="card">
                 <div class="card-title">
-                    <div class="card-icon">📄</div>
-                    <span>Quotation Information</span>
+                    📄 Quotation Information
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Quotation Number</label>
+                        <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-input" id="quotationDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Valid Until</label>
+                        <input type="date" class="form-input" id="validUntil">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Currency</label>
+                        <select class="form-input" id="currency">
+                            <option value="$">USD ($)</option>
+                            <option value="€">EUR (€)</option>
+                            <option value="£">GBP (£)</option>
+                            <option value="¥">JPY (¥)</option>
+                            <option value="RM">MYR (RM)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="card-content">
-                <div class="form-group">
-                    <label class="form-label">Quotation Number</label>
-                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Date</label>
-                    <input type="date" class="form-input" id="quotationDate">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Valid Until</label>
-                    <input type="date" class="form-input" id="validUntil">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Currency</label>
-                    <select class="form-input form-select" id="currency">
-                        <option value="$">USD ($)</option>
-                        <option value="€">EUR (€)</option>
-                        <option value="£">GBP (£)</option>
-                        <option value="¥">JPY (¥)</option>
-                        <option value="RM">MYR (RM)</option>
-                        <option value="₹">INR (₹)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
 
-        <!-- Line Items -->
-        <div class="card">
-            <div class="card-header">
+            <!-- Line Items -->
+            <div class="card">
                 <div class="card-title">
-                    <div class="card-icon">📦</div>
-                    <span>Products & Services</span>
+                    📦 Products & Services
                 </div>
-            </div>
-            <div class="card-content">
                 <div class="line-items">
                     <div id="lineItemsContainer">
                         <div class="line-item">
                             <div class="line-item-header">
                                 <span class="item-number">Item #1</span>
-                                <button class="remove-item" onclick="removeLineItem(this)">×</button>
+                                <button class="remove-btn" onclick="removeLineItem(this)">×</button>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Description</label>
                                 <input type="text" class="form-input item-description" placeholder="Product or service description">
                             </div>
-                            <div class="item-row">
+                            <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label">Quantity</label>
                                     <input type="number" class="form-input item-quantity" value="1" min="1">
@@ -2097,8 +795,8 @@
                             <div class="total-display item-total">$0.00</div>
                         </div>
                     </div>
-                    <button type="button" class="action-btn btn-primary" onclick="addLineItem()">
-                        <span>➕</span> Add Item
+                    <button type="button" class="btn btn-primary" onclick="addLineItem()" style="width: 100%; margin-top: 16px;">
+                        ➕ Add Item
                     </button>
                 </div>
 
@@ -2124,124 +822,82 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Notes -->
-        <div class="card">
-            <div class="card-header">
+            <!-- Notes -->
+            <div class="card">
                 <div class="card-title">
-                    <div class="card-icon">📝</div>
-                    <span>Terms & Notes</span>
+                    📝 Terms & Notes
                 </div>
-            </div>
-            <div class="card-content">
                 <div class="form-group">
                     <label class="form-label">Terms & Conditions / Notes</label>
                     <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
                 </div>
             </div>
-        </div>
 
-        <!-- Generate Button -->
-        <button type="button" class="action-btn btn-success" onclick="generateQuotation()">
-            <span>📄</span> Generate Quotation
-        </button>
+            <!-- Generate Button -->
+            <button type="button" class="btn btn-success" onclick="generateQuotation()" style="width: 100%; font-size: 18px; padding: 18px;">
+                📄 Generate Quotation
+            </button>
 
-        <!-- Quotation Preview -->
-        <div id="quotationPreview" class="quotation-preview hidden">
-            <div class="quotation-header">
-                <img id="quotationLogo" class="quotation-logo" alt="Company Logo">
-                <h1 class="quotation-title">QUOTATION</h1>
-                <p class="quotation-number" id="previewQuotationNumber"></p>
-            </div>
-            
-            <div class="quotation-details">
-                <div class="detail-section">
-                    <h4>From:</h4>
-                    <div class="detail-content" id="previewCompanyDetails"></div>
+            <!-- Preview -->
+            <div id="quotationPreview" class="preview">
+                <div class="preview-header">
+                    <h1 class="preview-title">QUOTATION</h1>
+                    <p id="previewQuotationNumber"></p>
                 </div>
-                <div class="detail-section">
-                    <h4>To:</h4>
-                    <div class="detail-content" id="previewCustomerDetails"></div>
+                
+                <div class="preview-details">
+                    <div class="detail-section">
+                        <h4>From:</h4>
+                        <div class="detail-content" id="previewCompanyDetails"></div>
+                    </div>
+                    <div class="detail-section">
+                        <h4>To:</h4>
+                        <div class="detail-content" id="previewCustomerDetails"></div>
+                    </div>
                 </div>
-                <div class="detail-section">
+
+                <div style="margin-bottom: 25px;">
                     <h4>Details:</h4>
                     <div class="detail-content">
                         <strong>Date:</strong> <span id="previewDate"></span><br>
                         <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
                     </div>
                 </div>
-            </div>
 
-            <table class="quotation-table">
-                <thead>
-                    <tr>
-                        <th>Description</th>
-                        <th>Qty</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody id="previewLineItems"></tbody>
-            </table>
+                <table class="preview-table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewLineItems"></tbody>
+                </table>
 
-            <div class="quotation-totals">
-                <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
-                <div><strong>Tax:</strong> <span id="previewTax"></span></div>
-                <div class="quotation-total"><strong>Total:</strong> <span id="previewTotal"></span></div>
-            </div>
-
-            <div id="previewNotes"></div>
-
-            <!-- Enhanced PDF Actions -->
-            <div class="btn-group">
-                <button type="button" class="action-btn btn-pdf" onclick="generateAndSharePDF()" id="pdfShareBtn">
-                    <span>📤</span> Share PDF
-                </button>
-                <button type="button" class="action-btn btn-pdf" onclick="generatePDF()" id="pdfBtn">
-                    <span>📄</span> Create PDF
-                </button>
-            </div>
-        </div>
-
-        <!-- PDF Viewer -->
-        <div id="pdfViewer" class="pdf-viewer hidden">
-            <h3 style="margin-bottom: 16px; color: var(--text-primary);">📄 PDF Generated Successfully!</h3>
-            <div id="pdfContainer"></div>
-            
-            <div class="btn-group">
-                <button type="button" class="action-btn btn-primary" onclick="downloadPDF()">
-                    <span>💾</span> Download
-                </button>
-                <button type="button" class="action-btn btn-share" onclick="showShareMenu()">
-                    <span>📤</span> Share
-                </button>
-            </div>
-            
-            <div class="btn-group">
-                <button type="button" class="action-btn" onclick="viewPDFFullscreen()" style="background: var(--warning); color: white;">
-                    <span>🔍</span> View Full
-                </button>
-                <button type="button" class="action-btn" onclick="printPDF()" style="background: var(--info); color: white;">
-                    <span>🖨️</span> Print
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Enhanced Medicine Page -->
-    <div class="page" id="medicinePage">
-        <h2 class="text-center" style="margin-bottom: 24px; font-size: 24px; font-weight: 800;">💊 Enhanced Medicine Tracker</h2>
-        
-        <!-- Enhanced Stats -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="card-icon" style="background: var(--medicine);">📊</div>
-                    <span>Today's Overview</span>
+                <div class="preview-totals">
+                    <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
+                    <div><strong>Tax:</strong> <span id="previewTax"></span></div>
+                    <div class="grand-total"><strong>Total:</strong> <span id="previewTotal"></span></div>
                 </div>
+
+                <div id="previewNotes"></div>
+
+                <button type="button" class="btn btn-primary" onclick="generatePDF()" id="pdfBtn" style="width: 100%; margin-top: 25px; font-size: 16px;">
+                    📄 Download PDF
+                </button>
             </div>
-            <div class="card-content">
+        </div>
+
+        <!-- MEDICINE PAGE -->
+        <div class="page" id="medicinePage">
+            <!-- Today's Overview -->
+            <div class="card">
+                <div class="card-title">
+                    📊 Today's Overview
+                </div>
                 <div class="stats-grid">
                     <div class="stat-card stat-taken">
                         <div class="stat-number" id="todayTaken">0</div>
@@ -2255,1019 +911,309 @@
                         <div class="stat-number" id="todayMissed">0</div>
                         <div class="stat-label">Missed</div>
                     </div>
-                    <div class="stat-card stat-repeat">
-                        <div class="stat-number" id="todayRepeats">0</div>
-                        <div class="stat-label">Extra Doses</div>
+                    <div class="stat-card stat-total">
+                        <div class="stat-number" id="todayTotal">0</div>
+                        <div class="stat-label">Total</div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Enhanced Add Medicine Button -->
-        <button type="button" class="action-btn btn-medicine" onclick="showAddMedicineModal()">
-            <span>💊</span> Add Medicine
-        </button>
-
-        <!-- Medicine List -->
-        <div id="medicineList"></div>
-
-        <!-- Enhanced Daily Log -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="card-icon" style="background: var(--warning);">📅</div>
-                    <span>Daily Log & Activity</span>
-                </div>
-            </div>
-            <div class="card-content">
-                <div id="dailyLog"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FAB -->
-    <button class="fab" onclick="fabAction()" id="fabBtn">+</button>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-container">
-            <button class="nav-item active" onclick="switchPage('quotation')">
-                <div class="nav-icon">📄</div>
-                <div class="nav-label">Quotes</div>
+            <!-- Add Medicine Button -->
+            <button type="button" class="btn btn-medicine" onclick="showAddMedicineModal()" style="width: 100%; margin-bottom: 20px;">
+                💊 Add Medicine
             </button>
-            <button class="nav-item" onclick="switchPage('medicine')">
-                <div class="nav-icon">💊</div>
-                <div class="nav-label">Medicine</div>
-            </button>
-        </div>
-    </div>
 
-    <!-- Settings Drawer -->
-    <div class="drawer" id="settingsDrawer">
-        <div class="drawer-header">
-            <div class="drawer-title">Settings</div>
-            <button class="close-drawer" onclick="toggleDrawer()">×</button>
-        </div>
-        <div class="drawer-content">
-            <div class="theme-section">
-                <div class="section-title">Display Mode</div>
-                <div class="mode-toggle">
-                    <button class="mode-option active" data-mode="light" onclick="setThemeMode('light')">☀️ Light</button>
-                    <button class="mode-option" data-mode="dark" onclick="setThemeMode('dark')">🌙 Dark</button>
-                </div>
-            </div>
+            <!-- Medicine List -->
+            <div id="medicineList"></div>
 
-            <div class="theme-section">
-                <div class="section-title">Color Theme</div>
-                <div class="color-grid">
-                    <button class="color-option color-blue active" data-color="blue" onclick="setColorTheme('blue')"></button>
-                    <button class="color-option color-purple" data-color="purple" onclick="setColorTheme('purple')"></button>
-                    <button class="color-option color-cyan" data-color="cyan" onclick="setColorTheme('cyan')"></button>
-                    <button class="color-option color-pink" data-color="pink" onclick="setColorTheme('pink')"></button>
-                    <button class="color-option color-green" data-color="green" onclick="setColorTheme('green')"></button>
-                    <button class="color-option color-orange" data-color="orange" onclick="setColorTheme('orange')"></button>
-                </div>
-            </div>
-
-            <!-- Data Management Section -->
-            <div class="theme-section">
-                <div class="section-title">Data Management</div>
-                <button class="action-btn btn-primary" onclick="Storage.exportData()" style="margin-bottom: 12px;">
-                    <span>📤</span> Export Backup
-                </button>
-                <button class="action-btn btn-primary" onclick="document.getElementById('importInput').click()" style="margin-bottom: 12px;">
-                    <span>📥</span> Import Backup
-                </button>
-                <button class="action-btn" onclick="Storage.clearAllData()" style="background: linear-gradient(135deg, var(--danger), #c0392b); color: white;">
-                    <span>🗑️</span> Clear All Data
-                </button>
-                <input type="file" id="importInput" accept=".json" style="display: none;" onchange="Storage.importData(event)">
-                
-                <!-- Storage Info -->
-                <div style="margin-top: 16px; padding: 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
-                    <div><strong>📊 Storage Status:</strong></div>
-                    <div id="storageInfo">Calculating...</div>
-                    <div style="margin-top: 8px;"><strong>📱 Auto-save:</strong> Enabled</div>
-                </div>
-            </div>
-
-            <!-- App Info Section -->
-            <div class="theme-section">
-                <div class="section-title">About</div>
-                <div style="padding: 12px; background: var(--bg-secondary); border-radius: 8px; font-size: 12px; color: var(--text-muted);">
-                    <div><strong>QuoteFlow Enhanced</strong></div>
-                    <div>Version 4.1 - Fixed PDF & Medicine Features</div>
-                    <div>Advanced Business & Medicine Tracker</div>
-                    <div style="margin-top: 8px;">✅ PDF generation & sharing enabled</div>
-                    <div>🔁 Multiple daily doses support</div>
-                    <div>✏️ Medicine edit & duplicate everywhere</div>
-                    <div>💾 Automatic saving enabled</div>
-                    <div>🔒 Privacy-first data storage</div>
-                </div>
+            <!-- No medicines message -->
+            <div id="noMedicinesMessage" style="text-align: center; padding: 40px; color: #7f8c8d; display: none;">
+                <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
+                <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
+                <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
             </div>
         </div>
     </div>
 
-    <!-- Enhanced Add Medicine Modal -->
+    <!-- Add Medicine Modal -->
     <div class="modal" id="addMedicineModal">
-        <div class="drawer-header">
-            <div class="drawer-title" id="modalTitle">Add Medicine</div>
-            <button class="close-drawer" onclick="closeAddMedicineModal()">×</button>
-        </div>
         <div class="modal-content">
-            <div style="background: var(--theme-light); padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 12px; color: var(--text-secondary);">
-                💡 <strong>Tip:</strong> You can add the same medicine multiple times with different schedules (e.g., morning vs evening doses)
+            <div class="modal-header">
+                <div class="modal-title">Add Medicine</div>
+                <button class="close-btn" onclick="closeAddMedicineModal()">×</button>
             </div>
+            
             <div class="form-group">
                 <label class="form-label">Medicine Name</label>
                 <input type="text" class="form-input" id="medicineName" placeholder="e.g., Aspirin">
             </div>
+            
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label">Dosage</label>
                     <input type="text" class="form-input" id="medicineDosage" placeholder="e.g., 500mg">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Max Daily Doses</label>
-                    <select class="form-input form-select" id="maxDailyDoses">
-                        <option value="1">1 dose per day</option>
-                        <option value="2">2 doses per day</option>
-                        <option value="3">3 doses per day</option>
-                        <option value="4">4 doses per day</option>
-                        <option value="6">6 doses per day</option>
-                        <option value="8">8 doses per day</option>
-                        <option value="12">12 doses per day</option>
-                        <option value="unlimited">Unlimited (PRN)</option>
+                    <label class="form-label">Frequency</label>
+                    <select class="form-input" id="medicineFrequency">
+                        <option value="daily">Daily</option>
+                        <option value="twice">Twice Daily</option>
+                        <option value="three">Three Times</option>
+                        <option value="asneeded">As Needed</option>
                     </select>
                 </div>
             </div>
+            
             <div class="form-group">
                 <label class="form-label">Instructions</label>
-                <input type="text" class="form-input" id="medicineInstructions" placeholder="e.g., After meals, every 6 hours as needed">
+                <input type="text" class="form-input" id="medicineInstructions" placeholder="e.g., After meals">
             </div>
-
-            <!-- Enhanced Dosage Settings -->
-            <div class="dosage-settings">
-                <div class="dosage-header">
-                    <div class="dosage-icon">🔁</div>
-                    <div class="dosage-title">Repeating Schedule Settings</div>
-                </div>
-                <div class="form-row-3">
-                    <div class="form-group">
-                        <label class="form-label">Repeat Interval</label>
-                        <select class="form-input form-select" id="repeatInterval">
-                            <option value="0">No repeating</option>
-                            <option value="4">Every 4 hours</option>
-                            <option value="6">Every 6 hours</option>
-                            <option value="8">Every 8 hours</option>
-                            <option value="12">Every 12 hours</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Minimum Gap</label>
-                        <select class="form-input form-select" id="minimumGap">
-                            <option value="0">No minimum</option>
-                            <option value="2">2 hours min</option>
-                            <option value="4">4 hours min</option>
-                            <option value="6">6 hours min</option>
-                            <option value="8">8 hours min</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Type</label>
-                        <select class="form-input form-select" id="medicineType">
-                            <option value="scheduled">Scheduled</option>
-                            <option value="prn">As Needed (PRN)</option>
-                            <option value="both">Both</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
+            
             <div class="form-group">
-                <label class="form-label">Scheduled Times (tap to select)</label>
+                <label class="form-label">Select Times (tap to select)</label>
                 <div class="time-grid" id="timeSlots">
-                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '06:00')">06:00</button>
-                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '08:00')">08:00</button>
-                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '12:00')">12:00</button>
-                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '18:00')">18:00</button>
-                    <button type="button" class="time-input" onclick="toggleTimeSlot(this, '22:00')">22:00</button>
-                    <button type="button" class="time-input" onclick="addCustomTime()">+ Custom</button>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '08:00')">08:00</div>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '12:00')">12:00</div>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '18:00')">18:00</div>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '22:00')">22:00</div>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '06:00')">06:00</div>
+                    <div class="time-slot" onclick="toggleTimeSlot(this, '14:00')">14:00</div>
                 </div>
             </div>
             
-            <button type="button" class="action-btn btn-medicine" id="saveMedicineBtn" onclick="saveMedicine()">
-                <span>💾</span> Save Medicine
+            <button type="button" class="btn btn-medicine" onclick="saveMedicine()" style="width: 100%;">
+                💾 Save Medicine
             </button>
         </div>
     </div>
 
-    <!-- Share Menu -->
-    <div class="share-menu" id="shareMenu">
-        <div class="share-menu-header">
-            <div class="share-menu-title">Share Quotation PDF</div>
-            <div class="share-menu-subtitle">Choose how to share your quotation PDF</div>
-        </div>
-        <div class="share-options">
-            <div class="share-option" onclick="shareViaEmail()">
-                <div class="share-option-icon">📧</div>
-                <div class="share-option-label">Email</div>
-            </div>
-            <div class="share-option" onclick="shareViaMessaging()">
-                <div class="share-option-icon">💬</div>
-                <div class="share-option-label">Message</div>
-            </div>
-            <div class="share-option" onclick="shareViaWhatsApp()">
-                <div class="share-option-icon">📱</div>
-                <div class="share-option-label">WhatsApp</div>
-            </div>
-            <div class="share-option" onclick="shareViaSystemShare()">
-                <div class="share-option-icon">📤</div>
-                <div class="share-option-label">More Apps</div>
-            </div>
-        </div>
-        <button class="action-btn" onclick="closeShareMenu()" style="margin: 16px 20px; background: var(--border-color); color: var(--text-primary);">
-            Cancel
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="fabAction()" id="fabBtn">+</button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="switchPage('quotation')">
+            <div class="nav-icon">📄</div>
+            <div class="nav-label">Quotes</div>
+        </button>
+        <button class="nav-item" onclick="switchPage('medicine')">
+            <div class="nav-icon">💊</div>
+            <div class="nav-label">Medicine</div>
         </button>
     </div>
 
-    <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="closeDrawers()"></div>
-
-    <!-- Hidden PDF Template -->
-    <div id="pdfTemplate" class="pdf-template" style="display: none;">
-        <div class="header">
-            <img id="pdfLogo" class="logo" alt="Company Logo" style="display: none;">
-            <div class="title">QUOTATION</div>
-            <div id="pdfQuotationNumber" style="color: #7f8c8d; font-size: 16px;"></div>
-        </div>
-        
-        <div class="details">
-            <div class="detail-block">
-                <div class="detail-title">From:</div>
-                <div class="detail-content" id="pdfCompanyDetails"></div>
-            </div>
-            <div class="detail-block">
-                <div class="detail-title">To:</div>
-                <div class="detail-content" id="pdfCustomerDetails"></div>
-            </div>
-        </div>
-        
-        <div style="margin-bottom: 30px;">
-            <div class="detail-title">Quotation Details:</div>
-            <div class="detail-content">
-                <strong>Date:</strong> <span id="pdfDate"></span><br>
-                <strong>Valid Until:</strong> <span id="pdfValidUntil"></span>
-            </div>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th style="width: 80px;">Qty</th>
-                    <th style="width: 100px;">Unit Price</th>
-                    <th style="width: 100px;">Total</th>
-                </tr>
-            </thead>
-            <tbody id="pdfLineItems"></tbody>
-        </table>
-
-        <div class="totals">
-            <div class="total-row"><strong>Subtotal:</strong> <span id="pdfSubtotal"></span></div>
-            <div class="total-row"><strong>Tax:</strong> <span id="pdfTax"></span></div>
-            <div class="grand-total"><strong>Total:</strong> <span id="pdfTotal"></span></div>
-        </div>
-
-        <div class="notes" id="pdfNotesSection" style="display: none;">
-            <div class="notes-title">Terms & Conditions</div>
-            <div id="pdfNotes"></div>
-        </div>
-    </div>
-
     <script>
-        // Hide welcome screen function
-        function hideWelcomeScreen() {
-            document.getElementById('welcomeScreen').classList.add('hidden');
-            setTimeout(() => {
-                document.getElementById('welcomeScreen').style.display = 'none';
-            }, 500);
-        }
-
-        // Enhanced Application State with Repeating Medicine Support
-        const AppState = {
-            medicines: [],
-            medicineLog: [],
-            companyLogo: null,
-            currentTheme: 'light',
-            currentColor: 'blue',
+        // Application State
+        let appState = {
             currentPage: 'quotation',
             lineItemCount: 1,
-            selectedTimes: [],
-            editingMedicineId: null,
-            appTitle: 'QuoteFlow Enhanced',
-            appSlogan: 'Advanced Business & Medicine Tracker',
-            formData: {
-                company: {},
-                customer: {},
-                quotation: {},
-                notes: '',
-                lineItems: []
-            },
-            lastSaved: null,
-            autoSaveEnabled: true,
-            currentPDFBlob: null,
-            currentPDFUrl: null,
-            pdfFileName: null,
-            isFirstRun: true
+            medicines: [],
+            medicineLog: [],
+            selectedTimes: []
         };
 
-        // Enhanced Storage Management with Repeating Medicine Support
-        const Storage = {
-            storageKey: 'quoteflow_enhanced_v4',
-            
-            save() {
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('quoteflow_data');
+            if (saved) {
                 try {
-                    this.collectFormData();
+                    const data = JSON.parse(saved);
+                    appState = { ...appState, ...data };
                     
-                    const dataToSave = {
-                        ...AppState,
-                        lastSaved: new Date().toISOString(),
-                        version: '4.1'
-                    };
-                    
-                    delete dataToSave.currentPDFBlob;
-                    delete dataToSave.currentPDFUrl;
-                    
-                    const data = JSON.stringify(dataToSave);
-                    localStorage.setItem(this.storageKey, data);
-                    console.log('💾 Data saved successfully at', new Date().toLocaleTimeString());
-                    return true;
-                } catch (error) {
-                    console.error('❌ Save failed:', error);
-                    this.showStatus('Save failed!', 'error');
-                    return false;
-                }
-            },
-
-            collectFormData() {
-                AppState.formData.company = {
-                    name: this.getElementValue('companyName'),
-                    address: this.getElementValue('companyAddress'),
-                    phone: this.getElementValue('companyPhone'),
-                    email: this.getElementValue('companyEmail')
-                };
-
-                AppState.formData.customer = {
-                    name: this.getElementValue('customerName'),
-                    address: this.getElementValue('customerAddress'),
-                    phone: this.getElementValue('customerPhone'),
-                    email: this.getElementValue('customerEmail')
-                };
-
-                AppState.formData.quotation = {
-                    number: this.getElementValue('quotationNumber'),
-                    date: this.getElementValue('quotationDate'),
-                    validUntil: this.getElementValue('validUntil'),
-                    currency: this.getElementValue('currency'),
-                    taxRate: this.getElementValue('taxRate')
-                };
-
-                AppState.formData.notes = this.getElementValue('notes');
-
-                AppState.formData.lineItems = [];
-                document.querySelectorAll('.line-item').forEach(item => {
-                    AppState.formData.lineItems.push({
-                        description: item.querySelector('.item-description')?.value || '',
-                        quantity: item.querySelector('.item-quantity')?.value || '1',
-                        price: item.querySelector('.item-price')?.value || '0'
-                    });
-                });
-            },
-
-            getElementValue(id) {
-                const element = document.getElementById(id);
-                return element ? element.value : '';
-            },
-
-            load() {
-                try {
-                    const savedData = localStorage.getItem(this.storageKey);
-                    if (!savedData) {
-                        console.log('ℹ️ No saved data found, starting fresh');
-                        this.setDefaultValues();
-                        return false;
-                    }
-
-                    const data = JSON.parse(savedData);
-                    console.log('📂 Loading saved data from', data.lastSaved || 'unknown time');
-
-                    Object.assign(AppState, data);
-                    AppState.isFirstRun = false;
-
-                    this.applyTheme();
-                    this.restoreFormData();
-                    this.restoreLineItems();
-                    this.restoreCompanyLogo();
-                    this.updateAllDisplays();
-                    this.initializeTodaysSchedules();
-
-                    console.log('✅ Data loaded successfully');
-                    return true;
-                } catch (error) {
-                    console.error('❌ Load failed:', error);
-                    this.showStatus('Failed to load data', 'error');
-                    this.setDefaultValues();
-                    return false;
-                }
-            },
-
-            setDefaultValues() {
-                const today = new Date().toISOString().split('T')[0];
-                const futureDate = new Date();
-                futureDate.setDate(futureDate.getDate() + 30);
-                
-                const quotationDate = document.getElementById('quotationDate');
-                const validUntil = document.getElementById('validUntil');
-                const quotationNumber = document.getElementById('quotationNumber');
-                
-                if (quotationDate && !quotationDate.value) {
-                    quotationDate.value = today;
-                }
-                if (validUntil && !validUntil.value) {
-                    validUntil.value = futureDate.toISOString().split('T')[0];
-                }
-                if (quotationNumber && !quotationNumber.value) {
-                    quotationNumber.value = `QF-${Date.now().toString().slice(-6)}`;
-                }
-                
-                this.setupDateValidation();
-            },
-
-            setupDateValidation() {
-                const quotationDate = document.getElementById('quotationDate');
-                const validUntil = document.getElementById('validUntil');
-                
-                if (quotationDate && validUntil) {
-                    quotationDate.addEventListener('change', () => {
-                        if (validUntil.value && quotationDate.value >= validUntil.value) {
-                            const newValidDate = new Date(quotationDate.value);
-                            newValidDate.setDate(newValidDate.getDate() + 30);
-                            validUntil.value = newValidDate.toISOString().split('T')[0];
-                            this.showStatus('Valid until date updated to be after quotation date', 'info');
+                    // Restore form data
+                    Object.keys(data.formData || {}).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element && data.formData[key]) {
+                            element.value = data.formData[key];
                         }
                     });
                     
-                    validUntil.addEventListener('change', () => {
-                        if (quotationDate.value && validUntil.value <= quotationDate.value) {
-                            this.showStatus('Valid until date must be after quotation date', 'error');
-                            const newValidDate = new Date(quotationDate.value);
-                            newValidDate.setDate(newValidDate.getDate() + 1);
-                            validUntil.value = newValidDate.toISOString().split('T')[0];
-                        }
-                    });
+                    updateMedicineDisplay();
+                    updateTodaysOverview();
+                } catch (e) {
+                    console.error('Error loading data:', e);
                 }
-            },
-
-            applyTheme() {
-                document.body.setAttribute('data-theme', AppState.currentTheme);
-                document.body.setAttribute('data-color', AppState.currentColor);
-                this.updateThemeUI();
-            },
-
-            restoreFormData() {
-                const company = AppState.formData.company || {};
-                this.setElementValue('companyName', company.name);
-                this.setElementValue('companyAddress', company.address);
-                this.setElementValue('companyPhone', company.phone);
-                this.setElementValue('companyEmail', company.email);
-
-                const customer = AppState.formData.customer || {};
-                this.setElementValue('customerName', customer.name);
-                this.setElementValue('customerAddress', customer.address);
-                this.setElementValue('customerPhone', customer.phone);
-                this.setElementValue('customerEmail', customer.email);
-
-                const quotation = AppState.formData.quotation || {};
-                this.setElementValue('quotationNumber', quotation.number);
-                this.setElementValue('quotationDate', quotation.date);
-                this.setElementValue('validUntil', quotation.validUntil);
-                this.setElementValue('currency', quotation.currency);
-                this.setElementValue('taxRate', quotation.taxRate);
-
-                this.setElementValue('notes', AppState.formData.notes);
-
-                if (AppState.appTitle) {
-                    document.querySelector('.app-title').textContent = AppState.appTitle;
-                }
-                if (AppState.appSlogan) {
-                    document.querySelector('.app-slogan').textContent = AppState.appSlogan;
-                }
-            },
-
-            setElementValue(id, value) {
-                const element = document.getElementById(id);
-                if (element && value) {
-                    element.value = value;
-                }
-            },
-
-            restoreLineItems() {
-                const lineItems = AppState.formData.lineItems || [];
-                if (lineItems.length === 0) return;
-
-                const container = document.getElementById('lineItemsContainer');
-                container.innerHTML = '';
-
-                lineItems.forEach((item, index) => {
-                    const itemNumber = index + 1;
-                    const newItem = this.createLineItem(itemNumber, item);
-                    container.appendChild(newItem);
-                });
-
-                AppState.lineItemCount = lineItems.length;
-                
-                setTimeout(() => {
-                    this.updateAllCalculations();
-                }, 100);
-            },
-
-            createLineItem(itemNumber, data = {}) {
-                const newItem = document.createElement('div');
-                newItem.className = 'line-item';
-                newItem.innerHTML = `
-                    <div class="line-item-header">
-                        <span class="item-number">Item #${itemNumber}</span>
-                        <button class="remove-item" onclick="removeLineItem(this)">×</button>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <input type="text" class="form-input item-description" placeholder="Product or service description" value="${data.description || ''}">
-                    </div>
-                    <div class="item-row">
-                        <div class="form-group">
-                            <label class="form-label">Quantity</label>
-                            <input type="number" class="form-input item-quantity" value="${data.quantity || '1'}" min="1">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Unit Price</label>
-                            <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" value="${data.price || ''}">
-                        </div>
-                    </div>
-                    <div class="total-display item-total">$0.00</div>
-                `;
-
-                const quantityInput = newItem.querySelector('.item-quantity');
-                const priceInput = newItem.querySelector('.item-price');
-                const descriptionInput = newItem.querySelector('.item-description');
-
-                [quantityInput, priceInput, descriptionInput].forEach(input => {
-                    input.addEventListener('input', () => {
-                        this.updateLineItemTotal(newItem);
-                        this.debouncedSave();
-                    });
-                });
-
-                return newItem;
-            },
-
-            restoreCompanyLogo() {
-                if (AppState.companyLogo) {
-                    const logoPreview = document.getElementById('logoPreview');
-                    const removeBtn = document.getElementById('logoRemoveBtn');
-                    
-                    if (logoPreview) {
-                        logoPreview.src = AppState.companyLogo;
-                        logoPreview.classList.add('visible');
-                    }
-                    if (removeBtn) {
-                        removeBtn.style.display = 'inline-block';
-                    }
-                }
-            },
-
-            updateAllDisplays() {
-                updateMedicineList();
-                loadTodaysOverview();
-                updateDailyLog();
-                this.updateAllCalculations();
-                setTimeout(() => {
-                    this.updateStorageInfo();
-                }, 100);
-            },
-
-            initializeTodaysSchedules() {
-                const today = new Date().toDateString();
-                
-                AppState.medicines.forEach(medicine => {
-                    const existingSchedule = AppState.medicineLog.filter(log => 
-                        log.medicineId === medicine.id && log.date === today
-                    );
-                    
-                    if (existingSchedule.length === 0) {
-                        medicine.times.forEach((time, index) => {
-                            const logEntry = {
-                                id: Date.now() + Math.random() * 1000 + index,
-                                medicineId: medicine.id,
-                                medicineName: medicine.name,
-                                dosage: medicine.dosage,
-                                scheduledTime: time,
-                                date: today,
-                                status: 'pending',
-                                actualTime: null,
-                                remark: '',
-                                isScheduled: true,
-                                consumptionCount: 0,
-                                maxDailyDoses: medicine.maxDailyDoses || 1,
-                                minimumGap: medicine.minimumGap || 0,
-                                repeatInterval: medicine.repeatInterval || 0,
-                                medicineType: medicine.medicineType || 'scheduled',
-                                lastTakenTime: null
-                            };
-                            AppState.medicineLog.push(logEntry);
-                        });
-                    }
-                });
-                
-                // Clean up old logs (keep only last 7 days)
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-                const cutoffDate = sevenDaysAgo.toDateString();
-                
-                const initialLogCount = AppState.medicineLog.length;
-                AppState.medicineLog = AppState.medicineLog.filter(log => 
-                    new Date(log.date) >= new Date(cutoffDate)
-                );
-                
-                const cleanedCount = initialLogCount - AppState.medicineLog.length;
-                if (cleanedCount > 0) {
-                    console.log(`🧹 Cleaned up ${cleanedCount} old medicine logs`);
-                }
-            },
-
-            updateAllCalculations() {
-                document.querySelectorAll('.line-item').forEach(item => {
-                    this.updateLineItemTotal(item);
-                });
-            },
-
-            updateLineItemTotal(lineItem) {
-                const quantity = parseFloat(lineItem.querySelector('.item-quantity')?.value) || 0;
-                const price = parseFloat(lineItem.querySelector('.item-price')?.value) || 0;
-                const total = quantity * price;
-                const currency = document.getElementById('currency')?.value || '$';
-                
-                const totalDisplay = lineItem.querySelector('.item-total');
-                if (totalDisplay) {
-                    totalDisplay.textContent = `${currency}${total.toFixed(2)}`;
-                }
-                
-                this.updateGrandTotal();
-            },
-
-            updateGrandTotal() {
-                const currency = document.getElementById('currency')?.value || '$';
-                let subtotal = 0;
-                
-                document.querySelectorAll('.line-item').forEach(item => {
-                    const quantity = parseFloat(item.querySelector('.item-quantity')?.value) || 0;
-                    const price = parseFloat(item.querySelector('.item-price')?.value) || 0;
-                    subtotal += quantity * price;
-                });
-                
-                const taxRate = parseFloat(document.getElementById('taxRate')?.value) || 0;
-                const taxAmount = subtotal * (taxRate / 100);
-                const grandTotal = subtotal + taxAmount;
-                
-                const subtotalEl = document.getElementById('subtotal');
-                const taxAmountEl = document.getElementById('taxAmount');
-                const grandTotalEl = document.getElementById('grandTotal');
-                
-                if (subtotalEl) subtotalEl.textContent = `${currency}${subtotal.toFixed(2)}`;
-                if (taxAmountEl) taxAmountEl.textContent = `${currency}${taxAmount.toFixed(2)}`;
-                if (grandTotalEl) grandTotalEl.textContent = `${currency}${grandTotal.toFixed(2)}`;
-            },
-
-            updateThemeUI() {
-                document.querySelectorAll('.mode-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.mode === AppState.currentTheme);
-                });
-
-                document.querySelectorAll('.color-option').forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.color === AppState.currentColor);
-                });
-            },
-
-            updateStorageInfo() {
-                try {
-                    const storageInfoEl = document.getElementById('storageInfo');
-                    if (!storageInfoEl) return;
-
-                    const data = localStorage.getItem(this.storageKey);
-                    const sizeKB = data ? (data.length / 1024).toFixed(1) : '0';
-                    const medicineCount = AppState.medicines.length;
-                    const logCount = AppState.medicineLog.length;
-                    const lineItemCount = AppState.formData.lineItems?.length || 0;
-                    
-                    storageInfoEl.innerHTML = `
-                        📁 ${sizeKB} KB used<br>
-                        💊 ${medicineCount} medicines<br>
-                        📋 ${logCount} medicine logs<br>
-                        📦 ${lineItemCount} line items<br>
-                        🕒 Last saved: ${AppState.lastSaved ? new Date(AppState.lastSaved).toLocaleTimeString() : 'Never'}
-                    `;
-                } catch (error) {
-                    console.error('Error updating storage info:', error);
-                }
-            },
-
-            debouncedSave: (() => {
-                let timeout;
-                return () => {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => {
-                        Storage.save();
-                    }, 1000);
-                };
-            })(),
-
-            immediateSave() {
-                return this.save();
-            },
-
-            exportData() {
-                try {
-                    this.save();
-                    const dataToExport = {
-                        ...AppState,
-                        exportDate: new Date().toISOString(),
-                        version: '4.1'
-                    };
-                    
-                    delete dataToExport.currentPDFBlob;
-                    delete dataToExport.currentPDFUrl;
-                    
-                    const dataStr = JSON.stringify(dataToExport, null, 2);
-                    const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                    
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(dataBlob);
-                    link.download = `quoteflow_enhanced_backup_${new Date().toISOString().split('T')[0]}.json`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                    
-                    this.showStatus('Data exported successfully!', 'success');
-                } catch (error) {
-                    console.error('Export failed:', error);
-                    this.showStatus('Export failed!', 'error');
-                }
-            },
-
-            importData(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-                
-                if (file.type !== 'application/json') {
-                    this.showStatus('Please select a valid JSON backup file', 'error');
-                    event.target.value = '';
-                    return;
-                }
-                
-                if (file.size > 10 * 1024 * 1024) {
-                    this.showStatus('Backup file is too large (max 10MB)', 'error');
-                    event.target.value = '';
-                    return;
-                }
-                
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    try {
-                        const importedData = JSON.parse(e.target.result);
-                        
-                        if (!this.validateImportedData(importedData)) {
-                            this.showStatus('Invalid backup file format', 'error');
-                            return;
-                        }
-                        
-                        const confirmMessage = `Import backup from ${importedData.exportDate ? new Date(importedData.exportDate).toLocaleDateString() : 'unknown date'}?
-
-This will replace ALL current data:
-• ${importedData.medicines?.length || 0} medicines
-• ${importedData.medicineLog?.length || 0} medicine logs
-• Company and customer data
-• All settings
-
-Current data will be lost. Continue?`;
-
-                        if (confirm(confirmMessage)) {
-                            Object.assign(AppState, {
-                                medicines: importedData.medicines || [],
-                                medicineLog: importedData.medicineLog || [],
-                                companyLogo: importedData.companyLogo || null,
-                                currentTheme: importedData.currentTheme || 'light',
-                                currentColor: importedData.currentColor || 'blue',
-                                appTitle: importedData.appTitle || 'QuoteFlow Enhanced',
-                                appSlogan: importedData.appSlogan || 'Advanced Business & Medicine Tracker',
-                                formData: importedData.formData || {
-                                    company: {},
-                                    customer: {},
-                                    quotation: {},
-                                    notes: '',
-                                    lineItems: []
-                                }
-                            });
-                            
-                            this.save();
-                            this.showStatus('Data imported successfully! Reloading...', 'success');
-                            
-                            setTimeout(() => {
-                                location.reload();
-                            }, 1500);
-                        }
-                    } catch (error) {
-                        console.error('Import failed:', error);
-                        this.showStatus('Invalid backup file format!', 'error');
-                    }
-                };
-                
-                reader.onerror = () => {
-                    this.showStatus('Failed to read backup file', 'error');
-                };
-                
-                reader.readAsText(file);
-                event.target.value = '';
-            },
-
-            validateImportedData(data) {
-                if (typeof data !== 'object' || data === null) {
-                    return false;
-                }
-                
-                const requiredFields = ['medicines', 'formData'];
-                const hasRequiredFields = requiredFields.some(field => data.hasOwnProperty(field));
-                
-                if (!hasRequiredFields) {
-                    return false;
-                }
-                
-                if (data.medicines && !Array.isArray(data.medicines)) {
-                    return false;
-                }
-                
-                if (data.medicineLog && !Array.isArray(data.medicineLog)) {
-                    return false;
-                }
-                
-                if (data.formData && typeof data.formData !== 'object') {
-                    return false;
-                }
-                
-                return true;
-            },
-
-            clearAllData() {
-                const confirmMessage = `⚠️ WARNING: This will permanently delete ALL data:
-
-• All quotation forms and customer data
-• All medicines and medication logs
-• Company logo and settings
-• All saved preferences
-
-This action cannot be undone. Are you absolutely sure?`;
-
-                if (confirm(confirmMessage)) {
-                    localStorage.removeItem(this.storageKey);
-                    this.showStatus('All data cleared! Reloading...', 'info');
-                    setTimeout(() => {
-                        location.reload();
-                    }, 1500);
-                }
-            },
-
-            showStatus(message, type = 'success') {
-                const statusEl = document.getElementById('statusMessage');
-                if (!statusEl) return;
-
-                statusEl.textContent = message;
-                statusEl.className = `status-message show ${type}`;
-                
-                setTimeout(() => {
-                    statusEl.classList.remove('show');
-                }, 3000);
             }
-        };
+        }
 
-        // Navigation Functions
-        function switchPage(page) {
-            AppState.currentPage = page;
-            Storage.immediateSave();
+        // Save data to localStorage
+        function saveData() {
+            try {
+                // Collect form data
+                const formData = {};
+                ['companyName', 'companyAddress', 'companyPhone', 'companyEmail',
+                 'customerName', 'customerAddress', 'customerPhone', 'customerEmail',
+                 'quotationNumber', 'quotationDate', 'validUntil', 'currency', 'notes'].forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        formData[id] = element.value;
+                    }
+                });
+                
+                appState.formData = formData;
+                localStorage.setItem('quoteflow_data', JSON.stringify(appState));
+            } catch (e) {
+                console.error('Error saving data:', e);
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + 30);
             
+            document.getElementById('quotationDate').value = today;
+            document.getElementById('validUntil').value = futureDate.toISOString().split('T')[0];
+            document.getElementById('quotationNumber').value = `Q-${Date.now().toString().slice(-6)}`;
+            
+            loadData();
+            updateCalculations();
+            updateTodaysOverview();
+            
+            // Auto-save on input
+            document.addEventListener('input', function(e) {
+                if (e.target.matches('.item-quantity, .item-price, #taxRate')) {
+                    updateCalculations();
+                }
+                setTimeout(saveData, 1000); // Debounced save
+            });
+        });
+
+        // Page Navigation
+        function switchPage(page) {
+            appState.currentPage = page;
+            
+            // Update page display
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(page + 'Page').classList.add('active');
             
+            // Update navigation
             document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            document.querySelectorAll('.page-nav-btn').forEach(nav => nav.classList.remove('active'));
             
-            updateFAB();
+            document.querySelector(`[onclick="switchPage('${page}')"]`).classList.add('active');
+            document.querySelectorAll(`[onclick="switchPage('${page}')"]`).forEach(btn => btn.classList.add('active'));
+            
+            // Update FAB
+            document.getElementById('fabBtn').innerHTML = page === 'quotation' ? '+' : '💊';
             
             if (page === 'medicine') {
-                loadTodaysOverview();
-                updateMedicineList();
-                updateDailyLog();
+                updateMedicineDisplay();
+                updateTodaysOverview();
             }
-        }
-
-        function updateFAB() {
-            const fab = document.getElementById('fabBtn');
-            if (fab) {
-                fab.innerHTML = AppState.currentPage === 'quotation' ? '+' : '💊';
-            }
+            
+            saveData();
         }
 
         function fabAction() {
-            if (AppState.currentPage === 'quotation') {
+            if (appState.currentPage === 'quotation') {
                 addLineItem();
             } else {
                 showAddMedicineModal();
             }
         }
 
-        // Quotation Functions
+        // QUOTATION FUNCTIONS
         function addLineItem() {
-            AppState.lineItemCount++;
+            appState.lineItemCount++;
             const container = document.getElementById('lineItemsContainer');
-            const newItem = Storage.createLineItem(AppState.lineItemCount);
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${appState.lineItemCount}</span>
+                    <button class="remove-btn" onclick="removeLineItem(this)">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Unit Price</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
             container.appendChild(newItem);
-            
             newItem.querySelector('.item-description').focus();
-            
-            Storage.debouncedSave();
-            Storage.showStatus('Item added', 'success');
         }
 
         function removeLineItem(button) {
             if (document.querySelectorAll('.line-item').length <= 1) {
-                Storage.showStatus('Cannot remove last item', 'error');
+                alert('Cannot remove the last item');
                 return;
             }
+            button.closest('.line-item').remove();
+            updateCalculations();
+        }
 
-            const lineItem = button.closest('.line-item');
-            lineItem.remove();
-            Storage.updateGrandTotal();
-            Storage.immediateSave();
-            Storage.showStatus('Item removed', 'info');
+        function updateCalculations() {
+            const currency = document.getElementById('currency').value;
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                const total = quantity * price;
+                
+                item.querySelector('.item-total').textContent = `${currency}${total.toFixed(2)}`;
+                subtotal += total;
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
         }
 
         function generateQuotation() {
-            Storage.immediateSave();
+            document.getElementById('previewQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
             
-            const preview = document.getElementById('quotationPreview');
-            
-            if (AppState.companyLogo) {
-                const quotationLogo = document.getElementById('quotationLogo');
-                quotationLogo.src = AppState.companyLogo;
-                quotationLogo.classList.add('visible');
-            }
-            
-            const companyData = AppState.formData.company;
             const companyDetails = `
-                <strong>${companyData.name || 'Company Name'}</strong><br>
-                ${companyData.address || ''}<br>
-                ${companyData.phone || ''}<br>
-                ${companyData.email || ''}
+                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
+                ${document.getElementById('companyAddress').value}<br>
+                ${document.getElementById('companyPhone').value}<br>
+                ${document.getElementById('companyEmail').value}
             `;
             document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
             
-            const customerData = AppState.formData.customer;
             const customerDetails = `
-                <strong>${customerData.name || 'Customer Name'}</strong><br>
-                ${customerData.address || ''}<br>
-                ${customerData.phone || ''}<br>
-                ${customerData.email || ''}
+                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
+                ${document.getElementById('customerAddress').value}<br>
+                ${document.getElementById('customerPhone').value}<br>
+                ${document.getElementById('customerEmail').value}
             `;
             document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
             
-            const quotationData = AppState.formData.quotation;
-            document.getElementById('previewQuotationNumber').textContent = 
-                quotationData.number || 'Q-001';
-            document.getElementById('previewDate').textContent = 
-                quotationData.date || new Date().toISOString().split('T')[0];
-            document.getElementById('previewValidUntil').textContent = 
-                quotationData.validUntil || '';
+            document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
+            document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
             
             const lineItemsBody = document.getElementById('previewLineItems');
             lineItemsBody.innerHTML = '';
             
-            AppState.formData.lineItems.forEach(item => {
+            document.querySelectorAll('.line-item').forEach(item => {
                 const row = document.createElement('tr');
-                const total = (parseFloat(item.quantity) || 0) * (parseFloat(item.price) || 0);
-                const currency = quotationData.currency || '$';
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                const total = parseFloat(quantity) * price;
+                const currency = document.getElementById('currency').value;
                 
                 row.innerHTML = `
-                    <td>${item.description || 'Item'}</td>
-                    <td>${item.quantity || '1'}</td>
-                    <td class="text-right">${currency}${parseFloat(item.price || 0).toFixed(2)}</td>
+                    <td>${description}</td>
+                    <td>${quantity}</td>
+                    <td class="text-right">${currency}${price.toFixed(2)}</td>
                     <td class="text-right">${currency}${total.toFixed(2)}</td>
                 `;
                 lineItemsBody.appendChild(row);
@@ -3277,167 +1223,315 @@ This action cannot be undone. Are you absolutely sure?`;
             document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
             document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
             
-            const notes = AppState.formData.notes;
+            const notes = document.getElementById('notes').value;
             if (notes) {
                 document.getElementById('previewNotes').innerHTML = `
-                    <div style="margin-top: 24px;">
-                        <h4 style="margin-bottom: 12px;">Terms & Conditions</h4>
-                        <div style="line-height: 1.6;">${notes}</div>
+                    <div style="margin-top: 25px; padding: 18px; background: #f8f9fa; border-radius: 8px;">
+                        <h4 style="margin-bottom: 10px;">Terms & Conditions</h4>
+                        <div>${notes}</div>
                     </div>
                 `;
             } else {
                 document.getElementById('previewNotes').innerHTML = '';
             }
             
-            preview.classList.remove('hidden');
-            preview.scrollIntoView({ behavior: 'smooth' });
-            
-            Storage.showStatus('Quotation generated successfully!', 'success');
-        }
-
-        // FIXED: Enhanced PDF Generation & Sharing Functions
-        async function generateAndSharePDF() {
-            if (!validateQuotationData()) {
-                return;
-            }
-
-            const pdfShareBtn = document.getElementById('pdfShareBtn');
-            const originalText = pdfShareBtn.innerHTML;
-            pdfShareBtn.disabled = true;
-            pdfShareBtn.innerHTML = '<div class="loading-spinner"></div> Creating PDF for sharing...';
-
-            try {
-                // Generate quotation preview if not already visible
-                if (document.getElementById('quotationPreview').classList.contains('hidden')) {
-                    generateQuotation();
-                }
-
-                // Generate PDF
-                await generatePDFInternal();
-                
-                // Auto-open share menu after PDF is generated
-                if (AppState.currentPDFBlob) {
-                    showShareMenu();
-                    Storage.showStatus('PDF generated! Choose sharing method.', 'success');
-                } else {
-                    Storage.showStatus('Failed to generate PDF for sharing', 'error');
-                }
-                
-            } catch (error) {
-                console.error('PDF generation for sharing failed:', error);
-                Storage.showStatus('Failed to generate PDF for sharing', 'error');
-            } finally {
-                pdfShareBtn.disabled = false;
-                pdfShareBtn.innerHTML = originalText;
-            }
+            document.getElementById('quotationPreview').classList.add('active');
+            document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
         }
 
         function generatePDF() {
-            if (!validateQuotationData()) {
+            if (typeof window.jspdf === 'undefined') {
+                alert('PDF library not loaded. Please refresh the page and try again.');
                 return;
             }
 
-            const pdfBtn = document.getElementById('pdfBtn');
-            const originalText = pdfBtn.innerHTML;
-            pdfBtn.disabled = true;
-            pdfBtn.innerHTML = '<div class="loading-spinner"></div> Creating PDF...';
-
-            generatePDFInternal().then(() => {
-                if (AppState.currentPDFBlob) {
-                    showPDFViewer();
-                    Storage.showStatus('PDF generated successfully!', 'success');
-                } else {
-                    Storage.showStatus('Failed to generate PDF', 'error');
-                }
-            }).catch(error => {
-                console.error('PDF generation failed:', error);
-                Storage.showStatus('Failed to generate PDF: ' + error.message, 'error');
-            }).finally(() => {
-                pdfBtn.disabled = false;
-                pdfBtn.innerHTML = originalText;
-            });
-        }
-
-        async function generatePDFInternal() {
-            if (typeof window.jspdf === 'undefined' || typeof html2canvas === 'undefined') {
-                throw new Error('PDF libraries not loaded. Please refresh the page and try again.');
-            }
-
-            // Generate quotation preview if not already visible
-            if (document.getElementById('quotationPreview').classList.contains('hidden')) {
-                generateQuotation();
-            }
-
-            // Wait a moment for the preview to render
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            preparePDFContent();
-            
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdf = new jsPDF();
             
-            const template = document.getElementById('pdfTemplate');
-            template.style.display = 'block';
+            const companyName = document.getElementById('companyName').value || 'Company Name';
+            const customerName = document.getElementById('customerName').value || 'Customer Name';
+            const quotationNumber = document.getElementById('quotationNumber').value || 'Q-001';
+            const date = document.getElementById('quotationDate').value;
+            const total = document.getElementById('grandTotal').textContent;
             
-            const canvas = await html2canvas(template, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: '#ffffff',
-                width: 800,
-                height: template.scrollHeight
+            pdf.setFontSize(20);
+            pdf.text('QUOTATION', 105, 30, { align: 'center' });
+            
+            pdf.setFontSize(12);
+            pdf.text(`Quotation #: ${quotationNumber}`, 20, 50);
+            pdf.text(`Date: ${date}`, 20, 60);
+            
+            pdf.text(`From: ${companyName}`, 20, 80);
+            pdf.text(`To: ${customerName}`, 20, 100);
+            
+            let yPosition = 130;
+            document.querySelectorAll('.line-item').forEach((item, index) => {
+                const description = item.querySelector('.item-description').value || 'Item';
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = item.querySelector('.item-price').value || '0';
+                
+                pdf.text(`${index + 1}. ${description} - Qty: ${quantity} - Price: ${price}`, 20, yPosition);
+                yPosition += 10;
             });
             
-            template.style.display = 'none';
+            pdf.text(`Total: ${total}`, 20, yPosition + 20);
             
-            const imgWidth = 210;
-            const pageHeight = 295;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            let heightLeft = imgHeight;
-            let position = 0;
-            
-            const imgData = canvas.toDataURL('image/png');
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-            
-            while (heightLeft >= 0) {
-                position = heightLeft - imgHeight;
-                pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-                heightLeft -= pageHeight;
-            }
-            
-            // Clean up previous PDF URLs to prevent memory leaks
-            if (AppState.currentPDFUrl) {
-                URL.revokeObjectURL(AppState.currentPDFUrl);
-            }
-            
-            AppState.currentPDFBlob = pdf.output('blob');
-            AppState.currentPDFUrl = URL.createObjectURL(AppState.currentPDFBlob);
-            AppState.pdfFileName = generateFileName();
-            
-            return AppState.currentPDFBlob;
+            const filename = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            pdf.save(filename);
         }
 
-        function preparePDFContent() {
-            const template = document.getElementById('pdfTemplate');
+        // MEDICINE FUNCTIONS
+        function showAddMedicineModal() {
+            appState.selectedTimes = [];
+            document.getElementById('medicineName').value = '';
+            document.getElementById('medicineDosage').value = '';
+            document.getElementById('medicineInstructions').value = '';
+            document.getElementById('medicineFrequency').value = 'daily';
             
-            if (AppState.companyLogo) {
-                const pdfLogo = document.getElementById('pdfLogo');
-                pdfLogo.src = AppState.companyLogo;
-                pdfLogo.style.display = 'block';
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('active');
+            });
+            
+            document.getElementById('addMedicineModal').classList.add('active');
+        }
+
+        function closeAddMedicineModal() {
+            document.getElementById('addMedicineModal').classList.remove('active');
+        }
+
+        function toggleTimeSlot(element, time) {
+            element.classList.toggle('active');
+            
+            if (appState.selectedTimes.includes(time)) {
+                appState.selectedTimes = appState.selectedTimes.filter(t => t !== time);
+            } else {
+                appState.selectedTimes.push(time);
+            }
+        }
+
+        function saveMedicine() {
+            const name = document.getElementById('medicineName').value.trim();
+            const dosage = document.getElementById('medicineDosage').value.trim();
+            const instructions = document.getElementById('medicineInstructions').value.trim();
+            const frequency = document.getElementById('medicineFrequency').value;
+            
+            if (!name || !dosage) {
+                alert('Please fill in medicine name and dosage');
+                return;
             }
             
-            document.getElementById('pdfQuotationNumber').textContent = 
-                AppState.formData.quotation.number || 'Q-001';
-            document.getElementById('pdfDate').textContent = 
-                AppState.formData.quotation.date || new Date().toISOString().split('T')[0];
-            document.getElementById('pdfValidUntil').textContent = 
-                AppState.formData.quotation.validUntil || '';
+            if (appState.selectedTimes.length === 0 && frequency !== 'asneeded') {
+                alert('Please select at least one time or choose "As Needed"');
+                return;
+            }
             
-            const company = AppState.formData.company;
-            document.getElementById('pdfCompanyDetails').innerHTML = `
-                <strong>${company.name || 'Company Name'}</strong><br>
-                ${company.address || ''}<br>
-                ${company.phone || ''}<br>
-                ${company.email || ''}
+            const medicine = {
+                id: Date.now(),
+                name,
+                dosage,
+                instructions,
+                frequency,
+                times: [...appState.selectedTimes].sort(),
+                createdAt: new Date().toISOString()
+            };
+            
+            appState.medicines.push(medicine);
+            createTodaysSchedule(medicine);
+            
+            updateMedicineDisplay();
+            updateTodaysOverview();
+            closeAddMedicineModal();
+            saveData();
+        }
+
+        function createTodaysSchedule(medicine) {
+            const today = new Date().toDateString();
+            
+            if (medicine.frequency === 'asneeded') {
+                const logEntry = {
+                    id: Date.now(),
+                    medicineId: medicine.id,
+                    medicineName: medicine.name,
+                    dosage: medicine.dosage,
+                    scheduledTime: 'As Needed',
+                    date: today,
+                    status: 'available'
+                };
+                appState.medicineLog.push(logEntry);
+            } else {
+                medicine.times.forEach((time, index) => {
+                    const logEntry = {
+                        id: Date.now() + index,
+                        medicineId: medicine.id,
+                        medicineName: medicine.name,
+                        dosage: medicine.dosage,
+                        scheduledTime: time,
+                        date: today,
+                        status: 'pending'
+                    };
+                    appState.medicineLog.push(logEntry);
+                });
+            }
+        }
+
+        function deleteMedicine(medicineId) {
+            if (confirm('Are you sure you want to delete this medicine?')) {
+                appState.medicines = appState.medicines.filter(m => m.id !== medicineId);
+                appState.medicineLog = appState.medicineLog.filter(log => log.medicineId !== medicineId);
+                
+                updateMedicineDisplay();
+                updateTodaysOverview();
+                saveData();
+            }
+        }
+
+        function markMedicineTaken(logId) {
+            const logEntry = appState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                logEntry.status = 'taken';
+                logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                updateMedicineDisplay();
+                updateTodaysOverview();
+                saveData();
+            }
+        }
+
+        function toggleMedicineStatus(logId) {
+            const logEntry = appState.medicineLog.find(log => log.id === logId);
+            if (logEntry) {
+                const statuses = ['pending', 'taken', 'missed', 'skipped'];
+                const currentIndex = statuses.indexOf(logEntry.status);
+                const nextIndex = (currentIndex + 1) % statuses.length;
+                logEntry.status = statuses[nextIndex];
+                
+                if (logEntry.status === 'taken' && !logEntry.actualTime) {
+                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+                
+                updateMedicineDisplay();
+                updateTodaysOverview();
+                saveData();
+            }
+        }
+
+        function updateMedicineDisplay() {
+            const container = document.getElementById('medicineList');
+            const noMedicinesMsg = document.getElementById('noMedicinesMessage');
+            
+            if (appState.medicines.length === 0) {
+                container.innerHTML = '';
+                noMedicinesMsg.style.display = 'block';
+                return;
+            }
+            
+            noMedicinesMsg.style.display = 'none';
+            const today = new Date().toDateString();
+            
+            let html = '';
+            appState.medicines.forEach(medicine => {
+                const todaysSchedule = appState.medicineLog.filter(log => 
+                    log.medicineId === medicine.id && log.date === today
+                );
+                
+                let scheduleHTML = '';
+                todaysSchedule.forEach(log => {
+                    const statusClass = `status-${log.status}`;
+                    let statusText = log.status.charAt(0).toUpperCase() + log.status.slice(1);
+                    let actionButton = '';
+                    
+                    if (log.status === 'pending') {
+                        actionButton = `<button class="take-btn" onclick="markMedicineTaken(${log.id})">Take</button>`;
+                    } else if (log.status === 'taken') {
+                        statusText += ` (${log.actualTime})`;
+                    }
+                    
+                    scheduleHTML += `
+                        <div class="schedule-item">
+                            <div>
+                                <div class="schedule-time">${log.scheduledTime}</div>
+                            </div>
+                            <div>
+                                <div class="schedule-status ${statusClass}" onclick="toggleMedicineStatus(${log.id})" style="cursor: pointer;">
+                                    ${statusText}
+                                </div>
+                                ${actionButton}
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <div class="medicine-card">
+                        <div class="medicine-header">
+                            <div class="medicine-info">
+                                <h3>${medicine.name}</h3>
+                                <p>${medicine.dosage} | ${medicine.instructions}</p>
+                            </div>
+                            <div class="medicine-actions">
+                                <button class="medicine-btn" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                            </div>
+                        </div>
+                        <div class="medicine-schedule">
+                            ${scheduleHTML || '<div style="text-align: center; color: #7f8c8d; padding: 20px;">No schedule for today</div>'}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function updateTodaysOverview() {
+            const today = new Date().toDateString();
+            const todaysLog = appState.medicineLog.filter(log => log.date === today);
+            
+            const taken = todaysLog.filter(log => log.status === 'taken').length;
+            const pending = todaysLog.filter(log => log.status === 'pending').length;
+            const missed = todaysLog.filter(log => log.status === 'missed').length;
+            const total = todaysLog.length;
+            
+            document.getElementById('todayTaken').textContent = taken;
+            document.getElementById('todayPending').textContent = pending;
+            document.getElementById('todayMissed').textContent = missed;
+            document.getElementById('todayTotal').textContent = total;
+            
+            // Auto-mark missed medications
+            checkMissedMedications();
+        }
+
+        function checkMissedMedications() {
+            const today = new Date().toDateString();
+            const currentTime = new Date();
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeMinutes = currentHour * 60 + currentMinute;
+            
+            appState.medicineLog.forEach(log => {
+                if (log.date === today && log.status === 'pending' && 
+                    log.scheduledTime !== 'As Needed') {
+                    const [schedHour, schedMinute] = log.scheduledTime.split(':').map(Number);
+                    const scheduledTimeMinutes = schedHour * 60 + schedMinute;
+                    
+                    // Mark as missed if more than 2 hours late
+                    if (currentTimeMinutes - scheduledTimeMinutes > 120) {
+                        log.status = 'missed';
+                    }
+                }
+            });
+        }
+
+        // Auto-save periodically
+        setInterval(saveData, 30000); // Save every 30 seconds
+        
+        // Save on page unload
+        window.addEventListener('beforeunload', saveData);
+    </script>
+</body>
+</html>
