@@ -361,6 +361,60 @@
             padding-top: 10px;
         }
 
+        /* Logo Upload Styles */
+        .logo-upload {
+            border: 2px dashed #3498db;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(52, 152, 219, 0.1);
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload:hover {
+            background: rgba(52, 152, 219, 0.2);
+            border-color: #2980b9;
+        }
+
+        .logo-preview {
+            max-width: 120px;
+            max-height: 60px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .logo-preview.visible {
+            display: block !important;
+        }
+
+        .logo-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .logo-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .logo-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-actions .btn {
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
         /* Medicine Tracker Styles */
         .stats-grid {
             display: grid;
@@ -513,6 +567,44 @@
             background: #9b59b6;
             color: white;
             border-color: #9b59b6;
+        }
+
+        /* Custom Time Styles */
+        .custom-time-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .custom-time-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .custom-time-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .custom-time-text {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .remove-custom-time {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            background: #e74c3c;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
         }
 
         /* Modal */
@@ -674,17 +766,17 @@
                 <!-- Logo Upload Section -->
                 <div class="form-group">
                     <label class="form-label">Company Logo</label>
-                    <div class="logo-upload" onclick="triggerLogoUpload()">
+                    <div class="logo-upload" id="logoUploadArea">
                         <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
                         <div id="logoUploadContent">
                             <div class="logo-icon">🏢</div>
                             <div class="logo-text">Tap to add company logo</div>
                             <div class="logo-actions">
-                                <button type="button" class="btn btn-primary" style="margin: 8px;">Choose Logo</button>
-                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="removeLogo(event)">Remove</button>
+                                <button type="button" class="btn btn-primary" id="chooseLogoBtn" style="margin: 8px;">Choose Logo</button>
+                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;">Remove</button>
                             </div>
                         </div>
-                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(event)">
+                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*">
                     </div>
                 </div>
                 
@@ -842,6 +934,7 @@
             <!-- Preview -->
             <div id="quotationPreview" class="preview">
                 <div class="preview-header">
+                    <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 16px auto;">
                     <h1 class="preview-title">QUOTATION</h1>
                     <p id="previewQuotationNumber"></p>
                 </div>
@@ -981,6 +1074,20 @@
                 </div>
             </div>
             
+            <!-- Manual Time Entry -->
+            <div class="form-group">
+                <label class="form-label">Add Custom Time</label>
+                <div class="custom-time-section">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="time" class="form-input" id="customTimeInput" style="flex: 1;">
+                        <button type="button" class="btn btn-primary" onclick="addCustomTime()" style="padding: 10px 16px;">
+                            ➕ Add
+                        </button>
+                    </div>
+                    <div id="customTimesList" style="margin-top: 12px;"></div>
+                </div>
+            </div>
+            
             <button type="button" class="btn btn-medicine" onclick="saveMedicine()" style="width: 100%;">
                 💾 Save Medicine
             </button>
@@ -1009,7 +1116,8 @@
             lineItemCount: 1,
             medicines: [],
             medicineLog: [],
-            selectedTimes: []
+            selectedTimes: [],
+            companyLogo: null
         };
 
         // Load data from localStorage
@@ -1030,8 +1138,26 @@
                     
                     updateMedicineDisplay();
                     updateTodaysOverview();
+                    restoreCompanyLogo();
                 } catch (e) {
                     console.error('Error loading data:', e);
+                }
+            }
+        }
+
+        // Restore company logo
+        function restoreCompanyLogo() {
+            if (appState.companyLogo) {
+                const logoPreview = document.getElementById('logoPreview');
+                const removeBtn = document.getElementById('logoRemoveBtn');
+                
+                if (logoPreview) {
+                    logoPreview.src = appState.companyLogo;
+                    logoPreview.style.display = 'block';
+                    logoPreview.classList.add('visible');
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'inline-block';
                 }
             }
         }
@@ -1070,6 +1196,7 @@
             loadData();
             updateCalculations();
             updateTodaysOverview();
+            restoreCompanyLogo(); // Restore logo on page load
             
             // Auto-save on input
             document.addEventListener('input', function(e) {
@@ -1177,6 +1304,13 @@
         }
 
         function generateQuotation() {
+            // Show logo if available
+            if (appState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = appState.companyLogo;
+                quotationLogo.style.display = 'block';
+            }
+            
             document.getElementById('previewQuotationNumber').textContent = 
                 document.getElementById('quotationNumber').value || 'Q-001';
             
@@ -1254,27 +1388,39 @@
             const date = document.getElementById('quotationDate').value;
             const total = document.getElementById('grandTotal').textContent;
             
+            let yPosition = 30;
+            
+            // Add logo if available
+            if (appState.companyLogo) {
+                try {
+                    pdf.addImage(appState.companyLogo, 'JPEG', 20, 10, 30, 15);
+                    yPosition = 35;
+                } catch (e) {
+                    console.log('Could not add logo to PDF:', e);
+                }
+            }
+            
             pdf.setFontSize(20);
-            pdf.text('QUOTATION', 105, 30, { align: 'center' });
+            pdf.text('QUOTATION', 105, yPosition, { align: 'center' });
             
             pdf.setFontSize(12);
-            pdf.text(`Quotation #: ${quotationNumber}`, 20, 50);
-            pdf.text(`Date: ${date}`, 20, 60);
+            pdf.text(`Quotation #: ${quotationNumber}`, 20, yPosition + 20);
+            pdf.text(`Date: ${date}`, 20, yPosition + 30);
             
-            pdf.text(`From: ${companyName}`, 20, 80);
-            pdf.text(`To: ${customerName}`, 20, 100);
+            pdf.text(`From: ${companyName}`, 20, yPosition + 50);
+            pdf.text(`To: ${customerName}`, 20, yPosition + 70);
             
-            let yPosition = 130;
+            let itemYPosition = yPosition + 100;
             document.querySelectorAll('.line-item').forEach((item, index) => {
                 const description = item.querySelector('.item-description').value || 'Item';
                 const quantity = item.querySelector('.item-quantity').value || '1';
                 const price = item.querySelector('.item-price').value || '0';
                 
-                pdf.text(`${index + 1}. ${description} - Qty: ${quantity} - Price: ${price}`, 20, yPosition);
-                yPosition += 10;
+                pdf.text(`${index + 1}. ${description} - Qty: ${quantity} - Price: ${price}`, 20, itemYPosition);
+                itemYPosition += 10;
             });
             
-            pdf.text(`Total: ${total}`, 20, yPosition + 20);
+            pdf.text(`Total: ${total}`, 20, itemYPosition + 20);
             
             const filename = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
             pdf.save(filename);
@@ -1287,11 +1433,13 @@
             document.getElementById('medicineDosage').value = '';
             document.getElementById('medicineInstructions').value = '';
             document.getElementById('medicineFrequency').value = 'daily';
+            document.getElementById('customTimeInput').value = '';
             
             document.querySelectorAll('.time-slot').forEach(slot => {
                 slot.classList.remove('active');
             });
             
+            updateCustomTimesList();
             document.getElementById('addMedicineModal').classList.add('active');
         }
 
@@ -1532,6 +1680,123 @@
         
         // Save on page unload
         window.addEventListener('beforeunload', saveData);
+
+        // LOGO FUNCTIONS
+        function triggerLogoUpload() {
+            document.getElementById('logoUploadInput').click();
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                if (file.size > 2 * 1024 * 1024) { // 2MB limit
+                    alert('Image too large! Please choose a file under 2MB.');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    appState.companyLogo = e.target.result;
+                    
+                    const logoPreview = document.getElementById('logoPreview');
+                    const removeBtn = document.getElementById('logoRemoveBtn');
+                    
+                    if (logoPreview) {
+                        logoPreview.src = appState.companyLogo;
+                        logoPreview.style.display = 'block';
+                        logoPreview.classList.add('visible');
+                    }
+                    if (removeBtn) {
+                        removeBtn.style.display = 'inline-block';
+                    }
+                    
+                    saveData();
+                    alert('Logo uploaded successfully!');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please select a valid image file.');
+            }
+        }
+
+        function removeLogo(event) {
+            event.stopPropagation();
+            if (confirm('Remove company logo?')) {
+                appState.companyLogo = null;
+                
+                const logoPreview = document.getElementById('logoPreview');
+                const removeBtn = document.getElementById('logoRemoveBtn');
+                const uploadInput = document.getElementById('logoUploadInput');
+                
+                if (logoPreview) {
+                    logoPreview.src = '';
+                    logoPreview.style.display = 'none';
+                    logoPreview.classList.remove('visible');
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'none';
+                }
+                if (uploadInput) {
+                    uploadInput.value = '';
+                }
+                
+                saveData();
+                alert('Logo removed successfully!');
+            }
+        }
+
+        // CUSTOM TIME FUNCTIONS
+        function addCustomTime() {
+            const timeInput = document.getElementById('customTimeInput');
+            const time = timeInput.value;
+            
+            if (!time) {
+                alert('Please select a time');
+                return;
+            }
+            
+            // Convert to HH:MM format
+            const timeFormatted = time;
+            
+            if (appState.selectedTimes.includes(timeFormatted)) {
+                alert('This time is already selected');
+                return;
+            }
+            
+            appState.selectedTimes.push(timeFormatted);
+            updateCustomTimesList();
+            timeInput.value = '';
+        }
+
+        function removeCustomTime(time) {
+            appState.selectedTimes = appState.selectedTimes.filter(t => t !== time);
+            updateCustomTimesList();
+        }
+
+        function updateCustomTimesList() {
+            const container = document.getElementById('customTimesList');
+            
+            // Get only custom times (not preset ones)
+            const presetTimes = ['08:00', '12:00', '18:00', '22:00', '06:00', '14:00'];
+            const customTimes = appState.selectedTimes.filter(time => !presetTimes.includes(time));
+            
+            if (customTimes.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            let html = '<div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; margin-bottom: 8px;">Custom Times:</div>';
+            customTimes.forEach(time => {
+                html += `
+                    <div class="custom-time-item">
+                        <span class="custom-time-text">${time}</span>
+                        <button class="remove-custom-time" onclick="removeCustomTime('${time}')">×</button>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
     </script>
 </body>
 </html>
