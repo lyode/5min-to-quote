@@ -187,6 +187,60 @@
             transform: translateY(0);
         }
 
+        /* Logo Upload Styles */
+        .logo-upload {
+            border: 2px dashed #3498db;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(52, 152, 219, 0.1);
+            margin-bottom: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload:hover {
+            background: rgba(52, 152, 219, 0.2);
+            border-color: #2980b9;
+        }
+
+        .logo-preview {
+            max-width: 120px;
+            max-height: 60px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .logo-preview.visible {
+            display: block !important;
+        }
+
+        .logo-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .logo-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 12px;
+        }
+
+        .logo-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-actions .btn {
+            margin: 0;
+            padding: 8px 16px;
+            font-size: 12px;
+        }
+
         /* Quotation Specific Styles */
         .line-items {
             background: #f8f9fa;
@@ -361,58 +415,179 @@
             padding-top: 10px;
         }
 
-        /* Logo Upload Styles */
-        .logo-upload {
-            border: 2px dashed #3498db;
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            background: rgba(52, 152, 219, 0.1);
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
+        /* Enhanced Quotation Preview Styles */
+        .quotation-preview-header {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .logo-upload:hover {
-            background: rgba(52, 152, 219, 0.2);
-            border-color: #2980b9;
+        .quotation-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
         }
 
-        .logo-preview {
-            max-width: 120px;
-            max-height: 60px;
+        .detail-column {
+            background: #f8f9fa;
+            padding: 20px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            border: 1px solid #e0e0e0;
+            border-left: 4px solid #3498db;
         }
 
-        .logo-preview.visible {
-            display: block !important;
-        }
-
-        .logo-icon {
-            font-size: 36px;
-            margin-bottom: 10px;
-            color: #3498db;
-        }
-
-        .logo-text {
+        .detail-title {
             font-size: 14px;
-            color: #7f8c8d;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0 0 12px 0;
+            letter-spacing: 1px;
+        }
+
+        .detail-box {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #34495e;
+        }
+
+        .detail-box strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .quote-info-section {
+            background: #ecf0f1;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .quote-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #34495e;
+            font-size: 14px;
+        }
+
+        .quotation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .quotation-table th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px 12px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+        .quotation-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .quotation-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .quotation-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .quotation-table tbody tr:hover {
+            background: #e8f4f8;
+        }
+
+        .quotation-totals-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .totals-rows {
+            max-width: 300px;
+            margin-left: auto;
+        }
+
+        .total-row-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 15px;
+        }
+
+        .total-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .total-value {
+            font-weight: 600;
+            color: #34495e;
+            text-align: right;
+            min-width: 100px;
+        }
+
+        .grand-total-row {
+            border-top: 2px solid #3498db;
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 18px;
+        }
+
+        .grand-total-value {
+            color: #3498db;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .quotation-notes-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .notes-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
             margin-bottom: 12px;
         }
 
-        .logo-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .logo-actions .btn {
-            margin: 0;
-            padding: 8px 16px;
-            font-size: 12px;
+        .notes-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #34495e;
         }
 
         /* Medicine Tracker Styles */
@@ -531,6 +706,16 @@
         .status-missed {
             background: #f8d7da;
             color: #721c24;
+        }
+
+        .status-available {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-skipped {
+            background: #e2e3e5;
+            color: #383d41;
         }
 
         .take-btn {
@@ -734,6 +919,89 @@
             .container {
                 padding: 15px;
             }
+
+            /* Quotation Preview Mobile Responsiveness */
+            .quotation-details-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .quote-info-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .quotation-table {
+                font-size: 12px;
+            }
+
+            .quotation-table th,
+            .quotation-table td {
+                padding: 8px 6px;
+            }
+
+            .quotation-table th {
+                font-size: 11px;
+            }
+
+            .totals-rows {
+                max-width: 100%;
+            }
+
+            .total-row-item {
+                font-size: 14px;
+            }
+
+            .grand-total-row {
+                font-size: 16px;
+            }
+
+            .grand-total-value {
+                font-size: 16px;
+            }
+        }
+
+        /* Stack table on very small screens */
+        @media (max-width: 480px) {
+            .quotation-table,
+            .quotation-table thead,
+            .quotation-table tbody,
+            .quotation-table th,
+            .quotation-table td,
+            .quotation-table tr {
+                display: block;
+            }
+
+            .quotation-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .quotation-table tr {
+                border: 1px solid #ccc;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-radius: 8px;
+                background: white;
+            }
+
+            .quotation-table td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            .quotation-table td:before {
+                content: attr(data-label) ": ";
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                text-align: left;
+                font-weight: bold;
+                color: #2c3e50;
+            }
         }
     </style>
 </head>
@@ -929,59 +1197,125 @@
             </div>
 
             <!-- Generate Button -->
-            <button type="button" class="btn btn-success" onclick="generateQuotation()" style="width: 100%; font-size: 18px; padding: 18px;">
-                📄 Generate Quotation
+            <button type="button" class="btn btn-success" onclick="generateAndShowPDF()" style="width: 100%; font-size: 18px; padding: 18px;">
+                📄 Generate & Share Quote
             </button>
 
-            <!-- Preview -->
-            <div id="quotationPreview" class="preview">
+            <!-- PDF Share View -->
+            <div id="pdfShareView" class="preview" style="display: none;">
                 <div class="preview-header">
-                    <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 16px auto;">
-                    <h1 class="preview-title">QUOTATION</h1>
-                    <p id="previewQuotationNumber"></p>
+                    <h1 class="preview-title">📄 Quote Ready!</h1>
+                    <p id="shareQuotationNumber" style="color: #7f8c8d;"></p>
                 </div>
                 
-                <div class="preview-details">
-                    <div class="detail-section">
-                        <h4>From:</h4>
-                        <div class="detail-content" id="previewCompanyDetails"></div>
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">✅</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #27ae60; margin-bottom: 8px;">
+                        Your quotation is ready!
                     </div>
-                    <div class="detail-section">
-                        <h4>To:</h4>
-                        <div class="detail-content" id="previewCustomerDetails"></div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 25px;">
-                    <h4>Details:</h4>
-                    <div class="detail-content">
-                        <strong>Date:</strong> <span id="previewDate"></span><br>
-                        <strong>Valid Until:</strong> <span id="previewValidUntil"></span>
+                    <div style="font-size: 14px; color: #7f8c8d; margin-bottom: 20px;">
+                        Choose how you want to share or save it
                     </div>
                 </div>
 
-                <table class="preview-table">
-                    <thead>
-                        <tr>
-                            <th>Description</th>
-                            <th>Qty</th>
-                            <th>Unit Price</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="previewLineItems"></tbody>
-                </table>
-
-                <div class="preview-totals">
-                    <div><strong>Subtotal:</strong> <span id="previewSubtotal"></span></div>
-                    <div><strong>Tax:</strong> <span id="previewTax"></span></div>
-                    <div class="grand-total"><strong>Total:</strong> <span id="previewTotal"></span></div>
+                <!-- Share Options -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <button type="button" class="btn btn-primary" onclick="downloadPDF()" style="font-size: 14px;">
+                        💾 Download PDF
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="sharePDF()" style="font-size: 14px;">
+                        📤 Share PDF
+                    </button>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                    <button type="button" class="btn" onclick="emailPDF()" style="background: #e67e22; color: white; font-size: 14px;">
+                        📧 Email
+                    </button>
+                    <button type="button" class="btn" onclick="printPDF()" style="background: #95a5a6; color: white; font-size: 14px;">
+                        🖨️ Print
+                    </button>
                 </div>
 
-                <div id="previewNotes"></div>
+                <!-- Preview Toggle -->
+                <button type="button" class="btn" onclick="togglePreview()" style="width: 100%; background: #f8f9fa; color: #2c3e50; border: 1px solid #e0e0e0;">
+                    👁️ View Quote Preview
+                </button>
 
-                <button type="button" class="btn btn-primary" onclick="generatePDF()" id="pdfBtn" style="width: 100%; margin-top: 25px; font-size: 16px;">
-                    📄 Download PDF
+                <!-- Hidden Preview -->
+                <div id="quotationPreview" style="display: none; margin-top: 20px; padding: 25px; border: 2px solid #e0e0e0; border-radius: 12px; background: white;">
+                    <!-- Header Section -->
+                    <div class="quotation-preview-header">
+                        <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 20px auto; max-width: 150px; max-height: 75px;">
+                        <h1 style="text-align: center; font-size: 32px; font-weight: 800; color: #2c3e50; margin: 0 0 8px 0; letter-spacing: 2px;">QUOTATION</h1>
+                        <p id="previewQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 25px 0; font-size: 16px;"></p>
+                        <hr style="border: none; border-top: 3px solid #3498db; margin-bottom: 25px;">
+                    </div>
+                    
+                    <!-- Details Section -->
+                    <div class="quotation-details-grid">
+                        <div class="detail-column">
+                            <h4 class="detail-title">FROM:</h4>
+                            <div class="detail-box" id="previewCompanyDetails"></div>
+                        </div>
+                        <div class="detail-column">
+                            <h4 class="detail-title">TO:</h4>
+                            <div class="detail-box" id="previewCustomerDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quote Info Section -->
+                    <div class="quote-info-section">
+                        <div class="quote-info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Quote Date:</span>
+                                <span class="info-value" id="previewDate"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Valid Until:</span>
+                                <span class="info-value" id="previewValidUntil"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Items Table -->
+                    <table class="quotation-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left; width: 50%;">DESCRIPTION</th>
+                                <th style="text-align: center; width: 15%;">QTY</th>
+                                <th style="text-align: right; width: 20%;">UNIT PRICE</th>
+                                <th style="text-align: right; width: 15%;">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewLineItems"></tbody>
+                    </table>
+
+                    <!-- Totals Section -->
+                    <div class="quotation-totals-section">
+                        <div class="totals-rows">
+                            <div class="total-row-item">
+                                <span class="total-label">Subtotal:</span>
+                                <span class="total-value" id="previewSubtotal"></span>
+                            </div>
+                            <div class="total-row-item">
+                                <span class="total-label">Tax:</span>
+                                <span class="total-value" id="previewTax"></span>
+                            </div>
+                            <div class="total-row-item grand-total-row">
+                                <span class="total-label">TOTAL:</span>
+                                <span class="total-value grand-total-value" id="previewTotal"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div id="previewNotes"></div>
+                </div>
+                
+                <!-- Back Button -->
+                <button type="button" class="btn" onclick="backToQuote()" style="width: 100%; margin-top: 20px; background: #bdc3c7; color: white;">
+                    ← Back to Edit Quote
                 </button>
             </div>
         </div>
@@ -1026,6 +1360,14 @@
                 <div style="font-size: 48px; margin-bottom: 16px;">💊</div>
                 <div style="font-size: 16px; margin-bottom: 8px;">No medicines added yet</div>
                 <div style="font-size: 14px;">Tap "Add Medicine" to get started</div>
+            </div>
+
+            <!-- Simple Medicine History -->
+            <div class="card" id="todayScheduleCard" style="display: none;">
+                <div class="card-title">
+                    📋 Today's Schedule
+                </div>
+                <div id="todayScheduleList"></div>
             </div>
         </div>
     </div>
@@ -1119,7 +1461,9 @@
             medicines: [],
             medicineLog: [],
             selectedTimes: [],
-            companyLogo: null
+            companyLogo: null,
+            currentPDFBlob: null,
+            editingMedicineId: null
         };
 
         // Load data from localStorage
@@ -1305,7 +1649,56 @@
             document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
         }
 
-        function generateQuotation() {
+        // NEW ENHANCED QUOTATION FUNCTIONS
+        function generateAndShowPDF() {
+            // Validate required fields
+            if (!validateQuotationData()) {
+                return;
+            }
+
+            // Generate quotation data first
+            generateQuotationData();
+            
+            // Generate PDF
+            generatePDFQuotation();
+            
+            // Show PDF share view
+            document.getElementById('pdfShareView').style.display = 'block';
+            document.getElementById('pdfShareView').scrollIntoView({ behavior: 'smooth' });
+            
+            // Update share view header
+            document.getElementById('shareQuotationNumber').textContent = 
+                document.getElementById('quotationNumber').value || 'Q-001';
+        }
+
+        function validateQuotationData() {
+            if (!document.getElementById('companyName').value.trim()) {
+                alert('Please enter company name');
+                document.getElementById('companyName').focus();
+                return false;
+            }
+            
+            if (!document.getElementById('customerName').value.trim()) {
+                alert('Please enter customer name');
+                document.getElementById('customerName').focus();
+                return false;
+            }
+            
+            const hasValidItems = Array.from(document.querySelectorAll('.line-item')).some(item => {
+                const description = item.querySelector('.item-description').value.trim();
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                return description && price > 0;
+            });
+            
+            if (!hasValidItems) {
+                alert('Please add at least one item with description and price');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function generateQuotationData() {
             // Show logo if available
             if (appState.companyLogo) {
                 const quotationLogo = document.getElementById('quotationLogo');
@@ -1314,68 +1707,82 @@
             }
             
             document.getElementById('previewQuotationNumber').textContent = 
-                document.getElementById('quotationNumber').value || 'Q-001';
+                `Quote #: ${document.getElementById('quotationNumber').value || 'Q-001'}`;
             
-            const companyDetails = `
-                <strong>${document.getElementById('companyName').value || 'Company Name'}</strong><br>
-                ${document.getElementById('companyAddress').value}<br>
-                ${document.getElementById('companyPhone').value}<br>
-                ${document.getElementById('companyEmail').value}
-            `;
+            // Format company details with proper structure
+            const companyName = document.getElementById('companyName').value || 'Company Name';
+            const companyAddress = document.getElementById('companyAddress').value;
+            const companyPhone = document.getElementById('companyPhone').value;
+            const companyEmail = document.getElementById('companyEmail').value;
+            
+            let companyDetails = `<strong>${companyName}</strong>`;
+            if (companyAddress) companyDetails += `<br>${companyAddress}`;
+            if (companyPhone) companyDetails += `<br>Phone: ${companyPhone}`;
+            if (companyEmail) companyDetails += `<br>Email: ${companyEmail}`;
+            
             document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
             
-            const customerDetails = `
-                <strong>${document.getElementById('customerName').value || 'Customer Name'}</strong><br>
-                ${document.getElementById('customerAddress').value}<br>
-                ${document.getElementById('customerPhone').value}<br>
-                ${document.getElementById('customerEmail').value}
-            `;
+            // Format customer details with proper structure
+            const customerName = document.getElementById('customerName').value || 'Customer Name';
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            
+            let customerDetails = `<strong>${customerName}</strong>`;
+            if (customerAddress) customerDetails += `<br>${customerAddress}`;
+            if (customerPhone) customerDetails += `<br>Phone: ${customerPhone}`;
+            if (customerEmail) customerDetails += `<br>Email: ${customerEmail}`;
+            
             document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
             
-            document.getElementById('previewDate').textContent = document.getElementById('quotationDate').value;
-            document.getElementById('previewValidUntil').textContent = document.getElementById('validUntil').value;
+            // Format dates
+            const quoteDate = document.getElementById('quotationDate').value;
+            const validUntil = document.getElementById('validUntil').value;
             
+            document.getElementById('previewDate').textContent = quoteDate ? new Date(quoteDate).toLocaleDateString() : 'Not specified';
+            document.getElementById('previewValidUntil').textContent = validUntil ? new Date(validUntil).toLocaleDateString() : 'Not specified';
+            
+            // Generate line items table
             const lineItemsBody = document.getElementById('previewLineItems');
             lineItemsBody.innerHTML = '';
+            const currency = document.getElementById('currency').value;
             
-            document.querySelectorAll('.line-item').forEach(item => {
-                const row = document.createElement('tr');
-                const description = item.querySelector('.item-description').value || 'Item';
+            document.querySelectorAll('.line-item').forEach((item, index) => {
+                const description = item.querySelector('.item-description').value || `Item ${index + 1}`;
                 const quantity = item.querySelector('.item-quantity').value || '1';
                 const price = parseFloat(item.querySelector('.item-price').value) || 0;
                 const total = parseFloat(quantity) * price;
-                const currency = document.getElementById('currency').value;
                 
+                const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${description}</td>
-                    <td>${quantity}</td>
-                    <td class="text-right">${currency}${price.toFixed(2)}</td>
-                    <td class="text-right">${currency}${total.toFixed(2)}</td>
+                    <td style="text-align: left; font-weight: 500;" data-label="Description">${description}</td>
+                    <td style="text-align: center;" data-label="Qty">${quantity}</td>
+                    <td style="text-align: right; font-family: monospace;" data-label="Unit Price">${currency}${price.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: 600; font-family: monospace;" data-label="Total">${currency}${total.toFixed(2)}</td>
                 `;
                 lineItemsBody.appendChild(row);
             });
             
+            // Update totals with proper formatting
             document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
             document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
             document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
             
+            // Handle notes section
             const notes = document.getElementById('notes').value;
-            if (notes) {
+            if (notes && notes.trim()) {
                 document.getElementById('previewNotes').innerHTML = `
-                    <div style="margin-top: 25px; padding: 18px; background: #f8f9fa; border-radius: 8px;">
-                        <h4 style="margin-bottom: 10px;">Terms & Conditions</h4>
-                        <div>${notes}</div>
+                    <div class="quotation-notes-section">
+                        <div class="notes-title">Terms & Conditions</div>
+                        <div class="notes-content">${notes.replace(/\n/g, '<br>')}</div>
                     </div>
                 `;
             } else {
                 document.getElementById('previewNotes').innerHTML = '';
             }
-            
-            document.getElementById('quotationPreview').classList.add('active');
-            document.getElementById('quotationPreview').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function generatePDF() {
+        function generatePDFQuotation() {
             if (typeof window.jspdf === 'undefined') {
                 alert('PDF library not loaded. Please refresh the page and try again.');
                 return;
@@ -1388,49 +1795,261 @@
             const customerName = document.getElementById('customerName').value || 'Customer Name';
             const quotationNumber = document.getElementById('quotationNumber').value || 'Q-001';
             const date = document.getElementById('quotationDate').value;
-            const total = document.getElementById('grandTotal').textContent;
+            const validUntil = document.getElementById('validUntil').value;
+            const currency = document.getElementById('currency').value;
             
-            let yPosition = 30;
+            let yPosition = 20;
             
             // Add logo if available
             if (appState.companyLogo) {
                 try {
-                    pdf.addImage(appState.companyLogo, 'JPEG', 20, 10, 30, 15);
-                    yPosition = 35;
+                    pdf.addImage(appState.companyLogo, 'JPEG', 15, yPosition, 40, 20);
+                    yPosition += 25;
                 } catch (e) {
                     console.log('Could not add logo to PDF:', e);
                 }
             }
             
-            pdf.setFontSize(20);
+            // Title
+            pdf.setFontSize(24);
+            pdf.setFont('helvetica', 'bold');
             pdf.text('QUOTATION', 105, yPosition, { align: 'center' });
+            yPosition += 15;
             
+            // Quote number
             pdf.setFontSize(12);
-            pdf.text(`Quotation #: ${quotationNumber}`, 20, yPosition + 20);
-            pdf.text(`Date: ${date}`, 20, yPosition + 30);
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(`Quote #: ${quotationNumber}`, 105, yPosition, { align: 'center' });
+            yPosition += 20;
             
-            pdf.text(`From: ${companyName}`, 20, yPosition + 50);
-            pdf.text(`To: ${customerName}`, 20, yPosition + 70);
+            // Company details (left side)
+            pdf.setFontSize(10);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('FROM:', 20, yPosition);
+            pdf.setFont('helvetica', 'normal');
+            yPosition += 6;
             
-            let itemYPosition = yPosition + 100;
+            pdf.text(companyName, 20, yPosition);
+            yPosition += 5;
+            
+            if (document.getElementById('companyAddress').value) {
+                const addressLines = document.getElementById('companyAddress').value.split('\n');
+                addressLines.forEach(line => {
+                    pdf.text(line, 20, yPosition);
+                    yPosition += 5;
+                });
+            }
+            
+            if (document.getElementById('companyPhone').value) {
+                pdf.text(`Phone: ${document.getElementById('companyPhone').value}`, 20, yPosition);
+                yPosition += 5;
+            }
+            
+            if (document.getElementById('companyEmail').value) {
+                pdf.text(`Email: ${document.getElementById('companyEmail').value}`, 20, yPosition);
+            }
+            
+            // Customer details (right side)
+            let customerY = yPosition - (yPosition - (yPosition - 25));
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('TO:', 120, customerY);
+            pdf.setFont('helvetica', 'normal');
+            customerY += 6;
+            
+            pdf.text(customerName, 120, customerY);
+            customerY += 5;
+            
+            if (document.getElementById('customerAddress').value) {
+                const customerAddressLines = document.getElementById('customerAddress').value.split('\n');
+                customerAddressLines.forEach(line => {
+                    pdf.text(line, 120, customerY);
+                    customerY += 5;
+                });
+            }
+            
+            if (document.getElementById('customerPhone').value) {
+                pdf.text(`Phone: ${document.getElementById('customerPhone').value}`, 120, customerY);
+                customerY += 5;
+            }
+            
+            if (document.getElementById('customerEmail').value) {
+                pdf.text(`Email: ${document.getElementById('customerEmail').value}`, 120, customerY);
+            }
+            
+            yPosition += 25;
+            
+            // Date information
+            pdf.setFontSize(10);
+            if (date) {
+                pdf.text(`Date: ${new Date(date).toLocaleDateString()}`, 20, yPosition);
+            }
+            if (validUntil) {
+                pdf.text(`Valid Until: ${new Date(validUntil).toLocaleDateString()}`, 120, yPosition);
+            }
+            yPosition += 15;
+            
+            // Line items table
+            pdf.setFontSize(10);
+            pdf.setFont('helvetica', 'bold');
+            
+            // Table headers
+            pdf.text('DESCRIPTION', 20, yPosition);
+            pdf.text('QTY', 120, yPosition, { align: 'center' });
+            pdf.text('UNIT PRICE', 145, yPosition, { align: 'right' });
+            pdf.text('TOTAL', 180, yPosition, { align: 'right' });
+            
+            // Header line
+            pdf.line(20, yPosition + 2, 180, yPosition + 2);
+            yPosition += 10;
+            
+            pdf.setFont('helvetica', 'normal');
+            
+            let subtotal = 0;
             document.querySelectorAll('.line-item').forEach((item, index) => {
-                const description = item.querySelector('.item-description').value || 'Item';
+                const description = item.querySelector('.item-description').value || `Item ${index + 1}`;
                 const quantity = item.querySelector('.item-quantity').value || '1';
-                const price = item.querySelector('.item-price').value || '0';
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                const total = parseFloat(quantity) * price;
+                subtotal += total;
                 
-                pdf.text(`${index + 1}. ${description} - Qty: ${quantity} - Price: ${price}`, 20, itemYPosition);
-                itemYPosition += 10;
+                // Wrap long descriptions
+                const splitDescription = pdf.splitTextToSize(description, 90);
+                const descriptionHeight = splitDescription.length * 5;
+                
+                pdf.text(splitDescription, 20, yPosition);
+                pdf.text(quantity, 120, yPosition, { align: 'center' });
+                pdf.text(`${currency}${price.toFixed(2)}`, 145, yPosition, { align: 'right' });
+                pdf.text(`${currency}${total.toFixed(2)}`, 180, yPosition, { align: 'right' });
+                
+                yPosition += Math.max(descriptionHeight, 8);
             });
             
-            pdf.text(`Total: ${total}`, 20, itemYPosition + 20);
+            // Totals section
+            yPosition += 10;
+            pdf.line(120, yPosition, 180, yPosition);
+            yPosition += 8;
             
-            const filename = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
-            pdf.save(filename);
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            pdf.text('Subtotal:', 145, yPosition, { align: 'right' });
+            pdf.text(`${currency}${subtotal.toFixed(2)}`, 180, yPosition, { align: 'right' });
+            yPosition += 6;
+            
+            if (taxRate > 0) {
+                pdf.text(`Tax (${taxRate}%):`, 145, yPosition, { align: 'right' });
+                pdf.text(`${currency}${taxAmount.toFixed(2)}`, 180, yPosition, { align: 'right' });
+                yPosition += 6;
+            }
+            
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('TOTAL:', 145, yPosition, { align: 'right' });
+            pdf.text(`${currency}${grandTotal.toFixed(2)}`, 180, yPosition, { align: 'right' });
+            
+            // Notes section
+            const notes = document.getElementById('notes').value;
+            if (notes && notes.trim()) {
+                yPosition += 20;
+                pdf.setFontSize(10);
+                pdf.setFont('helvetica', 'bold');
+                pdf.text('Terms & Conditions:', 20, yPosition);
+                yPosition += 8;
+                
+                pdf.setFont('helvetica', 'normal');
+                const notesLines = pdf.splitTextToSize(notes, 160);
+                notesLines.forEach(line => {
+                    pdf.text(line, 20, yPosition);
+                    yPosition += 5;
+                });
+            }
+            
+            // Store PDF for sharing
+            appState.currentPDFBlob = pdf.output('blob');
+            appState.pdfFileName = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+        }
+
+        function downloadPDF() {
+            if (!appState.currentPDFBlob) {
+                alert('No PDF available. Please generate quote first.');
+                return;
+            }
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(appState.currentPDFBlob);
+            link.download = appState.pdfFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('PDF downloaded successfully!');
+        }
+
+        function sharePDF() {
+            if (!appState.currentPDFBlob) {
+                alert('No PDF available. Please generate quote first.');
+                return;
+            }
+            
+            if (navigator.share) {
+                const file = new File([appState.currentPDFBlob], appState.pdfFileName, {
+                    type: 'application/pdf'
+                });
+                
+                navigator.share({
+                    title: 'Quotation PDF',
+                    text: `Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`,
+                    files: [file]
+                }).catch(err => {
+                    console.log('Share failed:', err);
+                    downloadPDF(); // Fallback to download
+                });
+            } else {
+                downloadPDF(); // Fallback to download
+            }
+        }
+
+        function emailPDF() {
+            const subject = encodeURIComponent(`Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`);
+            const body = encodeURIComponent(`Please find attached the quotation for ${document.getElementById('customerName').value || 'your review'}.`);
+            
+            window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+        }
+
+        function printPDF() {
+            if (appState.currentPDFBlob) {
+                const pdfUrl = URL.createObjectURL(appState.currentPDFBlob);
+                const printWindow = window.open(pdfUrl, '_blank');
+                printWindow.onload = () => {
+                    printWindow.print();
+                };
+            }
+        }
+
+        function togglePreview() {
+            const preview = document.getElementById('quotationPreview');
+            const button = event.target;
+            
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                button.textContent = '👁️ Hide Quote Preview';
+            } else {
+                preview.style.display = 'none';
+                button.textContent = '👁️ View Quote Preview';
+            }
+        }
+
+        function backToQuote() {
+            document.getElementById('pdfShareView').style.display = 'none';
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
         }
 
         // MEDICINE FUNCTIONS
         function showAddMedicineModal() {
+            // Reset form for new medicine
             appState.selectedTimes = [];
+            appState.editingMedicineId = null;
+            
             document.getElementById('medicineName').value = '';
             document.getElementById('medicineDosage').value = '';
             document.getElementById('medicineInstructions').value = '';
@@ -1447,6 +2066,7 @@
 
         function closeAddMedicineModal() {
             document.getElementById('addMedicineModal').classList.remove('active');
+            appState.editingMedicineId = null;
         }
 
         function toggleTimeSlot(element, time) {
@@ -1475,23 +2095,63 @@
                 return;
             }
             
-            const medicine = {
-                id: Date.now(),
-                name,
-                dosage,
-                instructions,
-                frequency,
-                times: [...appState.selectedTimes].sort(),
-                createdAt: new Date().toISOString()
-            };
-            
-            appState.medicines.push(medicine);
-            createTodaysSchedule(medicine);
+            if (appState.editingMedicineId) {
+                // Edit existing medicine
+                const medicineIndex = appState.medicines.findIndex(m => m.id === appState.editingMedicineId);
+                if (medicineIndex >= 0) {
+                    const oldMedicine = appState.medicines[medicineIndex];
+                    
+                    appState.medicines[medicineIndex] = {
+                        ...oldMedicine,
+                        name,
+                        dosage,
+                        instructions,
+                        frequency,
+                        times: [...appState.selectedTimes].sort(),
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    // Update today's schedule for this medicine
+                    updateTodaysScheduleForMedicine(appState.editingMedicineId);
+                    alert('Medicine updated successfully!');
+                }
+                appState.editingMedicineId = null;
+            } else {
+                // Create new medicine
+                const medicine = {
+                    id: Date.now(),
+                    name,
+                    dosage,
+                    instructions,
+                    frequency,
+                    times: [...appState.selectedTimes].sort(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                appState.medicines.push(medicine);
+                createTodaysSchedule(medicine);
+                alert('Medicine added successfully!');
+            }
             
             updateMedicineDisplay();
             updateTodaysOverview();
             closeAddMedicineModal();
             saveData();
+        }
+
+        function updateTodaysScheduleForMedicine(medicineId) {
+            const today = new Date().toDateString();
+            const medicine = appState.medicines.find(m => m.id === medicineId);
+            
+            if (!medicine) return;
+            
+            // Remove old schedule entries for this medicine today
+            appState.medicineLog = appState.medicineLog.filter(log => 
+                !(log.medicineId === medicineId && log.date === today)
+            );
+            
+            // Create new schedule entries
+            createTodaysSchedule(medicine);
         }
 
         function createTodaysSchedule(medicine) {
@@ -1574,68 +2234,170 @@
         function updateMedicineDisplay() {
             const container = document.getElementById('medicineList');
             const noMedicinesMsg = document.getElementById('noMedicinesMessage');
+            const todayScheduleCard = document.getElementById('todayScheduleCard');
             
             if (appState.medicines.length === 0) {
                 container.innerHTML = '';
                 noMedicinesMsg.style.display = 'block';
+                todayScheduleCard.style.display = 'none';
                 return;
             }
             
             noMedicinesMsg.style.display = 'none';
-            const today = new Date().toDateString();
+            todayScheduleCard.style.display = 'block';
             
-            let html = '';
+            // Display medicines with simplified interface
+            let medicineHTML = '';
             appState.medicines.forEach(medicine => {
-                const todaysSchedule = appState.medicineLog.filter(log => 
-                    log.medicineId === medicine.id && log.date === today
-                );
+                const times = medicine.times.length > 0 ? medicine.times.join(', ') : 'As needed';
                 
-                let scheduleHTML = '';
-                todaysSchedule.forEach(log => {
-                    const statusClass = `status-${log.status}`;
-                    let statusText = log.status.charAt(0).toUpperCase() + log.status.slice(1);
-                    let actionButton = '';
-                    
-                    if (log.status === 'pending') {
-                        actionButton = `<button class="take-btn" onclick="markMedicineTaken(${log.id})">Take</button>`;
-                    } else if (log.status === 'taken') {
-                        statusText += ` (${log.actualTime})`;
-                    }
-                    
-                    scheduleHTML += `
-                        <div class="schedule-item">
-                            <div>
-                                <div class="schedule-time">${log.scheduledTime}</div>
-                            </div>
-                            <div>
-                                <div class="schedule-status ${statusClass}" onclick="toggleMedicineStatus(${log.id})" style="cursor: pointer;">
-                                    ${statusText}
-                                </div>
-                                ${actionButton}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                html += `
+                medicineHTML += `
                     <div class="medicine-card">
                         <div class="medicine-header">
                             <div class="medicine-info">
                                 <h3>${medicine.name}</h3>
                                 <p>${medicine.dosage} | ${medicine.instructions}</p>
+                                <p style="font-size: 12px; color: #7f8c8d;">
+                                    📅 ${medicine.frequency} | ⏰ ${times}
+                                </p>
                             </div>
                             <div class="medicine-actions">
-                                <button class="medicine-btn" onclick="deleteMedicine(${medicine.id})" title="Delete">🗑️</button>
+                                <button class="medicine-btn" onclick="editMedicine(${medicine.id})" title="Edit" style="background: #f39c12;">
+                                    ✏️
+                                </button>
+                                <button class="medicine-btn" onclick="duplicateMedicine(${medicine.id})" title="Duplicate" style="background: #3498db;">
+                                    📋
+                                </button>
+                                <button class="medicine-btn" onclick="deleteMedicine(${medicine.id})" title="Delete" style="background: #e74c3c;">
+                                    🗑️
+                                </button>
                             </div>
-                        </div>
-                        <div class="medicine-schedule">
-                            ${scheduleHTML || '<div style="text-align: center; color: #7f8c8d; padding: 20px;">No schedule for today</div>'}
                         </div>
                     </div>
                 `;
             });
             
-            container.innerHTML = html;
+            container.innerHTML = medicineHTML;
+            
+            // Display today's schedule
+            updateTodayScheduleDisplay();
+        }
+
+        function updateTodayScheduleDisplay() {
+            const container = document.getElementById('todayScheduleList');
+            const today = new Date().toDateString();
+            const todaysLog = appState.medicineLog.filter(log => log.date === today);
+            
+            if (todaysLog.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 20px;">No medicines scheduled for today</div>';
+                return;
+            }
+            
+            // Sort by scheduled time
+            const sortedLog = todaysLog.sort((a, b) => {
+                if (a.scheduledTime === 'As Needed') return 1;
+                if (b.scheduledTime === 'As Needed') return -1;
+                return a.scheduledTime.localeCompare(b.scheduledTime);
+            });
+            
+            let scheduleHTML = '';
+            sortedLog.forEach(log => {
+                const statusClass = `status-${log.status}`;
+                let statusText = log.status.charAt(0).toUpperCase() + log.status.slice(1);
+                let actionButton = '';
+                
+                if (log.status === 'pending') {
+                    actionButton = `<button class="take-btn" onclick="markMedicineTaken(${log.id})">Take Now</button>`;
+                } else if (log.status === 'taken') {
+                    statusText += ` (${log.actualTime || 'Taken'})`;
+                } else if (log.status === 'available') {
+                    actionButton = `<button class="take-btn" onclick="markMedicineTaken(${log.id})" style="background: #9b59b6;">Take PRN</button>`;
+                }
+                
+                scheduleHTML += `
+                    <div class="schedule-item">
+                        <div>
+                            <div class="schedule-time">${log.scheduledTime}</div>
+                            <div style="font-size: 12px; color: #7f8c8d;">${log.medicineName} (${log.dosage})</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="schedule-status ${statusClass}" onclick="toggleMedicineStatus(${log.id})" style="cursor: pointer; margin-bottom: 4px;">
+                                ${statusText}
+                            </div>
+                            ${actionButton}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = scheduleHTML;
+        }
+
+        // ENHANCED MEDICINE FUNCTIONS
+        function editMedicine(medicineId) {
+            const medicine = appState.medicines.find(m => m.id === medicineId);
+            if (!medicine) {
+                alert('Medicine not found');
+                return;
+            }
+
+            // Populate form with existing data
+            document.getElementById('medicineName').value = medicine.name;
+            document.getElementById('medicineDosage').value = medicine.dosage;
+            document.getElementById('medicineInstructions').value = medicine.instructions;
+            document.getElementById('medicineFrequency').value = medicine.frequency;
+            document.getElementById('customTimeInput').value = '';
+            
+            // Set selected times
+            appState.selectedTimes = [...(medicine.times || [])];
+            
+            // Update preset time slots
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                const time = slot.textContent;
+                slot.classList.toggle('active', appState.selectedTimes.includes(time));
+            });
+            
+            // Update custom times list
+            updateCustomTimesList();
+            
+            // Set editing mode
+            appState.editingMedicineId = medicineId;
+            
+            // Show modal
+            document.getElementById('addMedicineModal').classList.add('active');
+        }
+
+        function duplicateMedicine(medicineId) {
+            const medicine = appState.medicines.find(m => m.id === medicineId);
+            if (!medicine) {
+                alert('Medicine not found');
+                return;
+            }
+
+            // Populate form with medicine data but with modified name
+            document.getElementById('medicineName').value = medicine.name + ' (Copy)';
+            document.getElementById('medicineDosage').value = medicine.dosage;
+            document.getElementById('medicineInstructions').value = medicine.instructions;
+            document.getElementById('medicineFrequency').value = medicine.frequency;
+            document.getElementById('customTimeInput').value = '';
+            
+            // Set selected times
+            appState.selectedTimes = [...(medicine.times || [])];
+            
+            // Update preset time slots
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                const time = slot.textContent;
+                slot.classList.toggle('active', appState.selectedTimes.includes(time));
+            });
+            
+            // Update custom times list
+            updateCustomTimesList();
+            
+            // Clear editing mode (this is a new medicine)
+            appState.editingMedicineId = null;
+            
+            // Show modal
+            document.getElementById('addMedicineModal').classList.add('active');
         }
 
         function updateTodaysOverview() {
