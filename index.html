@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuoteFlow Pro - Professional Business Quotation Generator</title>
-    <meta name="description" content="Professional business quotation generator with PDF export and smart calculations">
-    <meta name="keywords" content="quotation, invoice, business app, PDF generator">
+    <title>QuoteFlow Pro - Complete Business Document Generator</title>
+    <meta name="description" content="Professional business document generator for quotations, invoices, and receipts with PDF export">
+    <meta name="keywords" content="quotation, invoice, receipt, business app, PDF generator">
     
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,7 +24,7 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #2c3e50;
             line-height: 1.6;
-            padding-bottom: 40px;
+            padding-bottom: 80px;
             min-height: 100vh;
         }
 
@@ -77,6 +77,85 @@
         @keyframes shimmer {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* ===== NAVIGATION ===== */
+        .document-nav {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            padding: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .document-nav-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            color: #7f8c8d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .document-nav-btn:hover::before {
+            left: 100%;
+        }
+
+        .document-nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .document-nav-btn.invoice.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .document-nav-btn.receipt.active {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            box-shadow: 0 8px 25px rgba(168, 237, 234, 0.3);
+        }
+
+        /* ===== PAGE SYSTEM ===== */
+        .page {
+            display: none;
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ===== CARD SYSTEM ===== */
@@ -168,6 +247,12 @@
             gap: 20px;
         }
 
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
         /* ===== BUTTON SYSTEM ===== */
         .btn {
             padding: 16px 24px;
@@ -225,10 +310,48 @@
             box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
         }
 
+        .btn-receipt {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(168, 237, 234, 0.3);
+        }
+
+        .btn-receipt:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(168, 237, 234, 0.4);
+        }
+
         .btn-danger {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             color: white;
             box-shadow: 0 8px 25px rgba(255, 154, 158, 0.3);
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .status-quote {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .status-invoice {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .status-receipt {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: white;
         }
 
         /* ===== LOGO UPLOAD SYSTEM ===== */
@@ -311,7 +434,7 @@
             font-size: 14px;
         }
 
-        /* ===== QUOTATION STYLES ===== */
+        /* ===== DOCUMENT STYLES ===== */
         .line-items {
             background: rgba(255,255,255,0.7);
             border-radius: 16px;
@@ -454,7 +577,54 @@
             color: rgba(255,255,255,0.7);
         }
 
-        /* ===== QUOTATION PREVIEW STYLES ===== */
+        /* ===== PAYMENT INFO STYLES ===== */
+        .payment-status {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e6ed;
+        }
+
+        .payment-method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            padding: 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .payment-method:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .payment-method.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .payment-method-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .payment-method-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        /* ===== PREVIEW STYLES ===== */
         .preview {
             background: white;
             border-radius: 20px;
@@ -464,14 +634,22 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .quotation-preview-header {
+        .document-preview-header {
             border-bottom: 4px solid #667eea;
             padding-bottom: 25px;
             margin-bottom: 30px;
             position: relative;
         }
 
-        .quotation-preview-header::after {
+        .document-preview-header.invoice {
+            border-bottom-color: #4facfe;
+        }
+
+        .document-preview-header.receipt {
+            border-bottom-color: #a8edea;
+        }
+
+        .document-preview-header::after {
             content: '';
             position: absolute;
             bottom: -4px;
@@ -482,7 +660,15 @@
             border-radius: 2px;
         }
 
-        .quotation-details-grid {
+        .document-preview-header.invoice::after {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .document-preview-header.receipt::after {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .document-details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
@@ -522,7 +708,7 @@
             font-weight: 600;
         }
 
-        .quote-info-section {
+        .document-info-section {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             padding: 20px 25px;
             border-radius: 16px;
@@ -530,7 +716,7 @@
             border: 1px solid rgba(102, 126, 234, 0.2);
         }
 
-        .quote-info-grid {
+        .document-info-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
@@ -554,7 +740,7 @@
             font-size: 15px;
         }
 
-        .quotation-table {
+        .document-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
@@ -564,7 +750,7 @@
             background: white;
         }
 
-        .quotation-table th {
+        .document-table th {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 20px 15px;
@@ -575,7 +761,7 @@
             text-transform: uppercase;
         }
 
-        .quotation-table td {
+        .document-table td {
             padding: 18px 15px;
             border-bottom: 1px solid #f8f9fa;
             font-size: 15px;
@@ -583,20 +769,20 @@
             transition: all 0.3s ease;
         }
 
-        .quotation-table tbody tr:last-child td {
+        .document-table tbody tr:last-child td {
             border-bottom: none;
         }
 
-        .quotation-table tbody tr:nth-child(even) {
+        .document-table tbody tr:nth-child(even) {
             background: #f8f9fa;
         }
 
-        .quotation-table tbody tr:hover {
+        .document-table tbody tr:hover {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
             transform: scale(1.01);
         }
 
-        .quotation-totals-section {
+        .document-totals-section {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 25px;
             border-radius: 16px;
@@ -604,7 +790,7 @@
             position: relative;
         }
 
-        .quotation-totals-section::before {
+        .document-totals-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -654,7 +840,7 @@
             font-size: 20px;
         }
 
-        .quotation-notes-section {
+        .document-notes-section {
             margin-top: 30px;
             padding: 25px;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -739,6 +925,35 @@
             }
         }
 
+        /* ===== WORKFLOW BUTTONS ===== */
+        .workflow-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .workflow-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .workflow-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
             .container {
@@ -753,26 +968,26 @@
                 font-size: 14px;
             }
 
-            .form-row {
+            .form-row, .form-row-3 {
                 grid-template-columns: 1fr;
             }
 
-            .quotation-details-grid {
+            .document-details-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
 
-            .quote-info-grid {
+            .document-info-grid {
                 grid-template-columns: 1fr;
                 gap: 15px;
             }
 
-            .quotation-table {
+            .document-table {
                 font-size: 13px;
             }
 
-            .quotation-table th,
-            .quotation-table td {
+            .document-table th,
+            .document-table td {
                 padding: 12px 8px;
             }
 
@@ -787,6 +1002,23 @@
                 height: 56px;
                 font-size: 24px;
             }
+
+            .payment-method-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-actions {
+                flex-direction: column;
+            }
+
+            .workflow-btn {
+                min-width: auto;
+            }
+
+            .document-nav-btn {
+                font-size: 14px;
+                padding: 15px 10px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -798,22 +1030,22 @@
                 padding: 20px;
             }
 
-            .quotation-table,
-            .quotation-table thead,
-            .quotation-table tbody,
-            .quotation-table th,
-            .quotation-table td,
-            .quotation-table tr {
+            .document-table,
+            .document-table thead,
+            .document-table tbody,
+            .document-table th,
+            .document-table td,
+            .document-table tr {
                 display: block;
             }
 
-            .quotation-table thead tr {
+            .document-table thead tr {
                 position: absolute;
                 top: -9999px;
                 left: -9999px;
             }
 
-            .quotation-table tr {
+            .document-table tr {
                 border: 1px solid #e0e6ed;
                 margin-bottom: 15px;
                 padding: 15px;
@@ -822,7 +1054,7 @@
                 box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             }
 
-            .quotation-table td {
+            .document-table td {
                 border: none;
                 position: relative;
                 padding-left: 50%;
@@ -830,7 +1062,7 @@
                 padding-bottom: 10px;
             }
 
-            .quotation-table td:before {
+            .document-table td:before {
                 content: attr(data-label) ": ";
                 position: absolute;
                 left: 6px;
@@ -864,7 +1096,7 @@
 
         /* ===== PRINT STYLES ===== */
         @media print {
-            .fab {
+            .fab, .document-nav, .workflow-actions {
                 display: none !important;
             }
             
@@ -886,200 +1118,368 @@
         <!-- ===== MAIN HEADER ===== -->
         <header class="header">
             <h1>📄 QuoteFlow Pro</h1>
-            <p>Professional Business Quotation Generator</p>
+            <p>Complete Business Document Generator - Quotes, Invoices & Receipts</p>
         </header>
 
-        <!-- Company Information Card -->
-        <section class="card">
-            <h2 class="card-title">
-                🏢 Company Information
-            </h2>
-            
-            <!-- Logo Upload Section -->
-            <div class="form-group">
-                <label class="form-label">Company Logo</label>
-                <div class="logo-upload" onclick="document.getElementById('logoUploadInput').click()">
-                    <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
-                    <div id="logoUploadContent">
-                        <div class="logo-icon">🏢</div>
-                        <div class="logo-text">Click to upload your company logo</div>
-                        <div class="logo-actions">
-                            <span class="btn btn-primary" style="margin: 8px; cursor: pointer;">
-                                Choose Logo
-                            </span>
-                            <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="event.stopPropagation(); removeLogo()">Remove Logo</button>
-                        </div>
-                    </div>
-                    <input type="file" id="logoUploadInput" style="display: none;" accept="image/*">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Company Name *</label>
-                <input type="text" class="form-input" id="companyName" placeholder="Enter your company name" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Company Address</label>
-                <textarea class="form-input form-textarea" id="companyAddress" placeholder="Enter your complete company address"></textarea>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" id="companyPhone" placeholder="+1 (555) 123-4567">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="companyEmail" placeholder="contact@yourcompany.com">
-                </div>
-            </div>
-        </section>
+        <!-- ===== DOCUMENT NAVIGATION ===== -->
+        <nav class="document-nav" role="navigation">
+            <button class="document-nav-btn active" onclick="switchDocument('quotation')" aria-label="Quotations">
+                📄 Quotation
+            </button>
+            <button class="document-nav-btn invoice" onclick="switchDocument('invoice')" aria-label="Invoices">
+                🧾 Invoice
+            </button>
+            <button class="document-nav-btn receipt" onclick="switchDocument('receipt')" aria-label="Receipts">
+                🧾 Receipt
+            </button>
+        </nav>
 
-        <!-- Customer Information Card -->
-        <section class="card">
-            <h2 class="card-title">
-                👤 Customer Information
-            </h2>
-            <div class="form-group">
-                <label class="form-label">Customer Name *</label>
-                <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Customer Address</label>
-                <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer's complete address"></textarea>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" id="customerPhone" placeholder="+1 (555) 987-6543">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email Address</label>
-                    <input type="email" class="form-input" id="customerEmail" placeholder="customer@email.com">
-                </div>
-            </div>
-        </section>
-
-        <!-- Quotation Details Card -->
-        <section class="card">
-            <h2 class="card-title">
-                📄 Quotation Details
-            </h2>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Quotation Number</label>
-                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Quotation Date</label>
-                    <input type="date" class="form-input" id="quotationDate">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">Valid Until</label>
-                    <input type="date" class="form-input" id="validUntil">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Currency</label>
-                    <select class="form-input" id="currency">
-                        <option value="$">USD ($)</option>
-                        <option value="€">EUR (€)</option>
-                        <option value="£">GBP (£)</option>
-                        <option value="¥">JPY (¥)</option>
-                        <option value="RM">MYR (RM)</option>
-                        <option value="₹">INR (₹)</option>
-                    </select>
-                </div>
-            </div>
-        </section>
-
-        <!-- Products & Services Card -->
-        <section class="card">
-            <h2 class="card-title">
-                📦 Products & Services
-            </h2>
-            <div class="line-items">
-                <div id="lineItemsContainer">
-                    <div class="line-item">
-                        <div class="line-item-header">
-                            <span class="item-number">Item #1</span>
-                            <button class="remove-btn" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Description *</label>
-                            <input type="text" class="form-input item-description" placeholder="Product or service description" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Quantity</label>
-                                <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Unit Price *</label>
-                                <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" required>
-                            </div>
-                        </div>
-                        <div class="total-display item-total">$0.00</div>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="addLineItem()" style="width: 100%; margin-top: 20px;">
-                    ➕ Add Another Item
+        <!-- ===== QUOTATION PAGE ===== -->
+        <main class="page active" id="quotationPage">
+            <!-- Status and Workflow Actions -->
+            <div class="workflow-actions">
+                <button type="button" class="btn btn-success workflow-btn" onclick="generateAndShowPDF('quotation')" style="font-size: 16px;">
+                    📄 Generate Quotation
+                </button>
+                <button type="button" class="btn btn-success workflow-btn" id="convertToInvoiceBtn" onclick="convertToInvoice()" style="font-size: 16px;" disabled>
+                    🧾 Convert to Invoice
                 </button>
             </div>
 
-            <!-- Totals Section -->
-            <div class="totals-card">
-                <div class="total-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">$0.00</span>
-                </div>
-                <div class="total-row">
-                    <span>Tax Rate (%):</span>
-                    <div>
-                        <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
+            <!-- Company Information Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    🏢 Company Information
+                </h2>
+                
+                <!-- Logo Upload Section -->
+                <div class="form-group">
+                    <label class="form-label">Company Logo</label>
+                    <div class="logo-upload" onclick="document.getElementById('logoUploadInput').click()">
+                        <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
+                        <div id="logoUploadContent">
+                            <div class="logo-icon">🏢</div>
+                            <div class="logo-text">Click to upload your company logo</div>
+                            <div class="logo-actions">
+                                <span class="btn btn-primary" style="margin: 8px; cursor: pointer;">
+                                    Choose Logo
+                                </span>
+                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="event.stopPropagation(); removeLogo()">Remove Logo</button>
+                            </div>
+                        </div>
+                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*">
                     </div>
                 </div>
-                <div class="total-row">
-                    <span>Tax Amount:</span>
-                    <span id="taxAmount">$0.00</span>
+                
+                <div class="form-group">
+                    <label class="form-label">Company Name *</label>
+                    <input type="text" class="form-input" id="companyName" placeholder="Enter your company name" required>
                 </div>
-                <div class="total-row">
-                    <span>Total Amount:</span>
-                    <span id="grandTotal">$0.00</span>
+                <div class="form-group">
+                    <label class="form-label">Company Address</label>
+                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Enter your complete company address"></textarea>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="companyPhone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="companyEmail" placeholder="contact@yourcompany.com">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customer Information Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    👤 Customer Information
+                </h2>
+                <div class="form-group">
+                    <label class="form-label">Customer Name *</label>
+                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Customer Address</label>
+                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer's complete address"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" id="customerPhone" placeholder="+1 (555) 987-6543">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="customerEmail" placeholder="customer@email.com">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quotation Details Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    📄 Quotation Details
+                </h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Quotation Number</label>
+                        <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Quotation Date</label>
+                        <input type="date" class="form-input" id="quotationDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Valid Until</label>
+                        <input type="date" class="form-input" id="validUntil">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Currency</label>
+                        <select class="form-input" id="currency">
+                            <option value="$">USD ($)</option>
+                            <option value="€">EUR (€)</option>
+                            <option value="£">GBP (£)</option>
+                            <option value="¥">JPY (¥)</option>
+                            <option value="RM">MYR (RM)</option>
+                            <option value="₹">INR (₹)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products & Services Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    📦 Products & Services
+                </h2>
+                <div class="line-items">
+                    <div id="lineItemsContainer">
+                        <div class="line-item">
+                            <div class="line-item-header">
+                                <span class="item-number">Item #1</span>
+                                <button class="remove-btn" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Description *</label>
+                                <input type="text" class="form-input item-description" placeholder="Product or service description" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Unit Price *</label>
+                                    <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" required>
+                                </div>
+                            </div>
+                            <div class="total-display item-total">$0.00</div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="addLineItem()" style="width: 100%; margin-top: 20px;">
+                        ➕ Add Another Item
+                    </button>
+                </div>
+
+                <!-- Totals Section -->
+                <div class="totals-card">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Rate (%):</span>
+                        <div>
+                            <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
+                        </div>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax Amount:</span>
+                        <span id="taxAmount">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total Amount:</span>
+                        <span id="grandTotal">$0.00</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Terms & Notes Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    📝 Terms & Additional Notes
+                </h2>
+                <div class="form-group">
+                    <label class="form-label">Terms & Conditions / Notes</label>
+                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== INVOICE PAGE ===== -->
+        <main class="page" id="invoicePage">
+            <!-- Status and Workflow Actions -->
+            <div class="workflow-actions">
+                <button type="button" class="btn btn-success workflow-btn" onclick="generateAndShowPDF('invoice')" style="font-size: 16px;">
+                    🧾 Generate Invoice
+                </button>
+                <button type="button" class="btn btn-receipt workflow-btn" id="generateReceiptBtn" onclick="generateReceipt()" style="font-size: 16px;" disabled>
+                    🧾 Generate Receipt
+                </button>
             </div>
-        </section>
 
-        <!-- Terms & Notes Card -->
-        <section class="card">
-            <h2 class="card-title">
-                📝 Terms & Additional Notes
-            </h2>
-            <div class="form-group">
-                <label class="form-label">Terms & Conditions / Notes</label>
-                <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+            <!-- Invoice Details Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    🧾 Invoice Details
+                </h2>
+                <div class="status-badge status-invoice">Invoice Status: Unpaid</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Invoice Number</label>
+                        <input type="text" class="form-input" id="invoiceNumber" placeholder="INV-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Invoice Date</label>
+                        <input type="date" class="form-input" id="invoiceDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Due Date</label>
+                        <input type="date" class="form-input" id="dueDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payment Terms</label>
+                        <select class="form-input" id="paymentTerms">
+                            <option value="net15">Net 15 days</option>
+                            <option value="net30">Net 30 days</option>
+                            <option value="net45">Net 45 days</option>
+                            <option value="net60">Net 60 days</option>
+                            <option value="due_on_receipt">Due on Receipt</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payment Information Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    💳 Payment Information
+                </h2>
+                <div class="form-group">
+                    <label class="form-label">Payment Instructions</label>
+                    <textarea class="form-input form-textarea" id="paymentInstructions" placeholder="Bank details, payment methods, or special instructions" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Late Fee Policy</label>
+                    <input type="text" class="form-input" id="lateFee" placeholder="e.g., 2% per month on overdue amount">
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== RECEIPT PAGE ===== -->
+        <main class="page" id="receiptPage">
+            <!-- Status and Workflow Actions -->
+            <div class="workflow-actions">
+                <button type="button" class="btn btn-receipt workflow-btn" onclick="generateAndShowPDF('receipt')" style="font-size: 16px;">
+                    🧾 Generate Receipt
+                </button>
             </div>
-        </section>
 
-        <!-- Generate Quotation Button -->
-        <button type="button" class="btn btn-success" onclick="generateAndShowPDF()" style="width: 100%; font-size: 18px; padding: 20px; margin-bottom: 30px;">
-            📄 Generate & Share Professional Quote
-        </button>
+            <!-- Receipt Details Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    🧾 Receipt Details
+                </h2>
+                <div class="status-badge status-receipt">Receipt Status: Paid</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Receipt Number</label>
+                        <input type="text" class="form-input" id="receiptNumber" placeholder="RCP-001">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payment Date</label>
+                        <input type="date" class="form-input" id="paymentDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Transaction ID</label>
+                        <input type="text" class="form-input" id="transactionId" placeholder="TXN-12345">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Reference Invoice</label>
+                        <input type="text" class="form-input" id="referenceInvoice" placeholder="INV-001">
+                    </div>
+                </div>
+            </section>
 
-        <!-- PDF Share View -->
+            <!-- Payment Details Card -->
+            <section class="card">
+                <h2 class="card-title">
+                    💰 Payment Details
+                </h2>
+                <div class="form-group">
+                    <label class="form-label">Payment Method</label>
+                    <div class="payment-method-grid">
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'cash')">
+                            <div class="payment-method-icon">💵</div>
+                            <div class="payment-method-text">Cash</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'card')">
+                            <div class="payment-method-icon">💳</div>
+                            <div class="payment-method-text">Credit/Debit Card</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'bank')">
+                            <div class="payment-method-icon">🏦</div>
+                            <div class="payment-method-text">Bank Transfer</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'check')">
+                            <div class="payment-method-icon">📄</div>
+                            <div class="payment-method-text">Check</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'digital')">
+                            <div class="payment-method-icon">📱</div>
+                            <div class="payment-method-text">Digital Wallet</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'other')">
+                            <div class="payment-method-icon">💰</div>
+                            <div class="payment-method-text">Other</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Amount Paid</label>
+                        <input type="number" class="form-input" id="amountPaid" step="0.01" min="0" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Payment Note</label>
+                        <input type="text" class="form-input" id="paymentNote" placeholder="Additional payment information">
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ===== PDF SHARE VIEW ===== -->
         <section id="pdfShareView" class="preview" style="display: none;">
-            <div class="quotation-preview-header">
-                <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 8px 0; letter-spacing: 2px;">📄 Quote Ready!</h1>
-                <p id="shareQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 25px 0; font-size: 18px;"></p>
+            <div class="document-preview-header" id="shareHeader">
+                <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 8px 0; letter-spacing: 2px;">📄 Document Ready!</h1>
+                <p id="shareDocumentNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 25px 0; font-size: 18px;"></p>
             </div>
             
             <div style="text-align: center; margin: 40px 0;">
-                <div style="font-size: 64px; margin-bottom: 20px;">✅</div>
-                <div style="font-size: 20px; font-weight: 600; color: #4facfe; margin-bottom: 10px;">
-                    Your professional quotation is ready!
+                <div style="font-size: 64px; margin-bottom: 20px;" id="shareIcon">✅</div>
+                <div style="font-size: 20px; font-weight: 600; color: #4facfe; margin-bottom: 10px;" id="shareTitle">
+                    Your professional document is ready!
                 </div>
-                <div style="font-size: 16px; color: #7f8c8d; margin-bottom: 25px;">
-                    Choose how you want to share or save your quotation
+                <div style="font-size: 16px; color: #7f8c8d; margin-bottom: 25px;" id="shareSubtitle">
+                    Choose how you want to share or save your document
                 </div>
             </div>
 
@@ -1095,29 +1495,29 @@
             
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
                 <button type="button" class="btn" onclick="emailPDF()" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: white; font-size: 14px;">
-                    📧 Email Quote
+                    📧 Email Document
                 </button>
                 <button type="button" class="btn" onclick="printPDF()" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: white; font-size: 14px;">
-                    🖨️ Print Quote
+                    🖨️ Print Document
                 </button>
             </div>
 
             <!-- Preview Toggle -->
             <button type="button" class="btn" id="previewToggleBtn" onclick="togglePreview()" style="width: 100%; background: #f8f9fa; color: #2c3e50; border: 2px solid #e0e6ed; margin-bottom: 15px;">
-                👁️ View Quote Preview
+                👁️ View Document Preview
             </button>
 
-            <!-- Hidden Quotation Preview -->
-            <div id="quotationPreview" style="display: none; margin-top: 25px; padding: 30px; border: 3px solid #667eea; border-radius: 16px; background: white;">
+            <!-- Hidden Document Preview -->
+            <div id="documentPreview" style="display: none; margin-top: 25px; padding: 30px; border: 3px solid #667eea; border-radius: 16px; background: white;">
                 <!-- Header Section -->
-                <div class="quotation-preview-header">
-                    <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 25px auto; max-width: 180px; max-height: 90px;">
-                    <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 10px 0; letter-spacing: 3px;">QUOTATION</h1>
-                    <p id="previewQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 30px 0; font-size: 18px;"></p>
+                <div class="document-preview-header" id="previewHeader">
+                    <img id="documentLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 25px auto; max-width: 180px; max-height: 90px;">
+                    <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 10px 0; letter-spacing: 3px;" id="previewDocumentTitle">QUOTATION</h1>
+                    <p id="previewDocumentNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 30px 0; font-size: 18px;"></p>
                 </div>
                 
                 <!-- Details Section -->
-                <div class="quotation-details-grid">
+                <div class="document-details-grid">
                     <div class="detail-column">
                         <h4 class="detail-title">FROM:</h4>
                         <div class="detail-box" id="previewCompanyDetails"></div>
@@ -1128,22 +1528,22 @@
                     </div>
                 </div>
 
-                <!-- Quote Info Section -->
-                <div class="quote-info-section">
-                    <div class="quote-info-grid">
+                <!-- Document Info Section -->
+                <div class="document-info-section">
+                    <div class="document-info-grid" id="previewInfoGrid">
                         <div class="info-item">
-                            <span class="info-label">Quote Date:</span>
+                            <span class="info-label" id="previewDateLabel">Date:</span>
                             <span class="info-value" id="previewDate"></span>
                         </div>
                         <div class="info-item">
-                            <span class="info-label">Valid Until:</span>
+                            <span class="info-label" id="previewValidLabel">Valid Until:</span>
                             <span class="info-value" id="previewValidUntil"></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Items Table -->
-                <table class="quotation-table">
+                <table class="document-table">
                     <thead>
                         <tr>
                             <th style="text-align: left; width: 50%;">DESCRIPTION</th>
@@ -1156,7 +1556,7 @@
                 </table>
 
                 <!-- Totals Section -->
-                <div class="quotation-totals-section">
+                <div class="document-totals-section">
                     <div class="totals-rows">
                         <div class="total-row-item">
                             <span class="total-label">Subtotal:</span>
@@ -1175,11 +1575,14 @@
 
                 <!-- Notes Section -->
                 <div id="previewNotes"></div>
+
+                <!-- Payment Info Section (for receipts) -->
+                <div id="previewPaymentInfo" style="display: none;"></div>
             </div>
             
             <!-- Back Button -->
-            <button type="button" class="btn" onclick="backToQuote()" style="width: 100%; margin-top: 25px; background: #bdc3c7; color: white;">
-                ← Back to Edit Quote
+            <button type="button" class="btn" onclick="backToDocument()" style="width: 100%; margin-top: 25px; background: #bdc3c7; color: white;">
+                ← Back to Edit Document
             </button>
         </section>
     </div>
@@ -1191,10 +1594,13 @@
     <script>
         // ===== APPLICATION STATE MANAGEMENT =====
         let appState = {
+            currentDocument: 'quotation',
             lineItemCount: 1,
             companyLogo: null,
             currentPDFBlob: null,
-            version: '2.0.0'
+            selectedPaymentMethod: null,
+            documentStatus: 'draft', // draft, quote_sent, invoice_sent, paid
+            version: '3.0.0'
         };
 
         // ===== GLOBAL FUNCTIONS =====
@@ -1209,7 +1615,29 @@
             }, 3000);
         }
 
-        // ===== QUOTATION FUNCTIONS =====
+        function switchDocument(documentType) {
+            appState.currentDocument = documentType;
+            
+            // Update navigation
+            document.querySelectorAll('.document-nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick*="'${documentType}'"]`).classList.add('active');
+            
+            // Update pages
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(documentType + 'Page').classList.add('active');
+            
+            // Update fab function based on document type
+            updateFAB();
+            
+            showNotification(`Switched to ${documentType} mode`, 'success');
+        }
+
+        function updateFAB() {
+            const fab = document.getElementById('fabBtn');
+            fab.onclick = addLineItem; // All document types can add line items
+        }
+
+        // ===== DOCUMENT FUNCTIONS =====
         function addLineItem() {
             appState.lineItemCount++;
             const container = document.getElementById('lineItemsContainer');
@@ -1285,7 +1713,7 @@
             document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
         }
 
-        function validateQuotationData() {
+        function validateDocumentData() {
             const companyName = document.getElementById('companyName').value.trim();
             const customerName = document.getElementById('customerName').value.trim();
             
@@ -1315,16 +1743,41 @@
             return true;
         }
 
-        function generateQuotationData() {
+        function generateDocumentData(docType) {
             // Show logo if available
             if (appState.companyLogo) {
-                const quotationLogo = document.getElementById('quotationLogo');
-                quotationLogo.src = appState.companyLogo;
-                quotationLogo.style.display = 'block';
+                const documentLogo = document.getElementById('documentLogo');
+                documentLogo.src = appState.companyLogo;
+                documentLogo.style.display = 'block';
             }
             
-            document.getElementById('previewQuotationNumber').textContent = 
-                `Quote #: ${document.getElementById('quotationNumber').value || 'Q-001'}`;
+            // Update document title and number based on type
+            const titleEl = document.getElementById('previewDocumentTitle');
+            const numberEl = document.getElementById('previewDocumentNumber');
+            const headerEl = document.getElementById('previewHeader');
+            
+            let docNumber, docTitle;
+            
+            switch(docType) {
+                case 'quotation':
+                    docNumber = document.getElementById('quotationNumber').value || 'Q-001';
+                    docTitle = 'QUOTATION';
+                    headerEl.className = 'document-preview-header';
+                    break;
+                case 'invoice':
+                    docNumber = document.getElementById('invoiceNumber').value || 'INV-001';
+                    docTitle = 'INVOICE';
+                    headerEl.className = 'document-preview-header invoice';
+                    break;
+                case 'receipt':
+                    docNumber = document.getElementById('receiptNumber').value || 'RCP-001';
+                    docTitle = 'RECEIPT';
+                    headerEl.className = 'document-preview-header receipt';
+                    break;
+            }
+            
+            titleEl.textContent = docTitle;
+            numberEl.textContent = `${docTitle.toLowerCase().charAt(0).toUpperCase() + docTitle.toLowerCase().slice(1)} #: ${docNumber}`;
             
             // Format company details
             const companyName = document.getElementById('companyName').value || 'Company Name';
@@ -1352,12 +1805,39 @@
             
             document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
             
-            // Format dates
-            const quoteDate = document.getElementById('quotationDate').value;
-            const validUntil = document.getElementById('validUntil').value;
+            // Update info grid based on document type
+            const infoGrid = document.getElementById('previewInfoGrid');
+            const dateLabel = document.getElementById('previewDateLabel');
+            const validLabel = document.getElementById('previewValidLabel');
+            const dateValue = document.getElementById('previewDate');
+            const validValue = document.getElementById('previewValidUntil');
             
-            document.getElementById('previewDate').textContent = quoteDate ? new Date(quoteDate).toLocaleDateString() : 'Not specified';
-            document.getElementById('previewValidUntil').textContent = validUntil ? new Date(validUntil).toLocaleDateString() : 'Not specified';
+            switch(docType) {
+                case 'quotation':
+                    dateLabel.textContent = 'Quote Date:';
+                    validLabel.textContent = 'Valid Until:';
+                    const quoteDate = document.getElementById('quotationDate').value;
+                    const validUntil = document.getElementById('validUntil').value;
+                    dateValue.textContent = quoteDate ? new Date(quoteDate).toLocaleDateString() : 'Not specified';
+                    validValue.textContent = validUntil ? new Date(validUntil).toLocaleDateString() : 'Not specified';
+                    break;
+                case 'invoice':
+                    dateLabel.textContent = 'Invoice Date:';
+                    validLabel.textContent = 'Due Date:';
+                    const invoiceDate = document.getElementById('invoiceDate').value;
+                    const dueDate = document.getElementById('dueDate').value;
+                    dateValue.textContent = invoiceDate ? new Date(invoiceDate).toLocaleDateString() : 'Not specified';
+                    validValue.textContent = dueDate ? new Date(dueDate).toLocaleDateString() : 'Not specified';
+                    break;
+                case 'receipt':
+                    dateLabel.textContent = 'Payment Date:';
+                    validLabel.textContent = 'Transaction ID:';
+                    const paymentDate = document.getElementById('paymentDate').value;
+                    const transactionId = document.getElementById('transactionId').value;
+                    dateValue.textContent = paymentDate ? new Date(paymentDate).toLocaleDateString() : 'Not specified';
+                    validValue.textContent = transactionId || 'Not specified';
+                    break;
+            }
             
             // Generate line items table
             const lineItemsBody = document.getElementById('previewLineItems');
@@ -1389,7 +1869,7 @@
             const notes = document.getElementById('notes').value;
             if (notes && notes.trim()) {
                 document.getElementById('previewNotes').innerHTML = `
-                    <div class="quotation-notes-section">
+                    <div class="document-notes-section">
                         <div class="notes-title">Terms & Conditions</div>
                         <div class="notes-content">${notes.replace(/\n/g, '<br>')}</div>
                     </div>
@@ -1397,9 +1877,35 @@
             } else {
                 document.getElementById('previewNotes').innerHTML = '';
             }
+            
+            // Handle payment info for receipts
+            const paymentInfo = document.getElementById('previewPaymentInfo');
+            if (docType === 'receipt') {
+                const paymentMethod = appState.selectedPaymentMethod || 'Not specified';
+                const amountPaid = document.getElementById('amountPaid').value || '0.00';
+                const paymentNote = document.getElementById('paymentNote').value;
+                
+                let paymentHtml = `
+                    <div class="document-notes-section">
+                        <div class="notes-title">Payment Information</div>
+                        <div class="notes-content">
+                            <strong>Payment Method:</strong> ${paymentMethod}<br>
+                            <strong>Amount Paid:</strong> ${currency}${parseFloat(amountPaid).toFixed(2)}
+                `;
+                
+                if (paymentNote) {
+                    paymentHtml += `<br><strong>Note:</strong> ${paymentNote}`;
+                }
+                
+                paymentHtml += `</div></div>`;
+                paymentInfo.innerHTML = paymentHtml;
+                paymentInfo.style.display = 'block';
+            } else {
+                paymentInfo.style.display = 'none';
+            }
         }
 
-        function generatePDF() {
+        function generatePDF(docType) {
             // Check if jsPDF is loaded
             if (typeof window.jspdf === 'undefined') {
                 showNotification('PDF library not loaded. Please refresh the page and try again.', 'error');
@@ -1413,10 +1919,30 @@
                 // Get form data
                 const companyName = document.getElementById('companyName').value || 'Company Name';
                 const customerName = document.getElementById('customerName').value || 'Customer Name';
-                const quotationNumber = document.getElementById('quotationNumber').value || 'Q-001';
-                const date = document.getElementById('quotationDate').value;
-                const validUntil = document.getElementById('validUntil').value;
                 const currency = document.getElementById('currency').value;
+                
+                let docNumber, docTitle, dateField, additionalField;
+                
+                switch(docType) {
+                    case 'quotation':
+                        docNumber = document.getElementById('quotationNumber').value || 'Q-001';
+                        docTitle = 'QUOTATION';
+                        dateField = document.getElementById('quotationDate').value;
+                        additionalField = document.getElementById('validUntil').value;
+                        break;
+                    case 'invoice':
+                        docNumber = document.getElementById('invoiceNumber').value || 'INV-001';
+                        docTitle = 'INVOICE';
+                        dateField = document.getElementById('invoiceDate').value;
+                        additionalField = document.getElementById('dueDate').value;
+                        break;
+                    case 'receipt':
+                        docNumber = document.getElementById('receiptNumber').value || 'RCP-001';
+                        docTitle = 'RECEIPT';
+                        dateField = document.getElementById('paymentDate').value;
+                        additionalField = document.getElementById('transactionId').value;
+                        break;
+                }
                 
                 let yPosition = 20;
                 
@@ -1433,13 +1959,13 @@
                 // Title
                 pdf.setFontSize(24);
                 pdf.setFont('helvetica', 'bold');
-                pdf.text('QUOTATION', 105, yPosition, { align: 'center' });
+                pdf.text(docTitle, 105, yPosition, { align: 'center' });
                 yPosition += 15;
                 
-                // Quote number
+                // Document number
                 pdf.setFontSize(12);
                 pdf.setFont('helvetica', 'normal');
-                pdf.text(`Quote #: ${quotationNumber}`, 105, yPosition, { align: 'center' });
+                pdf.text(`${docTitle.toLowerCase().charAt(0).toUpperCase() + docTitle.toLowerCase().slice(1)} #: ${docNumber}`, 105, yPosition, { align: 'center' });
                 yPosition += 20;
                 
                 // Company details (left side)
@@ -1500,11 +2026,16 @@
                 
                 // Date information
                 pdf.setFontSize(10);
-                if (date) {
-                    pdf.text(`Date: ${new Date(date).toLocaleDateString()}`, 20, yPosition);
+                if (dateField) {
+                    const dateLabel = docType === 'quotation' ? 'Date' : 
+                                   docType === 'invoice' ? 'Invoice Date' : 'Payment Date';
+                    pdf.text(`${dateLabel}: ${new Date(dateField).toLocaleDateString()}`, 20, yPosition);
                 }
-                if (validUntil) {
-                    pdf.text(`Valid Until: ${new Date(validUntil).toLocaleDateString()}`, 120, yPosition);
+                if (additionalField) {
+                    const additionalLabel = docType === 'quotation' ? 'Valid Until' : 
+                                          docType === 'invoice' ? 'Due Date' : 'Transaction ID';
+                    const additionalValue = docType === 'receipt' ? additionalField : new Date(additionalField).toLocaleDateString();
+                    pdf.text(`${additionalLabel}: ${additionalValue}`, 120, yPosition);
                 }
                 yPosition += 15;
                 
@@ -1567,6 +2098,33 @@
                 pdf.text('TOTAL:', 145, yPosition, { align: 'right' });
                 pdf.text(`${currency}${grandTotal.toFixed(2)}`, 180, yPosition, { align: 'right' });
                 
+                // Add payment info for receipts
+                if (docType === 'receipt') {
+                    yPosition += 15;
+                    pdf.setFontSize(10);
+                    pdf.setFont('helvetica', 'bold');
+                    pdf.text('Payment Information:', 20, yPosition);
+                    yPosition += 8;
+                    
+                    pdf.setFont('helvetica', 'normal');
+                    if (appState.selectedPaymentMethod) {
+                        pdf.text(`Payment Method: ${appState.selectedPaymentMethod}`, 20, yPosition);
+                        yPosition += 5;
+                    }
+                    
+                    const amountPaid = document.getElementById('amountPaid').value;
+                    if (amountPaid) {
+                        pdf.text(`Amount Paid: ${currency}${parseFloat(amountPaid).toFixed(2)}`, 20, yPosition);
+                        yPosition += 5;
+                    }
+                    
+                    const paymentNote = document.getElementById('paymentNote').value;
+                    if (paymentNote) {
+                        pdf.text(`Note: ${paymentNote}`, 20, yPosition);
+                        yPosition += 5;
+                    }
+                }
+                
                 // Notes section
                 const notes = document.getElementById('notes').value;
                 if (notes && notes.trim()) {
@@ -1586,7 +2144,7 @@
                 
                 // Store PDF for sharing
                 appState.currentPDFBlob = pdf.output('blob');
-                appState.pdfFileName = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+                appState.pdfFileName = `${docNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
                 
                 return true;
             } catch (error) {
@@ -1596,25 +2154,142 @@
             }
         }
 
-        function generateAndShowPDF() {
-            if (!validateQuotationData()) return;
+        function generateAndShowPDF(docType) {
+            if (!validateDocumentData()) return;
             
-            generateQuotationData();
+            generateDocumentData(docType);
             
-            if (generatePDF()) {
+            if (generatePDF(docType)) {
+                // Update share view based on document type
+                const shareHeader = document.getElementById('shareHeader');
+                const shareIcon = document.getElementById('shareIcon');
+                const shareTitle = document.getElementById('shareTitle');
+                const shareSubtitle = document.getElementById('shareSubtitle');
+                const shareNumber = document.getElementById('shareDocumentNumber');
+                
+                let documentNumber;
+                switch(docType) {
+                    case 'quotation':
+                        documentNumber = document.getElementById('quotationNumber').value || 'Q-001';
+                        shareHeader.className = 'document-preview-header';
+                        shareIcon.textContent = '📄';
+                        shareTitle.textContent = 'Your professional quotation is ready!';
+                        shareSubtitle.textContent = 'Choose how you want to share or save your quotation';
+                        break;
+                    case 'invoice':
+                        documentNumber = document.getElementById('invoiceNumber').value || 'INV-001';
+                        shareHeader.className = 'document-preview-header invoice';
+                        shareIcon.textContent = '🧾';
+                        shareTitle.textContent = 'Your professional invoice is ready!';
+                        shareSubtitle.textContent = 'Choose how you want to share or save your invoice';
+                        break;
+                    case 'receipt':
+                        documentNumber = document.getElementById('receiptNumber').value || 'RCP-001';
+                        shareHeader.className = 'document-preview-header receipt';
+                        shareIcon.textContent = '🧾';
+                        shareTitle.textContent = 'Your professional receipt is ready!';
+                        shareSubtitle.textContent = 'Choose how you want to share or save your receipt';
+                        break;
+                }
+                
+                shareNumber.textContent = documentNumber;
+                
                 document.getElementById('pdfShareView').style.display = 'block';
                 document.getElementById('pdfShareView').scrollIntoView({ behavior: 'smooth' });
                 
-                document.getElementById('shareQuotationNumber').textContent = 
-                    document.getElementById('quotationNumber').value || 'Q-001';
+                showNotification(`${docType.charAt(0).toUpperCase() + docType.slice(1)} generated successfully!`, 'success');
                 
-                showNotification('Quotation generated successfully!', 'success');
+                // Enable workflow buttons
+                updateWorkflowButtons(docType);
             }
+        }
+
+        function updateWorkflowButtons(docType) {
+            if (docType === 'quotation') {
+                document.getElementById('convertToInvoiceBtn').disabled = false;
+                appState.documentStatus = 'quote_sent';
+            } else if (docType === 'invoice') {
+                document.getElementById('generateReceiptBtn').disabled = false;
+                appState.documentStatus = 'invoice_sent';
+            } else if (docType === 'receipt') {
+                appState.documentStatus = 'paid';
+            }
+        }
+
+        function convertToInvoice() {
+            // Copy quotation data to invoice
+            const quoteNumber = document.getElementById('quotationNumber').value;
+            const quoteDate = document.getElementById('quotationDate').value;
+            
+            // Generate invoice number based on quote number
+            const invoiceNumber = quoteNumber.replace('Q-', 'INV-') || 'INV-001';
+            document.getElementById('invoiceNumber').value = invoiceNumber;
+            
+            // Set invoice date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = today;
+            
+            // Calculate due date based on payment terms
+            const paymentTerms = document.getElementById('paymentTerms').value;
+            const dueDate = new Date();
+            switch(paymentTerms) {
+                case 'net15':
+                    dueDate.setDate(dueDate.getDate() + 15);
+                    break;
+                case 'net30':
+                    dueDate.setDate(dueDate.getDate() + 30);
+                    break;
+                case 'net45':
+                    dueDate.setDate(dueDate.getDate() + 45);
+                    break;
+                case 'net60':
+                    dueDate.setDate(dueDate.getDate() + 60);
+                    break;
+                default:
+                    dueDate.setDate(dueDate.getDate() + 30);
+            }
+            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+            
+            // Switch to invoice page
+            switchDocument('invoice');
+            showNotification('Quotation converted to invoice!', 'success');
+        }
+
+        function generateReceipt() {
+            // Copy invoice data to receipt
+            const invoiceNumber = document.getElementById('invoiceNumber').value;
+            
+            // Generate receipt number based on invoice number
+            const receiptNumber = invoiceNumber.replace('INV-', 'RCP-') || 'RCP-001';
+            document.getElementById('receiptNumber').value = receiptNumber;
+            document.getElementById('referenceInvoice').value = invoiceNumber;
+            
+            // Set payment date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentDate').value = today;
+            
+            // Set amount paid to grand total
+            const grandTotal = document.getElementById('grandTotal').textContent.replace(/[^0-9.]/g, '');
+            document.getElementById('amountPaid').value = grandTotal;
+            
+            // Generate transaction ID
+            const transactionId = 'TXN-' + Date.now().toString().slice(-8);
+            document.getElementById('transactionId').value = transactionId;
+            
+            // Switch to receipt page
+            switchDocument('receipt');
+            showNotification('Receipt generated from invoice!', 'success');
+        }
+
+        function selectPaymentMethod(element, method) {
+            document.querySelectorAll('.payment-method').forEach(pm => pm.classList.remove('selected'));
+            element.classList.add('selected');
+            appState.selectedPaymentMethod = method.charAt(0).toUpperCase() + method.slice(1).replace('_', ' ');
         }
 
         function downloadPDF() {
             if (!appState.currentPDFBlob) {
-                showNotification('No PDF available. Please generate quote first.', 'error');
+                showNotification('No PDF available. Please generate document first.', 'error');
                 return;
             }
             
@@ -1630,7 +2305,7 @@
 
         function sharePDF() {
             if (!appState.currentPDFBlob) {
-                showNotification('No PDF available. Please generate quote first.', 'error');
+                showNotification('No PDF available. Please generate document first.', 'error');
                 return;
             }
             
@@ -1640,8 +2315,8 @@
                 });
                 
                 navigator.share({
-                    title: 'Quotation PDF',
-                    text: `Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`,
+                    title: 'Business Document PDF',
+                    text: `Document: ${appState.pdfFileName}`,
                     files: [file]
                 }).catch(err => {
                     console.log('Share failed:', err);
@@ -1653,8 +2328,15 @@
         }
 
         function emailPDF() {
-            const subject = encodeURIComponent(`Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`);
-            const body = encodeURIComponent(`Please find attached the quotation for ${document.getElementById('customerName').value || 'your review'}.`);
+            const docType = appState.currentDocument;
+            const docNumber = docType === 'quotation' ? 
+                            (document.getElementById('quotationNumber').value || 'Q-001') :
+                            docType === 'invoice' ?
+                            (document.getElementById('invoiceNumber').value || 'INV-001') :
+                            (document.getElementById('receiptNumber').value || 'RCP-001');
+            
+            const subject = encodeURIComponent(`${docType.charAt(0).toUpperCase() + docType.slice(1)} ${docNumber}`);
+            const body = encodeURIComponent(`Please find attached the ${docType} for ${document.getElementById('customerName').value || 'your review'}.`);
             window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
         }
 
@@ -1671,19 +2353,19 @@
         }
 
         function togglePreview() {
-            const preview = document.getElementById('quotationPreview');
+            const preview = document.getElementById('documentPreview');
             const button = document.getElementById('previewToggleBtn');
             
             if (preview.style.display === 'none') {
                 preview.style.display = 'block';
-                button.textContent = '👁️ Hide Quote Preview';
+                button.textContent = '👁️ Hide Document Preview';
             } else {
                 preview.style.display = 'none';
-                button.textContent = '👁️ View Quote Preview';
+                button.textContent = '👁️ View Document Preview';
             }
         }
 
-        function backToQuote() {
+        function backToDocument() {
             document.getElementById('pdfShareView').style.display = 'none';
             document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1753,9 +2435,9 @@
 
         // ===== EVENT LISTENERS AND INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 QuoteFlow Pro v2.0.0 Initializing...');
+            console.log('🚀 QuoteFlow Pro v3.0.0 Initializing...');
             
-            // Set default values
+            // Set default values for quotation
             const today = new Date().toISOString().split('T')[0];
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + 30);
@@ -1763,6 +2445,18 @@
             document.getElementById('quotationDate').value = today;
             document.getElementById('validUntil').value = futureDate.toISOString().split('T')[0];
             document.getElementById('quotationNumber').value = `QFP-${Date.now().toString().slice(-6)}`;
+            
+            // Set default values for invoice
+            document.getElementById('invoiceDate').value = today;
+            const invoiceDueDate = new Date();
+            invoiceDueDate.setDate(invoiceDueDate.getDate() + 30);
+            document.getElementById('dueDate').value = invoiceDueDate.toISOString().split('T')[0];
+            document.getElementById('invoiceNumber').value = `INV-${Date.now().toString().slice(-6)}`;
+            
+            // Set default values for receipt
+            document.getElementById('paymentDate').value = today;
+            document.getElementById('receiptNumber').value = `RCP-${Date.now().toString().slice(-6)}`;
+            document.getElementById('transactionId').value = `TXN-${Date.now().toString().slice(-8)}`;
             
             // Initialize calculations
             updateCalculations();
@@ -1777,6 +2471,34 @@
             // Set up logo upload listener
             document.getElementById('logoUploadInput').addEventListener('change', function() {
                 handleLogoUpload(this);
+            });
+
+            // Set up payment terms listener
+            document.getElementById('paymentTerms').addEventListener('change', function() {
+                if (this.value !== 'custom') {
+                    const invoiceDate = document.getElementById('invoiceDate').value;
+                    if (invoiceDate) {
+                        const dueDate = new Date(invoiceDate);
+                        switch(this.value) {
+                            case 'net15':
+                                dueDate.setDate(dueDate.getDate() + 15);
+                                break;
+                            case 'net30':
+                                dueDate.setDate(dueDate.getDate() + 30);
+                                break;
+                            case 'net45':
+                                dueDate.setDate(dueDate.getDate() + 45);
+                                break;
+                            case 'net60':
+                                dueDate.setDate(dueDate.getDate() + 60);
+                                break;
+                            case 'due_on_receipt':
+                                // Due date same as invoice date
+                                break;
+                        }
+                        document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+                    }
+                }
             });
 
             console.log('✅ QuoteFlow Pro initialized successfully!');
