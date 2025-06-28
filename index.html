@@ -766,17 +766,19 @@
                 <!-- Logo Upload Section -->
                 <div class="form-group">
                     <label class="form-label">Company Logo</label>
-                    <div class="logo-upload" id="logoUploadArea">
+                    <div class="logo-upload">
                         <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
                         <div id="logoUploadContent">
                             <div class="logo-icon">🏢</div>
                             <div class="logo-text">Tap to add company logo</div>
                             <div class="logo-actions">
-                                <button type="button" class="btn btn-primary" id="chooseLogoBtn" style="margin: 8px;">Choose Logo</button>
-                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;">Remove</button>
+                                <label for="logoUploadInput" class="btn btn-primary" style="margin: 8px; cursor: pointer;">
+                                    Choose Logo
+                                </label>
+                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="removeLogo()">Remove</button>
                             </div>
                         </div>
-                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*">
+                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(this)">
                     </div>
                 </div>
                 
@@ -1682,45 +1684,54 @@
         window.addEventListener('beforeunload', saveData);
 
         // LOGO FUNCTIONS
-        function triggerLogoUpload() {
-            document.getElementById('logoUploadInput').click();
-        }
+        function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
 
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                if (file.size > 2 * 1024 * 1024) { // 2MB limit
-                    alert('Image too large! Please choose a file under 2MB.');
-                    return;
-                }
+            console.log('File selected:', file.name); // Debug log
 
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    appState.companyLogo = e.target.result;
-                    
-                    const logoPreview = document.getElementById('logoPreview');
-                    const removeBtn = document.getElementById('logoRemoveBtn');
-                    
-                    if (logoPreview) {
-                        logoPreview.src = appState.companyLogo;
-                        logoPreview.style.display = 'block';
-                        logoPreview.classList.add('visible');
-                    }
-                    if (removeBtn) {
-                        removeBtn.style.display = 'inline-block';
-                    }
-                    
-                    saveData();
-                    alert('Logo uploaded successfully!');
-                };
-                reader.readAsDataURL(file);
-            } else {
+            if (!file.type.startsWith('image/')) {
                 alert('Please select a valid image file.');
+                return;
             }
+
+            if (file.size > 5 * 1024 * 1024) { // Increased to 5MB
+                alert('Image too large! Please choose a file under 5MB.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('File loaded successfully'); // Debug log
+                appState.companyLogo = e.target.result;
+                
+                const logoPreview = document.getElementById('logoPreview');
+                const removeBtn = document.getElementById('logoRemoveBtn');
+                
+                if (logoPreview) {
+                    logoPreview.src = appState.companyLogo;
+                    logoPreview.style.display = 'block';
+                    logoPreview.classList.add('visible');
+                    console.log('Logo preview updated'); // Debug log
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'inline-block';
+                }
+                
+                saveData();
+                alert('Logo uploaded successfully!');
+            };
+            
+            reader.onerror = function() {
+                console.error('Error reading file'); // Debug log
+                alert('Error reading file. Please try again.');
+            };
+            
+            console.log('Starting to read file...'); // Debug log
+            reader.readAsDataURL(file);
         }
 
-        function removeLogo(event) {
-            event.stopPropagation();
+        function removeLogo() {
             if (confirm('Remove company logo?')) {
                 appState.companyLogo = null;
                 
