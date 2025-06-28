@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuoteFlow Complete - Professional Business & Health Manager</title>
-    <meta name="description" content="Complete business quotation generator and medicine tracker with PDF export and smart scheduling">
-    <meta name="keywords" content="quotation, invoice, medicine tracker, business app, PDF generator">
+    <title>QuoteFlow Pro - Professional Business Quotation Generator</title>
+    <meta name="description" content="Professional business quotation generator with PDF export and smart calculations">
+    <meta name="keywords" content="quotation, invoice, business app, PDF generator">
     
     <!-- PDF Generation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -24,7 +24,7 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #2c3e50;
             line-height: 1.6;
-            padding-bottom: 80px;
+            padding-bottom: 40px;
             min-height: 100vh;
         }
 
@@ -77,75 +77,6 @@
         @keyframes shimmer {
             0% { transform: translateX(-100%) rotate(45deg); }
             100% { transform: translateX(100%) rotate(45deg); }
-        }
-
-        /* ===== NAVIGATION ===== */
-        .page-nav {
-            display: flex;
-            background: white;
-            border-radius: 20px;
-            padding: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .page-nav-btn {
-            flex: 1;
-            padding: 18px;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: transparent;
-            color: #7f8c8d;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-nav-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .page-nav-btn:hover::before {
-            left: 100%;
-        }
-
-        .page-nav-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        /* ===== PAGE SYSTEM ===== */
-        .page {
-            display: none;
-            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         /* ===== CARD SYSTEM ===== */
@@ -292,17 +223,6 @@
         .btn-success:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
-        }
-
-        .btn-medicine {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: white;
-            box-shadow: 0 8px 25px rgba(250, 112, 154, 0.3);
-        }
-
-        .btn-medicine:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(250, 112, 154, 0.4);
         }
 
         .btn-danger {
@@ -755,494 +675,10 @@
             color: #34495e;
         }
 
-        /* ===== MEDICINE TRACKER STYLES ===== */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 20px 15px;
-            border-radius: 16px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-
-        .stat-card:hover::before {
-            left: 100%;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-
-        .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: #7f8c8d;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .stat-taken .stat-number { 
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-pending .stat-number { 
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-missed .stat-number { 
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-total .stat-number { 
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .medicine-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .medicine-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        }
-
-        .medicine-header {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: white;
-            padding: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-
-        .medicine-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s;
-        }
-
-        .medicine-card:hover .medicine-header::before {
-            transform: translateX(100%);
-        }
-
-        .medicine-info h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .medicine-info p {
-            font-size: 13px;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-
-        .medicine-actions {
-            display: flex;
-            gap: 10px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .medicine-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .medicine-btn:hover {
-            transform: scale(1.2);
-            background: rgba(255,255,255,0.3);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .schedule-item {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .schedule-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        .schedule-time {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 16px;
-        }
-
-        .schedule-status {
-            font-size: 12px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-pending {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: white;
-        }
-
-        .status-taken {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .status-missed {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: white;
-        }
-
-        .status-available {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-            color: white;
-        }
-
-        .status-skipped {
-            background: linear-gradient(135deg, #d0d0d0 0%, #e0e0e0 100%);
-            color: #666;
-        }
-
-        .take-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .take-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        /* ===== TIME SELECTION SYSTEM ===== */
-        .time-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .time-slot {
-            padding: 15px 10px;
-            border: 2px solid #e0e6ed;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            background: rgba(255,255,255,0.9);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-        }
-
-        .time-slot:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-color: #667eea;
-        }
-
-        .time-slot.active {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            color: white;
-            border-color: transparent;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(250, 112, 154, 0.4);
-        }
-
-        .custom-time-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .custom-time-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .custom-time-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-        }
-
-        .custom-time-text {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .remove-custom-time {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .remove-custom-time:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(255, 154, 158, 0.4);
-        }
-
-        /* ===== MODAL SYSTEM ===== */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-            transform: scale(0.9);
-            animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes modalSlideIn {
-            to {
-                transform: scale(1);
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f8f9fa;
-        }
-
-        .modal-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #2c3e50;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .close-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-            color: white;
-            cursor: pointer;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .close-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 154, 158, 0.4);
-        }
-
-        /* ===== NAVIGATION SYSTEM ===== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
-            z-index: 999;
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            color: #7f8c8d;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        .nav-item.active::before {
-            width: 60%;
-        }
-
-        .nav-item.active {
-            color: #667eea;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            transform: scale(1.05);
-        }
-
-        .nav-icon {
-            font-size: 24px;
-            margin-bottom: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item.active .nav-icon {
-            transform: scale(1.2);
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
         /* ===== FLOATING ACTION BUTTON ===== */
         .fab {
             position: fixed;
-            bottom: 100px;
+            bottom: 25px;
             right: 25px;
             width: 64px;
             height: 64px;
@@ -1269,6 +705,40 @@
             transform: scale(0.95);
         }
 
+        /* ===== NOTIFICATION SYSTEM ===== */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideInRight 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
             .container {
@@ -1285,10 +755,6 @@
 
             .form-row {
                 grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
             }
 
             .quotation-details-grid {
@@ -1314,12 +780,8 @@
                 max-width: 100%;
             }
 
-            .time-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
             .fab {
-                bottom: 90px;
+                bottom: 20px;
                 right: 20px;
                 width: 56px;
                 height: 56px;
@@ -1377,15 +839,6 @@
                 font-weight: bold;
                 color: #2c3e50;
             }
-
-            .time-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                padding: 20px;
-                margin: 10px;
-            }
         }
 
         /* ===== UTILITY CLASSES ===== */
@@ -1411,7 +864,7 @@
 
         /* ===== PRINT STYLES ===== */
         @media print {
-            .page-nav, .bottom-nav, .fab, .modal {
+            .fab {
                 display: none !important;
             }
             
@@ -1432,827 +885,528 @@
     <div class="container">
         <!-- ===== MAIN HEADER ===== -->
         <header class="header">
-            <h1>📄 QuoteFlow Complete</h1>
-            <p>Professional Business & Health Management System</p>
+            <h1>📄 QuoteFlow Pro</h1>
+            <p>Professional Business Quotation Generator</p>
         </header>
 
-        <!-- ===== PAGE NAVIGATION ===== -->
-        <nav class="page-nav" role="navigation">
-            <button class="page-nav-btn active" onclick="switchPage('quotation')" aria-label="Quotations">
-                📄 Professional Quotations
-            </button>
-            <button class="page-nav-btn" onclick="switchPage('medicine')" aria-label="Medicine Tracker">
-                💊 Smart Medicine Tracker
-            </button>
-        </nav>
-
-        <!-- ===== QUOTATION PAGE ===== -->
-        <main class="page active" id="quotationPage">
-            <!-- Company Information Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    🏢 Company Information
-                </h2>
-                
-                <!-- Logo Upload Section -->
-                <div class="form-group">
-                    <label class="form-label">Company Logo</label>
-                    <div class="logo-upload">
-                        <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
-                        <div id="logoUploadContent">
-                            <div class="logo-icon">🏢</div>
-                            <div class="logo-text">Click to upload your company logo</div>
-                            <div class="logo-actions">
-                                <label for="logoUploadInput" class="btn btn-primary" style="margin: 8px; cursor: pointer;">
-                                    Choose Logo
-                                </label>
-                                <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="removeLogo()">Remove Logo</button>
-                            </div>
-                        </div>
-                        <input type="file" id="logoUploadInput" style="display: none;" accept="image/*" onchange="handleLogoUpload(this)">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">Company Name *</label>
-                    <input type="text" class="form-input" id="companyName" placeholder="Enter your company name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Company Address</label>
-                    <textarea class="form-input form-textarea" id="companyAddress" placeholder="Enter your complete company address"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" class="form-input" id="companyPhone" placeholder="+1 (555) 123-4567">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" id="companyEmail" placeholder="contact@yourcompany.com">
-                    </div>
-                </div>
-            </section>
-
-            <!-- Customer Information Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    👤 Customer Information
-                </h2>
-                <div class="form-group">
-                    <label class="form-label">Customer Name *</label>
-                    <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Customer Address</label>
-                    <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer's complete address"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Phone Number</label>
-                        <input type="tel" class="form-input" id="customerPhone" placeholder="+1 (555) 987-6543">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Email Address</label>
-                        <input type="email" class="form-input" id="customerEmail" placeholder="customer@email.com">
-                    </div>
-                </div>
-            </section>
-
-            <!-- Quotation Details Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    📄 Quotation Details
-                </h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Quotation Number</label>
-                        <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Quotation Date</label>
-                        <input type="date" class="form-input" id="quotationDate">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Valid Until</label>
-                        <input type="date" class="form-input" id="validUntil">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Currency</label>
-                        <select class="form-input" id="currency">
-                            <option value="$">USD ($)</option>
-                            <option value="€">EUR (€)</option>
-                            <option value="£">GBP (£)</option>
-                            <option value="¥">JPY (¥)</option>
-                            <option value="RM">MYR (RM)</option>
-                            <option value="₹">INR (₹)</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Products & Services Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    📦 Products & Services
-                </h2>
-                <div class="line-items">
-                    <div id="lineItemsContainer">
-                        <div class="line-item">
-                            <div class="line-item-header">
-                                <span class="item-number">Item #1</span>
-                                <button class="remove-btn" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Description *</label>
-                                <input type="text" class="form-input item-description" placeholder="Product or service description" required>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label class="form-label">Quantity</label>
-                                    <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Unit Price *</label>
-                                    <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" required>
-                                </div>
-                            </div>
-                            <div class="total-display item-total">$0.00</div>
+        <!-- Company Information Card -->
+        <section class="card">
+            <h2 class="card-title">
+                🏢 Company Information
+            </h2>
+            
+            <!-- Logo Upload Section -->
+            <div class="form-group">
+                <label class="form-label">Company Logo</label>
+                <div class="logo-upload" onclick="document.getElementById('logoUploadInput').click()">
+                    <img id="logoPreview" class="logo-preview" alt="Company Logo" style="display: none;">
+                    <div id="logoUploadContent">
+                        <div class="logo-icon">🏢</div>
+                        <div class="logo-text">Click to upload your company logo</div>
+                        <div class="logo-actions">
+                            <span class="btn btn-primary" style="margin: 8px; cursor: pointer;">
+                                Choose Logo
+                            </span>
+                            <button type="button" class="btn btn-danger" id="logoRemoveBtn" style="display: none; margin: 8px;" onclick="event.stopPropagation(); removeLogo()">Remove Logo</button>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="addLineItem()" style="width: 100%; margin-top: 20px;">
-                        ➕ Add Another Item
-                    </button>
+                    <input type="file" id="logoUploadInput" style="display: none;" accept="image/*">
                 </div>
-
-                <!-- Totals Section -->
-                <div class="totals-card">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax Rate (%):</span>
-                        <div>
-                            <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
-                        </div>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax Amount:</span>
-                        <span id="taxAmount">$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Total Amount:</span>
-                        <span id="grandTotal">$0.00</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Terms & Notes Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    📝 Terms & Additional Notes
-                </h2>
-                <div class="form-group">
-                    <label class="form-label">Terms & Conditions / Notes</label>
-                    <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
-                </div>
-            </section>
-
-            <!-- Generate Quotation Button -->
-            <button type="button" class="btn btn-success" onclick="generateAndShowPDF()" style="width: 100%; font-size: 18px; padding: 20px; margin-bottom: 30px;">
-                📄 Generate & Share Professional Quote
-            </button>
-
-            <!-- PDF Share View -->
-            <section id="pdfShareView" class="preview" style="display: none;">
-                <div class="quotation-preview-header">
-                    <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 8px 0; letter-spacing: 2px;">📄 Quote Ready!</h1>
-                    <p id="shareQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 25px 0; font-size: 18px;"></p>
-                </div>
-                
-                <div style="text-align: center; margin: 40px 0;">
-                    <div style="font-size: 64px; margin-bottom: 20px;">✅</div>
-                    <div style="font-size: 20px; font-weight: 600; color: #4facfe; margin-bottom: 10px;">
-                        Your professional quotation is ready!
-                    </div>
-                    <div style="font-size: 16px; color: #7f8c8d; margin-bottom: 25px;">
-                        Choose how you want to share or save your quotation
-                    </div>
-                </div>
-
-                <!-- Share Options Grid -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-                    <button type="button" class="btn btn-primary" onclick="downloadPDF()" style="font-size: 14px;">
-                        💾 Download PDF
-                    </button>
-                    <button type="button" class="btn btn-success" onclick="sharePDF()" style="font-size: 14px;">
-                        📤 Share PDF
-                    </button>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-                    <button type="button" class="btn" onclick="emailPDF()" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: white; font-size: 14px;">
-                        📧 Email Quote
-                    </button>
-                    <button type="button" class="btn" onclick="printPDF()" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: white; font-size: 14px;">
-                        🖨️ Print Quote
-                    </button>
-                </div>
-
-                <!-- Preview Toggle -->
-                <button type="button" class="btn" onclick="togglePreview()" style="width: 100%; background: #f8f9fa; color: #2c3e50; border: 2px solid #e0e6ed; margin-bottom: 15px;">
-                    👁️ View Quote Preview
-                </button>
-
-                <!-- Hidden Quotation Preview -->
-                <div id="quotationPreview" style="display: none; margin-top: 25px; padding: 30px; border: 3px solid #667eea; border-radius: 16px; background: white;">
-                    <!-- Header Section -->
-                    <div class="quotation-preview-header">
-                        <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 25px auto; max-width: 180px; max-height: 90px;">
-                        <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 10px 0; letter-spacing: 3px;">QUOTATION</h1>
-                        <p id="previewQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 30px 0; font-size: 18px;"></p>
-                    </div>
-                    
-                    <!-- Details Section -->
-                    <div class="quotation-details-grid">
-                        <div class="detail-column">
-                            <h4 class="detail-title">FROM:</h4>
-                            <div class="detail-box" id="previewCompanyDetails"></div>
-                        </div>
-                        <div class="detail-column">
-                            <h4 class="detail-title">TO:</h4>
-                            <div class="detail-box" id="previewCustomerDetails"></div>
-                        </div>
-                    </div>
-
-                    <!-- Quote Info Section -->
-                    <div class="quote-info-section">
-                        <div class="quote-info-grid">
-                            <div class="info-item">
-                                <span class="info-label">Quote Date:</span>
-                                <span class="info-value" id="previewDate"></span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-label">Valid Until:</span>
-                                <span class="info-value" id="previewValidUntil"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Items Table -->
-                    <table class="quotation-table">
-                        <thead>
-                            <tr>
-                                <th style="text-align: left; width: 50%;">DESCRIPTION</th>
-                                <th style="text-align: center; width: 15%;">QTY</th>
-                                <th style="text-align: right; width: 20%;">UNIT PRICE</th>
-                                <th style="text-align: right; width: 15%;">TOTAL</th>
-                            </tr>
-                        </thead>
-                        <tbody id="previewLineItems"></tbody>
-                    </table>
-
-                    <!-- Totals Section -->
-                    <div class="quotation-totals-section">
-                        <div class="totals-rows">
-                            <div class="total-row-item">
-                                <span class="total-label">Subtotal:</span>
-                                <span class="total-value" id="previewSubtotal"></span>
-                            </div>
-                            <div class="total-row-item">
-                                <span class="total-label">Tax:</span>
-                                <span class="total-value" id="previewTax"></span>
-                            </div>
-                            <div class="total-row-item grand-total-row">
-                                <span class="total-label">TOTAL:</span>
-                                <span class="total-value grand-total-value" id="previewTotal"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Notes Section -->
-                    <div id="previewNotes"></div>
-                </div>
-                
-                <!-- Back Button -->
-                <button type="button" class="btn" onclick="backToQuote()" style="width: 100%; margin-top: 25px; background: #bdc3c7; color: white;">
-                    ← Back to Edit Quote
-                </button>
-            </section>
-        </main>
-
-        <!-- ===== MEDICINE TRACKER PAGE ===== -->
-        <main class="page" id="medicinePage">
-            <!-- Today's Overview Card -->
-            <section class="card">
-                <h2 class="card-title">
-                    📊 Today's Medicine Overview
-                </h2>
-                <div class="stats-grid">
-                    <div class="stat-card stat-taken">
-                        <div class="stat-number" id="todayTaken">0</div>
-                        <div class="stat-label">Taken</div>
-                    </div>
-                    <div class="stat-card stat-pending">
-                        <div class="stat-number" id="todayPending">0</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                    <div class="stat-card stat-missed">
-                        <div class="stat-number" id="todayMissed">0</div>
-                        <div class="stat-label">Missed</div>
-                    </div>
-                    <div class="stat-card stat-total">
-                        <div class="stat-number" id="todayTotal">0</div>
-                        <div class="stat-label">Total</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Add Medicine Button -->
-            <button type="button" class="btn btn-medicine" onclick="showAddMedicineModal()" style="width: 100%; margin-bottom: 25px; font-size: 18px; padding: 20px;">
-                💊 Add New Medicine
-            </button>
-
-            <!-- Medicine List -->
-            <section id="medicineList"></section>
-
-            <!-- No Medicines Message -->
-            <section id="noMedicinesMessage" style="text-align: center; padding: 60px 20px; color: #7f8c8d; display: none;">
-                <div style="font-size: 80px; margin-bottom: 20px;">💊</div>
-                <div style="font-size: 20px; margin-bottom: 10px; font-weight: 600;">No medicines added yet</div>
-                <div style="font-size: 16px;">Tap "Add New Medicine" to get started with your medicine tracking</div>
-            </section>
-
-            <!-- Today's Schedule Card -->
-            <section class="card" id="todayScheduleCard" style="display: none;">
-                <h2 class="card-title">
-                    📋 Today's Medicine Schedule
-                </h2>
-                <div id="todayScheduleList"></div>
-            </section>
-        </main>
-    </div>
-
-    <!-- ===== ADD MEDICINE MODAL ===== -->
-    <div class="modal" id="addMedicineModal" role="dialog" aria-labelledby="modalTitle">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Add New Medicine</h2>
-                <button class="close-btn" onclick="closeAddMedicineModal()" aria-label="Close modal">×</button>
             </div>
             
             <div class="form-group">
-                <label class="form-label">Medicine Name *</label>
-                <input type="text" class="form-input" id="medicineName" placeholder="e.g., Aspirin, Vitamin D" required>
+                <label class="form-label">Company Name *</label>
+                <input type="text" class="form-input" id="companyName" placeholder="Enter your company name" required>
             </div>
-            
+            <div class="form-group">
+                <label class="form-label">Company Address</label>
+                <textarea class="form-input form-textarea" id="companyAddress" placeholder="Enter your complete company address"></textarea>
+            </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label class="form-label">Dosage *</label>
-                    <input type="text" class="form-input" id="medicineDosage" placeholder="e.g., 500mg, 1 tablet" required>
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="companyPhone" placeholder="+1 (555) 123-4567">
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Frequency</label>
-                    <select class="form-input" id="medicineFrequency">
-                        <option value="daily">Once Daily</option>
-                        <option value="twice">Twice Daily</option>
-                        <option value="three">Three Times Daily</option>
-                        <option value="asneeded">As Needed (PRN)</option>
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="companyEmail" placeholder="contact@yourcompany.com">
+                </div>
+            </div>
+        </section>
+
+        <!-- Customer Information Card -->
+        <section class="card">
+            <h2 class="card-title">
+                👤 Customer Information
+            </h2>
+            <div class="form-group">
+                <label class="form-label">Customer Name *</label>
+                <input type="text" class="form-input" id="customerName" placeholder="Customer or company name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Customer Address</label>
+                <textarea class="form-input form-textarea" id="customerAddress" placeholder="Customer's complete address"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="customerPhone" placeholder="+1 (555) 987-6543">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-input" id="customerEmail" placeholder="customer@email.com">
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotation Details Card -->
+        <section class="card">
+            <h2 class="card-title">
+                📄 Quotation Details
+            </h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Quotation Number</label>
+                    <input type="text" class="form-input" id="quotationNumber" placeholder="Q-001">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quotation Date</label>
+                    <input type="date" class="form-input" id="quotationDate">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Valid Until</label>
+                    <input type="date" class="form-input" id="validUntil">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select class="form-input" id="currency">
+                        <option value="$">USD ($)</option>
+                        <option value="€">EUR (€)</option>
+                        <option value="£">GBP (£)</option>
+                        <option value="¥">JPY (¥)</option>
+                        <option value="RM">MYR (RM)</option>
+                        <option value="₹">INR (₹)</option>
                     </select>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label class="form-label">Instructions</label>
-                <input type="text" class="form-input" id="medicineInstructions" placeholder="e.g., Take with food, After meals">
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Select Times (tap to select)</label>
-                <div class="time-grid" id="timeSlots">
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '08:00')">08:00 AM</div>
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '12:00')">12:00 PM</div>
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '18:00')">06:00 PM</div>
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '22:00')">10:00 PM</div>
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '06:00')">06:00 AM</div>
-                    <div class="time-slot" onclick="toggleTimeSlot(this, '14:00')">02:00 PM</div>
-                </div>
-            </div>
-            
-            <!-- Custom Time Entry -->
-            <div class="form-group">
-                <label class="form-label">Add Custom Time</label>
-                <div class="custom-time-section">
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                        <input type="time" class="form-input" id="customTimeInput" style="flex: 1;">
-                        <button type="button" class="btn btn-primary" onclick="addCustomTime()" style="padding: 12px 20px;">
-                            ➕ Add
-                        </button>
+        </section>
+
+        <!-- Products & Services Card -->
+        <section class="card">
+            <h2 class="card-title">
+                📦 Products & Services
+            </h2>
+            <div class="line-items">
+                <div id="lineItemsContainer">
+                    <div class="line-item">
+                        <div class="line-item-header">
+                            <span class="item-number">Item #1</span>
+                            <button class="remove-btn" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description *</label>
+                            <input type="text" class="form-input item-description" placeholder="Product or service description" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Quantity</label>
+                                <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Unit Price *</label>
+                                <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="total-display item-total">$0.00</div>
                     </div>
-                    <div id="customTimesList" style="margin-top: 15px;"></div>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addLineItem()" style="width: 100%; margin-top: 20px;">
+                    ➕ Add Another Item
+                </button>
+            </div>
+
+            <!-- Totals Section -->
+            <div class="totals-card">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Tax Rate (%):</span>
+                    <div>
+                        <input type="number" class="tax-input" id="taxRate" value="0" min="0" max="100" step="0.1" placeholder="0">%
+                    </div>
+                </div>
+                <div class="total-row">
+                    <span>Tax Amount:</span>
+                    <span id="taxAmount">$0.00</span>
+                </div>
+                <div class="total-row">
+                    <span>Total Amount:</span>
+                    <span id="grandTotal">$0.00</span>
                 </div>
             </div>
+        </section>
+
+        <!-- Terms & Notes Card -->
+        <section class="card">
+            <h2 class="card-title">
+                📝 Terms & Additional Notes
+            </h2>
+            <div class="form-group">
+                <label class="form-label">Terms & Conditions / Notes</label>
+                <textarea class="form-input form-textarea" id="notes" placeholder="Payment terms, delivery information, or any additional notes" rows="4"></textarea>
+            </div>
+        </section>
+
+        <!-- Generate Quotation Button -->
+        <button type="button" class="btn btn-success" onclick="generateAndShowPDF()" style="width: 100%; font-size: 18px; padding: 20px; margin-bottom: 30px;">
+            📄 Generate & Share Professional Quote
+        </button>
+
+        <!-- PDF Share View -->
+        <section id="pdfShareView" class="preview" style="display: none;">
+            <div class="quotation-preview-header">
+                <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 8px 0; letter-spacing: 2px;">📄 Quote Ready!</h1>
+                <p id="shareQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 25px 0; font-size: 18px;"></p>
+            </div>
             
-            <button type="button" class="btn btn-medicine" onclick="saveMedicine()" style="width: 100%; font-size: 18px; padding: 18px;">
-                💾 Save Medicine
+            <div style="text-align: center; margin: 40px 0;">
+                <div style="font-size: 64px; margin-bottom: 20px;">✅</div>
+                <div style="font-size: 20px; font-weight: 600; color: #4facfe; margin-bottom: 10px;">
+                    Your professional quotation is ready!
+                </div>
+                <div style="font-size: 16px; color: #7f8c8d; margin-bottom: 25px;">
+                    Choose how you want to share or save your quotation
+                </div>
+            </div>
+
+            <!-- Share Options Grid -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                <button type="button" class="btn btn-primary" onclick="downloadPDF()" style="font-size: 14px;">
+                    💾 Download PDF
+                </button>
+                <button type="button" class="btn btn-success" onclick="sharePDF()" style="font-size: 14px;">
+                    📤 Share PDF
+                </button>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                <button type="button" class="btn" onclick="emailPDF()" style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); color: white; font-size: 14px;">
+                    📧 Email Quote
+                </button>
+                <button type="button" class="btn" onclick="printPDF()" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: white; font-size: 14px;">
+                    🖨️ Print Quote
+                </button>
+            </div>
+
+            <!-- Preview Toggle -->
+            <button type="button" class="btn" id="previewToggleBtn" onclick="togglePreview()" style="width: 100%; background: #f8f9fa; color: #2c3e50; border: 2px solid #e0e6ed; margin-bottom: 15px;">
+                👁️ View Quote Preview
             </button>
-        </div>
+
+            <!-- Hidden Quotation Preview -->
+            <div id="quotationPreview" style="display: none; margin-top: 25px; padding: 30px; border: 3px solid #667eea; border-radius: 16px; background: white;">
+                <!-- Header Section -->
+                <div class="quotation-preview-header">
+                    <img id="quotationLogo" class="logo-preview" alt="Company Logo" style="display: none; margin: 0 auto 25px auto; max-width: 180px; max-height: 90px;">
+                    <h1 style="text-align: center; font-size: 36px; font-weight: 800; color: #2c3e50; margin: 0 0 10px 0; letter-spacing: 3px;">QUOTATION</h1>
+                    <p id="previewQuotationNumber" style="text-align: center; color: #7f8c8d; margin: 0 0 30px 0; font-size: 18px;"></p>
+                </div>
+                
+                <!-- Details Section -->
+                <div class="quotation-details-grid">
+                    <div class="detail-column">
+                        <h4 class="detail-title">FROM:</h4>
+                        <div class="detail-box" id="previewCompanyDetails"></div>
+                    </div>
+                    <div class="detail-column">
+                        <h4 class="detail-title">TO:</h4>
+                        <div class="detail-box" id="previewCustomerDetails"></div>
+                    </div>
+                </div>
+
+                <!-- Quote Info Section -->
+                <div class="quote-info-section">
+                    <div class="quote-info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Quote Date:</span>
+                            <span class="info-value" id="previewDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Valid Until:</span>
+                            <span class="info-value" id="previewValidUntil"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <table class="quotation-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left; width: 50%;">DESCRIPTION</th>
+                            <th style="text-align: center; width: 15%;">QTY</th>
+                            <th style="text-align: right; width: 20%;">UNIT PRICE</th>
+                            <th style="text-align: right; width: 15%;">TOTAL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewLineItems"></tbody>
+                </table>
+
+                <!-- Totals Section -->
+                <div class="quotation-totals-section">
+                    <div class="totals-rows">
+                        <div class="total-row-item">
+                            <span class="total-label">Subtotal:</span>
+                            <span class="total-value" id="previewSubtotal"></span>
+                        </div>
+                        <div class="total-row-item">
+                            <span class="total-label">Tax:</span>
+                            <span class="total-value" id="previewTax"></span>
+                        </div>
+                        <div class="total-row-item grand-total-row">
+                            <span class="total-label">TOTAL:</span>
+                            <span class="total-value grand-total-value" id="previewTotal"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div id="previewNotes"></div>
+            </div>
+            
+            <!-- Back Button -->
+            <button type="button" class="btn" onclick="backToQuote()" style="width: 100%; margin-top: 25px; background: #bdc3c7; color: white;">
+                ← Back to Edit Quote
+            </button>
+        </section>
     </div>
 
     <!-- ===== FLOATING ACTION BUTTON ===== -->
-    <button class="fab" onclick="fabAction()" id="fabBtn" aria-label="Quick action">+</button>
-
-    <!-- ===== BOTTOM NAVIGATION ===== -->
-    <nav class="bottom-nav" role="navigation">
-        <button class="nav-item active" onclick="switchPage('quotation')" aria-label="Quotations page">
-            <div class="nav-icon">📄</div>
-            <div class="nav-label">Quotes</div>
-        </button>
-        <button class="nav-item" onclick="switchPage('medicine')" aria-label="Medicine tracker page">
-            <div class="nav-icon">💊</div>
-            <div class="nav-label">Medicine</div>
-        </button>
-    </nav>
+    <button class="fab" onclick="addLineItem()" id="fabBtn" aria-label="Add new item">+</button>
 
     <!-- ===== JAVASCRIPT APPLICATION ===== -->
     <script>
         // ===== APPLICATION STATE MANAGEMENT =====
         let appState = {
-            currentPage: 'quotation',
             lineItemCount: 1,
-            medicines: [],
-            medicineLog: [],
-            selectedTimes: [],
             companyLogo: null,
             currentPDFBlob: null,
-            editingMedicineId: null,
             version: '2.0.0'
         };
 
-        // ===== DATA PERSISTENCE SYSTEM =====
-        const DataManager = {
-            storageKey: 'quoteflow_complete_v2',
-            
-            save() {
-                try {
-                    this.collectFormData();
-                    const dataToSave = {
-                        ...appState,
-                        lastSaved: new Date().toISOString()
-                    };
-                    delete dataToSave.currentPDFBlob; // Don't save binary data
-                    localStorage.setItem(this.storageKey, JSON.stringify(dataToSave));
-                    console.log('💾 Data saved successfully');
-                    return true;
-                } catch (error) {
-                    console.error('❌ Save failed:', error);
-                    this.showNotification('Save failed!', 'error');
-                    return false;
-                }
-            },
+        // ===== GLOBAL FUNCTIONS =====
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
 
-            load() {
-                try {
-                    const saved = localStorage.getItem(this.storageKey);
-                    if (saved) {
-                        const data = JSON.parse(saved);
-                        Object.assign(appState, data);
-                        this.restoreFormData();
-                        this.restoreCompanyLogo();
-                        MedicineManager.updateDisplay();
-                        QuotationManager.updateCalculations();
-                        MedicineManager.updateTodaysOverview();
-                        console.log('📂 Data loaded successfully');
-                        return true;
-                    }
-                } catch (error) {
-                    console.error('❌ Load failed:', error);
-                    this.showNotification('Failed to load data', 'error');
-                }
-                return false;
-            },
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
 
-            collectFormData() {
-                const formFields = [
-                    'companyName', 'companyAddress', 'companyPhone', 'companyEmail',
-                    'customerName', 'customerAddress', 'customerPhone', 'customerEmail',
-                    'quotationNumber', 'quotationDate', 'validUntil', 'currency', 'notes'
-                ];
-                
-                appState.formData = {};
-                formFields.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        appState.formData[id] = element.value;
-                    }
-                });
-
-                // Collect line items
-                appState.formData.lineItems = [];
-                document.querySelectorAll('.line-item').forEach(item => {
-                    appState.formData.lineItems.push({
-                        description: item.querySelector('.item-description')?.value || '',
-                        quantity: item.querySelector('.item-quantity')?.value || '1',
-                        price: item.querySelector('.item-price')?.value || '0'
-                    });
-                });
-            },
-
-            restoreFormData() {
-                if (!appState.formData) return;
-                
-                Object.keys(appState.formData).forEach(key => {
-                    const element = document.getElementById(key);
-                    if (element && appState.formData[key]) {
-                        element.value = appState.formData[key];
-                    }
-                });
-
-                // Restore line items
-                if (appState.formData.lineItems && appState.formData.lineItems.length > 0) {
-                    const container = document.getElementById('lineItemsContainer');
-                    container.innerHTML = '';
-                    appState.formData.lineItems.forEach((item, index) => {
-                        QuotationManager.addLineItem(item, index + 1);
-                    });
-                    appState.lineItemCount = appState.formData.lineItems.length;
-                }
-            },
-
-            restoreCompanyLogo() {
-                if (appState.companyLogo) {
-                    const logoPreview = document.getElementById('logoPreview');
-                    const removeBtn = document.getElementById('logoRemoveBtn');
-                    
-                    if (logoPreview) {
-                        logoPreview.src = appState.companyLogo;
-                        logoPreview.style.display = 'block';
-                    }
-                    if (removeBtn) {
-                        removeBtn.style.display = 'inline-block';
-                    }
-                }
-            },
-
-            showNotification(message, type = 'success') {
-                // Simple notification system
-                const notification = document.createElement('div');
-                notification.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 15px 20px;
-                    border-radius: 8px;
-                    color: white;
-                    font-weight: 600;
-                    z-index: 10000;
-                    animation: slideInRight 0.3s ease;
-                    background: ${type === 'error' ? '#e74c3c' : '#27ae60'};
-                `;
-                notification.textContent = message;
-                document.body.appendChild(notification);
-
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-            },
-
-            debouncedSave: (() => {
-                let timeout;
-                return () => {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => DataManager.save(), 1000);
-                };
-            })()
-        };
-
-        // ===== QUOTATION MANAGEMENT SYSTEM =====
-        const QuotationManager = {
-            addLineItem(data = {}, itemNumber = null) {
-                if (!itemNumber) {
-                    appState.lineItemCount++;
-                    itemNumber = appState.lineItemCount;
-                }
-
-                const container = document.getElementById('lineItemsContainer');
-                const newItem = document.createElement('div');
-                newItem.className = 'line-item';
-                newItem.innerHTML = `
-                    <div class="line-item-header">
-                        <span class="item-number">Item #${itemNumber}</span>
-                        <button class="remove-btn" onclick="QuotationManager.removeLineItem(this)" aria-label="Remove item">×</button>
+        // ===== QUOTATION FUNCTIONS =====
+        function addLineItem() {
+            appState.lineItemCount++;
+            const container = document.getElementById('lineItemsContainer');
+            const newItem = document.createElement('div');
+            newItem.className = 'line-item';
+            newItem.innerHTML = `
+                <div class="line-item-header">
+                    <span class="item-number">Item #${appState.lineItemCount}</span>
+                    <button class="remove-btn" onclick="removeLineItem(this)" aria-label="Remove item">×</button>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description *</label>
+                    <input type="text" class="form-input item-description" placeholder="Product or service description" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-input item-quantity" value="1" min="1" step="1">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Description *</label>
-                        <input type="text" class="form-input item-description" placeholder="Product or service description" value="${data.description || ''}" required>
+                        <label class="form-label">Unit Price *</label>
+                        <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" required>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Quantity</label>
-                            <input type="number" class="form-input item-quantity" value="${data.quantity || '1'}" min="1" step="1">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Unit Price *</label>
-                            <input type="number" class="form-input item-price" step="0.01" min="0" placeholder="0.00" value="${data.price || ''}" required>
-                        </div>
-                    </div>
-                    <div class="total-display item-total">$0.00</div>
-                `;
-                container.appendChild(newItem);
-                
-                // Add event listeners for auto-calculation
-                const inputs = newItem.querySelectorAll('.item-quantity, .item-price, .item-description');
-                inputs.forEach(input => {
-                    input.addEventListener('input', () => {
-                        this.updateLineItemTotal(newItem);
-                        DataManager.debouncedSave();
-                    });
-                });
+                </div>
+                <div class="total-display item-total">$0.00</div>
+            `;
+            container.appendChild(newItem);
+            
+            // Add event listeners
+            const inputs = newItem.querySelectorAll('.item-quantity, .item-price');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateCalculations);
+            });
 
-                this.updateLineItemTotal(newItem);
-                if (!data.description) {
-                    newItem.querySelector('.item-description').focus();
-                }
-            },
+            updateCalculations();
+            newItem.querySelector('.item-description').focus();
+        }
 
-            removeLineItem(button) {
-                const items = document.querySelectorAll('.line-item');
-                if (items.length <= 1) {
-                    DataManager.showNotification('Cannot remove the last item', 'error');
-                    return;
-                }
-                
-                button.closest('.line-item').remove();
-                this.updateCalculations();
-                DataManager.save();
-                DataManager.showNotification('Item removed', 'success');
-            },
+        function removeLineItem(button) {
+            const items = document.querySelectorAll('.line-item');
+            if (items.length <= 1) {
+                showNotification('Cannot remove the last item', 'error');
+                return;
+            }
+            
+            button.closest('.line-item').remove();
+            updateCalculations();
+            showNotification('Item removed', 'success');
+        }
 
-            updateLineItemTotal(lineItem) {
-                const quantity = parseFloat(lineItem.querySelector('.item-quantity')?.value) || 0;
-                const price = parseFloat(lineItem.querySelector('.item-price')?.value) || 0;
+        function updateCalculations() {
+            const currency = document.getElementById('currency').value || '$';
+            let subtotal = 0;
+            
+            document.querySelectorAll('.line-item').forEach(item => {
+                const quantity = parseFloat(item.querySelector('.item-quantity').value) || 0;
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
                 const total = quantity * price;
-                const currency = document.getElementById('currency')?.value || '$';
+                subtotal += total;
                 
-                const totalDisplay = lineItem.querySelector('.item-total');
+                const totalDisplay = item.querySelector('.item-total');
                 if (totalDisplay) {
                     totalDisplay.textContent = `${currency}${total.toFixed(2)}`;
                 }
-                
-                this.updateGrandTotal();
-            },
+            });
+            
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const taxAmount = subtotal * (taxRate / 100);
+            const grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('subtotal').textContent = `${currency}${subtotal.toFixed(2)}`;
+            document.getElementById('taxAmount').textContent = `${currency}${taxAmount.toFixed(2)}`;
+            document.getElementById('grandTotal').textContent = `${currency}${grandTotal.toFixed(2)}`;
+        }
 
-            updateCalculations() {
-                document.querySelectorAll('.line-item').forEach(item => {
-                    this.updateLineItemTotal(item);
-                });
-            },
+        function validateQuotationData() {
+            const companyName = document.getElementById('companyName').value.trim();
+            const customerName = document.getElementById('customerName').value.trim();
+            
+            if (!companyName) {
+                showNotification('Please enter company name', 'error');
+                document.getElementById('companyName').focus();
+                return false;
+            }
+            
+            if (!customerName) {
+                showNotification('Please enter customer name', 'error');
+                document.getElementById('customerName').focus();
+                return false;
+            }
+            
+            const hasValidItems = Array.from(document.querySelectorAll('.line-item')).some(item => {
+                const description = item.querySelector('.item-description').value.trim();
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                return description && price > 0;
+            });
+            
+            if (!hasValidItems) {
+                showNotification('Please add at least one item with description and price', 'error');
+                return false;
+            }
+            
+            return true;
+        }
 
-            updateGrandTotal() {
-                const currency = document.getElementById('currency')?.value || '$';
-                let subtotal = 0;
+        function generateQuotationData() {
+            // Show logo if available
+            if (appState.companyLogo) {
+                const quotationLogo = document.getElementById('quotationLogo');
+                quotationLogo.src = appState.companyLogo;
+                quotationLogo.style.display = 'block';
+            }
+            
+            document.getElementById('previewQuotationNumber').textContent = 
+                `Quote #: ${document.getElementById('quotationNumber').value || 'Q-001'}`;
+            
+            // Format company details
+            const companyName = document.getElementById('companyName').value || 'Company Name';
+            const companyAddress = document.getElementById('companyAddress').value;
+            const companyPhone = document.getElementById('companyPhone').value;
+            const companyEmail = document.getElementById('companyEmail').value;
+            
+            let companyDetails = `<strong>${companyName}</strong>`;
+            if (companyAddress) companyDetails += `<br>${companyAddress}`;
+            if (companyPhone) companyDetails += `<br>Phone: ${companyPhone}`;
+            if (companyEmail) companyDetails += `<br>Email: ${companyEmail}`;
+            
+            document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
+            
+            // Format customer details
+            const customerName = document.getElementById('customerName').value || 'Customer Name';
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            
+            let customerDetails = `<strong>${customerName}</strong>`;
+            if (customerAddress) customerDetails += `<br>${customerAddress}`;
+            if (customerPhone) customerDetails += `<br>Phone: ${customerPhone}`;
+            if (customerEmail) customerDetails += `<br>Email: ${customerEmail}`;
+            
+            document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
+            
+            // Format dates
+            const quoteDate = document.getElementById('quotationDate').value;
+            const validUntil = document.getElementById('validUntil').value;
+            
+            document.getElementById('previewDate').textContent = quoteDate ? new Date(quoteDate).toLocaleDateString() : 'Not specified';
+            document.getElementById('previewValidUntil').textContent = validUntil ? new Date(validUntil).toLocaleDateString() : 'Not specified';
+            
+            // Generate line items table
+            const lineItemsBody = document.getElementById('previewLineItems');
+            lineItemsBody.innerHTML = '';
+            const currency = document.getElementById('currency').value;
+            
+            document.querySelectorAll('.line-item').forEach((item, index) => {
+                const description = item.querySelector('.item-description').value || `Item ${index + 1}`;
+                const quantity = item.querySelector('.item-quantity').value || '1';
+                const price = parseFloat(item.querySelector('.item-price').value) || 0;
+                const total = parseFloat(quantity) * price;
                 
-                document.querySelectorAll('.line-item').forEach(item => {
-                    const quantity = parseFloat(item.querySelector('.item-quantity')?.value) || 0;
-                    const price = parseFloat(item.querySelector('.item-price')?.value) || 0;
-                    subtotal += quantity * price;
-                });
-                
-                const taxRate = parseFloat(document.getElementById('taxRate')?.value) || 0;
-                const taxAmount = subtotal * (taxRate / 100);
-                const grandTotal = subtotal + taxAmount;
-                
-                const subtotalEl = document.getElementById('subtotal');
-                const taxAmountEl = document.getElementById('taxAmount');
-                const grandTotalEl = document.getElementById('grandTotal');
-                
-                if (subtotalEl) subtotalEl.textContent = `${currency}${subtotal.toFixed(2)}`;
-                if (taxAmountEl) taxAmountEl.textContent = `${currency}${taxAmount.toFixed(2)}`;
-                if (grandTotalEl) grandTotalEl.textContent = `${currency}${grandTotal.toFixed(2)}`;
-            },
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="text-align: left; font-weight: 500;" data-label="Description">${description}</td>
+                    <td style="text-align: center;" data-label="Qty">${quantity}</td>
+                    <td style="text-align: right; font-family: monospace;" data-label="Unit Price">${currency}${price.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: 600; font-family: monospace;" data-label="Total">${currency}${total.toFixed(2)}</td>
+                `;
+                lineItemsBody.appendChild(row);
+            });
+            
+            // Update totals
+            document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
+            document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
+            document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
+            
+            // Handle notes
+            const notes = document.getElementById('notes').value;
+            if (notes && notes.trim()) {
+                document.getElementById('previewNotes').innerHTML = `
+                    <div class="quotation-notes-section">
+                        <div class="notes-title">Terms & Conditions</div>
+                        <div class="notes-content">${notes.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            } else {
+                document.getElementById('previewNotes').innerHTML = '';
+            }
+        }
 
-            validateData() {
-                const companyName = document.getElementById('companyName').value.trim();
-                const customerName = document.getElementById('customerName').value.trim();
-                
-                if (!companyName) {
-                    DataManager.showNotification('Please enter company name', 'error');
-                    document.getElementById('companyName').focus();
-                    return false;
-                }
-                
-                if (!customerName) {
-                    DataManager.showNotification('Please enter customer name', 'error');
-                    document.getElementById('customerName').focus();
-                    return false;
-                }
-                
-                const hasValidItems = Array.from(document.querySelectorAll('.line-item')).some(item => {
-                    const description = item.querySelector('.item-description').value.trim();
-                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                    return description && price > 0;
-                });
-                
-                if (!hasValidItems) {
-                    DataManager.showNotification('Please add at least one item with description and price', 'error');
-                    return false;
-                }
-                
-                return true;
-            },
+        function generatePDF() {
+            // Check if jsPDF is loaded
+            if (typeof window.jspdf === 'undefined') {
+                showNotification('PDF library not loaded. Please refresh the page and try again.', 'error');
+                return false;
+            }
 
-            generateData() {
-                // Show logo if available
-                if (appState.companyLogo) {
-                    const quotationLogo = document.getElementById('quotationLogo');
-                    quotationLogo.src = appState.companyLogo;
-                    quotationLogo.style.display = 'block';
-                }
-                
-                document.getElementById('previewQuotationNumber').textContent = 
-                    `Quote #: ${document.getElementById('quotationNumber').value || 'Q-001'}`;
-                
-                // Format company details
-                const companyName = document.getElementById('companyName').value || 'Company Name';
-                const companyAddress = document.getElementById('companyAddress').value;
-                const companyPhone = document.getElementById('companyPhone').value;
-                const companyEmail = document.getElementById('companyEmail').value;
-                
-                let companyDetails = `<strong>${companyName}</strong>`;
-                if (companyAddress) companyDetails += `<br>${companyAddress}`;
-                if (companyPhone) companyDetails += `<br>Phone: ${companyPhone}`;
-                if (companyEmail) companyDetails += `<br>Email: ${companyEmail}`;
-                
-                document.getElementById('previewCompanyDetails').innerHTML = companyDetails;
-                
-                // Format customer details
-                const customerName = document.getElementById('customerName').value || 'Customer Name';
-                const customerAddress = document.getElementById('customerAddress').value;
-                const customerPhone = document.getElementById('customerPhone').value;
-                const customerEmail = document.getElementById('customerEmail').value;
-                
-                let customerDetails = `<strong>${customerName}</strong>`;
-                if (customerAddress) customerDetails += `<br>${customerAddress}`;
-                if (customerPhone) customerDetails += `<br>Phone: ${customerPhone}`;
-                if (customerEmail) customerDetails += `<br>Email: ${customerEmail}`;
-                
-                document.getElementById('previewCustomerDetails').innerHTML = customerDetails;
-                
-                // Format dates
-                const quoteDate = document.getElementById('quotationDate').value;
-                const validUntil = document.getElementById('validUntil').value;
-                
-                document.getElementById('previewDate').textContent = quoteDate ? new Date(quoteDate).toLocaleDateString() : 'Not specified';
-                document.getElementById('previewValidUntil').textContent = validUntil ? new Date(validUntil).toLocaleDateString() : 'Not specified';
-                
-                // Generate line items table
-                const lineItemsBody = document.getElementById('previewLineItems');
-                lineItemsBody.innerHTML = '';
-                const currency = document.getElementById('currency').value;
-                
-                document.querySelectorAll('.line-item').forEach((item, index) => {
-                    const description = item.querySelector('.item-description').value || `Item ${index + 1}`;
-                    const quantity = item.querySelector('.item-quantity').value || '1';
-                    const price = parseFloat(item.querySelector('.item-price').value) || 0;
-                    const total = parseFloat(quantity) * price;
-                    
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td style="text-align: left; font-weight: 500;" data-label="Description">${description}</td>
-                        <td style="text-align: center;" data-label="Qty">${quantity}</td>
-                        <td style="text-align: right; font-family: monospace;" data-label="Unit Price">${currency}${price.toFixed(2)}</td>
-                        <td style="text-align: right; font-weight: 600; font-family: monospace;" data-label="Total">${currency}${total.toFixed(2)}</td>
-                    `;
-                    lineItemsBody.appendChild(row);
-                });
-                
-                // Update totals
-                document.getElementById('previewSubtotal').textContent = document.getElementById('subtotal').textContent;
-                document.getElementById('previewTax').textContent = document.getElementById('taxAmount').textContent;
-                document.getElementById('previewTotal').textContent = document.getElementById('grandTotal').textContent;
-                
-                // Handle notes
-                const notes = document.getElementById('notes').value;
-                if (notes && notes.trim()) {
-                    document.getElementById('previewNotes').innerHTML = `
-                        <div class="quotation-notes-section">
-                            <div class="notes-title">Terms & Conditions</div>
-                            <div class="notes-content">${notes.replace(/\n/g, '<br>')}</div>
-                        </div>
-                    `;
-                } else {
-                    document.getElementById('previewNotes').innerHTML = '';
-                }
-            },
-
-            generatePDF() {
-                if (typeof window.jspdf === 'undefined') {
-                    DataManager.showNotification('PDF library not loaded. Please refresh the page and try again.', 'error');
-                    return;
-                }
-
+            try {
                 const { jsPDF } = window.jspdf;
                 const pdf = new jsPDF();
                 
@@ -2433,660 +1587,173 @@
                 // Store PDF for sharing
                 appState.currentPDFBlob = pdf.output('blob');
                 appState.pdfFileName = `${quotationNumber}_${customerName.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
-            },
+                
+                return true;
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                showNotification('Error generating PDF. Please try again.', 'error');
+                return false;
+            }
+        }
 
-            generateAndShowPDF() {
-                if (!this.validateData()) return;
-                
-                this.generateData();
-                this.generatePDF();
-                
+        function generateAndShowPDF() {
+            if (!validateQuotationData()) return;
+            
+            generateQuotationData();
+            
+            if (generatePDF()) {
                 document.getElementById('pdfShareView').style.display = 'block';
                 document.getElementById('pdfShareView').scrollIntoView({ behavior: 'smooth' });
                 
                 document.getElementById('shareQuotationNumber').textContent = 
                     document.getElementById('quotationNumber').value || 'Q-001';
                 
-                DataManager.showNotification('Quotation generated successfully!', 'success');
+                showNotification('Quotation generated successfully!', 'success');
             }
-        };
+        }
 
-        // ===== MEDICINE MANAGEMENT SYSTEM =====
-        const MedicineManager = {
-            showAddModal() {
-                appState.selectedTimes = [];
-                appState.editingMedicineId = null;
-                
-                document.getElementById('medicineName').value = '';
-                document.getElementById('medicineDosage').value = '';
-                document.getElementById('medicineInstructions').value = '';
-                document.getElementById('medicineFrequency').value = 'daily';
-                document.getElementById('customTimeInput').value = '';
-                
-                document.querySelectorAll('.time-slot').forEach(slot => {
-                    slot.classList.remove('active');
-                });
-                
-                this.updateCustomTimesList();
-                document.getElementById('addMedicineModal').classList.add('active');
-                
-                setTimeout(() => {
-                    document.getElementById('medicineName').focus();
-                }, 300);
-            },
-
-            closeAddModal() {
-                document.getElementById('addMedicineModal').classList.remove('active');
-                appState.editingMedicineId = null;
-            },
-
-            toggleTimeSlot(element, time) {
-                element.classList.toggle('active');
-                
-                if (appState.selectedTimes.includes(time)) {
-                    appState.selectedTimes = appState.selectedTimes.filter(t => t !== time);
-                } else {
-                    appState.selectedTimes.push(time);
-                }
-            },
-
-            addCustomTime() {
-                const timeInput = document.getElementById('customTimeInput');
-                const time = timeInput.value;
-                
-                if (!time) {
-                    DataManager.showNotification('Please select a time', 'error');
-                    return;
-                }
-                
-                if (appState.selectedTimes.includes(time)) {
-                    DataManager.showNotification('This time is already selected', 'error');
-                    return;
-                }
-                
-                appState.selectedTimes.push(time);
-                this.updateCustomTimesList();
-                timeInput.value = '';
-                DataManager.showNotification(`Custom time ${time} added`, 'success');
-            },
-
-            removeCustomTime(time) {
-                appState.selectedTimes = appState.selectedTimes.filter(t => t !== time);
-                this.updateCustomTimesList();
-            },
-
-            updateCustomTimesList() {
-                const container = document.getElementById('customTimesList');
-                const presetTimes = ['08:00', '12:00', '18:00', '22:00', '06:00', '14:00'];
-                const customTimes = appState.selectedTimes.filter(time => !presetTimes.includes(time));
-                
-                if (customTimes.length === 0) {
-                    container.innerHTML = '';
-                    return;
-                }
-                
-                let html = '<div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; margin-bottom: 8px;">Custom Times:</div>';
-                customTimes.forEach(time => {
-                    html += `
-                        <div class="custom-time-item">
-                            <span class="custom-time-text">${time}</span>
-                            <button class="remove-custom-time" onclick="MedicineManager.removeCustomTime('${time}')" aria-label="Remove ${time}">×</button>
-                        </div>
-                    `;
-                });
-                
-                container.innerHTML = html;
-            },
-
-            saveMedicine() {
-                const name = document.getElementById('medicineName').value.trim();
-                const dosage = document.getElementById('medicineDosage').value.trim();
-                const instructions = document.getElementById('medicineInstructions').value.trim() || 'As directed';
-                const frequency = document.getElementById('medicineFrequency').value;
-                
-                if (!name || !dosage) {
-                    DataManager.showNotification('Please fill in medicine name and dosage', 'error');
-                    return;
-                }
-                
-                if (appState.selectedTimes.length === 0 && frequency !== 'asneeded') {
-                    DataManager.showNotification('Please select at least one time or choose "As Needed"', 'error');
-                    return;
-                }
-                
-                if (appState.editingMedicineId) {
-                    // Edit existing medicine
-                    const medicineIndex = appState.medicines.findIndex(m => m.id === appState.editingMedicineId);
-                    if (medicineIndex >= 0) {
-                        const oldMedicine = appState.medicines[medicineIndex];
-                        
-                        appState.medicines[medicineIndex] = {
-                            ...oldMedicine,
-                            name,
-                            dosage,
-                            instructions,
-                            frequency,
-                            times: [...appState.selectedTimes].sort(),
-                            updatedAt: new Date().toISOString()
-                        };
-                        
-                        this.updateTodaysScheduleForMedicine(appState.editingMedicineId);
-                        DataManager.showNotification('Medicine updated successfully!', 'success');
-                    }
-                    appState.editingMedicineId = null;
-                } else {
-                    // Create new medicine
-                    const medicine = {
-                        id: Date.now(),
-                        name,
-                        dosage,
-                        instructions,
-                        frequency,
-                        times: [...appState.selectedTimes].sort(),
-                        createdAt: new Date().toISOString()
-                    };
-                    
-                    appState.medicines.push(medicine);
-                    this.createTodaysSchedule(medicine);
-                    DataManager.showNotification('Medicine added successfully!', 'success');
-                }
-                
-                this.updateDisplay();
-                this.updateTodaysOverview();
-                this.closeAddModal();
-                DataManager.save();
-            },
-
-            createTodaysSchedule(medicine) {
-                const today = new Date().toDateString();
-                
-                if (medicine.frequency === 'asneeded') {
-                    const logEntry = {
-                        id: Date.now(),
-                        medicineId: medicine.id,
-                        medicineName: medicine.name,
-                        dosage: medicine.dosage,
-                        scheduledTime: 'As Needed',
-                        date: today,
-                        status: 'available'
-                    };
-                    appState.medicineLog.push(logEntry);
-                } else {
-                    medicine.times.forEach((time, index) => {
-                        const logEntry = {
-                            id: Date.now() + index,
-                            medicineId: medicine.id,
-                            medicineName: medicine.name,
-                            dosage: medicine.dosage,
-                            scheduledTime: time,
-                            date: today,
-                            status: 'pending'
-                        };
-                        appState.medicineLog.push(logEntry);
-                    });
-                }
-            },
-
-            updateTodaysScheduleForMedicine(medicineId) {
-                const today = new Date().toDateString();
-                const medicine = appState.medicines.find(m => m.id === medicineId);
-                
-                if (!medicine) return;
-                
-                // Remove old schedule entries for this medicine today
-                appState.medicineLog = appState.medicineLog.filter(log => 
-                    !(log.medicineId === medicineId && log.date === today)
-                );
-                
-                // Create new schedule entries
-                this.createTodaysSchedule(medicine);
-            },
-
-            editMedicine(medicineId) {
-                const medicine = appState.medicines.find(m => m.id === medicineId);
-                if (!medicine) {
-                    DataManager.showNotification('Medicine not found', 'error');
-                    return;
-                }
-
-                document.getElementById('medicineName').value = medicine.name;
-                document.getElementById('medicineDosage').value = medicine.dosage;
-                document.getElementById('medicineInstructions').value = medicine.instructions;
-                document.getElementById('medicineFrequency').value = medicine.frequency;
-                document.getElementById('customTimeInput').value = '';
-                
-                appState.selectedTimes = [...(medicine.times || [])];
-                
-                document.querySelectorAll('.time-slot').forEach(slot => {
-                    const time = slot.textContent.split(' ')[0]; // Extract time part (e.g., "08:00" from "08:00 AM")
-                    slot.classList.toggle('active', appState.selectedTimes.includes(time));
-                });
-                
-                this.updateCustomTimesList();
-                appState.editingMedicineId = medicineId;
-                
-                document.getElementById('modalTitle').textContent = 'Edit Medicine';
-                document.getElementById('addMedicineModal').classList.add('active');
-            },
-
-            duplicateMedicine(medicineId) {
-                const medicine = appState.medicines.find(m => m.id === medicineId);
-                if (!medicine) {
-                    DataManager.showNotification('Medicine not found', 'error');
-                    return;
-                }
-
-                document.getElementById('medicineName').value = medicine.name + ' (Copy)';
-                document.getElementById('medicineDosage').value = medicine.dosage;
-                document.getElementById('medicineInstructions').value = medicine.instructions;
-                document.getElementById('medicineFrequency').value = medicine.frequency;
-                document.getElementById('customTimeInput').value = '';
-                
-                appState.selectedTimes = [...(medicine.times || [])];
-                
-                document.querySelectorAll('.time-slot').forEach(slot => {
-                    const time = slot.textContent.split(' ')[0];
-                    slot.classList.toggle('active', appState.selectedTimes.includes(time));
-                });
-                
-                this.updateCustomTimesList();
-                appState.editingMedicineId = null;
-                
-                document.getElementById('modalTitle').textContent = 'Duplicate Medicine';
-                document.getElementById('addMedicineModal').classList.add('active');
-            },
-
-            deleteMedicine(medicineId) {
-                const medicine = appState.medicines.find(m => m.id === medicineId);
-                if (!medicine) return;
-
-                if (confirm(`Delete "${medicine.name}" and all its records?\n\nThis action cannot be undone.`)) {
-                    appState.medicines = appState.medicines.filter(m => m.id !== medicineId);
-                    appState.medicineLog = appState.medicineLog.filter(log => log.medicineId !== medicineId);
-                    
-                    this.updateDisplay();
-                    this.updateTodaysOverview();
-                    DataManager.save();
-                    DataManager.showNotification(`"${medicine.name}" deleted successfully`, 'success');
-                }
-            },
-
-            markMedicineTaken(logId) {
-                const logEntry = appState.medicineLog.find(log => log.id === logId);
-                if (logEntry) {
-                    logEntry.status = 'taken';
-                    logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
-                    
-                    this.updateDisplay();
-                    this.updateTodaysOverview();
-                    DataManager.save();
-                    DataManager.showNotification(`${logEntry.medicineName} marked as taken!`, 'success');
-                }
-            },
-
-            toggleMedicineStatus(logId) {
-                const logEntry = appState.medicineLog.find(log => log.id === logId);
-                if (logEntry) {
-                    const statuses = ['pending', 'taken', 'missed', 'skipped'];
-                    const currentIndex = statuses.indexOf(logEntry.status);
-                    const nextIndex = (currentIndex + 1) % statuses.length;
-                    logEntry.status = statuses[nextIndex];
-                    
-                    if (logEntry.status === 'taken' && !logEntry.actualTime) {
-                        logEntry.actualTime = new Date().toLocaleTimeString('en-US', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    }
-                    
-                    this.updateDisplay();
-                    this.updateTodaysOverview();
-                    DataManager.save();
-                }
-            },
-
-            updateDisplay() {
-                const container = document.getElementById('medicineList');
-                const noMedicinesMsg = document.getElementById('noMedicinesMessage');
-                const todayScheduleCard = document.getElementById('todayScheduleCard');
-                
-                if (appState.medicines.length === 0) {
-                    container.innerHTML = '';
-                    noMedicinesMsg.style.display = 'block';
-                    todayScheduleCard.style.display = 'none';
-                    return;
-                }
-                
-                noMedicinesMsg.style.display = 'none';
-                todayScheduleCard.style.display = 'block';
-                
-                let medicineHTML = '';
-                appState.medicines.forEach(medicine => {
-                    const times = medicine.times.length > 0 ? medicine.times.join(', ') : 'As needed';
-                    
-                    medicineHTML += `
-                        <div class="medicine-card">
-                            <div class="medicine-header">
-                                <div class="medicine-info">
-                                    <h3>${medicine.name}</h3>
-                                    <p>${medicine.dosage} | ${medicine.instructions}</p>
-                                    <p style="font-size: 12px; opacity: 0.8;">
-                                        📅 ${medicine.frequency} | ⏰ ${times}
-                                    </p>
-                                </div>
-                                <div class="medicine-actions">
-                                    <button class="medicine-btn" onclick="MedicineManager.editMedicine(${medicine.id})" title="Edit Medicine" style="background: #f39c12;">
-                                        ✏️
-                                    </button>
-                                    <button class="medicine-btn" onclick="MedicineManager.duplicateMedicine(${medicine.id})" title="Duplicate Medicine" style="background: #3498db;">
-                                        📋
-                                    </button>
-                                    <button class="medicine-btn" onclick="MedicineManager.deleteMedicine(${medicine.id})" title="Delete Medicine" style="background: #e74c3c;">
-                                        🗑️
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                container.innerHTML = medicineHTML;
-                this.updateTodayScheduleDisplay();
-            },
-
-            updateTodayScheduleDisplay() {
-                const container = document.getElementById('todayScheduleList');
-                const today = new Date().toDateString();
-                const todaysLog = appState.medicineLog.filter(log => log.date === today);
-                
-                if (todaysLog.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 25px;">No medicines scheduled for today</div>';
-                    return;
-                }
-                
-                const sortedLog = todaysLog.sort((a, b) => {
-                    if (a.scheduledTime === 'As Needed') return 1;
-                    if (b.scheduledTime === 'As Needed') return -1;
-                    return a.scheduledTime.localeCompare(b.scheduledTime);
-                });
-                
-                let scheduleHTML = '';
-                sortedLog.forEach(log => {
-                    const statusClass = `status-${log.status}`;
-                    let statusText = log.status.charAt(0).toUpperCase() + log.status.slice(1);
-                    let actionButton = '';
-                    
-                    if (log.status === 'pending') {
-                        actionButton = `<button class="take-btn" onclick="MedicineManager.markMedicineTaken(${log.id})">Take Now</button>`;
-                    } else if (log.status === 'taken') {
-                        statusText += ` (${log.actualTime || 'Taken'})`;
-                    } else if (log.status === 'available') {
-                        actionButton = `<button class="take-btn" onclick="MedicineManager.markMedicineTaken(${log.id})" style="background: #fa709a;">Take PRN</button>`;
-                    }
-                    
-                    scheduleHTML += `
-                        <div class="schedule-item">
-                            <div>
-                                <div class="schedule-time">${log.scheduledTime}</div>
-                                <div style="font-size: 12px; color: #7f8c8d;">${log.medicineName} (${log.dosage})</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div class="schedule-status ${statusClass}" onclick="MedicineManager.toggleMedicineStatus(${log.id})" style="cursor: pointer; margin-bottom: 5px;">
-                                    ${statusText}
-                                </div>
-                                ${actionButton}
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                container.innerHTML = scheduleHTML;
-            },
-
-            updateTodaysOverview() {
-                const today = new Date().toDateString();
-                const todaysLog = appState.medicineLog.filter(log => log.date === today);
-                
-                const taken = todaysLog.filter(log => log.status === 'taken').length;
-                const pending = todaysLog.filter(log => log.status === 'pending' || log.status === 'available').length;
-                const missed = todaysLog.filter(log => log.status === 'missed').length;
-                const total = todaysLog.length;
-                
-                const takenEl = document.getElementById('todayTaken');
-                const pendingEl = document.getElementById('todayPending');
-                const missedEl = document.getElementById('todayMissed');
-                const totalEl = document.getElementById('todayTotal');
-                
-                if (takenEl) takenEl.textContent = taken;
-                if (pendingEl) pendingEl.textContent = pending;
-                if (missedEl) missedEl.textContent = missed;
-                if (totalEl) totalEl.textContent = total;
-                
-                this.checkMissedMedications();
-            },
-
-            checkMissedMedications() {
-                const today = new Date().toDateString();
-                const currentTime = new Date();
-                const currentHour = currentTime.getHours();
-                const currentMinute = currentTime.getMinutes();
-                const currentTimeMinutes = currentHour * 60 + currentMinute;
-                
-                appState.medicineLog.forEach(log => {
-                    if (log.date === today && log.status === 'pending' && 
-                        log.scheduledTime !== 'As Needed') {
-                        const [schedHour, schedMinute] = log.scheduledTime.split(':').map(Number);
-                        const scheduledTimeMinutes = schedHour * 60 + schedMinute;
-                        
-                        // Mark as missed if more than 2 hours late
-                        if (currentTimeMinutes - scheduledTimeMinutes > 120) {
-                            log.status = 'missed';
-                        }
-                    }
-                });
+        function downloadPDF() {
+            if (!appState.currentPDFBlob) {
+                showNotification('No PDF available. Please generate quote first.', 'error');
+                return;
             }
-        };
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(appState.currentPDFBlob);
+            link.download = appState.pdfFileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('PDF downloaded successfully!', 'success');
+        }
 
-        // ===== PDF AND SHARING FUNCTIONS =====
-        const PDFManager = {
-            download() {
-                if (!appState.currentPDFBlob) {
-                    DataManager.showNotification('No PDF available. Please generate quote first.', 'error');
-                    return;
-                }
+        function sharePDF() {
+            if (!appState.currentPDFBlob) {
+                showNotification('No PDF available. Please generate quote first.', 'error');
+                return;
+            }
+            
+            if (navigator.share) {
+                const file = new File([appState.currentPDFBlob], appState.pdfFileName, {
+                    type: 'application/pdf'
+                });
                 
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(appState.currentPDFBlob);
-                link.download = appState.pdfFileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                DataManager.showNotification('PDF downloaded successfully!', 'success');
-            },
+                navigator.share({
+                    title: 'Quotation PDF',
+                    text: `Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`,
+                    files: [file]
+                }).catch(err => {
+                    console.log('Share failed:', err);
+                    downloadPDF(); // Fallback to download
+                });
+            } else {
+                downloadPDF(); // Fallback to download
+            }
+        }
 
-            share() {
-                if (!appState.currentPDFBlob) {
-                    DataManager.showNotification('No PDF available. Please generate quote first.', 'error');
-                    return;
-                }
-                
-                if (navigator.share) {
-                    const file = new File([appState.currentPDFBlob], appState.pdfFileName, {
-                        type: 'application/pdf'
-                    });
-                    
-                    navigator.share({
-                        title: 'Quotation PDF',
-                        text: `Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`,
-                        files: [file]
-                    }).catch(err => {
-                        console.log('Share failed:', err);
-                        this.download(); // Fallback to download
-                    });
-                } else {
-                    this.download(); // Fallback to download
-                }
-            },
+        function emailPDF() {
+            const subject = encodeURIComponent(`Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`);
+            const body = encodeURIComponent(`Please find attached the quotation for ${document.getElementById('customerName').value || 'your review'}.`);
+            window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
+        }
 
-            email() {
-                const subject = encodeURIComponent(`Quotation ${document.getElementById('quotationNumber').value || 'Q-001'}`);
-                const body = encodeURIComponent(`Please find attached the quotation for ${document.getElementById('customerName').value || 'your review'}.`);
-                window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
-            },
-
-            print() {
-                if (appState.currentPDFBlob) {
-                    const pdfUrl = URL.createObjectURL(appState.currentPDFBlob);
-                    const printWindow = window.open(pdfUrl, '_blank');
+        function printPDF() {
+            if (appState.currentPDFBlob) {
+                const pdfUrl = URL.createObjectURL(appState.currentPDFBlob);
+                const printWindow = window.open(pdfUrl, '_blank');
+                if (printWindow) {
                     printWindow.onload = () => {
                         printWindow.print();
                     };
                 }
             }
-        };
+        }
 
-        // ===== LOGO MANAGEMENT =====
-        const LogoManager = {
-            handle(input) {
-                const file = input.files[0];
-                if (!file) return;
-
-                if (!file.type.startsWith('image/')) {
-                    DataManager.showNotification('Please select a valid image file.', 'error');
-                    return;
-                }
-
-                if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                    DataManager.showNotification('Image too large! Please choose a file under 5MB.', 'error');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    appState.companyLogo = e.target.result;
-                    
-                    const logoPreview = document.getElementById('logoPreview');
-                    const removeBtn = document.getElementById('logoRemoveBtn');
-                    
-                    if (logoPreview) {
-                        logoPreview.src = appState.companyLogo;
-                        logoPreview.style.display = 'block';
-                    }
-                    if (removeBtn) {
-                        removeBtn.style.display = 'inline-block';
-                    }
-                    
-                    DataManager.save();
-                    DataManager.showNotification('Logo uploaded successfully!', 'success');
-                };
-                
-                reader.onerror = () => {
-                    DataManager.showNotification('Error reading file. Please try again.', 'error');
-                };
-                
-                reader.readAsDataURL(file);
-            },
-
-            remove() {
-                if (confirm('Remove company logo?')) {
-                    appState.companyLogo = null;
-                    
-                    const logoPreview = document.getElementById('logoPreview');
-                    const removeBtn = document.getElementById('logoRemoveBtn');
-                    const uploadInput = document.getElementById('logoUploadInput');
-                    
-                    if (logoPreview) {
-                        logoPreview.src = '';
-                        logoPreview.style.display = 'none';
-                    }
-                    if (removeBtn) {
-                        removeBtn.style.display = 'none';
-                    }
-                    if (uploadInput) {
-                        uploadInput.value = '';
-                    }
-                    
-                    DataManager.save();
-                    DataManager.showNotification('Logo removed successfully!', 'success');
-                }
+        function togglePreview() {
+            const preview = document.getElementById('quotationPreview');
+            const button = document.getElementById('previewToggleBtn');
+            
+            if (preview.style.display === 'none') {
+                preview.style.display = 'block';
+                button.textContent = '👁️ Hide Quote Preview';
+            } else {
+                preview.style.display = 'none';
+                button.textContent = '👁️ View Quote Preview';
             }
-        };
+        }
 
-        // ===== UI MANAGEMENT =====
-        const UIManager = {
-            switchPage(page) {
-                appState.currentPage = page;
-                
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                document.getElementById(page + 'Page').classList.add('active');
-                
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                document.querySelectorAll('.page-nav-btn').forEach(nav => nav.classList.remove('active'));
-                
-                document.querySelectorAll(`[onclick*="'${page}'"]`).forEach(btn => btn.classList.add('active'));
-                
-                document.getElementById('fabBtn').innerHTML = page === 'quotation' ? '+' : '💊';
-                
-                if (page === 'medicine') {
-                    MedicineManager.updateDisplay();
-                    MedicineManager.updateTodaysOverview();
-                }
-                
-                DataManager.save();
-            },
+        function backToQuote() {
+            document.getElementById('pdfShareView').style.display = 'none';
+            document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+        }
 
-            fabAction() {
-                if (appState.currentPage === 'quotation') {
-                    QuotationManager.addLineItem();
-                } else {
-                    MedicineManager.showAddModal();
-                }
-            },
+        // ===== LOGO FUNCTIONS =====
+        function handleLogoUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
 
-            togglePreview() {
-                const preview = document.getElementById('quotationPreview');
-                const button = event.target;
-                
-                if (preview.style.display === 'none') {
-                    preview.style.display = 'block';
-                    button.textContent = '👁️ Hide Quote Preview';
-                } else {
-                    preview.style.display = 'none';
-                    button.textContent = '👁️ View Quote Preview';
-                }
-            },
-
-            backToQuote() {
-                document.getElementById('pdfShareView').style.display = 'none';
-                document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+            if (!file.type.startsWith('image/')) {
+                showNotification('Please select a valid image file.', 'error');
+                return;
             }
-        };
 
-        // ===== GLOBAL FUNCTIONS (for HTML onclick attributes) =====
-        function switchPage(page) { UIManager.switchPage(page); }
-        function fabAction() { UIManager.fabAction(); }
-        function generateAndShowPDF() { QuotationManager.generateAndShowPDF(); }
-        function downloadPDF() { PDFManager.download(); }
-        function sharePDF() { PDFManager.share(); }
-        function emailPDF() { PDFManager.email(); }
-        function printPDF() { PDFManager.print(); }
-        function togglePreview() { UIManager.togglePreview(); }
-        function backToQuote() { UIManager.backToQuote(); }
-        function handleLogoUpload(input) { LogoManager.handle(input); }
-        function removeLogo() { LogoManager.remove(); }
-        function showAddMedicineModal() { MedicineManager.showAddModal(); }
-        function closeAddMedicineModal() { MedicineManager.closeAddModal(); }
-        function toggleTimeSlot(element, time) { MedicineManager.toggleTimeSlot(element, time); }
-        function addCustomTime() { MedicineManager.addCustomTime(); }
-        function saveMedicine() { MedicineManager.saveMedicine(); }
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                showNotification('Image too large! Please choose a file under 5MB.', 'error');
+                return;
+            }
 
-        // ===== APPLICATION INITIALIZATION =====
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                appState.companyLogo = e.target.result;
+                
+                const logoPreview = document.getElementById('logoPreview');
+                const removeBtn = document.getElementById('logoRemoveBtn');
+                
+                if (logoPreview) {
+                    logoPreview.src = appState.companyLogo;
+                    logoPreview.style.display = 'block';
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'inline-block';
+                }
+                
+                showNotification('Logo uploaded successfully!', 'success');
+            };
+            
+            reader.onerror = () => {
+                showNotification('Error reading file. Please try again.', 'error');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function removeLogo() {
+            if (confirm('Remove company logo?')) {
+                appState.companyLogo = null;
+                
+                const logoPreview = document.getElementById('logoPreview');
+                const removeBtn = document.getElementById('logoRemoveBtn');
+                const uploadInput = document.getElementById('logoUploadInput');
+                
+                if (logoPreview) {
+                    logoPreview.src = '';
+                    logoPreview.style.display = 'none';
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'none';
+                }
+                if (uploadInput) {
+                    uploadInput.value = '';
+                }
+                
+                showNotification('Logo removed successfully!', 'success');
+            }
+        }
+
+        // ===== EVENT LISTENERS AND INITIALIZATION =====
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 QuoteFlow Complete v2.0.0 Initializing...');
+            console.log('🚀 QuoteFlow Pro v2.0.0 Initializing...');
             
             // Set default values
             const today = new Date().toISOString().split('T')[0];
@@ -3095,30 +1762,25 @@
             
             document.getElementById('quotationDate').value = today;
             document.getElementById('validUntil').value = futureDate.toISOString().split('T')[0];
-            document.getElementById('quotationNumber').value = `QFC-${Date.now().toString().slice(-6)}`;
-            
-            // Load saved data
-            DataManager.load();
+            document.getElementById('quotationNumber').value = `QFP-${Date.now().toString().slice(-6)}`;
             
             // Initialize calculations
-            QuotationManager.updateCalculations();
-            MedicineManager.updateTodaysOverview();
+            updateCalculations();
             
             // Set up auto-calculation listeners
             document.addEventListener('input', function(e) {
                 if (e.target.matches('.item-quantity, .item-price, #taxRate')) {
-                    QuotationManager.updateCalculations();
-                    DataManager.debouncedSave();
-                }
-                
-                if (e.target.matches('.form-input')) {
-                    DataManager.debouncedSave();
+                    updateCalculations();
                 }
             });
-            
-            // Periodic medicine check (every 30 minutes)
-            setInterval(() => {
-                MedicineManager.checkMissedMedications();
-                MedicineManager.updateTodaysOverview();
-                DataManager.save();
-            }, 30 * 60 * 1000);
+
+            // Set up logo upload listener
+            document.getElementById('logoUploadInput').addEventListener('change', function() {
+                handleLogoUpload(this);
+            });
+
+            console.log('✅ QuoteFlow Pro initialized successfully!');
+        });
+    </script>
+</body>
+</html>
